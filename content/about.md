@@ -1,30 +1,30 @@
 ---
 journeyPhases:
   - period: "2020 - 2022"
-    title: Puppy Academy
-    org: Goodgirl Obedience School
-    description: Mastered sit, stay, and roll over. Graduated top of class in treat-motivated learning.
-    tags: [Sitting, Fetching, Treats]
+    title: Puppy Trainee
+    org: Home Sweet Home
+    description: Learned the essentials — shake hands, lie down, and the art of looking irresistibly cute for treats.
+    tags: [Shake Hands, Lie Down, Treats]
   - period: "2022 - 2024"
-    title: Junior Fetch Researcher
-    org: Backyard Research Institute
-    description: Conducted extensive fieldwork on optimal fetch trajectories and squirrel tracking algorithms.
-    tags: [Fetch, Zoomies, Squirrels]
+    title: Junior Cuddle Researcher
+    org: Yaoyao's Lap Lab
+    description: Conducted extensive research on optimal lap-sitting positions and perfected the skill of following Yaoyao from room to room.
+    tags: [Cuddling, Following, Napping]
   - period: "2024 - Present"
-    title: Senior Good Girl
-    org: The Couch Lab
-    description: Leading research on nap optimization and treat distribution fairness. Published groundbreaking work on belly rub dynamics.
-    tags: [Napping, Treats, Belly Rubs]
+    title: Senior Fluffy Companion
+    org: The Cozy Corner
+    description: Leading research on warmth-seeking behavior and cross-species play dynamics with brother Lucas. Published groundbreaking work on the correlation between paw shakes and treat frequency.
+    tags: [Warmth Seeking, Playing with Lucas, Paw Shakes]
 mentorship:
-  heading: Pack Members
-  description: Cookie mentors younger pups and collaborates with fellow dogs on important research.
+  heading: My Pack
+  description: Cookie's tiny but mighty pack — one fluffy Pomeranian, one chill Ragdoll, and the best hooman in the world.
   mentees:
     - name: Lucas (Lulu)
-      url: https://h-freax.github.io/TermHub
-      note: Ragdoll cat brother and best buddy, expert nap supervisor
+      url: "#"
+      note: Ragdoll cat brother, expert window-gazer and nap buddy
     - name: Yaoyao(Freax) Qian
       url: https://h-freax.github.io/
-      note: Creator of TermHub, Cookie's favorite person in the world
+      note: Creator of TermHub, Cookie's favorite person and personal heater
 version:
   current: v1.0.0
   history:
@@ -36,4 +36,4 @@ version:
         - Project showcase with demos
 ---
 
-Cookie is a distinguished Pomeranian girl with a passion for fetching, napping, and treat-based reinforcement learning. With her best friend Yaoyao(Freax) Qian by her side, Cookie has grown from chewing shoes as a puppy to publishing research on optimal belly rub durations — always driven by curiosity and an insatiable appetite for snacks.
+Cookie is a fluffy Pomeranian girl who believes the meaning of life is staying as close to her hooman Yaoyao as physically possible. She knows how to shake hands and lie down on command — mostly when treats are involved. When she's not glued to Yaoyao's side, she's playing with her Ragdoll cat brother Lucas, claiming the sunniest spot on the couch, or perfecting her signature dramatic sigh when dinner is five minutes late.

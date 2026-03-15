@@ -1,6 +1,6 @@
 ---
-id: arxiv2025-squirrel-detection
-title: "SniffNet: Multi-Modal Squirrel Detection in Urban Park Environments"
+id: arxiv2025-cross-species-play
+title: "PlayNet: Modeling Cooperative Play Dynamics Between Pomeranians and Ragdoll Cats"
 authors: [Cookie, Lulu, Yaoyao(Freax) Qian]
 venue: arXiv
 venueType: preprint
@@ -8,9 +8,9 @@ year: 2025
 status: preprint
 isFirstAuthor: true
 links:
-  arxiv: https://h-freax.github.io/TermHub
-  code: https://h-freax.github.io/TermHub
-emoji: "🐿️"
+  arxiv: "#"
+  code: "#"
+emoji: "🐱"
 ---
 
-Accurate squirrel detection in complex park environments remains a significant challenge due to occlusions from trees and rapid squirrel movement. We propose SniffNet, a multi-modal detection system combining visual input with olfactory attention maps. SniffNet achieves state-of-the-art detection accuracy of 98.3% on the ParkSquirrel-500 benchmark.
+Cross-species play between dogs and cats remains poorly understood due to differing play styles and communication signals. We propose PlayNet, a behavioral model capturing the cooperative dynamics between a Pomeranian (Cookie) and a Ragdoll cat (Lucas). PlayNet predicts play initiation success with 92% accuracy, revealing that slow tail wags and gentle paw taps are the most effective cross-species play invitations.

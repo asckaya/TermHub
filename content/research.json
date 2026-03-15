@@ -1,18 +1,18 @@
 {
   "currentResearch": [
     {
-      "lab": "The Couch Lab",
+      "lab": "The Cozy Corner",
       "emoji": "🛋️",
-      "advisor": "Dr. Belly Rubs",
-      "focus": "nap optimization and comfort-driven scheduling",
-      "link": "https://h-freax.github.io/TermHub"
+      "advisor": "Dr. Warm Lap",
+      "focus": "warmth-seeking behavior and human-proximity optimization",
+      "link": "#"
     },
     {
-      "lab": "Backyard Research Institute",
-      "emoji": "🐿️",
-      "advisor": "Prof. Squirrel",
-      "focus": "real-time squirrel tracking and fetch trajectory optimization",
-      "link": "https://h-freax.github.io/TermHub"
+      "lab": "Lucas & Cookie Play Lab",
+      "emoji": "🐱",
+      "advisor": "Prof. Lucas",
+      "focus": "cross-species play dynamics and cooperative napping",
+      "link": "#"
     }
   ]
 }

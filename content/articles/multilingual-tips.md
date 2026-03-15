@@ -1,11 +1,11 @@
 ---
-title: Practical Tips for Fine-Tuning Multilingual Transformers
+title: Practical Tips for Training Cross-Species Play Behaviors
 category: nlp
 date: 2025-07-15
-tags: [NLP, Transformers, Fine-Tuning]
+tags: [Behavior, Training, Cross-Species]
 extraLinks:
   - label: Medium
-    url: https://h-freax.github.io/TermHub
+    url: "#"
 ---
 
-Lessons learned from cross-lingual sentiment analysis: data balancing, learning rate schedules, and evaluation pitfalls.
+Lessons learned from building a cooperative play relationship between a Pomeranian and a Ragdoll cat: patience, treat timing, and knowing when to let the cat win.

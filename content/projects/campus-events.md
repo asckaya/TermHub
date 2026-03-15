@@ -1,18 +1,18 @@
 ---
-title: Dog Park Meetup Board
+title: Cookie & Lucas Playdate Tracker
 category: web-app
 date: 2025-03-10
 tags: [Next.js, Prisma, PostgreSQL, TypeScript]
-link: https://h-freax.github.io/TermHub
+link: "#"
 isOpenSource: true
 role: lead
-story: We launched during a rainstorm — zero dogs showed up to the first meetup.
+story: We launched on a day Lucas decided to nap for 14 hours straight — zero play sessions recorded.
 ---
 
-Full-stack platform for organizing dog park meetups, play dates, and treat-sharing events.
+Full-stack platform for tracking play sessions, cuddle time, and treat consumption between Cookie and Lucas.
 
 ## Highlights
 
-- Led a pack of four developers to deliver the platform in one season.
-- Supports role-based access for park admins, dog owners, and guests.
-- Handles 500+ concurrent tail wags during peak play hours.
+- Led a team of four to deliver the tracking platform in one season.
+- Supports real-time dashboards for play duration, nap overlap, and treat fairness metrics.
+- Handles 500+ concurrent cuddle events during peak cozy hours.

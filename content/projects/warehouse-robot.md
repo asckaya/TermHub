@@ -1,19 +1,19 @@
 ---
-title: Autonomous Ball Fetching Robot
+title: Autonomous Cuddle Position Optimizer
 category: robotics
 date: 2025-09-15
-tags: [ROS2, SLAM, Path Planning, Python]
-link: https://h-freax.github.io/TermHub
+tags: [ROS2, Sensors, Path Planning, Python]
+link: "#"
 isOpenSource: true
-badge: "🎾 95% Catch Rate"
+badge: "🛋️ 100% Cozy"
 featured: true
-story: The first demo had the robot fetching shoes instead of balls — turns out the object detector loved sneakers.
+story: The first demo had Cookie optimizing for the cat bed instead of Yaoyao's lap — turns out the thermal sensor loved heated pet beds.
 ---
 
-ROS2-based mobile robot system for autonomous ball retrieval in park environments using SLAM and sniff-guided path planning.
+Sensor-based system for finding and navigating to the optimal cuddle position relative to the nearest human, using thermal imaging and proximity detection.
 
 ## Highlights
 
-- Implemented A* path planning with dynamic squirrel avoidance.
-- Achieved 95% ball retrieval rate in simulated park environments.
-- Integrated LiDAR-based SLAM for real-time park mapping.
+- Implemented warmth-gradient path planning for real-time human tracking.
+- Achieved 100% lap arrival rate in simulated multi-room environments.
+- Integrated lie-down detection to trigger cuddle mode automatically.

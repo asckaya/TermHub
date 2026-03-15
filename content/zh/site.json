@@ -1,5 +1,5 @@
 {
-  "_comment": "Your basic info. Edit the values below, then run: npm run dev",
+  "_comment": "中文版站点配置",
 
   "name": {
     "full": "Cookie",
@@ -10,22 +10,22 @@
     "authorVariants": ["Cookie"]
   },
 
-  "title": "Woof! I'm Cookie",
-  "tagline": "A fluffy Pomeranian who codes by staying glued to her human, one paw shake at a time.",
+  "title": "汪！我是 Cookie",
+  "tagline": "一只毛茸茸的博美，靠赖在主人身边写代码，一次握手换一块零食。",
   "avatar": "cookie.jpg",
 
   "terminal": {
     "username": "cookie",
     "rotatingSubtitles": [
-      "cuddle with hooman",
-      "shake paws politely",
-      "lie down dramatically",
-      "play with brother Lucas",
-      "nap on hooman's lap"
+      "赖在主人身边",
+      "和弟弟 Lucas 玩耍",
+      "握手要零食",
+      "趴下装可怜",
+      "在主人腿上打盹"
     ],
     "skills": [
-      "Shake Hands", "Lie Down", "Cuddling", "Following Hooman",
-      "Napping", "Treat Negotiation", "Playing with Lucas", "Being Fluffy"
+      "握手", "趴下", "撒娇", "跟着主人",
+      "午睡", "零食谈判", "和 Lucas 玩", "卖萌"
     ],
     "timezone": "America/Los_Angeles"
   },
@@ -34,7 +34,7 @@
     "email": "cookie@goodgirl.dev",
     "academicEmail": "cookie@goodgirl.edu",
     "hiringEmail": "cookie@goodgirl.dev",
-    "location": "Wherever Yaoyao Is"
+    "location": "Yaoyao 在哪我在哪"
   },
 
   "social": {
@@ -55,8 +55,8 @@
       "name": "Lucas (Lulu)",
       "emoji": "🐱",
       "image": "/images/lulu.jpg",
-      "title": "Best Buddy & Little Brother",
-      "description": "Cookie's Ragdoll cat brother. They nap together, chase each other around the house, and share the sunny spot by the window."
+      "title": "最佳伙伴 & 弟弟",
+      "description": "Cookie 的布偶猫弟弟。他们一起午睡、满屋追逐，还会抢窗边那块阳光最好的位置。"
     }
   ],
 
