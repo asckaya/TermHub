@@ -35,7 +35,7 @@ SPDX-License-Identifier: GPL-3.0-only
 ---
 
 > [!TIP]
-> **Don't want to touch code?** We're building a hosted solution at **[terminalai.com](https://terminalai.com)** — upload your resume and get a live portfolio, no Git or terminal needed. **Join the waitlist** to get early access!
+> **Don't want to touch code?** We're building a hosted solution at **[termhubai.com](https://termhubai.com)** — upload your resume and get a live portfolio, no Git or terminal needed. **Join the waitlist** to get early access!
 
 <br/>
 

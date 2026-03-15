@@ -35,7 +35,7 @@ SPDX-License-Identifier: GPL-3.0-only
 ---
 
 > [!TIP]
-> **不想碰代码？** 我们正在搭建托管平台 **[terminalai.com](https://terminalai.com)** —— 上传简历即可生成在线作品集，无需 Git 或终端。**加入 Waitlist** 抢先体验！
+> **不想碰代码？** 我们正在搭建托管平台 **[termhubai.com](https://termhubai.com)** —— 上传简历即可生成在线作品集，无需 Git 或终端。**加入 Waitlist** 抢先体验！
 
 <br/>
 
