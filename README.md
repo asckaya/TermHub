@@ -8,8 +8,8 @@ SPDX-License-Identifier: GPL-3.0-only
 </p>
 
 <p align="center">
-  <strong>A terminal-themed academic portfolio you can set up in 5 minutes.</strong><br/>
-  <sub>Edit text files. Get a website. No coding needed. Now with <b>MCP support</b> — let AI build it for you.</sub>
+  <strong>Your Resume In. Portfolio Out.</strong><br/>
+  <sub>Terminal-themed portfolio for developers, researchers, and creatives. Edit text files or let AI do it via MCP.</sub>
 </p>
 
 <p align="center">
@@ -76,7 +76,7 @@ TermHub is built around one simple idea:
   <img src="https://img.shields.io/badge/Homepage-b48ead?style=for-the-badge&logo=googlechrome&logoColor=white" height="28" />
 </p>
 
-Instead of writing HTML or learning a framework, you give your CV to any AI tool — **ChatGPT, Claude, Gemini, or any LLM** — and it generates Markdown files that plug directly into TermHub. With our **built-in MCP server**, Claude can even do this fully automatically: read your resume, call 19 specialized tools, and populate your entire site in under a minute.
+Instead of writing HTML or learning a framework, you give your CV to any AI — **ChatGPT, Claude, Gemini, or any LLM** — and it generates Markdown files that plug directly into TermHub. Works for developers, researchers, designers, students — anyone who wants a professional portfolio. With our **built-in MCP server**, Claude can do this fully automatically: read your resume, call 19 specialized tools, and populate your entire site in under a minute.
 
 <br/>
 
@@ -99,18 +99,23 @@ Instead of writing HTML or learning a framework, you give your CV to any AI tool
 </td>
 <td width="50%">
 
-<img src="https://img.shields.io/badge/-For_Academics_&_Developers-5e81ac?style=flat-square" height="18" />
+<img src="https://img.shields.io/badge/-Content_Types-5e81ac?style=flat-square" height="18" />
 
-- <img src="https://img.shields.io/badge/-publications-b48ead?style=flat-square&logo=googlescholar&logoColor=white" height="14" /> Author highlighting & paper cards
+- <img src="https://img.shields.io/badge/-projects-a3be8c?style=flat-square&logo=github&logoColor=white" height="14" /> Project showcase with tags and links
 - <img src="https://img.shields.io/badge/-experience-81a1c1?style=flat-square&logo=linkedin&logoColor=white" height="14" /> Timeline with institution logos
-- <img src="https://img.shields.io/badge/-projects-a3be8c?style=flat-square&logo=github&logoColor=white" height="14" /> Showcase with tags and links
 - <img src="https://img.shields.io/badge/-articles-ebcb8b?style=flat-square&logo=medium&logoColor=black" height="14" /> Blog articles in Markdown
-- <img src="https://img.shields.io/badge/-news-d08770?style=flat-square&logo=rss&logoColor=white" height="14" /> News, awards, and announcements
-- <img src="https://img.shields.io/badge/-deploy-88c0d0?style=flat-square&logo=vercel&logoColor=white" height="14" /> GitHub Pages / Vercel / Netlify
+- <img src="https://img.shields.io/badge/-publications-b48ead?style=flat-square&logo=googlescholar&logoColor=white" height="14" /> Papers with author highlighting
+- <img src="https://img.shields.io/badge/-awards-bf616a?style=flat-square&logo=starship&logoColor=white" height="14" /> Hackathons, fellowships, honors
+- <img src="https://img.shields.io/badge/-news-d08770?style=flat-square&logo=rss&logoColor=white" height="14" /> Announcements and updates
 
 </td>
 </tr>
 </table>
+
+<br/>
+
+> [!TIP]
+> **Don't want to touch code?** We also offer a hosted solution at **[termhubai.com](https://termhubai.com)** — upload your resume and get a live portfolio. No Git, no terminal, no setup required.
 
 <br/>
 
@@ -281,4 +286,4 @@ Contributions are welcome! Feel free to:
 
 ## <img src="https://img.shields.io/badge/-License-434c5e?style=flat-square&logo=gnu&logoColor=white" height="20" /> License
 
-**GPL-3.0-only** · Copyright © 2026 [Yaoyao (Freax) Qian](https://github.com/H-Freax)
+**GPL-3.0-only** · Copyright © 2026 [Yaoyao (Freax) Qian](https://h-freax.github.io/)

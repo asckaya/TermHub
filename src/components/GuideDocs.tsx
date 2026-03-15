@@ -9,7 +9,7 @@ import {
   FaLaptopCode, FaPenFancy, FaBriefcase, FaFlask, FaBullhorn,
   FaUser, FaImage, FaTerminal, FaCloudUploadAlt, FaQuestionCircle,
   FaChevronDown, FaArrowLeft, FaFolder, FaFile, FaCode,
-  FaLightbulb, FaRobot,
+  FaLightbulb, FaRobot, FaGlobe,
 } from 'react-icons/fa'
 import { IconType } from 'react-icons'
 import { terminalPalette } from '@/config/theme'
@@ -139,10 +139,11 @@ npm run dev` },
       ] },
       { type: 'text', content: 'Common presets to get started quickly:' },
       { type: 'table', content: `Preset|What to enable
-Academic researcher|publications, experience, news, articles
 Software developer|projects, experience, articles
+Researcher / Academic|publications, experience, news, articles
+Student / Job seeker|projects, experience, awards
 Designer / Creative|projects, articles
-Minimal portfolio|projects, experience` },
+Minimal|projects only` },
       { type: 'code', label: 'How it looks in site.json', content: `"features": {
   "publications": true,
   "projects": true,
@@ -557,7 +558,7 @@ reset_content|Clear all content for a fresh start` },
         { name: 'Avatar or logo not showing?', desc: 'Make sure the file is in content/images/ and the filename matches exactly (case-sensitive). Check avatar field in site.json or key in logos.json.' },
         { name: 'How to change colors/theme?', desc: 'Edit src/config/theme.ts — this requires some code knowledge. The file has comments explaining each color.' },
         { name: 'How to add a new page?', desc: 'Requires code changes: create a component in src/components/, add a route in src/App.tsx, and add to navItems in src/site.config.ts.' },
-        { name: 'Non-academic portfolio?', desc: 'Absolutely! Just disable publications and research in site.json features, and focus on projects and articles. Works great for developers, designers, and writers.' },
+        { name: 'Not a researcher?', desc: 'No problem! Disable publications and research in site.json, focus on projects and articles. TermHub works great for developers, designers, students, and anyone who wants a clean portfolio.' },
       ] },
     ],
   },
@@ -1049,6 +1050,47 @@ const GuideDocs: React.FC = () => {
             <Badge px={2.5} py={1} borderRadius="full" bg="rgba(180,142,173,0.12)" color="#b48ead" fontSize="xs" fontWeight="600">
               No Code Required
             </Badge>
+          </Flex>
+
+          {/* No-code alternative */}
+          <Flex
+            mt={5}
+            bg={isDark ? 'rgba(136,192,208,0.06)' : 'rgba(136,192,208,0.08)'}
+            border={`1px solid ${isDark ? 'rgba(136,192,208,0.15)' : 'rgba(136,192,208,0.2)'}`}
+            borderRadius="md"
+            px={4} py={3}
+            align="center"
+            justify="space-between"
+            flexWrap="wrap"
+            gap={3}
+          >
+            <HStack spacing={2} flex={1}>
+              <Text fontSize="xs" color={tc.command} fontWeight="bold" fontFamily="mono" flexShrink={0}>TIP</Text>
+              <Text fontSize="xs" color={mutedText} lineHeight="1.7">
+                <Text as="span" fontWeight="bold">Don&apos;t want to set up a dev environment?</Text>
+                {' '}We also offer a hosted solution — just upload your resume and get a live portfolio. No Git, no terminal, no coding required.
+              </Text>
+            </HStack>
+            <Flex
+              as="a"
+              href="https://termhubai.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              bg={tc.command}
+              color="white"
+              px={4} py={1.5}
+              borderRadius="md"
+              fontWeight="semibold"
+              fontSize="xs"
+              align="center"
+              gap={1.5}
+              _hover={{ opacity: 0.85 }}
+              transition="all 0.2s"
+              flexShrink={0}
+            >
+              <Icon as={FaGlobe} boxSize={3} />
+              termhubai.com
+            </Flex>
           </Flex>
         </Box>
 

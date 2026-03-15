@@ -216,7 +216,7 @@ const GuideLanding: React.FC = () => {
             mb={3}
             lineHeight="1.3"
           >
-            Build Your Academic Portfolio
+            Build Your Portfolio
           </Heading>
           <Text
             fontSize={['sm', 'md']}
@@ -234,8 +234,8 @@ const GuideLanding: React.FC = () => {
             mb={6}
             lineHeight="1.8"
           >
-            Open-source portfolio template with a terminal aesthetic.
-            Designed around one simple idea:
+            Open-source portfolio for developers, researchers, and creatives.
+            Terminal aesthetic. Designed around one simple idea:
           </Text>
 
           {/* CV → AI → Markdown → Homepage pipeline */}
@@ -345,6 +345,27 @@ const GuideLanding: React.FC = () => {
             >
               <Icon as={FaGithub} boxSize={3.5} />
               GitHub
+            </Flex>
+
+            <Flex
+              as="a"
+              href="https://termhubai.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              bg={isDark ? 'rgba(136,192,208,0.08)' : 'rgba(136,192,208,0.1)'}
+              border={`1px solid ${isDark ? 'rgba(136,192,208,0.2)' : 'rgba(136,192,208,0.25)'}`}
+              color={tc.command}
+              px={5} py={2.5}
+              borderRadius="md"
+              fontWeight="semibold"
+              fontSize="sm"
+              align="center"
+              gap={2}
+              _hover={{ bg: isDark ? 'rgba(136,192,208,0.15)' : 'rgba(136,192,208,0.18)' }}
+              transition="all 0.2s"
+            >
+              <Icon as={FaGlobe} boxSize={3.5} />
+              No Code? Try Our Hosted Builder
             </Flex>
           </Flex>
 
@@ -537,7 +558,7 @@ const GuideLanding: React.FC = () => {
                   { icon: FaFileAlt, title: 'Resume to Portfolio', desc: 'Give Claude your PDF or text resume — it extracts education, experience, publications, projects, awards, and generates all content files.', color: '#88c0d0' },
                   { icon: FaRobot, title: '19 MCP Tools', desc: 'Purpose-built tools for every content type: add_publication, add_project, add_experience, update_site_config, manage_assets, and more.', color: '#a3be8c' },
                   { icon: FaTerminal, title: 'Works with Claude Desktop & Code', desc: 'Built on the Model Context Protocol standard. Configure once, then use natural language to manage your entire portfolio.', color: '#5e81ac' },
-                  { icon: FaRocket, title: 'Incremental Updates', desc: '"Add my new paper to the site" — Claude calls add_publication. No need to regenerate everything.', color: '#b48ead' },
+                  { icon: FaRocket, title: 'Incremental Updates', desc: '"Add my latest project" or "Update my experience" — Claude calls the right tool. No need to regenerate everything.', color: '#b48ead' },
                 ].map(item => (
                   <HStack
                     key={item.title}
@@ -608,12 +629,12 @@ const GuideLanding: React.FC = () => {
         />
 
         <SimpleGrid columns={[1, 2, 3]} spacing={4}>
-          <FeatureCard icon={FaFileAlt} title="Publications" desc="Showcase research papers with venues, authors, links, and badges." accent="#5e81ac" />
-          <FeatureCard icon={FaCode} title="Projects" desc="Display your portfolio with tags, links, and highlight bullets." accent="#a3be8c" />
+          <FeatureCard icon={FaCode} title="Projects" desc="Showcase your work with tags, categories, links, and highlights." accent="#a3be8c" />
+          <FeatureCard icon={FaBriefcase} title="Experience" desc="Timeline of jobs, internships, education — with logos and details." accent="#d08770" />
           <FeatureCard icon={FaPen} title="Articles" desc="Blog posts and write-ups with categories and multi-platform links." accent="#b48ead" />
-          <FeatureCard icon={FaBriefcase} title="Experience" desc="Timeline of work, research, and education with role details." accent="#d08770" />
-          <FeatureCard icon={FaNewspaper} title="News" desc="Announcements, talks, and releases on your home page." accent="#ebcb8b" />
-          <FeatureCard icon={FaTrophy} title="Awards" desc="Fellowships, hackathon wins, honors — with kind-based icons." accent="#bf616a" />
+          <FeatureCard icon={FaFileAlt} title="Publications" desc="Research papers with venues, authors, links, and badges." accent="#5e81ac" />
+          <FeatureCard icon={FaTrophy} title="Awards" desc="Hackathon wins, fellowships, honors — with auto-categorized icons." accent="#bf616a" />
+          <FeatureCard icon={FaNewspaper} title="News" desc="Announcements, talks, releases, and updates on your home page." accent="#ebcb8b" />
         </SimpleGrid>
       </Container>
 
@@ -640,7 +661,7 @@ const GuideLanding: React.FC = () => {
             />
             <StepCard
               step={2} icon={FaPaintBrush} title="Customize" color="#5e81ac"
-              desc="Edit plain text files in the content/ folder. Add your projects, papers, and experience. Save the file — browser auto-refreshes."
+              desc="Edit plain text files in the content/ folder. Add your projects, experience, and more. Save the file — browser auto-refreshes."
               command="npm run dev"
             />
             <StepCard
@@ -665,6 +686,47 @@ const GuideLanding: React.FC = () => {
               <Text as="span" fontWeight="bold">Node.js v18+</Text>
               {' '}— download from nodejs.org (choose LTS). That's it!
             </Text>
+          </Flex>
+
+          {/* No-code alternative */}
+          <Flex
+            mt={4}
+            bg={isDark ? 'rgba(136,192,208,0.06)' : 'rgba(136,192,208,0.08)'}
+            border={`1px solid ${isDark ? 'rgba(136,192,208,0.15)' : 'rgba(136,192,208,0.2)'}`}
+            borderRadius="md"
+            px={4} py={3}
+            align="center"
+            justify="space-between"
+            flexWrap="wrap"
+            gap={3}
+          >
+            <HStack spacing={2} flex={1}>
+              <Text fontSize="xs" color={tc.command} fontWeight="bold" fontFamily="mono" flexShrink={0}>TIP</Text>
+              <Text fontSize="xs" color={useColorModeValue('gray.600', 'gray.300')} lineHeight="1.7">
+                <Text as="span" fontWeight="bold">Don&apos;t want to set up a dev environment?</Text>
+                {' '}We also offer a hosted solution — just upload your resume and get a live portfolio. No Git, no terminal, no coding required.
+              </Text>
+            </HStack>
+            <Flex
+              as="a"
+              href="https://termhubai.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              bg={tc.command}
+              color="white"
+              px={4} py={1.5}
+              borderRadius="md"
+              fontWeight="semibold"
+              fontSize="xs"
+              align="center"
+              gap={1.5}
+              _hover={{ opacity: 0.85 }}
+              transition="all 0.2s"
+              flexShrink={0}
+            >
+              <Icon as={FaGlobe} boxSize={3} />
+              termhubai.com
+            </Flex>
           </Flex>
         </Container>
       </Box>
@@ -801,7 +863,7 @@ const GuideLanding: React.FC = () => {
               </Flex>
               <Box px={4} py={2} fontFamily="mono" fontSize="sm">
                 {[
-                  { name: 'publications', on: true, label: 'Research papers' },
+                  { name: 'publications', on: true, label: 'Papers & publications' },
                   { name: 'projects', on: true, label: 'Portfolio' },
                   { name: 'articles', on: true, label: 'Blog posts' },
                   { name: 'experience', on: true, label: 'Work timeline' },
@@ -830,9 +892,9 @@ const GuideLanding: React.FC = () => {
                 Recommended presets
               </Text>
               {[
-                { icon: FaGraduationCap, label: 'Researcher', features: 'pubs + experience', color: '#5e81ac' },
-                { icon: FaCode, label: 'Developer', features: 'projects + articles', color: '#a3be8c' },
-                { icon: FaBook, label: 'Student', features: 'projects + exp', color: '#d08770' },
+                { icon: FaCode, label: 'Developer', features: 'projects + experience + articles', color: '#a3be8c' },
+                { icon: FaGraduationCap, label: 'Researcher', features: 'publications + experience + news', color: '#5e81ac' },
+                { icon: FaBook, label: 'Student', features: 'projects + experience + awards', color: '#d08770' },
                 { icon: FaCog, label: 'Minimal', features: 'projects only', color: '#b48ead' },
               ].map(p => (
                 <HStack
@@ -1095,6 +1157,45 @@ const GuideLanding: React.FC = () => {
           >
             <Icon as={FaStar} boxSize={3.5} />
             Star on GitHub
+          </Flex>
+        </Flex>
+
+        {/* No-code callout */}
+        <Flex
+          mt={8}
+          mx="auto"
+          maxW="520px"
+          bg={isDark ? 'rgba(136,192,208,0.06)' : 'rgba(136,192,208,0.08)'}
+          border={`1px solid ${isDark ? 'rgba(136,192,208,0.15)' : 'rgba(136,192,208,0.2)'}`}
+          borderRadius="lg"
+          px={5} py={4}
+          direction="column"
+          align="center"
+          gap={3}
+        >
+          <Text fontSize="sm" color={useColorModeValue('gray.600', 'gray.300')} textAlign="center" lineHeight="1.7">
+            <Text as="span" fontWeight="bold" color={tc.command}>Don&apos;t want to touch code?</Text>
+            {' '}We also offer a hosted solution — upload your resume, and we build your portfolio for you. No Git, no terminal, no setup.
+          </Text>
+          <Flex
+            as="a"
+            href="https://termhubai.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            bg={tc.command}
+            color="white"
+            px={5} py={2}
+            borderRadius="md"
+            fontWeight="semibold"
+            fontSize="sm"
+            align="center"
+            gap={2}
+            _hover={{ opacity: 0.85, transform: 'translateY(-1px)' }}
+            transition="all 0.2s"
+            shadow="md"
+          >
+            <Icon as={FaGlobe} boxSize={3.5} />
+            Try termhubai.com
           </Flex>
         </Flex>
 
