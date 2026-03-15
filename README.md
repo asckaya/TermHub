@@ -42,11 +42,17 @@ SPDX-License-Identifier: GPL-3.0-only
 ## <img src="https://img.shields.io/badge/-Demo-88c0d0?style=flat-square&logo=googlechrome&logoColor=white" height="20" /> Demo
 
 <p align="center">
-  <a href="https://term-hub.vercel.app/">
-    <img src="public/screenshots/home.png" alt="TermHub Demo — Home Page" width="720" />
+  <a href="https://h-freax.github.io/">
+    <img src="public/screenshots/home.png" alt="TermHub — Author's Portfolio" width="720" />
   </a>
   <br/>
-  <sub><a href="https://term-hub.vercel.app/">term-hub.vercel.app</a> — built with TermHub</sub>
+  <sub><a href="https://h-freax.github.io/">h-freax.github.io</a> — the author's real portfolio, built with TermHub</sub>
+</p>
+
+<p align="center">
+  <a href="https://term-hub.vercel.app/"><img src="https://img.shields.io/badge/Cookie's_Demo-88c0d0?style=flat-square&logo=googlechrome&logoColor=white" height="18" /></a>
+  &nbsp;
+  <a href="https://h-freax.github.io/"><img src="https://img.shields.io/badge/Author's_Portfolio-b48ead?style=flat-square&logo=firefoxbrowser&logoColor=white" height="18" /></a>
 </p>
 
 <details>
@@ -54,16 +60,29 @@ SPDX-License-Identifier: GPL-3.0-only
 
 <br/>
 
-| | |
-|:---:|:---:|
-| <img src="https://img.shields.io/badge/-Publications-b48ead?style=flat-square&logo=googlescholar&logoColor=white" height="16" /> | <img src="https://img.shields.io/badge/-Projects-a3be8c?style=flat-square&logo=github&logoColor=white" height="16" /> |
-| <img src="public/screenshots/publications.png" alt="Publications" width="400" /> | <img src="public/screenshots/projects.png" alt="Projects" width="400" /> |
-| <img src="https://img.shields.io/badge/-Experience-81a1c1?style=flat-square&logo=linkedin&logoColor=white" height="16" /> | <img src="https://img.shields.io/badge/-Articles-ebcb8b?style=flat-square&logo=medium&logoColor=black" height="16" /> |
-| <img src="public/screenshots/experience.png" alt="Experience" width="400" /> | <img src="public/screenshots/articles.png" alt="Articles" width="400" /> |
-| <img src="https://img.shields.io/badge/-Awards-d08770?style=flat-square&logo=starship&logoColor=white" height="16" /> | <img src="https://img.shields.io/badge/-My_Journey-bf616a?style=flat-square&logo=openstreetmap&logoColor=white" height="16" /> |
-| <img src="public/screenshots/award.png" alt="Awards" width="400" /> | <img src="public/screenshots/myjourney.png" alt="My Journey" width="400" /> |
-| <img src="https://img.shields.io/badge/-Selected_Publications-5e81ac?style=flat-square&logo=semanticscholar&logoColor=white" height="16" /> | <img src="https://img.shields.io/badge/-Recent_Updates-88c0d0?style=flat-square&logo=rss&logoColor=white" height="16" /> |
-| <img src="public/screenshots/selectedpublications.png" alt="Selected Publications" width="400" /> | <img src="public/screenshots/recentupdates.png" alt="Recent Updates" width="400" /> |
+<img src="https://img.shields.io/badge/-Publications-b48ead?style=flat-square&logo=googlescholar&logoColor=white" height="16" />
+
+<img src="public/screenshots/publications.png" alt="Publications" width="720" />
+
+<img src="https://img.shields.io/badge/-Projects-a3be8c?style=flat-square&logo=github&logoColor=white" height="16" />
+
+<img src="public/screenshots/projects.png" alt="Projects" width="720" />
+
+<img src="https://img.shields.io/badge/-Experience-81a1c1?style=flat-square&logo=linkedin&logoColor=white" height="16" />
+
+<img src="public/screenshots/experience.png" alt="Experience" width="720" />
+
+<img src="https://img.shields.io/badge/-Articles-ebcb8b?style=flat-square&logo=medium&logoColor=black" height="16" />
+
+<img src="public/screenshots/articles.png" alt="Articles" width="720" />
+
+<img src="https://img.shields.io/badge/-Awards-d08770?style=flat-square&logo=starship&logoColor=white" height="16" /> &nbsp; <img src="https://img.shields.io/badge/-My_Journey-bf616a?style=flat-square&logo=openstreetmap&logoColor=white" height="16" />
+
+<img src="public/screenshots/award.png" alt="Awards" width="360" /> <img src="public/screenshots/myjourney.png" alt="My Journey" width="360" />
+
+<img src="https://img.shields.io/badge/-Selected_Publications-5e81ac?style=flat-square&logo=semanticscholar&logoColor=white" height="16" /> &nbsp; <img src="https://img.shields.io/badge/-Recent_Updates-88c0d0?style=flat-square&logo=rss&logoColor=white" height="16" />
+
+<img src="public/screenshots/selectedpublications.png" alt="Selected Publications" width="360" /> <img src="public/screenshots/recentupdates.png" alt="Recent Updates" width="360" />
 
 </details>
 
@@ -89,35 +108,21 @@ Instead of writing HTML or learning a framework, you give your CV to any AI — 
 
 ## <img src="https://img.shields.io/badge/-Features-a3be8c?style=flat-square&logo=checkmarx&logoColor=white" height="20" /> Features
 
-<table>
-<tr>
-<td width="50%">
-
-<img src="https://img.shields.io/badge/-For_Everyone-88c0d0?style=flat-square" height="18" />
+<img src="https://img.shields.io/badge/-For_Everyone-88c0d0?style=flat-square" height="16" />
 
 - <img src="https://img.shields.io/badge/Nord-palette-88c0d0?style=flat-square&logoColor=white" height="14" /> Terminal aesthetic with Nord color palette
-- <img src="https://img.shields.io/badge/Dark_%2F_Light-mode-434c5e?style=flat-square&logoColor=white" height="14" /> Dark / light mode
-- <img src="https://img.shields.io/badge/Responsive-design-5e81ac?style=flat-square&logoColor=white" height="14" /> Fully responsive (mobile → desktop)
-- <img src="https://img.shields.io/badge/Hot-reload-a3be8c?style=flat-square&logoColor=white" height="14" /> Edit content files, site updates instantly
-- <img src="https://img.shields.io/badge/Setup-wizard-b48ead?style=flat-square&logoColor=white" height="14" /> One-command setup wizard
-- <img src="https://img.shields.io/badge/No_code-needed-ebcb8b?style=flat-square&logoColor=black" height="14" /> Just edit text files
-- <img src="https://img.shields.io/badge/MCP-AI_powered-88c0d0?style=flat-square&logoColor=white" height="14" /> Resume → AI → portfolio in minutes
+- <img src="https://img.shields.io/badge/Dark_%2F_Light-mode-434c5e?style=flat-square&logoColor=white" height="14" /> Dark / light mode &nbsp; · &nbsp; <img src="https://img.shields.io/badge/Responsive-design-5e81ac?style=flat-square&logoColor=white" height="14" /> Fully responsive (mobile → desktop)
+- <img src="https://img.shields.io/badge/Hot-reload-a3be8c?style=flat-square&logoColor=white" height="14" /> Edit content files, site updates instantly &nbsp; · &nbsp; <img src="https://img.shields.io/badge/No_code-needed-ebcb8b?style=flat-square&logoColor=black" height="14" /> Just edit text files
+- <img src="https://img.shields.io/badge/MCP-AI_powered-88c0d0?style=flat-square&logoColor=white" height="14" /> Resume → AI → portfolio in minutes &nbsp; · &nbsp; <img src="https://img.shields.io/badge/i18n-EN_%2F_中文-b48ead?style=flat-square" height="14" /> Built-in bilingual support
 
-</td>
-<td width="50%">
+<img src="https://img.shields.io/badge/-Content_Types-5e81ac?style=flat-square" height="16" />
 
-<img src="https://img.shields.io/badge/-Content_Types-5e81ac?style=flat-square" height="18" />
-
-- <img src="https://img.shields.io/badge/-projects-a3be8c?style=flat-square&logo=github&logoColor=white" height="14" /> Project showcase with tags and links
-- <img src="https://img.shields.io/badge/-experience-81a1c1?style=flat-square&logo=linkedin&logoColor=white" height="14" /> Timeline with institution logos
-- <img src="https://img.shields.io/badge/-articles-ebcb8b?style=flat-square&logo=medium&logoColor=black" height="14" /> Blog articles in Markdown
-- <img src="https://img.shields.io/badge/-publications-b48ead?style=flat-square&logo=googlescholar&logoColor=white" height="14" /> Papers with author highlighting
-- <img src="https://img.shields.io/badge/-awards-bf616a?style=flat-square&logo=starship&logoColor=white" height="14" /> Hackathons, fellowships, honors
-- <img src="https://img.shields.io/badge/-news-d08770?style=flat-square&logo=rss&logoColor=white" height="14" /> Announcements and updates
-
-</td>
-</tr>
-</table>
+<img src="https://img.shields.io/badge/-publications-b48ead?style=flat-square&logo=googlescholar&logoColor=white" height="14" /> Papers &nbsp;
+<img src="https://img.shields.io/badge/-projects-a3be8c?style=flat-square&logo=github&logoColor=white" height="14" /> Projects &nbsp;
+<img src="https://img.shields.io/badge/-experience-81a1c1?style=flat-square&logo=linkedin&logoColor=white" height="14" /> Timeline &nbsp;
+<img src="https://img.shields.io/badge/-articles-ebcb8b?style=flat-square&logo=medium&logoColor=black" height="14" /> Blog &nbsp;
+<img src="https://img.shields.io/badge/-awards-bf616a?style=flat-square&logo=starship&logoColor=white" height="14" /> Awards &nbsp;
+<img src="https://img.shields.io/badge/-news-d08770?style=flat-square&logo=rss&logoColor=white" height="14" /> News
 
 <br/>
 
@@ -186,11 +191,9 @@ When a feature is `false`, its page and nav link disappear completely.
 
 ## <img src="https://img.shields.io/badge/-Deploy-d08770?style=flat-square&logo=rocket&logoColor=white" height="20" /> Deploy
 
-| Platform | How |
-|----------|-----|
-| <img src="https://img.shields.io/badge/GitHub_Pages-222?style=flat-square&logo=github&logoColor=white" /> | Push to `main` — the included workflow deploys automatically |
-| <img src="https://img.shields.io/badge/Vercel-000?style=flat-square&logo=vercel&logoColor=white" /> | Import repo → click Deploy (auto-detects Vite) |
-| <img src="https://img.shields.io/badge/Netlify-00C7B7?style=flat-square&logo=netlify&logoColor=white" /> | Import repo → click Deploy |
+- <img src="https://img.shields.io/badge/GitHub_Pages-222?style=flat-square&logo=github&logoColor=white" height="14" /> Push to `main` — the included workflow deploys automatically
+- <img src="https://img.shields.io/badge/Vercel-000?style=flat-square&logo=vercel&logoColor=white" height="14" /> Import repo → click Deploy (auto-detects Vite)
+- <img src="https://img.shields.io/badge/Netlify-00C7B7?style=flat-square&logo=netlify&logoColor=white" height="14" /> Import repo → click Deploy
 
 <br/>
 
@@ -198,36 +201,17 @@ When a feature is `false`, its page and nav link disappear completely.
 
 The **CV → AI → Markdown → Homepage** pipeline taken to its logical conclusion: TermHub includes a built-in **MCP server** that lets Claude directly read your resume, generate all Markdown/JSON content files, and build your site — zero manual editing.
 
-<table>
-<tr>
-<td width="50%">
-
-<img src="https://img.shields.io/badge/-What_It_Does-5e81ac?style=flat-square" height="18" />
-
 - <img src="https://img.shields.io/badge/-Resume_→_Portfolio-88c0d0?style=flat-square" height="14" /> Give AI your resume PDF or text, get a complete site
 - <img src="https://img.shields.io/badge/-19_Tools-a3be8c?style=flat-square" height="14" /> Add publications, projects, experience, awards via AI
 - <img src="https://img.shields.io/badge/-PDF_Parsing-b48ead?style=flat-square" height="14" /> Built-in PDF text extraction
 - <img src="https://img.shields.io/badge/-Live_Preview-ebcb8b?style=flat-square&logoColor=black" height="14" /> AI can start dev server and build your site
 
-</td>
-<td width="50%">
-
-<img src="https://img.shields.io/badge/-Quick_Setup-a3be8c?style=flat-square" height="18" />
-
 ```bash
-# 1. Install MCP server
-cd mcp-server && npm install
-
-# 2. Configure Claude Desktop / Code
-# (see mcp-server/mcp-config.json)
-
-# 3. Tell Claude:
-# "Parse my resume and generate my portfolio"
+# Quick setup
+cd mcp-server && npm install    # 1. Install
+# 2. Configure Claude Desktop / Code (see mcp-server/mcp-config.json)
+# 3. Tell Claude: "Parse my resume and generate my portfolio"
 ```
-
-</td>
-</tr>
-</table>
 
 <details>
 <summary><img src="https://img.shields.io/badge/-Available_Tools-434c5e?style=flat-square&logo=puzzle&logoColor=white" height="18" /></summary>
@@ -262,16 +246,23 @@ For detailed setup instructions, see the [AI Integration guide](https://term-hub
 
 ## <img src="https://img.shields.io/badge/-Tech_Stack-81a1c1?style=flat-square&logo=stackblitz&logoColor=white" height="20" /> Tech Stack
 
-<table>
-<tr>
-<td align="center" width="96"><img src="https://img.shields.io/badge/-61DAFB?style=flat-square&logo=react&logoColor=white" width="48" /><br/><strong>React 18</strong><br/><sub>UI framework</sub></td>
-<td align="center" width="96"><img src="https://img.shields.io/badge/-3178C6?style=flat-square&logo=typescript&logoColor=white" width="48" /><br/><strong>TypeScript</strong><br/><sub>Type safety</sub></td>
-<td align="center" width="96"><img src="https://img.shields.io/badge/-646CFF?style=flat-square&logo=vite&logoColor=white" width="48" /><br/><strong>Vite 5</strong><br/><sub>Build tool</sub></td>
-<td align="center" width="96"><img src="https://img.shields.io/badge/-319795?style=flat-square&logo=chakraui&logoColor=white" width="48" /><br/><strong>Chakra UI</strong><br/><sub>Components</sub></td>
-<td align="center" width="96"><img src="https://img.shields.io/badge/-0055FF?style=flat-square&logo=framer&logoColor=white" width="48" /><br/><strong>Framer</strong><br/><sub>Animations</sub></td>
-<td align="center" width="96"><img src="https://img.shields.io/badge/-88c0d0?style=flat-square&logoColor=white" width="48" /><br/><strong>Nord</strong><br/><sub>Color palette</sub></td>
-</tr>
-</table>
+<p>
+  <img src="https://img.shields.io/badge/React_18-61DAFB?style=flat-square&logo=react&logoColor=white" height="20" />
+  <img src="https://img.shields.io/badge/TypeScript_5-3178C6?style=flat-square&logo=typescript&logoColor=white" height="20" />
+  <img src="https://img.shields.io/badge/Vite_5-646CFF?style=flat-square&logo=vite&logoColor=white" height="20" />
+  <img src="https://img.shields.io/badge/Chakra_UI-319795?style=flat-square&logo=chakraui&logoColor=white" height="20" />
+  <img src="https://img.shields.io/badge/Framer_Motion-0055FF?style=flat-square&logo=framer&logoColor=white" height="20" />
+  <img src="https://img.shields.io/badge/Nord_Palette-88c0d0?style=flat-square&logoColor=white" height="20" />
+  <img src="https://img.shields.io/badge/i18next-26A69A?style=flat-square&logo=i18next&logoColor=white" height="20" />
+</p>
+
+<br/>
+
+## <img src="https://img.shields.io/badge/-Changelog-d08770?style=flat-square&logo=keepachangelog&logoColor=white" height="20" /> Changelog
+
+- `2026-03-15` &nbsp; <img src="https://img.shields.io/badge/v1.2.0-i18n-88c0d0?style=flat-square" height="14" /> Built-in English / Chinese bilingual support with language switcher and auto detection
+- `2026-03-15` &nbsp; <img src="https://img.shields.io/badge/v1.1.0-MCP-a3be8c?style=flat-square" height="14" /> Added MCP server with 19 tools for AI-powered portfolio generation
+- `2026-03-14` &nbsp; <img src="https://img.shields.io/badge/v1.0.0-Launch-b48ead?style=flat-square" height="14" /> Initial release with publications, projects, experience, articles, awards, and news
 
 <br/>
 
