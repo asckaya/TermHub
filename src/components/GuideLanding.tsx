@@ -767,20 +767,18 @@ const GuideLanding: React.FC = () => {
               </Flex>
               <Box bg={tc.bg} px={4} py={3} fontFamily="mono" fontSize="xs" lineHeight="2">
                 {[
-                  { indent: 0, name: 'site.json', desc: 'name, links, features', color: tc.command },
+                  { indent: 0, name: 'site.json', desc: 'name, links, template, sections', color: tc.command },
                   { indent: 0, name: 'about.md', desc: 'bio & journey', color: tc.text },
                   { indent: 0, name: 'publications/', desc: 'one file per paper', color: tc.highlight, isDir: true },
-                  { indent: 1, name: 'my-paper.md', desc: '', color: tc.muted },
                   { indent: 0, name: 'projects/', desc: 'one file per project', color: tc.highlight, isDir: true },
-                  { indent: 1, name: 'cool-app.md', desc: '', color: tc.muted },
                   { indent: 0, name: 'articles/', desc: 'blog posts', color: tc.highlight, isDir: true },
                   { indent: 0, name: 'experience.json', desc: 'work & education', color: tc.command },
                   { indent: 0, name: 'news.json', desc: 'announcements', color: tc.command },
                   { indent: 0, name: 'awards.json', desc: 'honors & prizes', color: tc.command },
+                  { indent: 0, name: 'talks.json', desc: 'presentations', color: tc.command },
+                  { indent: 0, name: 'teaching.json', desc: 'courses taught', color: tc.command },
                   { indent: 0, name: 'research.json', desc: 'lab affiliations', color: tc.command },
                   { indent: 0, name: 'images/', desc: 'all your images', color: tc.highlight, isDir: true },
-                  { indent: 1, name: 'avatar.jpg', desc: 'profile photo', color: tc.muted },
-                  { indent: 1, name: 'logos/', desc: 'institution logos', color: tc.highlight, isDir: true },
                 ].map((item, i) => (
                   <Flex key={i} pl={`${item.indent * 16}px`} align="center" gap={1}>
                     <Text color={tc.muted}>{item.indent > 0 ? '├── ' : ''}</Text>
