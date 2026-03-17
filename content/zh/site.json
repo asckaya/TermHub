@@ -1,6 +1,8 @@
 {
   "_comment": "中文版站点配置",
 
+  "template": "terminal",
+
   "name": {
     "full": "Cookie",
     "first": "Cookie",

@@ -177,7 +177,7 @@ ${siteJson}
 ## Content File Layout
 \`\`\`
 content/
-├── site.json              ← Profile, social links, features, terminal config
+├── site.json              ← Profile, social links, features, template selection, terminal config
 ├── about.md               ← About page (YAML frontmatter + markdown body)
 ├── experience.json        ← Education, timeline entries, reviewing
 ├── news.json              ← News items array
@@ -197,6 +197,11 @@ content/
     ├── publications/*.md
     └── articles/*.md
 \`\`\`
+
+## Template System
+TermHub supports multiple visual templates. Set \`"template"\` in site.json to switch.
+Available templates: "terminal" (default — Nord-inspired terminal aesthetic).
+New templates can be added in \`src/templates/<name>/index.ts\`.
 
 ## Markdown Frontmatter Examples
 
@@ -939,6 +944,7 @@ server.tool(
             "Chinese site.json can have translated title, rotating subtitles, etc."
           : undefined,
         suggested_data: {
+          template: "terminal",
           name: {
             full: params.owner_name,
             first: params.owner_name.split(" ")[0],
@@ -1195,6 +1201,63 @@ server.tool(
   }
 );
 
+// ── Tool: list_templates ────────────────────────────────────────────
+
+server.tool(
+  "list_templates",
+  "List all available TermHub visual templates. " +
+    "Each template provides a different layout and theme for the portfolio. " +
+    "Set the 'template' field in site.json to switch templates.",
+  {},
+  async () => {
+    // Read available templates from src/templates directory
+    const templatesDir = path.join(PROJECT_ROOT, "src", "templates");
+    const available: { id: string; description: string }[] = [];
+
+    if (fs.existsSync(templatesDir)) {
+      for (const entry of fs.readdirSync(templatesDir, { withFileTypes: true })) {
+        if (entry.isDirectory()) {
+          const indexPath = path.join(templatesDir, entry.name, "index.ts");
+          if (fs.existsSync(indexPath)) {
+            // Extract description from the template file
+            const content = fs.readFileSync(indexPath, "utf-8");
+            const descMatch = content.match(/description:\s*['"`]([^'"`]+)['"`]/);
+            available.push({
+              id: entry.name,
+              description: descMatch ? descMatch[1] : "(no description)",
+            });
+          }
+        }
+      }
+    }
+
+    // Get current template from site.json
+    const siteJsonPath = path.join(CONTENT_DIR, "site.json");
+    let currentTemplate = "terminal";
+    if (fs.existsSync(siteJsonPath)) {
+      const site = readJson(siteJsonPath) as Record<string, unknown>;
+      currentTemplate = (site.template as string) || "terminal";
+    }
+
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: JSON.stringify(
+            {
+              current: currentTemplate,
+              available,
+              usage: 'Set "template": "<id>" in content/site.json to switch templates.',
+            },
+            null,
+            2
+          ),
+        },
+      ],
+    };
+  }
+);
+
 // ── Tool: get_site_status ───────────────────────────────────────────
 
 server.tool(
@@ -1214,6 +1277,7 @@ server.tool(
       status.profile = {
         name: name?.display || "(not set)",
         avatar: site.avatar || "(not set)",
+        template: (site.template as string) || "terminal",
         features: site.features || {},
       };
     } else {
@@ -1350,6 +1414,7 @@ server.tool(
       : {};
     writeJson(siteJsonPath, {
       _comment: "Your basic info. Edit the values below, then run: npm run dev",
+      template: (existing.template as string) || "terminal",
       name: { full: "", first: "", nickname: "", last: "", display: "", authorVariants: [] },
       title: "",
       avatar: "avatar.jpg",

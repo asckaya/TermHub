@@ -1,6 +1,8 @@
 {
   "_comment": "Your basic info. Edit the values below, then run: npm run dev",
 
+  "template": "terminal",
+
   "name": {
     "full": "Cookie",
     "first": "Cookie",
