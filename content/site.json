@@ -2,6 +2,12 @@
   "_comment": "Your basic info. Edit the values below, then run: npm run dev",
 
   "template": "terminal",
+  "components": {},
+  "sections": [
+    "hero", "bio", "newsDisplay", "selectedPublications",
+    "journey", "skills", "mentorship", "talks", "teaching",
+    "accomplishments", "contact", "footer"
+  ],
 
   "name": {
     "full": "Cookie",
@@ -26,16 +32,22 @@
       "nap on hooman's lap"
     ],
     "skills": [
-      "Shake Hands", "Lie Down", "Cuddling", "Following Hooman",
-      "Napping", "Treat Negotiation", "Playing with Lucas", "Being Fluffy"
+      { "name": "Shake Hands", "icon": "FaHandshake" },
+      { "name": "Lie Down", "icon": "FaBed" },
+      { "name": "Cuddling", "icon": "FaHeart" },
+      { "name": "Following Hooman", "icon": "FaWalking" },
+      { "name": "Napping", "icon": "FaMoon" },
+      { "name": "Treat Negotiation", "icon": "FaCookie" },
+      { "name": "Playing with Lucas", "icon": "FaCat" },
+      { "name": "Being Fluffy", "icon": "FaStar" }
     ],
     "timezone": "America/Los_Angeles"
   },
 
   "contact": {
-    "email": "cookie@goodgirl.dev",
-    "academicEmail": "cookie@goodgirl.edu",
-    "hiringEmail": "cookie@goodgirl.dev",
+    "email": "limyoonaxi@gmail.com",
+    "academicEmail": "limyoonaxi@gmail.com",
+    "hiringEmail": "limyoonaxi@gmail.com",
     "location": "Wherever Yaoyao Is"
   },
 
@@ -77,5 +89,5 @@
     { "platform": "youtube", "icon": "FaYoutube", "label": "YouTube", "color": "#FF0000" }
   ],
 
-  "selectedPublicationIds": ["napcon2025-cuddle-optimization", "fetchml2024-warmth-seeking"]
+  "selectedPublicationIds": ["napcon2025-cuddle-optimization", "fetchml2024-warmth-seeking", "arxiv2025-cross-species-play"]
 }

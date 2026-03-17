@@ -111,7 +111,7 @@ function slugify(text: string): string {
 // ── Schemas for tool inputs ─────────────────────────────────────────
 
 const ContentTypeEnum = z.enum([
-  "site", "experience", "news", "awards", "research", "logos",
+  "site", "experience", "news", "awards", "research", "logos", "talks", "teaching",
 ]);
 
 const MarkdownCategoryEnum = z.enum([
@@ -177,11 +177,13 @@ ${siteJson}
 ## Content File Layout
 \`\`\`
 content/
-├── site.json              ← Profile, social links, features, template selection, terminal config
+├── site.json              ← Profile, social links, features, template, sections order, terminal config
 ├── about.md               ← About page (YAML frontmatter + markdown body)
 ├── experience.json        ← Education, timeline entries, reviewing
 ├── news.json              ← News items array
 ├── awards.json            ← Awards array
+├── talks.json             ← Talks/presentations array
+├── teaching.json          ← Teaching entries array
 ├── research.json          ← Current research labs
 ├── logos.json             ← Institution logo filename map
 ├── projects/*.md          ← Project entries
@@ -193,6 +195,8 @@ content/
     ├── experience.json
     ├── news.json
     ├── awards.json
+    ├── talks.json
+    ├── teaching.json
     ├── projects/*.md
     ├── publications/*.md
     └── articles/*.md
@@ -202,6 +206,16 @@ content/
 TermHub supports multiple visual templates. Set \`"template"\` in site.json to switch.
 Available templates: "terminal" (default — Nord-inspired terminal aesthetic).
 New templates can be added in \`src/templates/<name>/index.ts\`.
+
+## Component Slots (Figma-like variants)
+Individual sections can be swapped independently via \`"components"\` in site.json.
+Available slots: navbar, hero, bio, skills, newsDisplay, selectedPublications, journey, mentorship, talks, teaching, accomplishments, contact, footer.
+Each slot can have multiple variants. Set \`"components": { "hero": "variantId" }\` to override.
+
+## Section Ordering
+The home page section order is configurable via \`"sections"\` in site.json.
+Example: \`"sections": ["hero", "bio", "skills", "newsDisplay", "selectedPublications", "journey", "accomplishments", "footer"]\`
+Remove a section from the array to hide it. Reorder to change display order.
 
 ## Markdown Frontmatter Examples
 
@@ -845,6 +859,90 @@ server.tool(
   }
 );
 
+// ── Tool: add_talk ──────────────────────────────────────────────────
+
+server.tool(
+  "add_talk",
+  "Add a talk/presentation to talks.json. Use language='zh' to add to Chinese content.",
+  {
+    title: z.string().describe("Talk title"),
+    event: z.string().describe("Event/conference name"),
+    date: z.string().describe("Date, e.g. 'Mar 2025'"),
+    location: z.string().optional().describe("Location"),
+    type: z.enum(["keynote", "invited", "oral", "poster", "tutorial", "workshop", "panel", "other"]).optional().describe("Talk type"),
+    description: z.string().optional().describe("Short description"),
+    slides_url: z.string().optional().describe("URL to slides"),
+    video_url: z.string().optional().describe("URL to video recording"),
+    language: LanguageEnum,
+  },
+  async (params) => {
+    const lang = params.language as Language;
+    const contentDir = getContentDir(lang);
+    const talksPath = path.join(contentDir, "talks.json");
+    const existing = fs.existsSync(talksPath) ? (readJson(talksPath) as unknown[]) : [];
+
+    const item: Record<string, unknown> = {
+      title: params.title,
+      event: params.event,
+      date: params.date,
+    };
+    if (params.location) item.location = params.location;
+    if (params.type) item.type = params.type;
+    if (params.description) item.description = params.description;
+    if (params.slides_url) item.slidesUrl = params.slides_url;
+    if (params.video_url) item.videoUrl = params.video_url;
+
+    existing.unshift(item);
+    writeJson(talksPath, existing);
+
+    return {
+      content: [
+        { type: "text" as const, text: `Added talk (${lang}): ${params.title}` },
+      ],
+    };
+  }
+);
+
+// ── Tool: add_teaching ──────────────────────────────────────────────
+
+server.tool(
+  "add_teaching",
+  "Add a teaching entry to teaching.json. Use language='zh' to add to Chinese content.",
+  {
+    course: z.string().describe("Course name"),
+    institution: z.string().describe("Institution name"),
+    semester: z.string().describe("Semester, e.g. 'Fall 2025'"),
+    role: z.enum(["instructor", "ta", "guest-lecturer", "co-instructor", "other"]).describe("Role"),
+    description: z.string().optional().describe("Short description"),
+    link: z.string().optional().describe("Link to course page"),
+    language: LanguageEnum,
+  },
+  async (params) => {
+    const lang = params.language as Language;
+    const contentDir = getContentDir(lang);
+    const teachingPath = path.join(contentDir, "teaching.json");
+    const existing = fs.existsSync(teachingPath) ? (readJson(teachingPath) as unknown[]) : [];
+
+    const item: Record<string, unknown> = {
+      course: params.course,
+      institution: params.institution,
+      semester: params.semester,
+      role: params.role,
+    };
+    if (params.description) item.description = params.description;
+    if (params.link) item.link = params.link;
+
+    existing.unshift(item);
+    writeJson(teachingPath, existing);
+
+    return {
+      content: [
+        { type: "text" as const, text: `Added teaching entry (${lang}): ${params.course}` },
+      ],
+    };
+  }
+);
+
 // ── Tool: parse_pdf ─────────────────────────────────────────────────
 
 server.tool(
@@ -945,6 +1043,11 @@ server.tool(
           : undefined,
         suggested_data: {
           template: "terminal",
+          sections: [
+            "hero", "bio", "newsDisplay", "selectedPublications",
+            "journey", "skills", "mentorship", "talks", "teaching",
+            "accomplishments", "contact", "footer",
+          ],
           name: {
             full: params.owner_name,
             first: params.owner_name.split(" ")[0],
@@ -1015,6 +1118,18 @@ server.tool(
           tool: "write_markdown_content (category: 'about')",
           hint: "Generate a narrative journey description and timeline phases from the resume. " +
             (params.languages.includes("zh") ? "For zh: write a Chinese version of the bio narrative." : ""),
+        },
+        {
+          section: "Talks / Presentations",
+          tool: "add_talk",
+          hint: "Extract title, event, date, location, type for each talk or presentation. " +
+            (params.languages.includes("zh") ? "For zh: translate description. Keep event names in English." : ""),
+        },
+        {
+          section: "Teaching",
+          tool: "add_teaching",
+          hint: "Extract course, institution, semester, role for each teaching entry. " +
+            (params.languages.includes("zh") ? "For zh: translate course names and descriptions." : ""),
         },
       ],
 
@@ -1205,9 +1320,9 @@ server.tool(
 
 server.tool(
   "list_templates",
-  "List all available TermHub visual templates. " +
-    "Each template provides a different layout and theme for the portfolio. " +
-    "Set the 'template' field in site.json to switch templates.",
+  "List all available TermHub visual templates and component slot variants. " +
+    "Each template provides a different layout and theme. " +
+    "Individual sections (navbar, hero, footer, etc.) can be overridden via the 'components' field in site.json.",
   {},
   async () => {
     // Read available templates from src/templates directory
@@ -1219,7 +1334,6 @@ server.tool(
         if (entry.isDirectory()) {
           const indexPath = path.join(templatesDir, entry.name, "index.ts");
           if (fs.existsSync(indexPath)) {
-            // Extract description from the template file
             const content = fs.readFileSync(indexPath, "utf-8");
             const descMatch = content.match(/description:\s*['"`]([^'"`]+)['"`]/);
             available.push({
@@ -1231,12 +1345,31 @@ server.tool(
       }
     }
 
-    // Get current template from site.json
+    // Read component slots from each template's slots: { ... } block
+    const slots: Record<string, string[]> = {};
+    for (const tmpl of available) {
+      const tmplIndexPath = path.join(templatesDir, tmpl.id, "index.ts");
+      if (fs.existsSync(tmplIndexPath)) {
+        const tmplContent = fs.readFileSync(tmplIndexPath, "utf-8");
+        const slotsMatch = tmplContent.match(/slots:\s*\{([\s\S]*?)\n\s*\}/);
+        if (slotsMatch) {
+          const slotKeys = [...slotsMatch[1].matchAll(/(\w+)\s*:/g)].map(m => m[1]);
+          for (const key of slotKeys) {
+            if (!slots[key]) slots[key] = [];
+            if (!slots[key].includes(tmpl.id)) slots[key].push(tmpl.id);
+          }
+        }
+      }
+    }
+
+    // Get current config from site.json
     const siteJsonPath = path.join(CONTENT_DIR, "site.json");
     let currentTemplate = "terminal";
+    let currentComponents: Record<string, string> = {};
     if (fs.existsSync(siteJsonPath)) {
       const site = readJson(siteJsonPath) as Record<string, unknown>;
       currentTemplate = (site.template as string) || "terminal";
+      currentComponents = (site.components as Record<string, string>) || {};
     }
 
     return {
@@ -1245,9 +1378,14 @@ server.tool(
           type: "text" as const,
           text: JSON.stringify(
             {
-              current: currentTemplate,
-              available,
-              usage: 'Set "template": "<id>" in content/site.json to switch templates.',
+              current_template: currentTemplate,
+              current_component_overrides: currentComponents,
+              available_templates: available,
+              component_slots: slots,
+              usage: {
+                template: 'Set "template": "<id>" in content/site.json to switch templates.',
+                components: 'Set "components": { "hero": "<variantId>" } to override individual sections.',
+              },
             },
             null,
             2
@@ -1278,6 +1416,7 @@ server.tool(
         name: name?.display || "(not set)",
         avatar: site.avatar || "(not set)",
         template: (site.template as string) || "terminal",
+        components: site.components || {},
         features: site.features || {},
       };
     } else {
@@ -1299,6 +1438,9 @@ server.tool(
       const awardsPath = path.join(contentDir, "awards.json");
       const expPath = path.join(contentDir, "experience.json");
 
+      const talksPath = path.join(contentDir, "talks.json");
+      const teachingPath = path.join(contentDir, "teaching.json");
+
       if (fs.existsSync(newsPath)) {
         const news = readJson(newsPath) as unknown[];
         counts.news = news.length;
@@ -1306,6 +1448,14 @@ server.tool(
       if (fs.existsSync(awardsPath)) {
         const awards = readJson(awardsPath) as unknown[];
         counts.awards = awards.length;
+      }
+      if (fs.existsSync(talksPath)) {
+        const talks = readJson(talksPath) as unknown[];
+        counts.talks = talks.length;
+      }
+      if (fs.existsSync(teachingPath)) {
+        const teaching = readJson(teachingPath) as unknown[];
+        counts.teaching = teaching.length;
       }
       if (fs.existsSync(expPath)) {
         const exp = readJson(expPath) as Record<string, unknown>;
@@ -1384,6 +1534,8 @@ server.tool(
       if (lang === "en" || fs.existsSync(contentDir)) {
         writeJson(path.join(contentDir, "news.json"), []);
         writeJson(path.join(contentDir, "awards.json"), []);
+        writeJson(path.join(contentDir, "talks.json"), []);
+        writeJson(path.join(contentDir, "teaching.json"), []);
         writeJson(path.join(contentDir, "experience.json"), {
           education: { courses: [] },
           reviewing: [],
@@ -1415,6 +1567,12 @@ server.tool(
     writeJson(siteJsonPath, {
       _comment: "Your basic info. Edit the values below, then run: npm run dev",
       template: (existing.template as string) || "terminal",
+      components: (existing.components as Record<string, string>) || {},
+      sections: existing.sections || [
+        "hero", "bio", "skills", "newsDisplay", "selectedPublications",
+        "journey", "mentorship", "talks", "teaching",
+        "accomplishments", "contact", "footer"
+      ],
       name: { full: "", first: "", nickname: "", last: "", display: "", authorVariants: [] },
       title: "",
       avatar: "avatar.jpg",

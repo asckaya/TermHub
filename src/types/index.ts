@@ -170,3 +170,30 @@ export interface Award {
   link?: string
   egg?: string
 }
+
+export interface Talk {
+  title: string
+  event: string
+  date: string
+  location?: string
+  type?: 'keynote' | 'invited' | 'oral' | 'poster' | 'tutorial' | 'workshop' | 'panel' | 'other'
+  description?: string
+  slidesUrl?: string
+  videoUrl?: string
+  links?: { label: string; url: string }[]
+}
+
+export interface TeachingEntry {
+  course: string
+  institution: string
+  semester: string
+  role: 'instructor' | 'ta' | 'guest-lecturer' | 'co-instructor' | 'other'
+  description?: string
+  link?: string
+}
+
+export interface Skill {
+  name: string
+  category?: string
+  level?: number
+}

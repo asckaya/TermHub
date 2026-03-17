@@ -14,7 +14,7 @@
 
 import type {
   Research, Experience, NewsItem, About, Publication,
-  ProjectItem, Award, ExperienceEntry,
+  ProjectItem, Award, ExperienceEntry, Talk, TeachingEntry,
 } from '../types'
 
 // ── Markdown glob imports (each .md → { frontmatter..., body: html }) ──
@@ -84,6 +84,8 @@ import awardsJsonEn from '@content/awards.json'
 import researchJsonEn from '@content/research.json'
 import logosJsonEn from '@content/logos.json'
 import siteJsonEn from '@content/site.json'
+import talksJsonEn from '@content/talks.json'
+import teachingJsonEn from '@content/teaching.json'
 
 import experienceJsonZh from '@content/zh/experience.json'
 import newsJsonZh from '@content/zh/news.json'
@@ -91,6 +93,8 @@ import awardsJsonZh from '@content/zh/awards.json'
 import researchJsonZh from '@content/zh/research.json'
 import logosJsonZh from '@content/zh/logos.json'
 import siteJsonZh from '@content/zh/site.json'
+import talksJsonZh from '@content/zh/talks.json'
+import teachingJsonZh from '@content/zh/teaching.json'
 
 // ── Build both language datasets ──
 
@@ -104,6 +108,8 @@ const enData = {
   experienceTimeline: experienceJsonEn.timeline as ExperienceEntry[],
   news: newsJsonEn as NewsItem[],
   awards: awardsJsonEn as Award[],
+  talks: talksJsonEn as Talk[],
+  teaching: teachingJsonEn as TeachingEntry[],
   institutionLogos: logosJsonEn as Record<string, string>,
   siteConfig: siteJsonEn,
 }
@@ -118,6 +124,8 @@ const zhData = {
   experienceTimeline: experienceJsonZh.timeline as ExperienceEntry[],
   news: newsJsonZh as NewsItem[],
   awards: awardsJsonZh as Award[],
+  talks: talksJsonZh as Talk[],
+  teaching: teachingJsonZh as TeachingEntry[],
   institutionLogos: logosJsonZh as Record<string, string>,
   siteConfig: siteJsonZh,
 }
@@ -140,6 +148,8 @@ export const experience = enData.experience
 export const experienceTimeline = enData.experienceTimeline
 export const news = enData.news
 export const awards = enData.awards
+export const talks = enData.talks
+export const teaching = enData.teaching
 export const institutionLogos = enData.institutionLogos
 
 // ── Helper functions ──

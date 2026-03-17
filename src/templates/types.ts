@@ -5,11 +5,12 @@
  * Multi-template system type definitions.
  *
  * Each template implements TemplateConfig to provide its own
- * layout, page components, and Chakra UI theme extension.
+ * layout, page components, component slots, and Chakra UI theme.
  * Content (content/ folder) is shared across all templates.
  */
 
 import type { ThemeOverride } from '@chakra-ui/react'
+import type { ComponentSlots } from './slots'
 
 /** Props passed to the template's root layout component */
 export interface LayoutProps {
@@ -40,6 +41,11 @@ export interface TemplatePages {
  * 2. Export a `TemplateConfig` from it
  * 3. Register it in `src/templates/index.ts`
  * 4. Set `"template": "<name>"` in content/site.json
+ *
+ * To add a new component variant:
+ * 1. Create a component implementing the slot's props interface
+ * 2. Register it in the template's `slots` map
+ * 3. Users can override via `"components"` in content/site.json
  */
 export interface TemplateConfig {
   /** Unique template identifier, e.g. "terminal", "academic", "minimal" */
@@ -54,4 +60,6 @@ export interface TemplateConfig {
   layout: React.ComponentType<LayoutProps>
   /** Page components provided by this template */
   pages: TemplatePages
+  /** Component slot implementations (navbar, hero, footer, etc.) */
+  slots: ComponentSlots
 }
