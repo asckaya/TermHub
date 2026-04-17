@@ -1,4 +1,5 @@
 import React from 'react'
+import { useColorModeValue } from '@/color-mode'
 import {
   Box,
   Container,
@@ -6,8 +7,7 @@ import {
   HStack,
   Text,
   Link,
-  Image,
-  useColorModeValue,
+  Image
 } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
@@ -29,11 +29,11 @@ const Footer: React.FC = () => {
       borderColor={useColorModeValue('gray.200', 'gray.700')}
     >
       <Container maxW="7xl" px={[4, 6, 8]}>
-        <VStack spacing={[3, 4]} textAlign="center">
+        <VStack gap={[3, 4]} textAlign="center">
           {/* Logo */}
           <Link
             href="https://github.com/H-Freax/TermHub"
-            isExternal
+            target="_blank" rel="noopener noreferrer"
             _hover={{ opacity: 0.85, transform: 'translateY(-1px)' }}
             transition="all 0.2s"
           >
@@ -45,11 +45,11 @@ const Footer: React.FC = () => {
             />
           </Link>
 
-          <HStack spacing={1} color={textColor} fontSize={['xs', 'sm']}>
+          <HStack gap={1} color={textColor} fontSize={['xs', 'sm']}>
             <Text>{t('footer.poweredBy')}</Text>
             <Link
               href="https://github.com/H-Freax/TermHub"
-              isExternal
+              target="_blank" rel="noopener noreferrer"
               color="cyan.500"
               fontWeight="medium"
               _hover={{ textDecoration: 'underline' }}

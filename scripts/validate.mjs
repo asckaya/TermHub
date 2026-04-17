@@ -53,7 +53,7 @@ function readJson(relPath) {
 
 const site = readJson('content/site.json')
 if (!site) {
-  fail('content/site.json not found — run: npm run setup')
+  fail('content/site.json not found — run: pnpm setup')
 } else {
   pass('content/site.json found and valid')
 }

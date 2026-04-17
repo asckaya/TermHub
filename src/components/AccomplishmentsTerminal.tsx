@@ -1,19 +1,6 @@
 import React from 'react'
-import {
-  Box,
-  VStack,
-  HStack,
-  Text,
-  useColorModeValue,
-  Flex,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverArrow,
-  PopoverBody,
-  Container,
-  Heading,
-} from '@chakra-ui/react'
+import { useColorModeValue } from '@/color-mode'
+import { Box, VStack, HStack, Text, Flex, Container, Heading } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import DynamicIcon from './DynamicIcon'
 import type { Award } from '../types'
@@ -77,7 +64,7 @@ const AwardRow = ({ award }: { award: Award }) => {
         <Text fontSize="xs" fontWeight="medium" color={titleColor} lineHeight="short">
           {award.title}
         </Text>
-        <HStack spacing={2} mt={0.5} flexWrap="wrap">
+        <HStack gap={2} mt={0.5} flexWrap="wrap">
           {award.org && (
             <Text fontSize="2xs" color={mutedColor}>
               {award.org}
@@ -85,7 +72,7 @@ const AwardRow = ({ award }: { award: Award }) => {
           )}
         </HStack>
       </Box>
-      <VStack spacing={0.5} align="end" flexShrink={0}>
+      <VStack gap={0.5} align="end" flexShrink={0}>
         <Text fontSize="2xs" fontFamily="mono" color={mutedColor} whiteSpace="nowrap">
           {award.date}
         </Text>
@@ -104,28 +91,12 @@ const AwardRow = ({ award }: { award: Award }) => {
 
   if (award.egg) {
     return (
-      <Popover trigger="hover" placement="top-start">
-        <PopoverTrigger>{content}</PopoverTrigger>
-        <PopoverContent
-          bg={useColorModeValue('white', 'gray.800')}
-          borderColor={useColorModeValue('gray.200', 'gray.700')}
-          maxW="360px"
-          boxShadow="lg"
-        >
-          <PopoverArrow />
-          <PopoverBody py={3} px={4}>
-            <HStack spacing={2} mb={2}>
-              <DynamicIcon name={iconFor(award)} boxSize={3} color="cyan.400" />
-              <Text fontSize="xs" fontFamily="mono" color="cyan.400" fontWeight="semibold">
-                Easter Egg
-              </Text>
-            </HStack>
-            <Text fontSize="xs" color={useColorModeValue('gray.600', 'gray.300')} lineHeight="tall">
-              {award.egg}
-            </Text>
-          </PopoverBody>
-        </PopoverContent>
-      </Popover>
+      <VStack align="stretch" gap={1} title={award.egg}>
+        {content}
+        <Text fontSize="xs" color={useColorModeValue('gray.600', 'gray.300')} pl={8}>
+          {award.egg}
+        </Text>
+      </VStack>
     )
   }
 
@@ -144,7 +115,7 @@ const AccomplishmentsTerminal: React.FC = () => {
         {awards.length} {t('about.awardsSpanning')} {new Set(awards.map((a) => a.kind)).size}{' '}
         {t('about.categories')}
       </Text>
-      <VStack spacing={0} align="stretch">
+      <VStack gap={0} align="stretch">
         {awards.map((a, i) => (
           <AwardRow key={i} award={a} />
         ))}

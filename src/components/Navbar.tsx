@@ -2,22 +2,17 @@ import {
   Box,
   Flex,
   IconButton,
-  useColorMode,
   HStack,
   Link as ChakraLink,
   Image,
   useDisclosure,
-  Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerHeader,
-  DrawerBody,
   VStack,
-  Divider,
   Button,
 } from '@chakra-ui/react'
-import { MoonIcon, SunIcon, HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
+import { useColorMode } from '@/color-mode'
+import { FiMenu, FiX, FiMoon, FiSun } from 'react-icons/fi'
 import { Link, useLocation } from 'react-router-dom'
+import { ThemePicker } from './ThemePicker'
 import { FaGithub, FaLinkedin, FaMedium, FaEnvelope } from 'react-icons/fa'
 import { SiGooglescholar } from 'react-icons/si'
 import { useTranslation } from 'react-i18next'
@@ -26,7 +21,7 @@ import { navItems, siteOwner } from '@/site.config'
 const Navbar: React.FC = () => {
   const { colorMode, toggleColorMode } = useColorMode()
   const location = useLocation()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { open: isOpen, onOpen, onClose } = useDisclosure()
   const { t, i18n } = useTranslation()
 
   const toggleLanguage = () => {
@@ -58,32 +53,30 @@ const Navbar: React.FC = () => {
         <Box display={{ base: 'block', md: 'none' }}>
           <IconButton
             aria-label={t('aria.openNav')}
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
             onClick={isOpen ? onClose : onOpen}
             variant="ghost"
             color="var(--text-color)"
-          />
+          >
+            {isOpen ? <FiX /> : <FiMenu />}
+          </IconButton>
         </Box>
 
         {/* Desktop: logo left */}
-        <ChakraLink
-          as={Link}
-          to="/"
-          display={{ base: 'none', md: 'flex' }}
-          alignItems="center"
-          _hover={{ opacity: 0.85 }}
-          transition="opacity 0.15s"
-        >
-          <Image src={`${import.meta.env.BASE_URL}logo-icon.svg`} alt="TermHub" h="28px" w="28px" />
-        </ChakraLink>
+        <Box display={{ base: 'none', md: 'flex' }}>
+          <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
+            <Image
+              src={`${import.meta.env.BASE_URL}logo-icon.svg`}
+              alt="TermHub"
+              h="28px"
+              w="28px"
+              transition="opacity 0.15s"
+              _hover={{ opacity: 0.8 }}
+            />
+          </Link>
+        </Box>
 
         {/* Desktop nav (right aligned) */}
-        <HStack
-          spacing={8}
-          display={{ base: 'none', md: 'flex' }}
-          ml="auto"
-          mr={{ base: 0, md: 6 }}
-        >
+        <HStack gap={8} display={{ base: 'none', md: 'flex' }} ml="auto" mr={{ base: 0, md: 6 }}>
           {navItems.map((item) => {
             const isActive = location.pathname === item.path
 
@@ -106,12 +99,13 @@ const Navbar: React.FC = () => {
             )
           })}
         </HStack>
-        <HStack spacing={4} display={{ base: 'none', md: 'flex' }}>
+        <HStack gap={4} display={{ base: 'none', md: 'flex' }}>
           {socialLinks.map((link) => (
             <ChakraLink
               key={link.label}
               href={link.href}
-              isExternal
+              target="_blank"
+              rel="noopener noreferrer"
               color="var(--secondary-text)"
               p={1.5}
               borderRadius="md"
@@ -146,9 +140,9 @@ const Navbar: React.FC = () => {
           >
             {i18n.language === 'zh' ? 'EN' : '中'}
           </Button>
+          <ThemePicker />
           <IconButton
             aria-label={t('aria.toggleColorMode')}
-            icon={colorMode === 'dark' ? <SunIcon /> : <MoonIcon />}
             onClick={toggleColorMode}
             variant="ghost"
             color="var(--text-color)"
@@ -157,74 +151,70 @@ const Navbar: React.FC = () => {
               transform: 'translateY(-2px)',
             }}
             transition="all 0.2s"
-          />
+          >
+            {colorMode === 'dark' ? <FiSun /> : <FiMoon />}
+          </IconButton>
         </HStack>
       </Flex>
 
-      {/* Mobile Drawer */}
-      <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent bg="var(--bg-color)">
-          <DrawerHeader color="var(--text-color)">{t('nav.navigation')}</DrawerHeader>
-          <DrawerBody>
-            <VStack align="stretch" spacing={3}>
-              {navItems.map((item) => {
-                const isActive = location.pathname === item.path
-                return (
-                  <ChakraLink
-                    key={item.path}
-                    as={Link}
-                    to={item.path}
-                    onClick={onClose}
-                    color={isActive ? 'var(--accent-color)' : 'var(--text-color)'}
-                    _hover={{ color: 'var(--accent-color)' }}
-                    fontWeight={isActive ? 600 : 400}
-                  >
-                    {t(item.labelKey)}
-                  </ChakraLink>
-                )
-              })}
-
-              <Divider borderColor="var(--border-color)" my={2} />
-
-              <VStack align="stretch" spacing={2}>
-                {socialLinks.map((link) => (
-                  <ChakraLink
-                    key={link.label}
-                    href={link.href}
-                    isExternal
-                    color="var(--secondary-text)"
-                    _hover={{ color: 'var(--accent-color)' }}
-                  >
-                    <Box as={link.icon} mr={2} display="inline-block" /> {link.label}
-                  </ChakraLink>
-                ))}
-              </VStack>
-
-              <Divider borderColor="var(--border-color)" my={2} />
-
-              <HStack spacing={2}>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  color="var(--text-color)"
-                  onClick={toggleLanguage}
-                  flex={1}
+      {isOpen && (
+        <Box display={{ base: 'block', md: 'none' }} mt={3} px={4}>
+          <VStack align="stretch" gap={3} bg="var(--bg-color)">
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.path
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={onClose}
+                  style={{
+                    color: isActive ? 'var(--accent-color)' : 'var(--text-color)',
+                    textDecoration: 'none',
+                    fontWeight: isActive ? 600 : 400,
+                  }}
                 >
-                  {i18n.language === 'zh' ? 'English' : '中文'}
-                </Button>
-                <IconButton
-                  aria-label={t('aria.toggleColorMode')}
-                  icon={colorMode === 'dark' ? <SunIcon /> : <MoonIcon />}
-                  onClick={toggleColorMode}
-                  variant="outline"
-                  color="var(--text-color)"
-                />
-              </HStack>
+                  {t(item.labelKey)}
+                </Link>
+              )
+            })}
+
+            <VStack align="stretch" gap={2}>
+              {socialLinks.map((link) => (
+                <ChakraLink
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  color="var(--secondary-text)"
+                  _hover={{ color: 'var(--accent-color)' }}
+                >
+                  <Box as={link.icon} mr={2} display="inline-block" /> {link.label}
+                </ChakraLink>
+              ))}
             </VStack>
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
+
+            <HStack gap={2}>
+              <Button
+                size="sm"
+                variant="outline"
+                color="var(--text-color)"
+                onClick={toggleLanguage}
+                flex={1}
+              >
+                {i18n.language === 'zh' ? 'English' : '中文'}
+              </Button>
+              <IconButton
+                aria-label={t('aria.toggleColorMode')}
+                onClick={toggleColorMode}
+                variant="outline"
+                color="var(--text-color)"
+              >
+                {colorMode === 'dark' ? <FiSun /> : <FiMoon />}
+              </IconButton>
+            </HStack>
+          </VStack>
+        </Box>
+      )}
     </Box>
   )
 }

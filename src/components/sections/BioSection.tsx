@@ -1,4 +1,11 @@
-import { Box, Container, Text, Heading, Flex, useColorModeValue } from '@chakra-ui/react'
+import {
+  Box,
+  Container,
+  Text,
+  Heading,
+  Flex
+} from '@chakra-ui/react'
+import { useColorModeValue } from '@/color-mode'
 import { useTranslation } from 'react-i18next'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 

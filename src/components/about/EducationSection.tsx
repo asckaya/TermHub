@@ -1,4 +1,5 @@
 import React from 'react'
+import { useColorModeValue } from '@/color-mode'
 import {
   Box,
   HStack,
@@ -6,8 +7,7 @@ import {
   SimpleGrid,
   Heading,
   Text,
-  Image,
-  useColorModeValue,
+  Image
 } from '@chakra-ui/react'
 
 interface Course {
@@ -27,7 +27,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({ courses, logos = {}
   const accentBg = useColorModeValue('blue.50', 'blue.900')
 
   return (
-    <SimpleGrid columns={[1, 1, 2]} spacing={[3, 3, 4]} w="full">
+    <SimpleGrid columns={[1, 1, 2]} gap={[3, 3, 4]} w="full">
       {courses.map((course, index) => {
         const logo = logos[course.institution]
         return (
@@ -40,7 +40,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({ courses, logos = {}
             transition="all 0.2s"
             _hover={{ shadow: 'md', transform: 'translateY(-2px)' }}
           >
-            <HStack align="start" spacing={3}>
+            <HStack align="start" gap={3}>
               {logo ? (
                 <Image
                   src={logo}
@@ -69,7 +69,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({ courses, logos = {}
                   </Text>
                 </Box>
               )}
-              <VStack align="start" spacing={1} flex={1}>
+              <VStack align="start" gap={1} flex={1}>
                 <Text color="blue.500" fontSize={['2xs', 'xs', 'sm']} fontWeight="medium">
                   {course.year}
                 </Text>

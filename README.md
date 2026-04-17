@@ -111,13 +111,13 @@ Instead of writing HTML or learning a framework, you give your CV to any AI — 
 ```bash
 # 1. Fork & clone
 git clone https://github.com/H-Freax/TermHub.git
-cd TermHub && npm install
+cd TermHub && pnpm install
 
 # 2. Run the setup wizard — generates your config
-npm run setup
+pnpm setup
 
 # 3. Start dev server
-npm run dev
+pnpm dev
 ```
 
 > Open **http://localhost:5173** — your site is running.
@@ -188,7 +188,7 @@ The **CV → AI → Markdown → Homepage** pipeline taken to its logical conclu
 
 ```bash
 # Quick setup
-cd mcp-server && npm install    # 1. Install
+cd mcp-server && pnpm install    # 1. Install
 # 2. Configure Claude Desktop / Code (see mcp-server/mcp-config.json)
 # 3. Tell Claude: "Parse my resume and generate my portfolio"
 ```

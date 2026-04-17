@@ -1,5 +1,10 @@
 import React from 'react'
-import { Box, SimpleGrid, Text, useColorModeValue } from '@chakra-ui/react'
+import { useColorModeValue } from '@/color-mode'
+import {
+  Box,
+  SimpleGrid,
+  Text
+} from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
 const MotionBox = motion(Box)
@@ -13,7 +18,7 @@ const ResearchInterests: React.FC<ResearchInterestsProps> = ({ interests }) => {
   const bg = useColorModeValue('white', 'gray.800')
 
   return (
-    <SimpleGrid columns={[2, 2, 3, 4]} spacing={[2, 3]} w="full">
+    <SimpleGrid columns={[2, 2, 3, 4]} gap={[2, 3]} w="full">
       {interests.map((interest, index) => (
         <MotionBox
           key={index}

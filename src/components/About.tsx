@@ -1,4 +1,12 @@
-import { Box, VStack, Flex, Heading, Badge, Container, useColorModeValue } from '@chakra-ui/react'
+import {
+  Box,
+  VStack,
+  Flex,
+  Heading,
+  Badge,
+  Container
+} from '@chakra-ui/react'
+import { useColorModeValue } from '@/color-mode'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { institutionLogos } from '../data'
@@ -64,7 +72,12 @@ function About() {
                 <Heading size="md" fontWeight="semibold">
                   {t('about.recentUpdates')}
                 </Heading>
-                <Badge colorScheme="green" variant="subtle" fontSize="2xs" fontFamily="mono">
+                <Badge
+                  bg={useColorModeValue('green.100', 'rgba(154,230,180,0.16)')}
+                  color={useColorModeValue('green.800', 'green.200')}
+                  fontSize="2xs"
+                  fontFamily="mono"
+                >
                   {t('about.news')}
                 </Badge>
                 <Box flex="1" h="1px" bg={lineColor} />
@@ -100,7 +113,7 @@ function About() {
 
   return (
     <Box w="full">
-      <VStack spacing={[4, 6, 8]} align="stretch" w="full">
+      <VStack gap={[4, 6, 8]} align="stretch" w="full">
         {sectionOrder.map((sectionId, index) => renderSection(sectionId, index))}
       </VStack>
     </Box>

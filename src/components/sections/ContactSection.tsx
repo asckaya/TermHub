@@ -6,9 +6,9 @@ import {
   Text,
   Heading,
   Flex,
-  Link,
-  useColorModeValue,
+  Link
 } from '@chakra-ui/react'
+import { useColorModeValue } from '@/color-mode'
 import { useTranslation } from 'react-i18next'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import DynamicIcon from '../DynamicIcon'
@@ -69,9 +69,9 @@ const ContactSection: React.FC = () => {
           </Heading>
           <Box flex="1" h="1px" bg={useColorModeValue('gray.200', 'gray.700')} />
         </Flex>
-        <VStack spacing={2} align="stretch">
+        <VStack gap={2} align="stretch">
           {items.map((item) => (
-            <HStack key={item.label} spacing={3}>
+            <HStack key={item.label} gap={3}>
               <DynamicIcon name={item.icon} boxSize={3.5} color="cyan.400" />
               <Text fontSize="xs" color={textColor} minW="60px">
                 {item.label}
@@ -79,7 +79,7 @@ const ContactSection: React.FC = () => {
               {item.href ? (
                 <Link
                   href={item.href}
-                  isExternal
+                  target="_blank" rel="noopener noreferrer"
                   fontSize="xs"
                   color={linkColor}
                   fontFamily="mono"

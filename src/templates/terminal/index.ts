@@ -29,8 +29,6 @@ const Publications = lazy(() => import('../../components/Publications'))
 const Projects = lazy(() => import('../../components/Projects'))
 const Articles = lazy(() => import('../../components/Articles'))
 const Experience = lazy(() => import('../../components/Experience'))
-const GuideLanding = lazy(() => import('../../components/GuideLanding'))
-const GuideDocs = lazy(() => import('../../components/GuideDocs'))
 const AboutPage = lazy(() => import('../../components/AboutPage'))
 
 const terminalTemplate: TemplateConfig = {
@@ -45,8 +43,6 @@ const terminalTemplate: TemplateConfig = {
     projects: Projects,
     articles: Articles,
     experience: Experience,
-    guide: GuideLanding,
-    guideDocs: GuideDocs,
     aboutPage: AboutPage,
   },
   slots: {

@@ -33,7 +33,7 @@ const News = () => {
 
   return (
     <Container maxW="7xl" px={4}>
-      <VStack spacing={8} align="stretch">
+      <VStack gap={8} align="stretch">
         <MotionBox
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -53,7 +53,7 @@ const News = () => {
             </Box>
           </Box>
 
-          <VStack spacing={6} align="stretch">
+          <VStack gap={6} align="stretch">
             {news.map((item, index) => (
               <MotionBox
                 key={index}
@@ -68,7 +68,7 @@ const News = () => {
                 <Box mb={2}>
                   <Code>{item.date}</Code>{' '}
                   {item.badge && (
-                    <Badge ml={2} colorScheme={item.iconColor?.split('.')[0] || 'gray'}>
+                    <Badge ml={2} colorPalette={item.iconColor?.split('.')[0] || 'gray'}>
                       {item.badge}
                     </Badge>
                   )}{' '}
@@ -78,9 +78,9 @@ const News = () => {
                 </Box>
                 <Text>{item.description}</Text>
                 {item.links && item.links.length > 0 && (
-                  <HStack spacing={3} mt={3} wrap="wrap">
+                  <HStack gap={3} mt={3} wrap="wrap">
                     {item.links.map((l, i) => (
-                      <ChakraLink key={i} href={l.url} isExternal color="var(--accent-color)">
+                      <ChakraLink key={i} href={l.url} target="_blank" rel="noopener noreferrer" color="var(--accent-color)">
                         {l.text} →
                       </ChakraLink>
                     ))}

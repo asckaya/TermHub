@@ -99,7 +99,7 @@ function listContentFiles(language: Language = 'en'): {
     if (entry.isDirectory() && entry.name !== 'zh') {
       const subDir = path.join(dir, entry.name)
       const subEntries = fs.readdirSync(subDir)
-      const mdFiles = subEntries.filter((f) => f.endsWith('.md'))
+      const mdFiles = subEntries.filter((f: string) => f.endsWith('.md'))
       if (mdFiles.length > 0) {
         result.markdown[entry.name] = mdFiles
       }
@@ -992,15 +992,17 @@ server.tool(
         }
       }
 
-      const pdfParse = (await import('pdf-parse')).default
+      const { PDFParse } = await import('pdf-parse')
       const buffer = fs.readFileSync(file_path)
-      const data = await pdfParse(buffer)
+      const parser = new PDFParse({ data: buffer })
+      const data = await parser.getText()
+      await parser.destroy()
 
       return {
         content: [
           {
             type: 'text' as const,
-            text: `# PDF Content (${data.numpages} pages)\n\n${data.text}`,
+            text: `# PDF Content (${data.total} pages)\n\n${data.text}`,
           },
         ],
       }
@@ -1303,7 +1305,7 @@ server.tool(
       }
 
       if (action === 'build') {
-        const output = execSync('npm run build', {
+        const output = execSync('pnpm build', {
           cwd: PROJECT_ROOT,
           encoding: 'utf-8',
           timeout: 120000,
@@ -1325,7 +1327,7 @@ server.tool(
         }
       }
 
-      devServerProcess = spawn('npm', ['run', 'dev'], {
+      devServerProcess = spawn('pnpm', ['dev'], {
         cwd: PROJECT_ROOT,
         stdio: ['ignore', 'pipe', 'pipe'],
       })
@@ -1341,7 +1343,7 @@ server.tool(
             resolve(urlMatch[1])
           }
         })
-        devServerProcess!.on('error', (err) => {
+        devServerProcess!.on('error', (err: Error) => {
           clearTimeout(timeout)
           reject(err)
         })
@@ -1617,7 +1619,7 @@ server.tool(
       ? (readJson(siteJsonPath) as Record<string, unknown>)
       : {}
     writeJson(siteJsonPath, {
-      _comment: 'Your basic info. Edit the values below, then run: npm run dev',
+      _comment: 'Your basic info. Edit the values below, then run: pnpm dev',
       template: (existing.template as string) || 'terminal',
       components: (existing.components as Record<string, string>) || {},
       sections: existing.sections || [

@@ -5,9 +5,9 @@ import {
   Text,
   Heading,
   Flex,
-  Link,
-  useColorModeValue,
+  Link
 } from '@chakra-ui/react'
+import { useColorModeValue } from '@/color-mode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 
 const MentorshipSection: React.FC = () => {
@@ -34,7 +34,7 @@ const MentorshipSection: React.FC = () => {
             {about.mentorship.description}
           </Text>
         )}
-        <VStack spacing={0} align="stretch">
+        <VStack gap={0} align="stretch">
           {about.mentorship.mentees.map((mentee, index) => (
             <Flex
               key={index}
@@ -45,7 +45,7 @@ const MentorshipSection: React.FC = () => {
               borderColor={borderColor}
             >
               <Box w="6px" h="6px" borderRadius="full" bg="cyan.400" flexShrink={0} />
-              <Link href={mentee.url} isExternal _hover={{ textDecoration: 'none' }}>
+              <Link href={mentee.url} target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
                 <Text
                   fontSize="sm"
                   fontWeight="medium"

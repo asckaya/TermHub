@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react'
+import { useColorMode } from '@/color-mode'
 import {
   Box,
   HStack,
   Text,
   Link,
   Flex,
-  useColorMode,
-  Collapse,
-  useBreakpointValue,
+  Collapsible,
+  useBreakpointValue
 } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
 import { useTranslation } from 'react-i18next'
@@ -15,7 +15,7 @@ import DynamicIcon from '../DynamicIcon'
 import { type NewsItem } from '../../types'
 import { highlightData } from '../../utils/highlightData'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
-import { terminalPalette } from '@/config/theme'
+import { useThemeConfig } from '@/config/theme'
 
 interface NewsTimelineProps {
   news: NewsItem[]
@@ -205,6 +205,7 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
   }
 
   // Terminal palette from centralized config
+  const { terminalPalette } = useThemeConfig()
   const tc = terminalPalette.colors(isDark)
   const termBg = tc.bg
   const termText = tc.text
@@ -398,13 +399,13 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
       >
         {/* Left: traffic lights + syntax-highlighted title */}
         <Flex align="center" gap={1} flex={['1 1 100%', '1 1 auto']}>
-          <HStack spacing={1.5} mr={2}>
+          <HStack gap={1.5} mr={2}>
             <Box w="10px" h="10px" borderRadius="full" bg="#bf616a" />
             <Box w="10px" h="10px" borderRadius="full" bg="#ebcb8b" />
             <Box w="10px" h="10px" borderRadius="full" bg="#a3be8c" />
           </HStack>
           <DynamicIcon name="FaTerminal" boxSize={[2.5, 3]} color={termCommand} />
-          <Text isTruncated>
+          <Text overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
             <Box as="span" color={termParam}>
               const{' '}
             </Box>
@@ -564,7 +565,7 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
         color={termText}
         overflowY="auto"
         maxH={['350px', '450px', '550px']}
-        sx={{
+        css={{
           '&::-webkit-scrollbar': { width: '6px', background: 'transparent' },
           '&::-webkit-scrollbar-thumb': { background: tc.border, borderRadius: '3px' },
         }}
@@ -616,10 +617,10 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
             fontSize={['3xs', '2xs', 'xs']}
             fontWeight="bold"
           >
-            <Text w={dateColumnWidth} color={termHighlight} isTruncated>
+            <Text w={dateColumnWidth} color={termHighlight} overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
               {isVerySmallScreen ? t('newsTimeline.time') : t('newsTimeline.timestamp')}
             </Text>
-            <Text w={typeColumnWidth} color={termParam} isTruncated>
+            <Text w={typeColumnWidth} color={termParam} overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
               {isVerySmallScreen ? t('newsTimeline.cat') : t('newsTimeline.category')}
             </Text>
             <Text w={idColumnWidth} color={termInfo} display={['none', 'none', 'block']}>
@@ -669,7 +670,7 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
                     : 'transparent'
                 }
               >
-                <Text w={dateColumnWidth} color={termHighlight} fontWeight="medium" isTruncated>
+                <Text w={dateColumnWidth} color={termHighlight} fontWeight="medium" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
                   {formatDate(item.date)}
                 </Text>
                 <Box w={typeColumnWidth}>
@@ -729,12 +730,12 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
                           .trim()}
                       </Text>
                     )}
-                    <Text fontWeight="medium" color={termText} isTruncated fontSize={['2xs', 'xs']}>
+                    <Text fontWeight="medium" color={termText} overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" fontSize={['2xs', 'xs']}>
                       {isNarrowScreen ? truncateText(item.title, 60) : item.title}
                     </Text>
                   </Flex>
                   {showDescription && (
-                    <Text color={termSecondary} fontSize={['3xs', '2xs']} isTruncated mt={0.5}>
+                    <Text color={termSecondary} fontSize={['3xs', '2xs']} overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" mt={0.5}>
                       {getDescriptionLength(item.description)}
                     </Text>
                   )}
@@ -746,12 +747,12 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
                   display={isWideEnough ? 'flex' : 'none'}
                 >
                   {item.links.length > 0 ? (
-                    <HStack spacing={1}>
+                    <HStack gap={1}>
                       {item.links.slice(0, isSmallScreen ? 2 : 3).map((link, i) => (
                         <Link
                           key={i}
                           href={link.url}
-                          isExternal
+                          target="_blank" rel="noopener noreferrer"
                           color={termCommand}
                           _hover={{ color: termHighlight }}
                           onClick={(e) => e.stopPropagation()}
@@ -791,7 +792,7 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
               </Flex>
 
               {/* Expanded details */}
-              <Collapse in={expandedItems[index]} animateOpacity>
+              <Collapsible.Root open={expandedItems[index]}><Collapsible.Content>
                 <Box
                   pl={[2, 3, 10]}
                   pr={[2, 3]}
@@ -855,7 +856,7 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
                       lineHeight="1.6"
                       maxH={isVerySmallScreen ? '100px' : isMobile ? '200px' : 'none'}
                       overflowY={isVerySmallScreen || isMobile ? 'auto' : 'visible'}
-                      sx={
+                      css={
                         isVerySmallScreen || isMobile
                           ? {
                               '&::-webkit-scrollbar': { width: '4px', background: 'transparent' },
@@ -880,7 +881,7 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
                         <Link
                           key={i}
                           href={link.url}
-                          isExternal
+                          target="_blank" rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
                           _hover={{ textDecoration: 'none' }}
                         >
@@ -919,7 +920,7 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
                     </Flex>
                   )}
                 </Box>
-              </Collapse>
+              </Collapsible.Content></Collapsible.Root>
             </Box>
           ))}
         </Box>
@@ -942,7 +943,7 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
             <DynamicIcon name="FaChevronRight" boxSize={[1.5, 2]} color={termCommand} />
           )}
         </Flex>
-        <Text color={termSecondary} isTruncated>
+        <Text color={termSecondary} overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
           {hoveredItem !== null ? (
             <>
               <Box as="span" color={termSuccess} fontWeight="bold">
@@ -1004,7 +1005,7 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
           bg={termPrompt}
           ml={1.5}
           borderRadius="1px"
-          sx={{ animation: `${blink} 1s step-end infinite` }}
+          css={{ animation: `${blink} 1s step-end infinite` }}
         />
         {/* Easter egg: changes with interaction count */}
         {!isMobile && (

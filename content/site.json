@@ -1,5 +1,5 @@
 {
-  "_comment": "Your basic info. Edit the values below, then run: bun run dev",
+  "_comment": "Your basic info. Edit the values below, then run: pnpm dev",
   "name": {
     "full": "Sheng Ren",
     "first": "Sheng",

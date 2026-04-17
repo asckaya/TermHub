@@ -6,9 +6,9 @@ import {
   Text,
   Heading,
   Flex,
-  Link,
-  useColorModeValue,
+  Link
 } from '@chakra-ui/react'
+import { useColorModeValue } from '@/color-mode'
 import { useTranslation } from 'react-i18next'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import DynamicIcon from '../DynamicIcon'
@@ -41,7 +41,7 @@ const TeachingSection: React.FC = () => {
           </Heading>
           <Box flex="1" h="1px" bg={useColorModeValue('gray.200', 'gray.700')} />
         </Flex>
-        <VStack spacing={0} align="stretch">
+        <VStack gap={0} align="stretch">
           {teaching.map((entry, i) => (
             <Flex
               key={i}
@@ -61,14 +61,14 @@ const TeachingSection: React.FC = () => {
               <Box flex={1} minW={0}>
                 <Text fontSize="xs" fontWeight="medium" color={titleColor} lineHeight="short">
                   {entry.link ? (
-                    <Link href={entry.link} isExternal _hover={{ color: 'cyan.400' }}>
+                    <Link href={entry.link} target="_blank" rel="noopener noreferrer" _hover={{ color: 'cyan.400' }}>
                       {entry.course}
                     </Link>
                   ) : (
                     entry.course
                   )}
                 </Text>
-                <HStack spacing={2} mt={0.5} flexWrap="wrap">
+                <HStack gap={2} mt={0.5} flexWrap="wrap">
                   <Text fontSize="2xs" color={textColor}>
                     {entry.institution}
                   </Text>

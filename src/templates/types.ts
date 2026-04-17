@@ -9,7 +9,7 @@
  * Content (content/ folder) is shared across all templates.
  */
 
-import type { ThemeOverride } from '@chakra-ui/react'
+import type { SystemContext } from '@chakra-ui/react/styled-system'
 import type { ComponentSlots } from './slots'
 
 /** Props passed to the template's root layout component */
@@ -56,7 +56,7 @@ export interface TemplateConfig {
   /** Short description of the template style */
   description?: string
   /** Chakra UI theme override for this template */
-  theme: ThemeOverride
+  theme: SystemContext
   /** Root layout component (nav, footer, etc.) */
   layout: React.ComponentType<LayoutProps>
   /** Page components provided by this template */

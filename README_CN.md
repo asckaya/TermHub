@@ -111,13 +111,13 @@ TermHub 围绕一个简单的理念构建：**简历 → AI → Markdown → 个
 ```bash
 # 1. Fork 并克隆
 git clone https://github.com/H-Freax/TermHub.git
-cd TermHub && npm install
+cd TermHub && pnpm install
 
 # 2. 运行设置向导 — 生成你的配置
-npm run setup
+pnpm setup
 
 # 3. 启动开发服务器
-npm run dev
+pnpm dev
 ```
 
 > 打开 **http://localhost:5173** —— 你的网站已经运行。
@@ -188,7 +188,7 @@ content/
 
 ```bash
 # 快速配置
-cd mcp-server && npm install    # 1. 安装
+cd mcp-server && pnpm install    # 1. 安装
 # 2. 配置 Claude Desktop / Code（参见 mcp-server/mcp-config.json）
 # 3. 告诉 Claude："解析我的简历并生成我的作品集"
 ```

@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react'
+import { useColorMode } from '@/color-mode'
 import {
   Box,
-  Collapse,
+  Collapsible,
   Flex,
   HStack,
   Icon,
@@ -10,7 +11,6 @@ import {
   VStack,
   Image,
   Link,
-  useColorMode,
   useBreakpointValue,
 } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 import type { RoleType } from '../types'
 import { highlightData } from '../utils/highlightData'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
-import { terminalPalette } from '@/config/theme'
+import { useThemeConfig } from '@/config/theme'
 
 /* ── Keyframes ─────────────────────────────────────────────────── */
 const blink = keyframes`0%,100%{opacity:1}50%{opacity:0}`
@@ -91,8 +91,8 @@ const Experience: React.FC = () => {
   const [cmdOutput, setCmdOutput] = useState<string[]>([])
 
   /* Palette (centralized) */
+  const { terminalPalette } = useThemeConfig()
   const tc = terminalPalette.colors(isDark)
-  const bg = isDark ? 'gray.900' : 'gray.50'
   const termBg = tc.bg
   const termText = tc.text
   const termHeader = tc.header
@@ -212,15 +212,15 @@ const Experience: React.FC = () => {
   const termWarning = tc.warning
 
   return (
-    <Box w="full" minH="100vh" bg={bg} py={8}>
-      <VStack spacing={6} maxW="1400px" mx="auto" px={[2, 4, 6]}>
-        {/* ── Terminal container ────────────────────────────── */}
+    <Box w="full" py={8}>
+      <VStack gap={6} maxW="1400px" mx="auto" px={[2, 4, 6]}>
         <Box
           w="full"
           borderRadius="md"
           fontFamily="mono"
           boxShadow={`0 0 0 1px ${termBorder}, 0 4px 16px ${isDark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.1)'}`}
           overflow="hidden"
+          bg={termBg}
         >
           {/* ═══ Pixel RGB light bar ═══ */}
           <Flex h="3px" w="full" overflow="hidden" borderTopRadius="md">
@@ -254,8 +254,8 @@ const Experience: React.FC = () => {
             fontSize="xs"
             fontWeight="medium"
           >
-            <HStack spacing={3}>
-              <HStack spacing={1.5}>
+            <HStack gap={3}>
+              <HStack gap={1.5}>
                 <Box w="10px" h="10px" borderRadius="full" bg="#bf616a" />
                 <Box w="10px" h="10px" borderRadius="full" bg="#ebcb8b" />
                 <Box w="10px" h="10px" borderRadius="full" bg="#a3be8c" />
@@ -309,7 +309,12 @@ const Experience: React.FC = () => {
             justify="space-between"
             overflow="hidden"
           >
-            <Text color={termSecondary} isTruncated>
+            <Text
+              color={termSecondary}
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+            >
               <Text as="span" color={termPrompt} fontWeight="bold">
                 {siteOwner.terminalUsername}
               </Text>
@@ -350,11 +355,11 @@ const Experience: React.FC = () => {
               </Text>
               <Box flex="1" h="1px" bg={termBorder} />
             </Flex>
-            <VStack align="stretch" spacing={1.5} pl={1}>
+            <VStack align="stretch" gap={1.5} pl={1}>
               {education.map((edu) => {
                 const logo = institutionLogos[edu.institution]
                 return (
-                  <HStack key={edu.course} fontSize="xs" spacing={2}>
+                  <HStack key={edu.course} fontSize="xs" gap={2}>
                     {logo ? (
                       <Image
                         src={logo}
@@ -503,21 +508,6 @@ const Experience: React.FC = () => {
                               h="32px"
                               borderRadius="md"
                               objectFit="contain"
-                              fallback={
-                                <Flex
-                                  w="32px"
-                                  h="32px"
-                                  borderRadius="md"
-                                  bg={`${rtColor}18`}
-                                  color={rtColor}
-                                  align="center"
-                                  justify="center"
-                                  fontSize="sm"
-                                  fontWeight="bold"
-                                >
-                                  {exp.company.charAt(0)}
-                                </Flex>
-                              }
                             />
                           ) : (
                             <Flex
@@ -572,7 +562,8 @@ const Experience: React.FC = () => {
                             {exp.companyUrl ? (
                               <Link
                                 href={exp.companyUrl}
-                                isExternal
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 color={termCommand}
                                 fontSize="xs"
                                 onClick={(e) => e.stopPropagation()}
@@ -621,33 +612,35 @@ const Experience: React.FC = () => {
                       </Flex>
 
                       {/* Expanded */}
-                      <Collapse in={isExpanded}>
-                        <Box
-                          mx={[3, 5]}
-                          mb={3}
-                          ml={[3, '69px']}
-                          pl={3}
-                          borderLeft={`2px solid ${rtColor}`}
-                        >
-                          {exp.summary && (
-                            <Text fontSize="xs" color={termHighlight} mb={2} lineHeight="1.6">
-                              {highlightData(exp.summary, hlc)}
-                            </Text>
-                          )}
-                          <VStack align="stretch" spacing={1}>
-                            {exp.highlights.map((line: string, i: number) => (
-                              <HStack key={i} fontSize="xs" align="start" spacing={2}>
-                                <Text color={rtColor} flexShrink={0} mt="1px">
-                                  ·
-                                </Text>
-                                <Text color={termText} lineHeight="1.5">
-                                  {highlightData(line, hlc)}
-                                </Text>
-                              </HStack>
-                            ))}
-                          </VStack>
-                        </Box>
-                      </Collapse>
+                      <Collapsible.Root open={isExpanded}>
+                        <Collapsible.Content>
+                          <Box
+                            mx={[3, 5]}
+                            mb={3}
+                            ml={[3, '69px']}
+                            pl={3}
+                            borderLeft={`2px solid ${rtColor}`}
+                          >
+                            {exp.summary && (
+                              <Text fontSize="xs" color={termHighlight} mb={2} lineHeight="1.6">
+                                {highlightData(exp.summary, hlc)}
+                              </Text>
+                            )}
+                            <VStack align="stretch" gap={1}>
+                              {exp.highlights.map((line: string, i: number) => (
+                                <HStack key={i} fontSize="xs" align="start" gap={2}>
+                                  <Text color={rtColor} flexShrink={0} mt="1px">
+                                    ·
+                                  </Text>
+                                  <Text color={termText} lineHeight="1.5">
+                                    {highlightData(line, hlc)}
+                                  </Text>
+                                </HStack>
+                              ))}
+                            </VStack>
+                          </Box>
+                        </Collapsible.Content>
+                      </Collapsible.Root>
                     </Box>
                   )
                 })}
@@ -676,9 +669,9 @@ const Experience: React.FC = () => {
                 </Text>
                 <Box flex="1" h="1px" bg={termBorder} />
               </Flex>
-              <VStack align="stretch" spacing={2}>
+              <VStack align="stretch" gap={2}>
                 {reviewingByYear.map(([year, items]) => (
-                  <HStack key={year} spacing={3} align="start" flexWrap="wrap">
+                  <HStack key={year} gap={3} align="start" flexWrap="wrap">
                     <Text
                       fontSize="xs"
                       fontWeight="bold"
@@ -688,7 +681,7 @@ const Experience: React.FC = () => {
                     >
                       {year}
                     </Text>
-                    <HStack spacing={1.5} flexWrap="wrap">
+                    <HStack gap={1.5} flexWrap="wrap">
                       {items.map((item, idx) => (
                         <Text
                           key={`${item.venue}-${idx}`}
@@ -752,7 +745,7 @@ const Experience: React.FC = () => {
               }}
               placeholder={t('experience.typeHelp')}
               size="xs"
-              variant="unstyled"
+              variant="flushed"
               color={termText}
               fontFamily="mono"
               flex="1"
@@ -762,7 +755,7 @@ const Experience: React.FC = () => {
               w="6px"
               bg={termPrompt}
               ml={1}
-              sx={{ animation: `${blink} 1s step-end infinite` }}
+              css={{ animation: `${blink} 1s step-end infinite` }}
             />
           </Flex>
         </Box>

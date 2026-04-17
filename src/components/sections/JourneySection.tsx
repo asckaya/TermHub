@@ -6,9 +6,9 @@ import {
   Text,
   Heading,
   Flex,
-  Link,
-  useColorModeValue,
+  Link
 } from '@chakra-ui/react'
+import { useColorModeValue } from '@/color-mode'
 import { useTranslation } from 'react-i18next'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 
@@ -65,7 +65,7 @@ const JourneySection: React.FC = () => {
             bg={lineColor}
           />
 
-          <VStack spacing={0} align="stretch">
+          <VStack gap={0} align="stretch">
             {about.journeyPhases.map((phase, index) => (
               <Flex key={index} gap={[3, 4]} align="start" py={3} position="relative">
                 <Box flexShrink={0} mt="6px">
@@ -79,7 +79,7 @@ const JourneySection: React.FC = () => {
                   />
                 </Box>
                 <Box flex={1} pb={2}>
-                  <HStack spacing={2} mb={1} flexWrap="wrap">
+                  <HStack gap={2} mb={1} flexWrap="wrap">
                     <Text
                       fontSize="2xs"
                       fontFamily="mono"
@@ -108,7 +108,7 @@ const JourneySection: React.FC = () => {
                     {renderBoldText(phase.description, textColor, boldColor)}
                   </Text>
                   {phase.tags && (
-                    <HStack spacing={1.5} flexWrap="wrap">
+                    <HStack gap={1.5} flexWrap="wrap">
                       {phase.tags.map((tag) => (
                         <Text
                           key={tag}
@@ -141,7 +141,7 @@ const JourneySection: React.FC = () => {
               </Box>
               <Link href="/experience" _hover={{ textDecoration: 'none' }}>
                 <HStack
-                  spacing={2}
+                  gap={2}
                   color={textColor}
                   fontSize="xs"
                   fontFamily="mono"

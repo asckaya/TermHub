@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 import { useEffect } from 'react'
-import { useColorMode } from '@chakra-ui/react'
-import { activeTheme } from './index'
+import { useColorMode } from '@/color-mode'
+import { useThemeContext } from './ThemeContext'
 
 /**
  * Renderless component — mounts once inside <ChakraProvider> and keeps the
@@ -24,6 +24,8 @@ import { activeTheme } from './index'
 export function ThemeInjector() {
   const { colorMode } = useColorMode()
 
+  const { activeTheme } = useThemeContext()
+
   useEffect(() => {
     const tokens = activeTheme.cssVars[colorMode === 'dark' ? 'dark' : 'light']
     const root = document.documentElement
@@ -31,25 +33,14 @@ export function ThemeInjector() {
     for (const [property, value] of Object.entries(tokens)) {
       root.style.setProperty(property, value)
     }
-  }, [colorMode])
+  }, [colorMode, activeTheme])
 
   // Also run once on mount with the initial colour mode captured above.
   // The effect dependency on `colorMode` already covers this, but an explicit
   // boot-time call ensures vars are present before the first paint even if
   // React batches the initial effect slightly late.
-  useEffect(() => {
-    const tokens =
-      activeTheme.cssVars[
-        document.documentElement.getAttribute('data-theme') === 'dark' ||
-        document.documentElement.classList.contains('chakra-ui-dark')
-          ? 'dark'
-          : 'light'
-      ]
-    const root = document.documentElement
-    for (const [property, value] of Object.entries(tokens)) {
-      root.style.setProperty(property, value)
-    }
-  }, [])  
+  // The effect dependency on `colorMode` and `activeTheme` already covers this
+  // so this duplicate boot-time call is no longer strictly needed in the React flow.
 
   return null
 }

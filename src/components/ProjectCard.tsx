@@ -7,10 +7,10 @@ import {
   HStack,
   Button,
   Link,
-  Collapse,
+  Collapsible,
   useDisclosure,
-  useColorModeValue,
 } from '@chakra-ui/react'
+import { useColorModeValue } from '@/color-mode'
 import type { ProjectItem } from '../types'
 
 const categoryColors: Record<ProjectItem['category'], string> = {
@@ -38,7 +38,7 @@ interface ProjectCardProps {
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
-  const { isOpen, onToggle } = useDisclosure()
+  const { open: isOpen, onToggle } = useDisclosure()
   const cardBg = useColorModeValue('white', 'gray.800')
   const chipBg = useColorModeValue('gray.50', 'gray.900')
   const textColor = useColorModeValue('gray.600', 'gray.400')
@@ -64,13 +64,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       transition="box-shadow 0.2s ease"
       _hover={{ shadow: 'lg' }}
     >
-      <VStack align="start" spacing={[3, 4]} w="full">
-        <HStack spacing={2} flexWrap="wrap">
-          <Badge colorScheme={categoryColors[category]} fontSize="xs">
+      <VStack align="start" gap={[3, 4]} w="full">
+        <HStack gap={2} flexWrap="wrap">
+          <Badge colorPalette={categoryColors[category]} fontSize="xs">
             {category.replace('_', ' ').toUpperCase()}
           </Badge>
           {date && (
-            <Badge colorScheme="gray" fontSize="xs">
+            <Badge colorPalette="gray" fontSize="xs">
               {date}
             </Badge>
           )}
@@ -85,9 +85,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         </Text>
 
         {tags.length > 0 && (
-          <HStack spacing={2} flexWrap="wrap">
+          <HStack gap={2} flexWrap="wrap">
             {tags.map((tag) => (
-              <Badge key={tag} fontSize="xs" colorScheme="blue" variant="subtle">
+              <Badge key={tag} fontSize="xs" colorPalette="blue" variant="subtle">
                 {tag}
               </Badge>
             ))}
@@ -95,10 +95,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         )}
 
         {primaryLinks.length > 0 && (
-          <HStack spacing={2} flexWrap="wrap">
+          <HStack gap={2} flexWrap="wrap">
             {primaryLinks.map(({ label, url }) => (
-              <Link key={`${label}-${url}`} href={url} isExternal>
-                <Button size="xs" colorScheme={linkColor(label)} variant="solid">
+              <Link key={`${label}-${url}`} href={url} target="_blank" rel="noopener noreferrer">
+                <Button size="xs" colorPalette={linkColor(label)} variant="solid">
                   {label} →
                 </Button>
               </Link>
@@ -108,28 +108,30 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
         {highlights && highlights.length > 0 && (
           <>
-            <Button size="xs" variant="outline" colorScheme="gray" onClick={onToggle}>
+            <Button size="xs" variant="outline" colorPalette="gray" onClick={onToggle}>
               {isOpen ? 'Hide Highlights' : 'Show Highlights'}
             </Button>
-            <Collapse in={isOpen} animateOpacity>
-              <Box
-                mt={2}
-                w="full"
-                p={4}
-                bg={chipBg}
-                borderRadius="md"
-                borderLeft="4px solid"
-                borderLeftColor={useColorModeValue('blue.400', 'blue.600')}
-              >
-                <VStack as="ul" align="start" spacing={2} fontSize="sm" color={textColor} pl={2}>
-                  {highlights.map((item, idx) => (
-                    <Box as="li" key={idx}>
-                      {item}
-                    </Box>
-                  ))}
-                </VStack>
-              </Box>
-            </Collapse>
+            <Collapsible.Root open={isOpen}>
+              <Collapsible.Content>
+                <Box
+                  mt={2}
+                  w="full"
+                  p={4}
+                  bg={chipBg}
+                  borderRadius="md"
+                  borderLeft="4px solid"
+                  borderLeftColor={useColorModeValue('blue.400', 'blue.600')}
+                >
+                  <VStack as="ul" align="start" gap={2} fontSize="sm" color={textColor} pl={2}>
+                    {highlights.map((item, idx) => (
+                      <Box as="li" key={idx}>
+                        {item}
+                      </Box>
+                    ))}
+                  </VStack>
+                </Box>
+              </Collapsible.Content>
+            </Collapsible.Root>
           </>
         )}
       </VStack>

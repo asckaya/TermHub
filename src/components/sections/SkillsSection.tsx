@@ -1,4 +1,12 @@
-import { Box, Container, Heading, Flex, HStack, Text, useColorModeValue } from '@chakra-ui/react'
+import {
+  Box,
+  Container,
+  Heading,
+  Flex,
+  HStack,
+  Text
+} from '@chakra-ui/react'
+import { useColorModeValue } from '@/color-mode'
 import { useTranslation } from 'react-i18next'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import DynamicIcon from '../DynamicIcon'
@@ -28,11 +36,11 @@ const SkillsSection: React.FC = () => {
           </Heading>
           <Box flex="1" h="1px" bg={useColorModeValue('gray.200', 'gray.700')} />
         </Flex>
-        <HStack spacing={2} flexWrap="wrap">
+        <HStack gap={2} flexWrap="wrap">
           {skills.map((skill) => (
             <HStack
               key={getName(skill)}
-              spacing={1.5}
+              gap={1.5}
               fontSize="xs"
               fontFamily="mono"
               px={2.5}

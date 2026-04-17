@@ -12,7 +12,7 @@ const Contact = () => {
 
   return (
     <Container maxW="7xl" px={4}>
-      <VStack spacing={8} align="stretch">
+      <VStack gap={8} align="stretch">
         <MotionBox
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -47,7 +47,7 @@ LOCATION = "${siteOwner.contact.location}"`}
             <Heading as="h2" size="md" mb={4}>
               {t('contact.quickLinks')}
             </Heading>
-            <VStack align="stretch" spacing={3}>
+            <VStack align="stretch" gap={3}>
               <Box>
                 <Text as="span" fontWeight="bold">
                   {t('contact.email')}

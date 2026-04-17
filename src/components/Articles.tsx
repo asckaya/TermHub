@@ -1,18 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react'
-import {
-  Box,
-  Collapse,
-  Flex,
-  HStack,
-  Icon,
-  Input,
-  Link,
-  Select,
-  Text,
-  VStack,
-  useColorMode,
-  useColorModeValue,
-} from '@chakra-ui/react'
+import { useColorMode, useColorModeValue } from '@/color-mode'
+import { Box, Collapsible, Flex, HStack, Icon, Input, Link, Text, VStack } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
 import { type IconType } from 'react-icons'
 import { FaGithub, FaMedium, FaYoutube, FaExternalLinkAlt } from 'react-icons/fa'
@@ -21,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import type { ProjectItem } from '../types'
 import { highlightData } from '../utils/highlightData'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
-import { articleCategoryColors, terminalPalette } from '@/config/theme'
+import { useThemeConfig } from '@/config/theme'
 
 /* ── Keyframes ─────────────────────────────────────────────────── */
 const blink = keyframes`0%,100%{opacity:1}50%{opacity:0}`
@@ -30,7 +18,6 @@ const blink = keyframes`0%,100%{opacity:1}50%{opacity:0}`
 type CategoryFilter = ProjectItem['category'] | 'all'
 
 /* ── Category config (from config/theme.ts) ──────────────────── */
-const categoryColors = articleCategoryColors
 
 /* ── Helpers ───────────────────────────────────────────────────── */
 const linkIcon = (url: string): IconType => {
@@ -88,6 +75,7 @@ const Articles: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all')
 
   /* Terminal palette (centralized) */
+  const { terminalPalette, articleCategoryColors: categoryColors } = useThemeConfig()
   const tc = terminalPalette.colors(isDark)
   const termBg = tc.bg
   const termText = tc.text
@@ -162,7 +150,7 @@ const Articles: React.FC = () => {
 
   return (
     <Box w="full" minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')} py={8}>
-      <VStack spacing={6} maxW="1400px" mx="auto" px={[2, 4, 6]}>
+      <VStack gap={6} maxW="1400px" mx="auto" px={[2, 4, 6]}>
         <Box
           w="full"
           borderRadius="md"
@@ -204,8 +192,8 @@ const Articles: React.FC = () => {
             fontSize="xs"
             fontWeight="medium"
           >
-            <HStack spacing={3}>
-              <HStack spacing={1.5}>
+            <HStack gap={3}>
+              <HStack gap={1.5}>
                 <Box w="10px" h="10px" borderRadius="full" bg="#bf616a" />
                 <Box w="10px" h="10px" borderRadius="full" bg="#ebcb8b" />
                 <Box w="10px" h="10px" borderRadius="full" bg="#a3be8c" />
@@ -252,7 +240,12 @@ const Articles: React.FC = () => {
             justify="space-between"
             overflow="hidden"
           >
-            <Text color={termSecondary} isTruncated>
+            <Text
+              color={termSecondary}
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+            >
               <Text as="span" color={termPrompt} fontWeight="bold">
                 {siteOwner.terminalUsername}
               </Text>
@@ -291,23 +284,28 @@ const Articles: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               size="xs"
-              variant="unstyled"
+              variant="flushed"
               color={termText}
               fontFamily="mono"
               flex="1"
               minW="120px"
               _placeholder={{ color: termSecondary }}
             />
-            <Select
+            <select
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value as CategoryFilter)}
-              size="xs"
-              w="130px"
-              bg={isDark ? 'rgba(0,0,0,0.2)' : 'white'}
-              border={`1px solid ${termBorder}`}
-              color={termText}
-              fontFamily="mono"
-              borderRadius="sm"
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                setSelectedCategory(e.target.value as CategoryFilter)
+              }
+              style={{
+                width: '130px',
+                background: isDark ? 'rgba(0,0,0,0.2)' : 'white',
+                border: `1px solid ${termBorder}`,
+                color: termText,
+                fontFamily: 'monospace',
+                borderRadius: '4px',
+                fontSize: '12px',
+                padding: '2px 6px',
+              }}
             >
               <option value="all">{t('articles.allTopics')}</option>
               {availableCategories.map((c) => (
@@ -315,7 +313,7 @@ const Articles: React.FC = () => {
                   {t(`categoryLabel.${c}`)}
                 </option>
               ))}
-            </Select>
+            </select>
           </Flex>
 
           {/* ═══ Content ═══ */}
@@ -324,7 +322,7 @@ const Articles: React.FC = () => {
             color={termText}
             maxH="70vh"
             overflowY="auto"
-            sx={{
+            css={{
               '&::-webkit-scrollbar': { width: '6px', background: 'transparent' },
               '&::-webkit-scrollbar-thumb': { background: tc.border, borderRadius: '3px' },
             }}
@@ -333,7 +331,7 @@ const Articles: React.FC = () => {
               {yearGroups.map(([year, items], gi) => (
                 <Box key={year} mb={gi < yearGroups.length - 1 ? 6 : 0}>
                   {/* Year heading */}
-                  <HStack spacing={2} mb={2} pl="2px">
+                  <HStack gap={2} mb={2} pl="2px">
                     <Text
                       fontSize="2xs"
                       fontFamily="mono"
@@ -351,7 +349,7 @@ const Articles: React.FC = () => {
                   </HStack>
 
                   {/* Articles in year */}
-                  <VStack spacing={0} align="stretch">
+                  <VStack gap={0} align="stretch">
                     {items.map((item) => {
                       const ct = categoryColors[item.category]
                       const articleType = getArticleType(item.tags)
@@ -410,7 +408,13 @@ const Articles: React.FC = () => {
 
                             {/* Title + type */}
                             <Box flex="1" px={[2, 3]} minW={0}>
-                              <Text fontWeight="medium" color={termText} isTruncated>
+                              <Text
+                                fontWeight="medium"
+                                color={termText}
+                                overflow="hidden"
+                                textOverflow="ellipsis"
+                                whiteSpace="nowrap"
+                              >
                                 {item.title}
                               </Text>
                               {articleType && (
@@ -421,12 +425,13 @@ const Articles: React.FC = () => {
                             </Box>
 
                             {/* Links (desktop) */}
-                            <HStack spacing={1.5} display={['none', 'flex']} flexShrink={0}>
+                            <HStack gap={1.5} display={['none', 'flex']} flexShrink={0}>
                               {resources.slice(0, 3).map((r) => (
                                 <Link
                                   key={r.url}
                                   href={r.url}
-                                  isExternal
+                                  target="_blank"
+                                  rel="noopener noreferrer"
                                   onClick={(e) => e.stopPropagation()}
                                   _hover={{ textDecoration: 'none' }}
                                 >
@@ -465,78 +470,81 @@ const Articles: React.FC = () => {
                           </Flex>
 
                           {/* Expanded details */}
-                          <Collapse in={isExpanded} animateOpacity>
-                            <Box
-                              px={[3, 4, 8]}
-                              py={3}
-                              bg={isDark ? 'rgba(76,86,106,0.1)' : 'rgba(203,213,225,0.15)'}
-                              borderLeft={`2px solid ${ct.fg(isDark)}`}
-                            >
-                              {/* Summary */}
-                              <Text fontSize="xs" color={termText} lineHeight="1.7" mb={2}>
-                                {highlightData(item.summary, {
-                                  num: termHighlight,
-                                  kw: termCommand,
-                                  str: termSuccess,
-                                })}
-                              </Text>
+                          <Collapsible.Root open={isExpanded}>
+                            <Collapsible.Content>
+                              <Box
+                                px={[3, 4, 8]}
+                                py={3}
+                                bg={isDark ? 'rgba(76,86,106,0.1)' : 'rgba(203,213,225,0.15)'}
+                                borderLeft={`2px solid ${ct.fg(isDark)}`}
+                              >
+                                {/* Summary */}
+                                <Text fontSize="xs" color={termText} lineHeight="1.7" mb={2}>
+                                  {highlightData(item.summary, {
+                                    num: termHighlight,
+                                    kw: termCommand,
+                                    str: termSuccess,
+                                  })}
+                                </Text>
 
-                              {/* Tags */}
-                              {item.tags.length > 0 && (
-                                <HStack spacing={1.5} flexWrap="wrap" mb={2}>
-                                  {item.tags.map((t) => (
-                                    <Text
-                                      key={t}
-                                      fontSize="2xs"
-                                      fontFamily="mono"
-                                      color={termMuted}
-                                      px={1.5}
-                                      py={0.5}
-                                      bg={isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)'}
-                                      borderRadius="sm"
-                                    >
-                                      {t}
-                                    </Text>
-                                  ))}
-                                </HStack>
-                              )}
-
-                              {/* All links (visible on all screens when expanded) */}
-                              {resources.length > 0 && (
-                                <Flex wrap="wrap" gap={2}>
-                                  {resources.map((r) => (
-                                    <Link
-                                      key={r.url}
-                                      href={r.url}
-                                      isExternal
-                                      onClick={(e) => e.stopPropagation()}
-                                      _hover={{ textDecoration: 'none' }}
-                                    >
-                                      <HStack
-                                        spacing={1.5}
-                                        px={2.5}
-                                        py={1}
-                                        borderRadius="sm"
-                                        border="1px solid"
-                                        borderColor={termBorder}
-                                        color={termCommand}
-                                        fontSize="xs"
+                                {/* Tags */}
+                                {item.tags.length > 0 && (
+                                  <HStack gap={1.5} flexWrap="wrap" mb={2}>
+                                    {item.tags.map((t) => (
+                                      <Text
+                                        key={t}
+                                        fontSize="2xs"
                                         fontFamily="mono"
-                                        transition="all 0.15s"
-                                        _hover={{
-                                          borderColor: ct.fg(isDark),
-                                          color: ct.fg(isDark),
-                                        }}
+                                        color={termMuted}
+                                        px={1.5}
+                                        py={0.5}
+                                        bg={isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)'}
+                                        borderRadius="sm"
                                       >
-                                        <Icon as={linkIcon(r.url)} boxSize="11px" />
-                                        <Text>{r.label}</Text>
-                                      </HStack>
-                                    </Link>
-                                  ))}
-                                </Flex>
-                              )}
-                            </Box>
-                          </Collapse>
+                                        {t}
+                                      </Text>
+                                    ))}
+                                  </HStack>
+                                )}
+
+                                {/* All links (visible on all screens when expanded) */}
+                                {resources.length > 0 && (
+                                  <Flex wrap="wrap" gap={2}>
+                                    {resources.map((r) => (
+                                      <Link
+                                        key={r.url}
+                                        href={r.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={(e) => e.stopPropagation()}
+                                        _hover={{ textDecoration: 'none' }}
+                                      >
+                                        <HStack
+                                          gap={1.5}
+                                          px={2.5}
+                                          py={1}
+                                          borderRadius="sm"
+                                          border="1px solid"
+                                          borderColor={termBorder}
+                                          color={termCommand}
+                                          fontSize="xs"
+                                          fontFamily="mono"
+                                          transition="all 0.15s"
+                                          _hover={{
+                                            borderColor: ct.fg(isDark),
+                                            color: ct.fg(isDark),
+                                          }}
+                                        >
+                                          <Icon as={linkIcon(r.url)} boxSize="11px" />
+                                          <Text>{r.label}</Text>
+                                        </HStack>
+                                      </Link>
+                                    ))}
+                                  </Flex>
+                                )}
+                              </Box>
+                            </Collapsible.Content>
+                          </Collapsible.Root>
                         </Box>
                       )
                     })}
@@ -572,7 +580,7 @@ const Articles: React.FC = () => {
             <Text>
               {filteredArticles.length}/{articles.length} {t('articles.shown')}
             </Text>
-            <HStack spacing={1}>
+            <HStack gap={1}>
               <Text color={termPrompt}>
                 {siteOwner.terminalUsername}@blog:{promptPath}$
               </Text>
@@ -580,7 +588,7 @@ const Articles: React.FC = () => {
                 w="6px"
                 h="11px"
                 bg={termPrompt}
-                sx={{ animation: `${blink} 1s step-end infinite` }}
+                css={{ animation: `${blink} 1s step-end infinite` }}
               />
             </HStack>
           </Flex>

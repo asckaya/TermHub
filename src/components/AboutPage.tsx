@@ -10,17 +10,16 @@ import {
   Link,
   Text,
   VStack,
-  useColorModeValue,
-  useColorMode,
-  Divider,
+  Separator,
   Badge,
 } from '@chakra-ui/react'
+import { useColorMode, useColorModeValue } from '@/color-mode'
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import { heroSocialIcons } from '@/site.config'
 import { withBase } from '@/utils/asset'
-import { terminalPalette } from '@/config/theme'
+import { useThemeConfig } from '@/config/theme'
 import DynamicIcon from './DynamicIcon'
 import JourneySection from './sections/JourneySection'
 import BioSection from './sections/BioSection'
@@ -38,6 +37,7 @@ type TypePhase = 'typing' | 'pausing' | 'deleting' | 'waiting'
 const TerminalTypewriter: React.FC = () => {
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
+  const { terminalPalette } = useThemeConfig()
   const tc = terminalPalette.colors(isDark)
 
   const { siteOwner, about } = useLocalizedData()
@@ -141,7 +141,7 @@ const TerminalTypewriter: React.FC = () => {
         borderBottom={`1px solid ${tc.border}`}
         position="relative"
       >
-        <HStack spacing={1.5}>
+        <HStack gap={1.5}>
           <Box w="11px" h="11px" borderRadius="full" bg="#ff5f57" flexShrink={0} />
           <Box w="11px" h="11px" borderRadius="full" bg="#febc2e" flexShrink={0} />
           <Box w="11px" h="11px" borderRadius="full" bg="#28c840" flexShrink={0} />
@@ -169,7 +169,7 @@ const TerminalTypewriter: React.FC = () => {
         {/* Static history */}
         {historyLines.map((line, i) => (
           <Box key={i} mb={3}>
-            <HStack spacing={2} flexWrap="wrap">
+            <HStack gap={2} flexWrap="wrap">
               <Text color={tc.prompt} flexShrink={0}>
                 {line.prompt}
               </Text>
@@ -185,7 +185,7 @@ const TerminalTypewriter: React.FC = () => {
 
         {/* cat profile.md */}
         <Box mb={5}>
-          <HStack spacing={2} flexWrap="wrap" mb={2}>
+          <HStack gap={2} flexWrap="wrap" mb={2}>
             <Text color={tc.prompt} flexShrink={0}>
               {prompt}
             </Text>
@@ -195,19 +195,19 @@ const TerminalTypewriter: React.FC = () => {
 
           <Box fontSize="xs" pl={1}>
             {/* Comment header — staggered */}
-            <Text color={tc.highlight} fontWeight="semibold" mb={0.5} sx={fadeIn(0.05)}>
+            <Text color={tc.highlight} fontWeight="semibold" mb={0.5} css={fadeIn(0.05)}>
               {'# ── '}
               {siteOwner.name.full}
               {' · M.S. Student @ NUAA ──────────────'}
             </Text>
-            <Text color={tc.secondary} mb={3} sx={fadeIn(0.18)}>
+            <Text color={tc.secondary} mb={3} css={fadeIn(0.18)}>
               {'# Research: LLM Multi-Agent Systems · Reasoning Optimization'}
             </Text>
 
             {/* Bio paragraphs — each fades in with increasing delay */}
-            <VStack spacing={2} align="start">
+            <VStack gap={2} align="start">
               {paragraphs.map((para, i) => (
-                <Text key={i} color={tc.text} lineHeight="tall" sx={fadeIn(0.35 + i * 0.22)}>
+                <Text key={i} color={tc.text} lineHeight="tall" css={fadeIn(0.35 + i * 0.22)}>
                   {para}
                 </Text>
               ))}
@@ -217,7 +217,7 @@ const TerminalTypewriter: React.FC = () => {
 
         {/* Live typewriter line */}
         <Box>
-          <HStack spacing={2} flexWrap="wrap">
+          <HStack gap={2} flexWrap="wrap">
             <Text color={tc.prompt} flexShrink={0}>
               {prompt}
             </Text>
@@ -226,7 +226,7 @@ const TerminalTypewriter: React.FC = () => {
           </HStack>
 
           {/* Output line with cursor */}
-          <HStack spacing={0} mt={0.5} minH="1.5em" align="center">
+          <HStack gap={0} mt={0.5} minH="1.5em" align="center">
             <Text color={tc.text} whiteSpace="pre">
               {displayText}
             </Text>
@@ -288,7 +288,7 @@ const ProfileSidebar: React.FC = () => {
         align="center"
         gap={2}
       >
-        <HStack spacing={1.5}>
+        <HStack gap={1.5}>
           <Box w="10px" h="10px" borderRadius="full" bg="red.400" />
           <Box w="10px" h="10px" borderRadius="full" bg="yellow.400" />
           <Box w="10px" h="10px" borderRadius="full" bg="green.400" />
@@ -298,9 +298,9 @@ const ProfileSidebar: React.FC = () => {
         </Text>
       </Flex>
 
-      <VStack spacing={0} align="stretch">
+      <VStack gap={0} align="stretch">
         {/* Avatar + Name */}
-        <VStack spacing={3} px={5} pt={6} pb={4} align="center">
+        <VStack gap={3} px={5} pt={6} pb={4} align="center">
           <Image
             src={withBase(`images/${siteConfig.avatar}`)}
             alt={siteOwner.name.full}
@@ -310,8 +310,8 @@ const ProfileSidebar: React.FC = () => {
             border="2px solid"
             borderColor={useColorModeValue('gray.200', 'gray.600')}
           />
-          <VStack spacing={1} align="center">
-            <HStack spacing={1} fontFamily="mono" fontSize="sm">
+          <VStack gap={1} align="center">
+            <HStack gap={1} fontFamily="mono" fontSize="sm">
               <Text color={promptColor} fontWeight="bold">
                 ~
               </Text>
@@ -325,12 +325,12 @@ const ProfileSidebar: React.FC = () => {
           </VStack>
         </VStack>
 
-        <Divider borderColor={dividerColor} />
+        <Separator borderColor={dividerColor} />
 
         {/* Meta info */}
-        <VStack spacing={2.5} px={5} py={4} align="stretch">
+        <VStack gap={2.5} px={5} py={4} align="stretch">
           {siteOwner.contact.location && (
-            <HStack spacing={2.5}>
+            <HStack gap={2.5}>
               <DynamicIcon name="FaMapMarkerAlt" boxSize={3} color="cyan.400" />
               <Text fontSize="xs" color={textColor} fontFamily="mono">
                 {siteOwner.contact.location}
@@ -338,7 +338,7 @@ const ProfileSidebar: React.FC = () => {
             </HStack>
           )}
           {siteOwner.contact.email && (
-            <HStack spacing={2.5}>
+            <HStack gap={2.5}>
               <DynamicIcon name="FaEnvelope" boxSize={3} color="cyan.400" />
               <Link
                 href={`mailto:${siteOwner.contact.email}`}
@@ -346,18 +346,21 @@ const ProfileSidebar: React.FC = () => {
                 color={textColor}
                 fontFamily="mono"
                 _hover={{ color: 'cyan.400', textDecoration: 'none' }}
-                isTruncated
+                overflow="hidden"
+                textOverflow="ellipsis"
+                whiteSpace="nowrap"
               >
                 {siteOwner.contact.email}
               </Link>
             </HStack>
           )}
           {siteOwner.social.github && (
-            <HStack spacing={2.5}>
+            <HStack gap={2.5}>
               <DynamicIcon name="FaGithub" boxSize={3} color="cyan.400" />
               <Link
                 href={siteOwner.social.github}
-                isExternal
+                target="_blank"
+                rel="noopener noreferrer"
                 fontSize="xs"
                 color={textColor}
                 fontFamily="mono"
@@ -369,21 +372,22 @@ const ProfileSidebar: React.FC = () => {
           )}
         </VStack>
 
-        <Divider borderColor={dividerColor} />
+        <Separator borderColor={dividerColor} />
 
         {/* Social links */}
         {heroSocialIcons.length > 0 && (
           <>
-            <HStack spacing={2} px={5} py={3} flexWrap="wrap">
+            <HStack gap={2} px={5} py={3} flexWrap="wrap">
               {heroSocialIcons.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
-                  isExternal
+                  target="_blank"
+                  rel="noopener noreferrer"
                   _hover={{ textDecoration: 'none' }}
                 >
                   <HStack
-                    spacing={1.5}
+                    gap={1.5}
                     px={2.5}
                     py={1.5}
                     borderRadius="md"
@@ -405,14 +409,14 @@ const ProfileSidebar: React.FC = () => {
                 </Link>
               ))}
             </HStack>
-            <Divider borderColor={dividerColor} />
+            <Separator borderColor={dividerColor} />
           </>
         )}
 
         {/* Skills */}
         {skills.length > 0 && (
           <Box px={5} py={4}>
-            <HStack spacing={2} mb={3}>
+            <HStack gap={2} mb={3}>
               <Box h="2px" w="12px" bg="cyan.400" borderRadius="full" />
               <Text
                 fontSize="xs"
@@ -429,7 +433,7 @@ const ProfileSidebar: React.FC = () => {
               {skills.map((skill) => (
                 <HStack
                   key={getName(skill)}
-                  spacing={1}
+                  gap={1}
                   px={2}
                   py={0.5}
                   bg={tagBg}
@@ -466,7 +470,7 @@ const PageHeader: React.FC = () => {
 
   return (
     <Box borderBottom="1px solid" borderColor={borderColor} pb={6} mb={2}>
-      <HStack spacing={2} fontFamily="mono" fontSize={['sm', 'md']} mb={2}>
+      <HStack gap={2} fontFamily="mono" fontSize={['sm', 'md']} mb={2}>
         <Text color="yellow.400" fontWeight="bold">
           $
         </Text>
@@ -479,7 +483,7 @@ const PageHeader: React.FC = () => {
           h="1em"
           bg="cyan.400"
           animation="blink 1s step-end infinite"
-          sx={{
+          css={{
             '@keyframes blink': {
               '0%, 100%': { opacity: 1 },
               '50%': { opacity: 0 },
@@ -487,12 +491,12 @@ const PageHeader: React.FC = () => {
           }}
         />
       </HStack>
-      <HStack spacing={3} mt={3}>
+      <HStack gap={3} mt={3}>
         <Box h="3px" w="32px" bg="cyan.400" borderRadius="full" />
         <Heading size={['md', 'lg']} fontWeight="bold">
           {t('nav.about', 'About')}
         </Heading>
-        <Badge fontFamily="mono" fontSize="2xs" colorScheme="cyan" variant="subtle" px={2}>
+        <Badge fontFamily="mono" fontSize="2xs" colorPalette="cyan" variant="subtle" px={2}>
           {siteOwner.name.full}
         </Badge>
       </HStack>
@@ -508,7 +512,7 @@ const PageHeader: React.FC = () => {
 const AboutPage: React.FC = () => {
   return (
     <Box w="full" py={[4, 6, 8]}>
-      <Container maxW={['full', 'full', '7xl']} px={[3, 4, 8]}>
+      <Container maxW="7xl" px={[3, 4, 8]}>
         <PageHeader />
 
         <Grid
@@ -524,7 +528,7 @@ const AboutPage: React.FC = () => {
 
           {/* Main content */}
           <GridItem>
-            <VStack spacing={[6, 7, 8]} align="stretch">
+            <VStack gap={[6, 7, 8]} align="stretch">
               {/* Typewriter terminal — self intro */}
               <TerminalTypewriter />
 

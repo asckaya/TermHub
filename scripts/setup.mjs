@@ -7,7 +7,7 @@
  * Generates content/site.json from user input.
  * Uses only built-in Node.js modules. Safe to run multiple times.
  *
- * Usage:  npm run setup
+ * Usage:  pnpm setup
  */
 
 import readline from 'node:readline'
@@ -54,7 +54,7 @@ function sectionHeader(title) {
 
 function buildSiteJson(a) {
   return {
-    _comment: 'Your basic info. Edit the values below, then run: npm run dev',
+    _comment: 'Your basic info. Edit the values below, then run: pnpm dev',
 
     name: {
       full: a.fullName,
@@ -214,7 +214,7 @@ async function main() {
   console.log('  ║                                                       ║')
   console.log('  ║  2. Place your avatar in content/images/avatar.jpg    ║')
   console.log('  ║                                                       ║')
-  console.log('  ║  3. Run:  npm run dev                                 ║')
+  console.log('  ║  3. Run:  pnpm dev                                 ║')
   console.log('  ║                                                       ║')
   console.log('  ╚═══════════════════════════════════════════════════════╝')
   console.log()

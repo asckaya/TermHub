@@ -14,15 +14,15 @@ Thank you for your interest in contributing! This document provides guidelines f
 ```bash
 git clone https://github.com/H-Freax/TermHub.git
 cd TermHub
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 ## Pull Request Guidelines
 
 1. **Fork & branch:** Create a feature branch from `main` (e.g., `feature/add-timeline-component`).
 2. **Keep it focused:** One PR per feature or fix. Avoid mixing unrelated changes.
-3. **Test your changes:** Run `npm run build` to ensure TypeScript compiles without errors.
+3. **Test your changes:** Run `pnpm build` to ensure TypeScript compiles without errors.
 4. **Commit messages:** Use clear, imperative-mood messages:
    - `fix: resolve dark mode flicker on Projects page`
    - `feat: add responsive tab bar to Experience terminal`

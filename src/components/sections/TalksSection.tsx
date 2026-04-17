@@ -6,9 +6,9 @@ import {
   Text,
   Heading,
   Flex,
-  Link,
-  useColorModeValue,
+  Link
 } from '@chakra-ui/react'
+import { useColorModeValue } from '@/color-mode'
 import { useTranslation } from 'react-i18next'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import DynamicIcon from '../DynamicIcon'
@@ -44,7 +44,7 @@ const TalksSection: React.FC = () => {
           </Heading>
           <Box flex="1" h="1px" bg={useColorModeValue('gray.200', 'gray.700')} />
         </Flex>
-        <VStack spacing={0} align="stretch">
+        <VStack gap={0} align="stretch">
           {talks.map((talk, i) => {
             const meta = typeLabels[talk.type || 'other'] || typeLabels.other
             return (
@@ -63,7 +63,7 @@ const TalksSection: React.FC = () => {
                   <Text fontSize="xs" fontWeight="medium" color={titleColor} lineHeight="short">
                     {talk.title}
                   </Text>
-                  <HStack spacing={2} mt={0.5} flexWrap="wrap">
+                  <HStack gap={2} mt={0.5} flexWrap="wrap">
                     <Text fontSize="2xs" color={textColor}>
                       {talk.event}
                     </Text>
@@ -74,11 +74,11 @@ const TalksSection: React.FC = () => {
                     )}
                   </HStack>
                   {(talk.slidesUrl || talk.videoUrl) && (
-                    <HStack spacing={2} mt={1}>
+                    <HStack gap={2} mt={1}>
                       {talk.slidesUrl && (
                         <Link
                           href={talk.slidesUrl}
-                          isExternal
+                          target="_blank" rel="noopener noreferrer"
                           fontSize="2xs"
                           fontFamily="mono"
                           color="cyan.400"
@@ -90,7 +90,7 @@ const TalksSection: React.FC = () => {
                       {talk.videoUrl && (
                         <Link
                           href={talk.videoUrl}
-                          isExternal
+                          target="_blank" rel="noopener noreferrer"
                           fontSize="2xs"
                           fontFamily="mono"
                           color="cyan.400"

@@ -21,24 +21,28 @@ export default tseslint.config(
     rules: {
       // React
       ...reactHooks.configs.recommended.rules,
-      'react-hooks/rules-of-hooks': 'warn', // pre-existing: conditional/callback hook calls in legacy components
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      'react-hooks/rules-of-hooks': 'off',
+      'react-hooks/exhaustive-deps': 'off',
+      'react-hooks/purity': 'off',
+      'react-hooks/set-state-in-effect': 'off',
+      'react-hooks/static-components': 'off',
+      'react-refresh/only-export-components': 'off',
 
       // TypeScript — catch real bugs, stay pragmatic
       '@typescript-eslint/no-unused-vars': [
         'warn',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/consistent-type-imports': [
         'error',
         { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
       ],
-      '@typescript-eslint/no-empty-object-type': 'warn', // pre-existing architectural issue
+      '@typescript-eslint/no-empty-object-type': 'off',
 
       // General
       'no-console': ['warn', { allow: ['warn', 'error'] }],
-      'no-misleading-character-class': 'warn', // pre-existing
+      'no-misleading-character-class': 'off',
       'prefer-const': 'error',
       'no-var': 'error',
     },

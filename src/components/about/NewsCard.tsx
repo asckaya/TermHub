@@ -1,16 +1,6 @@
 import React from 'react'
-import {
-  Box,
-  VStack,
-  HStack,
-  Text,
-  Link,
-  Button,
-  useColorModeValue,
-  Flex,
-  Heading,
-  Badge,
-} from '@chakra-ui/react'
+import { useColorModeValue } from '@/color-mode'
+import { Box, VStack, HStack, Text, Link, Button, Flex, Heading, Badge } from '@chakra-ui/react'
 import DynamicIcon from '../DynamicIcon'
 import { type NewsItem } from '../../types'
 
@@ -57,7 +47,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
           position="absolute"
           top={2}
           right={2}
-          colorScheme={news.iconColor.split('.')[0]}
+          colorPalette={news.iconColor.split('.')[0]}
           bg={useColorModeValue(
             `${news.iconColor.split('.')[0]}.500`,
             `${news.iconColor.split('.')[0]}.600`,
@@ -105,14 +95,14 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
           >
             <DynamicIcon name={getIconName()} boxSize={4} />
           </Box>
-          <VStack align="start" spacing={1} width="100%" pr={12}>
+          <VStack align="start" gap={1} width="100%" pr={12}>
             <Heading size="xs" id={`news-title-${news.title.replace(/\s+/g, '-').toLowerCase()}`}>
               {news.title}
             </Heading>
 
             {news.badge && (
               <Badge
-                colorScheme={news.iconColor.split('.')[0]}
+                colorPalette={news.iconColor.split('.')[0]}
                 fontSize="2xs"
                 borderRadius="full"
                 px={2}
@@ -135,22 +125,23 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
         </Text>
 
         {/* Button link area */}
-        <HStack spacing={2} flexWrap="wrap" gap={2} mt={2}>
+        <HStack gap={2} flexWrap="wrap" mt={2}>
           {news.links.map((link, index) => {
             const LinkIcon = link.icon ? <DynamicIcon name={link.icon} fontSize="xs" /> : undefined
             return (
               <Link
                 key={index}
                 href={link.url}
-                isExternal
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={`${link.text} for ${news.title}`}
               >
-                <Button
-                  size="xs"
-                  variant="outline"
-                  colorScheme={news.iconColor.split('.')[0]}
-                  leftIcon={LinkIcon && <Box aria-hidden="true">{LinkIcon}</Box>}
-                >
+                <Button size="xs" variant="outline" colorPalette={news.iconColor.split('.')[0]}>
+                  {LinkIcon && (
+                    <Box as="span" aria-hidden="true">
+                      {LinkIcon}
+                    </Box>
+                  )}
                   {link.text}
                 </Button>
               </Link>

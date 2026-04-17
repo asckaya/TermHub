@@ -1,3 +1,7 @@
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@5.1.0/index.css');
+@import url('https://cdn.jsdelivr.net/npm/@chinese-fonts/maple-mono-cn/dist/MapleMono-CN-Regular/result.css');
+@import url('https://cdn.jsdelivr.net/npm/@chinese-fonts/maple-mono-cn/dist/MapleMono-CN-Bold/result.css');
+
 /*
  * CSS custom properties (--bg-color, --text-color, etc.) are no longer
  * defined here. They are injected at runtime onto :root by ThemeInjector
@@ -15,7 +19,7 @@
 }
 
 body {
-  font-family: 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-family: 'Maple Mono CN', 'Maple Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
   line-height: 1.6;
   color: var(--text-color);
   background-color: var(--bg-color);
@@ -28,7 +32,7 @@ pre {
   border-radius: 4px;
   overflow-x: auto;
   margin-bottom: 1rem;
-  font-family: 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-family: 'Maple Mono CN', 'Maple Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
 }
 
 code {
@@ -36,7 +40,7 @@ code {
   padding: 0.1rem 0.3rem;
   border-radius: 4px;
   font-size: 0.9em;
-  font-family: 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-family: 'Maple Mono CN', 'Maple Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
 }
 
 .tag {
@@ -81,4 +85,9 @@ code {
   display: flex;
   align-items: center;
   gap: 0.3rem;
+}
+
+.chakra-container {
+  margin-left: auto;
+  margin-right: auto;
 }

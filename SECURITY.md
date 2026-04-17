@@ -25,5 +25,5 @@ This is a static site template. Security concerns are primarily:
 ## Best Practices for Users
 
 - Do not commit secrets or API keys to `.env` (use `.env.local` for sensitive values)
-- Keep dependencies updated: `npm audit` regularly
+- Keep dependencies updated: `pnpm audit` regularly
 - Review third-party links in your data files before deploying
