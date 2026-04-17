@@ -12,8 +12,9 @@
  * 3. Users set `"components": { "slotName": "variantId" }` in site.json
  */
 
-import type { TemplateConfig } from './types'
 import type { ComponentSlots } from './slots'
+import type { TemplateConfig } from './types'
+
 import { resolveSlots } from './context'
 import terminalTemplate from './terminal'
 
@@ -48,6 +49,21 @@ export const variantRegistry: Record<
 const DEFAULT_TEMPLATE = 'terminal'
 
 /**
+ * Resolve final slot map: template defaults merged with user overrides.
+ */
+export function getResolvedSlots(
+  template: TemplateConfig,
+  userOverrides?: Record<string, string>,
+): ComponentSlots {
+  return resolveSlots(template.slots, variantRegistry, userOverrides)
+}
+
+/** List all variant ids available for a given slot */
+export function getSlotVariants(slotName: string): string[] {
+  return Object.keys(variantRegistry[slotName] ?? {})
+}
+
+/**
  * Resolve a template by id.
  * Falls back to the default template if the id is unknown.
  */
@@ -56,16 +72,6 @@ export function getTemplate(id?: string): TemplateConfig {
     return templates[id]
   }
   return templates[DEFAULT_TEMPLATE]
-}
-
-/**
- * Resolve final slot map: template defaults merged with user overrides.
- */
-export function getResolvedSlots(
-  template: TemplateConfig,
-  userOverrides?: Record<string, string>,
-): ComponentSlots {
-  return resolveSlots(template.slots, variantRegistry, userOverrides)
 }
 
 /** List all available template ids */
@@ -78,13 +84,8 @@ export function getTemplates(): TemplateConfig[] {
   return Object.values(templates)
 }
 
-/** List all variant ids available for a given slot */
-export function getSlotVariants(slotName: string): string[] {
-  return Object.keys(variantRegistry[slotName] ?? {})
-}
-
-export type { TemplateConfig, TemplatePages, LayoutProps } from './types'
+export { SlotProvider, useSlot } from './context'
 export type { ComponentSlots, SlotName } from './slots'
 export { DEFAULT_SECTIONS, SECTION_SLOTS } from './slots'
-export { SlotProvider, useSlot } from './context'
+export type { LayoutProps, TemplateConfig, TemplatePages } from './types'
 export default templates

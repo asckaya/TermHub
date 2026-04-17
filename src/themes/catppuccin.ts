@@ -1,4 +1,5 @@
-import { FaRobot, FaBrain, FaGlobe, FaChartBar, FaWrench, FaHeartbeat } from 'react-icons/fa'
+import { FaBrain, FaChartBar, FaGlobe, FaHeartbeat, FaRobot, FaWrench } from 'react-icons/fa'
+
 import type { ThemeDefinition } from './types'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -6,34 +7,34 @@ import type { ThemeDefinition } from './types'
 // ─────────────────────────────────────────────────────────────────────────────
 
 interface CatppuccinoFlavor {
+  base: string
+  blue: string
   // ── Neutral scale (dark → light within each flavor) ──
   crust: string
+  flamingo: string
+  green: string
+  lavender: string
   mantle: string
-  base: string
-  surface0: string
-  surface1: string
-  surface2: string
+  maroon: string
+  mauve: string
   overlay0: string
   overlay1: string
   overlay2: string
-  subtext0: string
-  subtext1: string
-  text: string
+  peach: string
+  pink: string
+  red: string
   // ── Accent colors ──────────────────────────────────
   rosewater: string
-  flamingo: string
-  pink: string
-  mauve: string
-  red: string
-  maroon: string
-  peach: string
-  yellow: string
-  green: string
-  teal: string
-  sky: string
   sapphire: string
-  blue: string
-  lavender: string
+  sky: string
+  subtext0: string
+  subtext1: string
+  surface0: string
+  surface1: string
+  surface2: string
+  teal: string
+  text: string
+  yellow: string
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -58,122 +59,122 @@ const tint = (hex: string, alpha: number) => `rgba(${hex2rgb(hex)}, ${alpha})`
 
 /** Latte — the one light flavor; used as the light-mode companion for every theme. */
 const latte: CatppuccinoFlavor = {
-  crust: '#dce0e8',
-  mantle: '#e6e9ef',
   base: '#eff1f5',
-  surface0: '#ccd0da',
-  surface1: '#bcc0cc',
-  surface2: '#acb0be',
+  blue: '#1e66f5',
+  crust: '#dce0e8',
+  flamingo: '#dd7878',
+  green: '#40a02b',
+  lavender: '#7287fd',
+  mantle: '#e6e9ef',
+  maroon: '#e64553',
+  mauve: '#8839ef',
   overlay0: '#9ca0b0',
   overlay1: '#8c8fa1',
   overlay2: '#7c7f93',
+  peach: '#fe640b',
+  pink: '#ea76cb',
+  red: '#d20f39',
+  rosewater: '#dc8a78',
+  sapphire: '#209fb5',
+  sky: '#04a5e5',
   subtext0: '#6c6f85',
   subtext1: '#5c5f77',
-  text: '#4c4f69',
-  rosewater: '#dc8a78',
-  flamingo: '#dd7878',
-  pink: '#ea76cb',
-  mauve: '#8839ef',
-  red: '#d20f39',
-  maroon: '#e64553',
-  peach: '#fe640b',
-  yellow: '#df8e1d',
-  green: '#40a02b',
+  surface0: '#ccd0da',
+  surface1: '#bcc0cc',
+  surface2: '#acb0be',
   teal: '#179299',
-  sky: '#04a5e5',
-  sapphire: '#209fb5',
-  blue: '#1e66f5',
-  lavender: '#7287fd',
+  text: '#4c4f69',
+  yellow: '#df8e1d',
 }
 
 /** Frappé — subdued dark with muted, cooler tones. */
 const frappe: CatppuccinoFlavor = {
-  crust: '#232634',
-  mantle: '#292c3c',
   base: '#303446',
-  surface0: '#414559',
-  surface1: '#51576d',
-  surface2: '#626880',
+  blue: '#8caaee',
+  crust: '#232634',
+  flamingo: '#eebebe',
+  green: '#a6d189',
+  lavender: '#babbf1',
+  mantle: '#292c3c',
+  maroon: '#ea999c',
+  mauve: '#ca9ee6',
   overlay0: '#737994',
   overlay1: '#838ba7',
   overlay2: '#949cbb',
+  peach: '#ef9f76',
+  pink: '#f4b8e4',
+  red: '#e78284',
+  rosewater: '#f2d5cf',
+  sapphire: '#85c1dc',
+  sky: '#99d1db',
   subtext0: '#a5adce',
   subtext1: '#b5bfe2',
-  text: '#c6d0f5',
-  rosewater: '#f2d5cf',
-  flamingo: '#eebebe',
-  pink: '#f4b8e4',
-  mauve: '#ca9ee6',
-  red: '#e78284',
-  maroon: '#ea999c',
-  peach: '#ef9f76',
-  yellow: '#e5c890',
-  green: '#a6d189',
+  surface0: '#414559',
+  surface1: '#51576d',
+  surface2: '#626880',
   teal: '#81c8be',
-  sky: '#99d1db',
-  sapphire: '#85c1dc',
-  blue: '#8caaee',
-  lavender: '#babbf1',
+  text: '#c6d0f5',
+  yellow: '#e5c890',
 }
 
 /** Macchiato — medium contrast with gentle, soothing colors. */
 const macchiato: CatppuccinoFlavor = {
-  crust: '#181926',
-  mantle: '#1e2030',
   base: '#24273a',
-  surface0: '#363a4f',
-  surface1: '#494d64',
-  surface2: '#5b6078',
+  blue: '#8aadf4',
+  crust: '#181926',
+  flamingo: '#f0c6c6',
+  green: '#a6da95',
+  lavender: '#b7bdf8',
+  mantle: '#1e2030',
+  maroon: '#ee99a0',
+  mauve: '#c6a0f6',
   overlay0: '#6e738d',
   overlay1: '#8087a2',
   overlay2: '#939ab7',
+  peach: '#f5a97f',
+  pink: '#f5bde6',
+  red: '#ed8796',
+  rosewater: '#f4dbd6',
+  sapphire: '#7dc4e4',
+  sky: '#91d7e3',
   subtext0: '#a5adcb',
   subtext1: '#b8c0e0',
-  text: '#cad3f5',
-  rosewater: '#f4dbd6',
-  flamingo: '#f0c6c6',
-  pink: '#f5bde6',
-  mauve: '#c6a0f6',
-  red: '#ed8796',
-  maroon: '#ee99a0',
-  peach: '#f5a97f',
-  yellow: '#eed49f',
-  green: '#a6da95',
+  surface0: '#363a4f',
+  surface1: '#494d64',
+  surface2: '#5b6078',
   teal: '#8bd5ca',
-  sky: '#91d7e3',
-  sapphire: '#7dc4e4',
-  blue: '#8aadf4',
-  lavender: '#b7bdf8',
+  text: '#cad3f5',
+  yellow: '#eed49f',
 }
 
 /** Mocha — the original; darkest variant with color-rich accents. */
 const mocha: CatppuccinoFlavor = {
-  crust: '#11111b',
-  mantle: '#181825',
   base: '#1e1e2e',
-  surface0: '#313244',
-  surface1: '#45475a',
-  surface2: '#585b70',
+  blue: '#89b4fa',
+  crust: '#11111b',
+  flamingo: '#f2cdcd',
+  green: '#a6e3a1',
+  lavender: '#b4befe',
+  mantle: '#181825',
+  maroon: '#eba0ac',
+  mauve: '#cba6f7',
   overlay0: '#6c7086',
   overlay1: '#7f849c',
   overlay2: '#9399b2',
+  peach: '#fab387',
+  pink: '#f5c2e7',
+  red: '#f38ba8',
+  rosewater: '#f5e0dc',
+  sapphire: '#74c7ec',
+  sky: '#89dceb',
   subtext0: '#a6adc8',
   subtext1: '#bac2de',
-  text: '#cdd6f4',
-  rosewater: '#f5e0dc',
-  flamingo: '#f2cdcd',
-  pink: '#f5c2e7',
-  mauve: '#cba6f7',
-  red: '#f38ba8',
-  maroon: '#eba0ac',
-  peach: '#fab387',
-  yellow: '#f9e2af',
-  green: '#a6e3a1',
+  surface0: '#313244',
+  surface1: '#45475a',
+  surface2: '#585b70',
   teal: '#94e2d5',
-  sky: '#89dceb',
-  sapphire: '#74c7ec',
-  blue: '#89b4fa',
-  lavender: '#b4befe',
+  text: '#cdd6f4',
+  yellow: '#f9e2af',
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -194,32 +195,54 @@ function makeCatppuccinoTheme(
 ): ThemeDefinition {
   // ── CSS custom properties ──────────────────────────────────────────────────
   const cssVars: ThemeDefinition['cssVars'] = {
-    light: {
-      '--bg-color': lightFlavor.base,
-      '--text-color': lightFlavor.text,
-      '--accent-color': lightFlavor.blue,
-      '--accent-light': tint(lightFlavor.blue, 0.1),
-      '--secondary-text': lightFlavor.subtext0,
-      '--border-color': lightFlavor.surface1,
-      '--card-bg': lightFlavor.mantle,
-      '--header-bg': lightFlavor.mantle,
-      '--hover-color': lightFlavor.surface0,
-    },
     dark: {
-      '--bg-color': darkFlavor.base,
-      '--text-color': darkFlavor.text,
       '--accent-color': darkFlavor.blue,
       '--accent-light': tint(darkFlavor.blue, 0.15),
-      '--secondary-text': darkFlavor.subtext0,
+      '--bg-color': darkFlavor.base,
       '--border-color': darkFlavor.surface1,
       '--card-bg': darkFlavor.mantle,
       '--header-bg': darkFlavor.mantle,
       '--hover-color': darkFlavor.surface0,
+      '--secondary-text': darkFlavor.subtext0,
+      '--text-color': darkFlavor.text,
+    },
+    light: {
+      '--accent-color': lightFlavor.blue,
+      '--accent-light': tint(lightFlavor.blue, 0.1),
+      '--bg-color': lightFlavor.base,
+      '--border-color': lightFlavor.surface1,
+      '--card-bg': lightFlavor.mantle,
+      '--header-bg': lightFlavor.mantle,
+      '--hover-color': lightFlavor.surface0,
+      '--secondary-text': lightFlavor.subtext0,
+      '--text-color': lightFlavor.text,
     },
   }
 
   // ── Terminal palette ───────────────────────────────────────────────────────
   const terminal: ThemeDefinition['terminal'] = {
+    colors: (isDark) => {
+      const p = isDark ? darkFlavor : lightFlavor
+      return {
+        bg: p.base,
+        border: p.surface1,
+        command: p.sky,
+        error: p.red,
+        header: p.mantle,
+        highlight: p.yellow,
+        info: p.sapphire,
+        muted: p.overlay1,
+        param: p.mauve,
+        prompt: p.green,
+        secondary: p.subtext1,
+        success: p.green,
+        tabBar: p.mantle,
+        text: p.text,
+        touchBar: p.crust,
+        warning: p.peach,
+      }
+    },
+
     // 7-colour rainbow: red → peach → yellow → green → sky → blue → mauve
     // (follows the Catppuccin accent hue wheel)
     rainbow: [
@@ -231,28 +254,6 @@ function makeCatppuccinoTheme(
       darkFlavor.blue,
       darkFlavor.mauve,
     ],
-
-    colors: (isDark) => {
-      const p = isDark ? darkFlavor : lightFlavor
-      return {
-        bg: p.base,
-        text: p.text,
-        header: p.mantle,
-        border: p.surface1,
-        prompt: p.green,
-        command: p.sky,
-        param: p.mauve,
-        info: p.sapphire,
-        highlight: p.yellow,
-        error: p.red,
-        success: p.green,
-        warning: p.peach,
-        secondary: p.subtext1,
-        muted: p.overlay1,
-        touchBar: p.crust,
-        tabBar: p.mantle,
-      }
-    },
   }
 
   // ── Category card themes ───────────────────────────────────────────────────
@@ -265,125 +266,125 @@ function makeCatppuccinoTheme(
   ) => {
     bg: string
     border: string
-    stripe: string
     color: string
     glow: string
+    stripe: string
   }
 
   const catColors: CatFn = (accent, isDark) => ({
     bg: tint(accent, isDark ? 0.12 : 0.08),
     border: tint(accent, isDark ? 0.55 : 0.45),
-    stripe: `linear-gradient(180deg, ${tint(accent, 0.65)}, transparent)`,
     color: accent,
     glow: tint(accent, isDark ? 0.28 : 0.14),
+    stripe: `linear-gradient(180deg, ${tint(accent, 0.65)}, transparent)`,
   })
 
   const categoryThemes: ThemeDefinition['categoryThemes'] = (isDark) => {
     const p = isDark ? darkFlavor : lightFlavor
     return {
-      robotics: {
-        ...catColors(p.mauve, isDark),
-        icon: FaRobot,
-        label: 'ROBOTICS',
-        cmd: '$ ros2 launch planner',
-      },
-      nlp: {
-        ...catColors(p.pink, isDark),
-        icon: FaBrain,
-        label: 'NLP / AI',
-        cmd: '$ python train.py',
-      },
-      'web-app': {
-        ...catColors(p.peach, isDark),
-        icon: FaGlobe,
-        label: 'WEB / APP',
-        cmd: '$ npm run dev',
-      },
       data: {
         ...catColors(p.green, isDark),
+        cmd: '$ jupyter execute',
         icon: FaChartBar,
         label: 'DATA / ML',
-        cmd: '$ jupyter execute',
-      },
-      tooling: {
-        ...catColors(p.teal, isDark),
-        icon: FaWrench,
-        label: 'TOOLING',
-        cmd: '$ make install',
       },
       healthcare: {
         ...catColors(p.red, isDark),
+        cmd: '$ python recommend.py',
         icon: FaHeartbeat,
         label: 'HEALTHCARE',
-        cmd: '$ python recommend.py',
+      },
+      nlp: {
+        ...catColors(p.pink, isDark),
+        cmd: '$ python train.py',
+        icon: FaBrain,
+        label: 'NLP / AI',
+      },
+      robotics: {
+        ...catColors(p.mauve, isDark),
+        cmd: '$ ros2 launch planner',
+        icon: FaRobot,
+        label: 'ROBOTICS',
+      },
+      tooling: {
+        ...catColors(p.teal, isDark),
+        cmd: '$ make install',
+        icon: FaWrench,
+        label: 'TOOLING',
+      },
+      'web-app': {
+        ...catColors(p.peach, isDark),
+        cmd: '$ npm run dev',
+        icon: FaGlobe,
+        label: 'WEB / APP',
       },
     }
   }
 
   // ── Article category badge colors ──────────────────────────────────────────
   const articleCategoryColors: ThemeDefinition['articleCategoryColors'] = {
-    robotics: {
-      fg: (dk) => (dk ? darkFlavor.mauve : lightFlavor.mauve),
-      bg: (dk) => tint(dk ? darkFlavor.mauve : lightFlavor.mauve, 0.15),
-    },
-    nlp: {
-      fg: (dk) => (dk ? darkFlavor.pink : lightFlavor.pink),
-      bg: (dk) => tint(dk ? darkFlavor.pink : lightFlavor.pink, 0.15),
-    },
-    'web-app': {
-      fg: (dk) => (dk ? darkFlavor.peach : lightFlavor.peach),
-      bg: (dk) => tint(dk ? darkFlavor.peach : lightFlavor.peach, 0.15),
-    },
     data: {
-      fg: (dk) => (dk ? darkFlavor.green : lightFlavor.green),
       bg: (dk) => tint(dk ? darkFlavor.green : lightFlavor.green, 0.15),
-    },
-    tooling: {
-      fg: (dk) => (dk ? darkFlavor.teal : lightFlavor.teal),
-      bg: (dk) => tint(dk ? darkFlavor.teal : lightFlavor.teal, 0.15),
+      fg: (dk) => (dk ? darkFlavor.green : lightFlavor.green),
     },
     healthcare: {
-      fg: (dk) => (dk ? darkFlavor.red : lightFlavor.red),
       bg: (dk) => tint(dk ? darkFlavor.red : lightFlavor.red, 0.15),
+      fg: (dk) => (dk ? darkFlavor.red : lightFlavor.red),
+    },
+    nlp: {
+      bg: (dk) => tint(dk ? darkFlavor.pink : lightFlavor.pink, 0.15),
+      fg: (dk) => (dk ? darkFlavor.pink : lightFlavor.pink),
+    },
+    robotics: {
+      bg: (dk) => tint(dk ? darkFlavor.mauve : lightFlavor.mauve, 0.15),
+      fg: (dk) => (dk ? darkFlavor.mauve : lightFlavor.mauve),
+    },
+    tooling: {
+      bg: (dk) => tint(dk ? darkFlavor.teal : lightFlavor.teal, 0.15),
+      fg: (dk) => (dk ? darkFlavor.teal : lightFlavor.teal),
+    },
+    'web-app': {
+      bg: (dk) => tint(dk ? darkFlavor.peach : lightFlavor.peach, 0.15),
+      fg: (dk) => (dk ? darkFlavor.peach : lightFlavor.peach),
     },
   }
 
   // ── Publication venue badge colors ─────────────────────────────────────────
   const publicationVenueColors: ThemeDefinition['publicationVenueColors'] = {
     conference: {
-      fg: (dk) => (dk ? darkFlavor.sky : lightFlavor.sky),
       bg: (dk) => tint(dk ? darkFlavor.sky : lightFlavor.sky, 0.15),
+      fg: (dk) => (dk ? darkFlavor.sky : lightFlavor.sky),
       label: 'CONFERENCE',
     },
-    workshop: {
-      fg: (dk) => (dk ? darkFlavor.mauve : lightFlavor.mauve),
-      bg: (dk) => tint(dk ? darkFlavor.mauve : lightFlavor.mauve, 0.15),
-      label: 'WORKSHOP',
-    },
     demo: {
-      fg: (dk) => (dk ? darkFlavor.peach : lightFlavor.peach),
       bg: (dk) => tint(dk ? darkFlavor.peach : lightFlavor.peach, 0.15),
+      fg: (dk) => (dk ? darkFlavor.peach : lightFlavor.peach),
       label: 'DEMO TRACK',
     },
+    journal: {
+      bg: (dk) => tint(dk ? darkFlavor.yellow : lightFlavor.yellow, 0.15),
+      fg: (dk) => (dk ? darkFlavor.yellow : lightFlavor.yellow),
+      label: 'JOURNAL',
+    },
     preprint: {
-      fg: (dk) => (dk ? darkFlavor.green : lightFlavor.green),
       bg: (dk) => tint(dk ? darkFlavor.green : lightFlavor.green, 0.15),
+      fg: (dk) => (dk ? darkFlavor.green : lightFlavor.green),
       label: 'PREPRINT',
     },
-    journal: {
-      fg: (dk) => (dk ? darkFlavor.yellow : lightFlavor.yellow),
-      bg: (dk) => tint(dk ? darkFlavor.yellow : lightFlavor.yellow, 0.15),
-      label: 'JOURNAL',
+    workshop: {
+      bg: (dk) => tint(dk ? darkFlavor.mauve : lightFlavor.mauve, 0.15),
+      fg: (dk) => (dk ? darkFlavor.mauve : lightFlavor.mauve),
+      label: 'WORKSHOP',
     },
   }
 
   return {
-    name,
-    cssVars,
-    terminal,
-    categoryThemes,
     articleCategoryColors,
+    categoryThemes,
+    cssVars,
+    name,
     publicationVenueColors,
+    terminal,
   }
 }
 

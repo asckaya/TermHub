@@ -1,8 +1,10 @@
+import { Badge, Box, Button, Flex, Heading, HStack, Link, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
+
 import { useColorModeValue } from '@/color-mode'
-import { Box, VStack, HStack, Text, Link, Button, Flex, Heading, Badge } from '@chakra-ui/react'
-import DynamicIcon from '../DynamicIcon'
+
 import { type NewsItem } from '../../types'
+import DynamicIcon from '../DynamicIcon'
 
 interface NewsCardProps {
   news: NewsItem
@@ -12,12 +14,12 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
   // Get appropriate icon based on news type
   const getIconName = () => {
     switch (news.type) {
+      case 'course':
+        return 'FaYoutube'
       case 'publication':
         return 'FaCode'
       case 'talk':
         return 'SiBilibili'
-      case 'course':
-        return 'FaYoutube'
       default:
         return news.icon || 'FaCode'
     }
@@ -25,45 +27,45 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
 
   return (
     <Box
-      p={0}
+      _hover={{ shadow: 'md', transform: 'translateY(-4px)' }}
+      aria-labelledby={`news-title-${news.title.replace(/\s+/g, '-').toLowerCase()}`}
       bg={useColorModeValue('white', 'gray.800')}
+      borderColor={useColorModeValue('gray.100', 'gray.700')}
       borderRadius="lg"
+      borderWidth="1px"
+      overflow="hidden"
+      p={0}
+      position="relative"
+      role="article"
       shadow="sm"
       transition="all 0.3s"
-      _hover={{ transform: 'translateY(-4px)', shadow: 'md' }}
-      position="relative"
-      overflow="hidden"
-      role="article"
-      aria-labelledby={`news-title-${news.title.replace(/\s+/g, '-').toLowerCase()}`}
-      borderWidth="1px"
-      borderColor={useColorModeValue('gray.100', 'gray.700')}
     >
       {/* Top color bar */}
-      <Box h="4px" bg={news.iconColor} w="full" />
+      <Box bg={news.iconColor} h="4px" w="full" />
 
       {/* Date Badge - Top Right Absolute Position */}
       {news.date && (
         <Badge
-          position="absolute"
-          top={2}
-          right={2}
-          colorPalette={news.iconColor.split('.')[0]}
+          alignItems="center"
           bg={useColorModeValue(
             `${news.iconColor.split('.')[0]}.500`,
             `${news.iconColor.split('.')[0]}.600`,
           )}
+          borderRadius="md"
+          boxShadow={useColorModeValue('0 2px 5px rgba(0,0,0,0.1)', '0 2px 5px rgba(0,0,0,0.3)')}
           color={useColorModeValue('white', 'white')}
+          colorPalette={news.iconColor.split('.')[0]}
+          display="flex"
+          fontSize="xs"
+          fontWeight="medium"
+          position="absolute"
           px={2}
           py={1}
-          borderRadius="md"
-          fontSize="xs"
-          display="flex"
-          alignItems="center"
-          fontWeight="medium"
-          boxShadow={useColorModeValue('0 2px 5px rgba(0,0,0,0.1)', '0 2px 5px rgba(0,0,0,0.3)')}
+          right={2}
+          top={2}
           zIndex={1}
         >
-          <DynamicIcon name="FaClock" boxSize={3} mr={1} />
+          <DynamicIcon boxSize={3} mr={1} name="FaClock" />
           {news.date}
         </Badge>
       )}
@@ -71,40 +73,40 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
       {/* Content area */}
       <Box p={4}>
         {/* Title area and badges */}
-        <Flex mb={3} align="flex-start">
+        <Flex align="flex-start" mb={3}>
           <Box
-            mr={3}
-            fontSize="xl"
+            alignItems="center"
+            aria-hidden="true"
             bg={useColorModeValue(
               `${news.iconColor.split('.')[0]}.50`,
               `${news.iconColor.split('.')[0]}.900`,
             )}
+            borderRadius="md"
             color={useColorModeValue(
               `${news.iconColor.split('.')[0]}.500`,
               `${news.iconColor.split('.')[0]}.200`,
             )}
-            p={2}
-            borderRadius="md"
-            lineHeight="1"
-            aria-hidden="true"
             display="flex"
-            alignItems="center"
-            justifyContent="center"
-            width="32px"
+            fontSize="xl"
             height="32px"
+            justifyContent="center"
+            lineHeight="1"
+            mr={3}
+            p={2}
+            width="32px"
           >
-            <DynamicIcon name={getIconName()} boxSize={4} />
+            <DynamicIcon boxSize={4} name={getIconName()} />
           </Box>
-          <VStack align="start" gap={1} width="100%" pr={12}>
-            <Heading size="xs" id={`news-title-${news.title.replace(/\s+/g, '-').toLowerCase()}`}>
+          <VStack align="start" gap={1} pr={12} width="100%">
+            <Heading id={`news-title-${news.title.replace(/\s+/g, '-').toLowerCase()}`} size="xs">
               {news.title}
             </Heading>
 
             {news.badge && (
               <Badge
+                borderRadius="full"
                 colorPalette={news.iconColor.split('.')[0]}
                 fontSize="2xs"
-                borderRadius="full"
                 px={2}
                 py={0.5}
               >
@@ -116,29 +118,29 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
 
         {/* Description text */}
         <Text
-          fontSize="sm"
           color={useColorModeValue('gray.600', 'gray.400')}
-          mb={3}
+          fontSize="sm"
           lineHeight="taller"
+          mb={3}
         >
           {news.description}
         </Text>
 
         {/* Button link area */}
-        <HStack gap={2} flexWrap="wrap" mt={2}>
+        <HStack flexWrap="wrap" gap={2} mt={2}>
           {news.links.map((link, index) => {
-            const LinkIcon = link.icon ? <DynamicIcon name={link.icon} fontSize="xs" /> : undefined
+            const LinkIcon = link.icon ? <DynamicIcon fontSize="xs" name={link.icon} /> : undefined
             return (
               <Link
-                key={index}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
                 aria-label={`${link.text} for ${news.title}`}
+                href={link.url}
+                key={index}
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <Button size="xs" variant="outline" colorPalette={news.iconColor.split('.')[0]}>
+                <Button colorPalette={news.iconColor.split('.')[0]} size="xs" variant="outline">
                   {LinkIcon && (
-                    <Box as="span" aria-hidden="true">
+                    <Box aria-hidden="true" as="span">
                       {LinkIcon}
                     </Box>
                   )}

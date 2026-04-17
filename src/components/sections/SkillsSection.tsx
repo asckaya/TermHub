@@ -1,17 +1,19 @@
 import {
   Box,
   Container,
-  Heading,
   Flex,
+  Heading,
   HStack,
   Text
 } from '@chakra-ui/react'
-import { useColorModeValue } from '@/color-mode'
 import { useTranslation } from 'react-i18next'
+
+import { useColorModeValue } from '@/color-mode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+
 import DynamicIcon from '../DynamicIcon'
 
-type SkillItem = string | { name: string; icon?: string; category?: string }
+type SkillItem = string | { category?: string; icon?: string; name: string; }
 
 const SkillsSection: React.FC = () => {
   const { t } = useTranslation()
@@ -30,27 +32,27 @@ const SkillsSection: React.FC = () => {
     <Box w="full">
       <Container maxW={['full', 'full', '7xl']} px={[2, 4, 8]}>
         <Flex align="center" gap={3} mb={4}>
-          <Box h="2px" w="20px" bg="cyan.400" borderRadius="full" flexShrink={0} />
-          <Heading size="md" fontWeight="semibold">
+          <Box bg="cyan.400" borderRadius="full" flexShrink={0} h="2px" w="20px" />
+          <Heading fontWeight="semibold" size="md">
             {t('about.skills', 'Skills')}
           </Heading>
-          <Box flex="1" h="1px" bg={useColorModeValue('gray.200', 'gray.700')} />
+          <Box bg={useColorModeValue('gray.200', 'gray.700')} flex="1" h="1px" />
         </Flex>
-        <HStack gap={2} flexWrap="wrap">
+        <HStack flexWrap="wrap" gap={2}>
           {skills.map((skill) => (
             <HStack
-              key={getName(skill)}
-              gap={1.5}
-              fontSize="xs"
+              bg={tagBg}
+              borderRadius="sm"
+              color={tagColor}
               fontFamily="mono"
+              fontSize="xs"
+              gap={1.5}
+              key={getName(skill)}
               px={2.5}
               py={1}
-              bg={tagBg}
-              color={tagColor}
-              borderRadius="sm"
             >
               {getIcon(skill) && (
-                <DynamicIcon name={getIcon(skill)!} boxSize={3} color={iconColor} />
+                <DynamicIcon boxSize={3} color={iconColor} name={getIcon(skill)!} />
               )}
               <Text>{getName(skill)}</Text>
             </HStack>

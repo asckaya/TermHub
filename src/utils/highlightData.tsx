@@ -10,7 +10,7 @@ import React from 'react'
  */
 export function highlightData(
   text: string,
-  c: { num: string; kw: string; str: string },
+  c: { kw: string; num: string; str: string },
 ): React.ReactNode {
   if (!text) return null
 
@@ -23,7 +23,7 @@ export function highlightData(
   const parts: React.ReactNode[] = []
   let last = 0
   let key = 0
-  let m: RegExpExecArray | null
+  let m: null | RegExpExecArray
 
   while ((m = rx.exec(text)) !== null) {
     if (m.index > last) parts.push(text.slice(last, m.index))

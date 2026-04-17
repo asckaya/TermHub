@@ -1,22 +1,24 @@
 import { IconButton, Link } from '@chakra-ui/react'
-import { useColorModeValue } from '@/color-mode'
-import DynamicIcon from '../DynamicIcon'
 import React from 'react'
 
+import { useColorModeValue } from '@/color-mode'
+
+import DynamicIcon from '../DynamicIcon'
+
 interface SocialButtonProps {
-  icon?: string
-  label: string
-  href: string
   colorPalette?: string
   hoverBg?: string
+  href: string
+  icon?: string
+  label: string
   shadowColor?: string
 }
 
 const SocialButton: React.FC<SocialButtonProps> = ({
+  hoverBg = 'gray.100',
+  href,
   icon,
   label,
-  href,
-  hoverBg = 'gray.100',
   shadowColor = 'gray.500',
 }) => {
   const borderColor = useColorModeValue('gray.300', 'gray.600')
@@ -24,36 +26,36 @@ const SocialButton: React.FC<SocialButtonProps> = ({
 
   return (
     <Link
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      title={label}
       _hover={{ textDecoration: 'none' }}
+      href={href}
+      rel="noopener noreferrer"
+      target="_blank"
+      title={label}
     >
       <IconButton
         aria-label={label}
-        size={['xs', 'sm']}
-        variant="ghost"
-        borderRadius="sm"
         border="1px solid"
         borderColor={borderColor}
-        fontFamily="mono"
+        borderRadius="sm"
         css={{
-          transition: 'all 0.2s ease',
+          '&:active': {
+            boxShadow: 'none',
+            transform: 'scale(0.95)',
+          },
           '&:hover': {
             bg: hoverBg,
-            color: 'white',
             borderColor: hoverBorderColor,
-            transform: 'translateY(-2px)',
             boxShadow: `0 2px 8px ${shadowColor}`,
+            color: 'white',
+            transform: 'translateY(-2px)',
           },
-          '&:active': {
-            transform: 'scale(0.95)',
-            boxShadow: 'none',
-          },
+          transition: 'all 0.2s ease',
         }}
+        fontFamily="mono"
+        size={['xs', 'sm']}
+        variant="ghost"
       >
-        <DynamicIcon name={icon} boxSize={[3, 3.5]} />
+        <DynamicIcon boxSize={[3, 3.5]} name={icon} />
       </IconButton>
     </Link>
   )

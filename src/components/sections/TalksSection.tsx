@@ -1,27 +1,29 @@
 import {
   Box,
   Container,
-  VStack,
-  HStack,
-  Text,
-  Heading,
   Flex,
-  Link
+  Heading,
+  HStack,
+  Link,
+  Text,
+  VStack
 } from '@chakra-ui/react'
-import { useColorModeValue } from '@/color-mode'
 import { useTranslation } from 'react-i18next'
+
+import { useColorModeValue } from '@/color-mode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+
 import DynamicIcon from '../DynamicIcon'
 
-const typeLabels: Record<string, { icon: string; color: string }> = {
-  keynote: { icon: 'FaStar', color: 'yellow.400' },
-  invited: { icon: 'FaUserTie', color: 'purple.400' },
-  oral: { icon: 'FaMicrophone', color: 'cyan.400' },
-  poster: { icon: 'FaImage', color: 'green.400' },
-  tutorial: { icon: 'FaChalkboardTeacher', color: 'orange.400' },
-  workshop: { icon: 'FaTools', color: 'blue.400' },
-  panel: { icon: 'FaUsers', color: 'pink.400' },
-  other: { icon: 'FaComments', color: 'gray.400' },
+const typeLabels: Record<string, { color: string; icon: string; }> = {
+  invited: { color: 'purple.400', icon: 'FaUserTie' },
+  keynote: { color: 'yellow.400', icon: 'FaStar' },
+  oral: { color: 'cyan.400', icon: 'FaMicrophone' },
+  other: { color: 'gray.400', icon: 'FaComments' },
+  panel: { color: 'pink.400', icon: 'FaUsers' },
+  poster: { color: 'green.400', icon: 'FaImage' },
+  tutorial: { color: 'orange.400', icon: 'FaChalkboardTeacher' },
+  workshop: { color: 'blue.400', icon: 'FaTools' },
 }
 
 const TalksSection: React.FC = () => {
@@ -38,37 +40,37 @@ const TalksSection: React.FC = () => {
     <Box w="full">
       <Container maxW={['full', 'full', '7xl']} px={[2, 4, 8]}>
         <Flex align="center" gap={3} mb={4}>
-          <Box h="2px" w="20px" bg="cyan.400" borderRadius="full" flexShrink={0} />
-          <Heading size="md" fontWeight="semibold">
+          <Box bg="cyan.400" borderRadius="full" flexShrink={0} h="2px" w="20px" />
+          <Heading fontWeight="semibold" size="md">
             {t('about.talks', 'Talks')}
           </Heading>
-          <Box flex="1" h="1px" bg={useColorModeValue('gray.200', 'gray.700')} />
+          <Box bg={useColorModeValue('gray.200', 'gray.700')} flex="1" h="1px" />
         </Flex>
-        <VStack gap={0} align="stretch">
+        <VStack align="stretch" gap={0}>
           {talks.map((talk, i) => {
             const meta = typeLabels[talk.type || 'other'] || typeLabels.other
             return (
               <Flex
-                key={i}
                 align="start"
-                gap={3}
-                py={2.5}
                 borderBottom="1px solid"
                 borderColor={borderColor}
+                gap={3}
+                key={i}
+                py={2.5}
               >
-                <Box mt="2px" flexShrink={0}>
-                  <DynamicIcon name={meta.icon} boxSize={3.5} color={meta.color} />
+                <Box flexShrink={0} mt="2px">
+                  <DynamicIcon boxSize={3.5} color={meta.color} name={meta.icon} />
                 </Box>
                 <Box flex={1} minW={0}>
-                  <Text fontSize="xs" fontWeight="medium" color={titleColor} lineHeight="short">
+                  <Text color={titleColor} fontSize="xs" fontWeight="medium" lineHeight="short">
                     {talk.title}
                   </Text>
-                  <HStack gap={2} mt={0.5} flexWrap="wrap">
-                    <Text fontSize="2xs" color={textColor}>
+                  <HStack flexWrap="wrap" gap={2} mt={0.5}>
+                    <Text color={textColor} fontSize="2xs">
                       {talk.event}
                     </Text>
                     {talk.location && (
-                      <Text fontSize="2xs" color={mutedColor}>
+                      <Text color={mutedColor} fontSize="2xs">
                         · {talk.location}
                       </Text>
                     )}
@@ -77,24 +79,24 @@ const TalksSection: React.FC = () => {
                     <HStack gap={2} mt={1}>
                       {talk.slidesUrl && (
                         <Link
-                          href={talk.slidesUrl}
-                          target="_blank" rel="noopener noreferrer"
-                          fontSize="2xs"
-                          fontFamily="mono"
-                          color="cyan.400"
                           _hover={{ textDecoration: 'underline' }}
+                          color="cyan.400" fontFamily="mono"
+                          fontSize="2xs"
+                          href={talk.slidesUrl}
+                          rel="noopener noreferrer"
+                          target="_blank"
                         >
                           slides
                         </Link>
                       )}
                       {talk.videoUrl && (
                         <Link
-                          href={talk.videoUrl}
-                          target="_blank" rel="noopener noreferrer"
-                          fontSize="2xs"
-                          fontFamily="mono"
-                          color="cyan.400"
                           _hover={{ textDecoration: 'underline' }}
+                          color="cyan.400" fontFamily="mono"
+                          fontSize="2xs"
+                          href={talk.videoUrl}
+                          rel="noopener noreferrer"
+                          target="_blank"
                         >
                           video
                         </Link>
@@ -103,11 +105,11 @@ const TalksSection: React.FC = () => {
                   )}
                 </Box>
                 <Text
-                  fontSize="2xs"
-                  fontFamily="mono"
                   color={mutedColor}
-                  whiteSpace="nowrap"
                   flexShrink={0}
+                  fontFamily="mono"
+                  fontSize="2xs"
+                  whiteSpace="nowrap"
                 >
                   {talk.date}
                 </Text>

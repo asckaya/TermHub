@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
+
 import { useColorMode } from '@/color-mode'
+
 import { useThemeContext } from './ThemeContext'
 
 /**

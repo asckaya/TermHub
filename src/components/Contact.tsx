@@ -1,13 +1,15 @@
-import { VStack, Heading, Text, Box, Container, HStack } from '@chakra-ui/react'
+import { Box, Container, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
-import { useLocalizedData } from '@/hooks/useLocalizedData'
-import { MotionBox, MotionList, MotionHover } from './animations/MotionList'
-import { useThemeConfig } from '@/config/theme'
+
 import { useColorMode } from '@/color-mode'
+import { useThemeConfig } from '@/config/theme'
+import { useLocalizedData } from '@/hooks/useLocalizedData'
+
+import { MotionBox, MotionHover, MotionList } from './animations/MotionList'
 
 const Contact = () => {
   const { t } = useTranslation()
-  const { siteOwner, githubUsername } = useLocalizedData()
+  const { githubUsername, siteOwner } = useLocalizedData()
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
   const { terminalPalette } = useThemeConfig()
@@ -15,46 +17,46 @@ const Contact = () => {
 
   const contactLinks = [
     {
+      display: siteOwner.contact.email,
+      href: `mailto:${siteOwner.contact.email}`,
       label: t('contact.email'),
       value: siteOwner.contact.email,
-      href: `mailto:${siteOwner.contact.email}`,
-      display: siteOwner.contact.email,
     },
     {
+      display: `@${siteOwner.social.linkedin.split('/').filter(Boolean).pop()}`,
+      href: siteOwner.social.linkedin,
       label: t('contact.linkedin'),
       value: siteOwner.social.linkedin,
-      href: siteOwner.social.linkedin,
-      display: `@${siteOwner.social.linkedin.split('/').filter(Boolean).pop()}`,
     },
     {
+      display: `@${githubUsername}`,
+      href: siteOwner.social.github,
       label: t('contact.github'),
       value: siteOwner.social.github,
-      href: siteOwner.social.github,
-      display: `@${githubUsername}`,
     },
     {
+      display: `@${siteOwner.social.medium.split('@').pop()}`,
+      href: siteOwner.social.medium,
       label: t('contact.medium'),
       value: siteOwner.social.medium,
-      href: siteOwner.social.medium,
-      display: `@${siteOwner.social.medium.split('@').pop()}`,
     },
     {
+      display: t('contact.viewProfile'),
+      href: siteOwner.social.googleScholar,
       label: t('contact.googleScholar'),
       value: siteOwner.social.googleScholar,
-      href: siteOwner.social.googleScholar,
-      display: t('contact.viewProfile'),
     },
   ]
 
   return (
     <Container maxW="7xl" px={4} py={8}>
-      <VStack gap={8} align="stretch">
+      <VStack align="stretch" gap={8}>
         <MotionBox delay={0.1}>
-          <Heading as="h1" size="xl" mb={6}>
+          <Heading as="h1" mb={6} size="xl">
             {t('contact.title')}
           </Heading>
           <Box className="meta" mb={4}>
-            <Box className="meta-item" fontSize="sm" color={tc.secondary}>
+            <Box className="meta-item" color={tc.secondary} fontSize="sm">
               <Box as="i" className="fa-solid fa-clock" mr={2} />
               {t('contact.responseTime')}
             </Box>
@@ -63,15 +65,15 @@ const Contact = () => {
           <MotionBox delay={0.2}>
             <Box
               as="pre"
-              p={4}
               bg={tc.header}
-              color={tc.text}
-              borderRadius="md"
-              fontFamily="mono"
-              mb={6}
               border="1px solid"
               borderColor={tc.border}
+              borderRadius="md"
               boxShadow="inner"
+              color={tc.text}
+              fontFamily="mono"
+              mb={6}
+              p={4}
             >
               {`# ${t('contact.contactInfo')}
 EMAIL    = "${siteOwner.contact.email}"
@@ -83,41 +85,41 @@ LOCATION = "${siteOwner.contact.location}"`}
 
           <MotionBox delay={0.3}>
             <Box
+              bg={tc.bg}
+              borderColor={tc.border}
+              borderRadius="md"
+              borderWidth="1px"
+              boxShadow="lg"
               mt={8}
               p={6}
-              borderRadius="md"
-              bg={tc.bg}
-              borderWidth="1px"
-              borderColor={tc.border}
-              boxShadow="lg"
             >
-              <Heading as="h2" size="sm" mb={6} color={tc.highlight} fontFamily="mono" letterSpacing="widest">
+              <Heading as="h2" color={tc.highlight} fontFamily="mono" letterSpacing="widest" mb={6} size="sm">
                 // {t('contact.quickLinks').toUpperCase()}
               </Heading>
 
               <MotionList staggerDelay={0.1}>
                 {contactLinks.map((link) => (
                   <MotionBox key={link.label}>
-                    <HStack justify="space-between" wrap="wrap" gap={4} mb={4}>
-                      <Text as="span" fontWeight="bold" fontSize="sm" color={tc.prompt} fontFamily="mono" w="120px">
+                    <HStack gap={4} justify="space-between" mb={4} wrap="wrap">
+                      <Text as="span" color={tc.prompt} fontFamily="mono" fontSize="sm" fontWeight="bold" w="120px">
                         {link.label}:
                       </Text>
                       <MotionHover>
                         <Box flex="1">
                           <a
                             href={link.href}
-                            target="_blank"
+                            onMouseOut={(e) => (e.currentTarget.style.borderBottomColor = 'transparent')}
+                            onMouseOver={(e) => (e.currentTarget.style.borderBottomColor = tc.command)}
                             rel="noopener noreferrer"
                             style={{
+                              borderBottom: `1px solid transparent`,
                               color: tc.command,
-                              textDecoration: 'none',
                               fontFamily: 'var(--font-mono)',
                               fontSize: '0.9rem',
-                              borderBottom: `1px solid transparent`,
+                              textDecoration: 'none',
                               transition: 'border-color 0.2s',
                             }}
-                            onMouseOver={(e) => (e.currentTarget.style.borderBottomColor = tc.command)}
-                            onMouseOut={(e) => (e.currentTarget.style.borderBottomColor = 'transparent')}
+                            target="_blank"
                           >
                             {link.display}
                           </a>

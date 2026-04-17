@@ -1,22 +1,24 @@
 import {
+  Badge,
   Box,
-  VStack,
+  Container,
   Flex,
   Heading,
-  Badge,
-  Container
+  VStack
 } from '@chakra-ui/react'
-import { useColorModeValue } from '@/color-mode'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+
+import type { SlotName } from '@/templates/slots'
+
+import { useColorModeValue } from '@/color-mode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import { useSlot } from '@/templates/context'
 import { DEFAULT_SECTIONS } from '@/templates/slots'
-import type { SlotName } from '@/templates/slots'
 
 function About() {
   const { t } = useTranslation()
-  const { research, experience, news, siteConfig, institutionLogos } = useLocalizedData()
+  const { experience, institutionLogos, news, research, siteConfig } = useLocalizedData()
   const researchLogos = institutionLogos
   const universityLogos = institutionLogos
   const lineColor = useColorModeValue('gray.200', 'gray.700')
@@ -49,61 +51,61 @@ function About() {
   const renderSection = (sectionId: string, index: number) => {
     const key = `${sectionId}-${index}`
     switch (sectionId as SlotName) {
+      case 'accomplishments':
+        return <Accomplishments key={key} />
+      case 'bio':
+        return <Bio key={key} />
+      case 'contact':
+        return <Contact key={key} />
+      case 'footer':
+        return <Footer key={key} />
       case 'hero':
         return (
           <HeroSection
-            key={key}
-            title={siteConfig.title}
             avatar={siteConfig.avatar}
-            research={research.currentResearch}
-            researchLogos={researchLogos}
             education={experience.education.courses}
             educationLogos={universityLogos}
+            key={key}
+            research={research.currentResearch}
+            researchLogos={researchLogos}
+            title={siteConfig.title}
           />
         )
+      case 'journey':
+        return <Journey key={key} />
+      case 'mentorship':
+        return <Mentorship key={key} />
       case 'newsDisplay':
         return (
           <Box key={key} w="full">
             <Container maxW={['full', 'full', '7xl']} px={[2, 4, 8]}>
               <Flex align="center" gap={3} mb={4}>
-                <Box h="2px" w="20px" bg="cyan.400" borderRadius="full" flexShrink={0} />
-                <Heading size="md" fontWeight="semibold">
+                <Box bg="cyan.400" borderRadius="full" flexShrink={0} h="2px" w="20px" />
+                <Heading fontWeight="semibold" size="md">
                   {t('about.recentUpdates')}
                 </Heading>
                 <Badge
                   bg={useColorModeValue('green.100', 'rgba(154,230,180,0.16)')}
                   color={useColorModeValue('green.800', 'green.200')}
-                  fontSize="2xs"
                   fontFamily="mono"
+                  fontSize="2xs"
                 >
                   {t('about.news')}
                 </Badge>
-                <Box flex="1" h="1px" bg={lineColor} />
+                <Box bg={lineColor} flex="1" h="1px" />
               </Flex>
               <NewsDisplay news={sortedNews} showHeader={false} />
             </Container>
           </Box>
         )
-      case 'footer':
-        return <Footer key={key} />
-      case 'bio':
-        return <Bio key={key} />
-      case 'skills':
-        return <Skills key={key} />
-      case 'journey':
-        return <Journey key={key} />
-      case 'mentorship':
-        return <Mentorship key={key} />
       case 'selectedPublications':
         return <SelectedPublications key={key} />
+      case 'skills':
+        return <Skills key={key} />
       case 'talks':
         return <Talks key={key} />
       case 'teaching':
         return <Teaching key={key} />
-      case 'accomplishments':
-        return <Accomplishments key={key} />
-      case 'contact':
-        return <Contact key={key} />
       default:
         return null
     }
@@ -111,7 +113,7 @@ function About() {
 
   return (
     <Box w="full">
-      <VStack gap={[4, 6, 8]} align="stretch" w="full">
+      <VStack align="stretch" gap={[4, 6, 8]} w="full">
         {sectionOrder.map((sectionId, index) => renderSection(sectionId, index))}
       </VStack>
     </Box>

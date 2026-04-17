@@ -1,24 +1,26 @@
 import {
   Box,
   Container,
-  VStack,
-  HStack,
-  Text,
-  Heading,
   Flex,
-  Link
+  Heading,
+  HStack,
+  Link,
+  Text,
+  VStack
 } from '@chakra-ui/react'
-import { useColorModeValue } from '@/color-mode'
 import { useTranslation } from 'react-i18next'
+
+import { useColorModeValue } from '@/color-mode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+
 import DynamicIcon from '../DynamicIcon'
 
 const roleIcons: Record<string, string> = {
-  instructor: 'FaChalkboardTeacher',
-  ta: 'FaUserGraduate',
-  'guest-lecturer': 'FaMicrophone',
   'co-instructor': 'FaUsers',
+  'guest-lecturer': 'FaMicrophone',
+  instructor: 'FaChalkboardTeacher',
   other: 'FaBook',
+  ta: 'FaUserGraduate',
 }
 
 const TeachingSection: React.FC = () => {
@@ -35,59 +37,59 @@ const TeachingSection: React.FC = () => {
     <Box w="full">
       <Container maxW={['full', 'full', '7xl']} px={[2, 4, 8]}>
         <Flex align="center" gap={3} mb={4}>
-          <Box h="2px" w="20px" bg="cyan.400" borderRadius="full" flexShrink={0} />
-          <Heading size="md" fontWeight="semibold">
+          <Box bg="cyan.400" borderRadius="full" flexShrink={0} h="2px" w="20px" />
+          <Heading fontWeight="semibold" size="md">
             {t('about.teaching', 'Teaching')}
           </Heading>
-          <Box flex="1" h="1px" bg={useColorModeValue('gray.200', 'gray.700')} />
+          <Box bg={useColorModeValue('gray.200', 'gray.700')} flex="1" h="1px" />
         </Flex>
-        <VStack gap={0} align="stretch">
+        <VStack align="stretch" gap={0}>
           {teaching.map((entry, i) => (
             <Flex
-              key={i}
               align="start"
-              gap={3}
-              py={2.5}
               borderBottom="1px solid"
               borderColor={borderColor}
+              gap={3}
+              key={i}
+              py={2.5}
             >
-              <Box mt="2px" flexShrink={0}>
+              <Box flexShrink={0} mt="2px">
                 <DynamicIcon
-                  name={roleIcons[entry.role] || roleIcons.other}
                   boxSize={3.5}
                   color="cyan.400"
+                  name={roleIcons[entry.role] || roleIcons.other}
                 />
               </Box>
               <Box flex={1} minW={0}>
-                <Text fontSize="xs" fontWeight="medium" color={titleColor} lineHeight="short">
+                <Text color={titleColor} fontSize="xs" fontWeight="medium" lineHeight="short">
                   {entry.link ? (
-                    <Link href={entry.link} target="_blank" rel="noopener noreferrer" _hover={{ color: 'cyan.400' }}>
+                    <Link _hover={{ color: 'cyan.400' }} href={entry.link} rel="noopener noreferrer" target="_blank">
                       {entry.course}
                     </Link>
                   ) : (
                     entry.course
                   )}
                 </Text>
-                <HStack gap={2} mt={0.5} flexWrap="wrap">
-                  <Text fontSize="2xs" color={textColor}>
+                <HStack flexWrap="wrap" gap={2} mt={0.5}>
+                  <Text color={textColor} fontSize="2xs">
                     {entry.institution}
                   </Text>
-                  <Text fontSize="2xs" color={mutedColor}>
+                  <Text color={mutedColor} fontSize="2xs">
                     · {entry.role}
                   </Text>
                 </HStack>
                 {entry.description && (
-                  <Text fontSize="2xs" color={textColor} mt={1}>
+                  <Text color={textColor} fontSize="2xs" mt={1}>
                     {entry.description}
                   </Text>
                 )}
               </Box>
               <Text
-                fontSize="2xs"
-                fontFamily="mono"
                 color={mutedColor}
-                whiteSpace="nowrap"
                 flexShrink={0}
+                fontFamily="mono"
+                fontSize="2xs"
+                whiteSpace="nowrap"
               >
                 {entry.semester}
               </Text>

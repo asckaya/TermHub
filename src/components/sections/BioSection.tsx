@@ -1,12 +1,13 @@
 import {
   Box,
   Container,
-  Text,
+  Flex,
   Heading,
-  Flex
+  Text
 } from '@chakra-ui/react'
-import { useColorModeValue } from '@/color-mode'
 import { useTranslation } from 'react-i18next'
+
+import { useColorModeValue } from '@/color-mode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 
 const BioSection: React.FC = () => {
@@ -20,13 +21,13 @@ const BioSection: React.FC = () => {
     <Box w="full">
       <Container maxW={['full', 'full', '7xl']} px={[2, 4, 8]}>
         <Flex align="center" gap={3} mb={4}>
-          <Box h="2px" w="20px" bg="cyan.400" borderRadius="full" flexShrink={0} />
-          <Heading size="md" fontWeight="semibold">
+          <Box bg="cyan.400" borderRadius="full" flexShrink={0} h="2px" w="20px" />
+          <Heading fontWeight="semibold" size="md">
             {t('about.bio', 'About')}
           </Heading>
-          <Box flex="1" h="1px" bg={useColorModeValue('gray.200', 'gray.700')} />
+          <Box bg={useColorModeValue('gray.200', 'gray.700')} flex="1" h="1px" />
         </Flex>
-        <Text fontSize="sm" lineHeight="tall" color={textColor}>
+        <Text color={textColor} fontSize="sm" lineHeight="tall">
           {about.journey}
         </Text>
       </Container>

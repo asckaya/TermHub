@@ -1,4 +1,5 @@
 import { Box, Container, Heading, HStack, Link, Text, VStack } from '@chakra-ui/react'
+
 import { useColorModeValue } from '@/color-mode'
 
 const GuideLanding = () => {
@@ -6,7 +7,7 @@ const GuideLanding = () => {
   const muted = useColorModeValue('gray.600', 'gray.400')
 
   return (
-    <Box w="full" py={10}>
+    <Box py={10} w="full">
       <Container maxW="7xl">
         <VStack align="stretch" gap={6}>
           <Heading size="lg">TermHub Guide</Heading>
@@ -17,31 +18,31 @@ const GuideLanding = () => {
 
           <VStack align="stretch" gap={3} maxW="3xl">
             <HStack
-              justify="space-between"
               border="1px solid"
               borderColor={border}
               borderRadius="md"
+              justify="space-between"
               p={4}
             >
               <Text>Open documentation</Text>
-              <Link href="/docs" color="cyan.400">
+              <Link color="cyan.400" href="/docs">
                 /docs
               </Link>
             </HStack>
 
             <HStack
-              justify="space-between"
               border="1px solid"
               borderColor={border}
               borderRadius="md"
+              justify="space-between"
               p={4}
             >
               <Text>Project repository</Text>
               <Link
-                href="https://github.com/H-Freax/TermHub"
-                target="_blank"
-                rel="noopener noreferrer"
                 color="cyan.400"
+                href="https://github.com/H-Freax/TermHub"
+                rel="noopener noreferrer"
+                target="_blank"
               >
                 GitHub
               </Link>

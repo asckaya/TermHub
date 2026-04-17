@@ -1,34 +1,28 @@
 import {
   Box,
-  VStack,
-  Text,
-  Image,
-  HStack,
   Container,
-  Stack,
-  Link,
   Flex,
-  SimpleGrid,
   Heading,
+  HStack,
+  Image,
+  Link,
+  SimpleGrid,
+  Stack,
+  Text,
+  VStack,
 } from '@chakra-ui/react'
-import { useColorModeValue } from '@/color-mode'
 import { motion } from 'framer-motion'
-import { withBase } from '@/utils/asset'
-import DynamicIcon from '../DynamicIcon'
 import { useTranslation } from 'react-i18next'
-import { heroSocialIcons } from '@/site.config'
+
+import { useColorModeValue } from '@/color-mode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { heroSocialIcons } from '@/site.config'
+import { withBase } from '@/utils/asset'
+
+import DynamicIcon from '../DynamicIcon'
 
 const MotionBox = motion(Box)
 const MotionText = motion(Text)
-
-interface ResearchItem {
-  lab: string
-  emoji: string
-  advisor?: string
-  focus: string
-  link: string
-}
 
 interface EducationItem {
   course: string
@@ -38,96 +32,104 @@ interface EducationItem {
 
 // Hero Section Component
 interface HeroSectionProps {
-  title: string
   avatar: string
-  research?: ResearchItem[]
-  researchLogos?: Record<string, string>
   education?: EducationItem[]
   educationLogos?: Record<string, string>
+  research?: ResearchItem[]
+  researchLogos?: Record<string, string>
+  title: string
+}
+
+interface ResearchItem {
+  advisor?: string
+  emoji: string
+  focus: string
+  lab: string
+  link: string
 }
 
 const HeroSection = ({
-  title,
   avatar,
-  research = [],
-  researchLogos = {},
   education = [],
   educationLogos = {},
+  research = [],
+  researchLogos = {},
+  title,
 }: HeroSectionProps) => {
   const { t } = useTranslation()
-  const { siteOwner, siteConfig } = useLocalizedData()
+  const { siteConfig, siteOwner } = useLocalizedData()
   const headingColor = useColorModeValue('gray.800', 'white')
   const textColor = useColorModeValue('gray.600', 'gray.400')
   const bg = useColorModeValue('gray.50', 'gray.900')
   const accentBg = useColorModeValue('blue.50', 'blue.900')
 
   return (
-    <Box w="full" bg={bg} py={[3, 4, 6]} mt={[2, 3, 4]}>
+    <Box bg={bg} mt={[2, 3, 4]} py={[3, 4, 6]} w="full">
       <Container maxW={['full', 'full', '7xl']} px={[2, 4, 8]}>
         <Stack
+          align="center"
           direction={['column', 'column', 'row']}
           gap={[3, 4, 6]}
-          align="center"
           justify="space-between"
         >
-          <VStack gap={[2, 3]} align={['center', 'center', 'flex-start']} flex="1">
+          <VStack align={['center', 'center', 'flex-start']} flex="1" gap={[2, 3]}>
             <MotionText
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8 }}
-              as="h1"
-              fontSize={['lg', 'xl', '3xl']}
-              fontWeight="bold"
-              color={headingColor}
-              lineHeight="shorter"
-              mb={[1, 2, 3]}
-              display="flex"
               alignItems="center"
-              gap={[1, 2]}
-              flexWrap={['wrap', 'wrap', 'nowrap']}
-              textAlign={['center', 'center', 'left']}
-              w="full"
+              animate={{ opacity: 1 }}
+              as="h1"
+              color={headingColor}
               css={{
                 justifyContent: ['center', 'center', 'flex-start'],
               }}
+              display="flex"
+              flexWrap={['wrap', 'wrap', 'nowrap']}
+              fontSize={['lg', 'xl', '3xl']}
+              fontWeight="bold"
+              gap={[1, 2]}
+              initial={{ opacity: 0 }}
+              lineHeight="shorter"
+              mb={[1, 2, 3]}
+              textAlign={['center', 'center', 'left']}
+              transition={{ duration: 0.8 }}
+              w="full"
             >
               <MotionText
+                animate={{ opacity: 1 }}
                 as="span"
                 color="yellow.400"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
               >
                 $
               </MotionText>
               <MotionText
-                as="span"
-                initial={{ width: 0 }}
                 animate={{ width: 'auto' }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                overflow="hidden"
-                whiteSpace="nowrap"
+                as="span"
                 display="inline-block"
+                initial={{ width: 0 }}
+                overflow="hidden"
+                transition={{ delay: 0.1, duration: 0.5 }}
+                whiteSpace="nowrap"
               >
                 {t('hero.greeting')}{' '}
               </MotionText>
               <MotionText
-                as="span"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.2, delay: 0.6 }}
-                color="cyan.400"
-                fontFamily="mono"
-                display="flex"
                 alignItems="center"
+                animate={{ opacity: 1 }}
+                as="span"
+                color="cyan.400"
+                display="flex"
+                fontFamily="mono"
                 gap={1}
+                initial={{ opacity: 0 }}
+                transition={{ delay: 0.6, duration: 0.2 }}
               >
                 <MotionText
+                  animate={{ width: 'auto' }}
                   as="span"
                   initial={{ width: 0 }}
-                  animate={{ width: 'auto' }}
-                  transition={{ duration: 0.3, delay: 0.7 }}
                   overflow="hidden"
+                  transition={{ delay: 0.7, duration: 0.3 }}
                   whiteSpace="nowrap"
                 >
                   {siteOwner.name.display}
@@ -136,16 +138,16 @@ const HeroSection = ({
             </MotionText>
 
             <HStack
-              gap={[1, 2]}
-              mb={[2, 3, 4]}
-              justify={['center', 'center', 'flex-start']}
               flexWrap="wrap"
+              gap={[1, 2]}
+              justify={['center', 'center', 'flex-start']}
+              mb={[2, 3, 4]}
               w="full"
             >
               <Text color="yellow.400" fontSize={['xs', 'sm']}>
                 $
               </Text>
-              <Text fontSize={['xs', 'sm']} color={useColorModeValue('gray.600', 'gray.400')}>
+              <Text color={useColorModeValue('gray.600', 'gray.400')} fontSize={['xs', 'sm']}>
                 {t('hero.sometimesI')}
               </Text>
               <Box h={['18px', '20px', '24px']} overflow="hidden">
@@ -153,19 +155,19 @@ const HeroSection = ({
                   animate={{ y: [0, -18, -36, -54, -72, -90, 0] }}
                   transition={{
                     duration: 8,
-                    times: [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9],
-                    repeat: Infinity,
                     ease: 'linear',
+                    repeat: Infinity,
+                    times: [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9],
                   }}
                 >
                   {siteOwner.rotatingSubtitles.map((text, index) => (
                     <Text
-                      key={index}
-                      h={['18px', '20px', '24px']}
                       color="cyan.400"
-                      fontWeight="bold"
-                      fontSize={['xs', 'sm']}
                       fontFamily="mono"
+                      fontSize={['xs', 'sm']}
+                      fontWeight="bold"
+                      h={['18px', '20px', '24px']}
+                      key={index}
                     >
                       {text}
                     </Text>
@@ -175,9 +177,9 @@ const HeroSection = ({
             </HStack>
 
             <Box
-              w="full"
-              borderTop="1px dashed"
               borderColor={useColorModeValue('gray.200', 'gray.700')}
+              borderTop="1px dashed"
+              w="full"
             />
 
             {/* Research & Education compact section */}
@@ -186,11 +188,11 @@ const HeroSection = ({
                 {research.length > 0 && (
                   <VStack align="start" gap={2}>
                     <Heading
-                      size="xs"
                       color={textColor}
-                      textTransform="uppercase"
-                      letterSpacing="wider"
                       fontSize="2xs"
+                      letterSpacing="wider"
+                      size="xs"
+                      textTransform="uppercase"
                     >
                       Current Research
                     </Heading>
@@ -198,53 +200,53 @@ const HeroSection = ({
                       const logo = researchLogos[item.lab]
                       return (
                         <Link
-                          key={index}
-                          href={item.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           _hover={{ textDecoration: 'none' }}
+                          href={item.link}
+                          key={index}
+                          rel="noopener noreferrer"
+                          target="_blank"
                           w="full"
                         >
                           <HStack
+                            _hover={{ bg: useColorModeValue('gray.100', 'gray.700') }}
+                            borderRadius="md"
                             gap={2.5}
                             p={2}
-                            borderRadius="md"
                             transition="all 0.2s"
-                            _hover={{ bg: useColorModeValue('gray.100', 'gray.700') }}
                           >
                             {logo ? (
                               <Image
-                                src={logo}
                                 alt={item.lab}
-                                w="28px"
-                                h="28px"
                                 borderRadius="sm"
-                                objectFit="contain"
                                 flexShrink={0}
+                                h="28px"
+                                objectFit="contain"
+                                src={logo}
+                                w="28px"
                               />
                             ) : (
                               <Flex
-                                w="28px"
-                                h="28px"
-                                borderRadius="sm"
-                                bg={accentBg}
                                 align="center"
-                                justify="center"
+                                bg={accentBg}
+                                borderRadius="sm"
                                 flexShrink={0}
+                                h="28px"
+                                justify="center"
+                                w="28px"
                               >
                                 <Text fontSize="sm">{item.emoji}</Text>
                               </Flex>
                             )}
-                            <VStack align="start" gap={0} flex={1}>
+                            <VStack align="start" flex={1} gap={0}>
                               <Text
+                                color={headingColor}
                                 fontSize={['xs', 'sm']}
                                 fontWeight="medium"
                                 lineHeight="short"
-                                color={headingColor}
                               >
                                 {item.lab}
                               </Text>
-                              <Text fontSize="2xs" color={textColor} lineHeight="short" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+                              <Text color={textColor} fontSize="2xs" lineHeight="short" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
                                 {item.advisor ? `w/ ${item.advisor}` : item.focus}
                               </Text>
                             </VStack>
@@ -257,53 +259,53 @@ const HeroSection = ({
                 {education.length > 0 && (
                   <VStack align="start" gap={2}>
                     <Heading
-                      size="xs"
                       color={textColor}
-                      textTransform="uppercase"
-                      letterSpacing="wider"
                       fontSize="2xs"
+                      letterSpacing="wider"
+                      size="xs"
+                      textTransform="uppercase"
                     >
                       Education
                     </Heading>
                     {education.map((item, index) => {
                       const logo = educationLogos[item.institution]
                       return (
-                        <HStack key={index} gap={2.5} p={2} borderRadius="md" w="full">
+                        <HStack borderRadius="md" gap={2.5} key={index} p={2} w="full">
                           {logo ? (
                             <Image
-                              src={logo}
                               alt={item.institution}
-                              w="28px"
-                              h="28px"
                               borderRadius="sm"
-                              objectFit="contain"
                               flexShrink={0}
+                              h="28px"
+                              objectFit="contain"
+                              src={logo}
+                              w="28px"
                             />
                           ) : (
                             <Flex
-                              w="28px"
-                              h="28px"
-                              borderRadius="sm"
-                              bg={accentBg}
                               align="center"
-                              justify="center"
+                              bg={accentBg}
+                              borderRadius="sm"
                               flexShrink={0}
+                              h="28px"
+                              justify="center"
+                              w="28px"
                             >
-                              <Text fontSize="sm" fontWeight="bold" color="blue.500">
+                              <Text color="blue.500" fontSize="sm" fontWeight="bold">
                                 {item.institution.charAt(0)}
                               </Text>
                             </Flex>
                           )}
-                          <VStack align="start" gap={0} flex={1}>
+                          <VStack align="start" flex={1} gap={0}>
                             <Text
+                              color={headingColor}
                               fontSize={['xs', 'sm']}
                               fontWeight="medium"
                               lineHeight="short"
-                              color={headingColor}
                             >
                               {item.course}
                             </Text>
-                            <Text fontSize="2xs" color={textColor} lineHeight="short">
+                            <Text color={textColor} fontSize="2xs" lineHeight="short">
                               {item.institution} · {item.year}
                             </Text>
                           </VStack>
@@ -316,43 +318,43 @@ const HeroSection = ({
             )}
 
             <Box
-              w="full"
-              borderTop="1px dashed"
               borderColor={useColorModeValue('gray.200', 'gray.700')}
+              borderTop="1px dashed"
+              w="full"
             />
 
             {/* Welcome + contact */}
             <Flex
-              w="full"
-              direction={['column', 'column', 'row']}
               align={['center', 'center', 'center']}
+              direction={['column', 'column', 'row']}
               gap={[2, 2, 4]}
+              w="full"
             >
               <Text
-                fontSize="xs"
                 color={textColor}
+                flex={1}
+                fontSize="xs"
+                fontStyle="italic"
                 lineHeight="tall"
                 textAlign={['center', 'center', 'left']}
-                flex={1}
-                fontStyle="italic"
               >
                 {siteConfig.tagline ?? ''}
               </Text>
-              <HStack gap={2} flexShrink={0}>
+              <HStack flexShrink={0} gap={2}>
                 <Link
-                  href={`mailto:${siteOwner.contact.academicEmail}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   _hover={{ textDecoration: 'none' }}
+                  href={`mailto:${siteOwner.contact.academicEmail}`}
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
                   <HStack
-                    gap={1.5}
-                    color={textColor}
-                    transition="all 0.15s"
                     _hover={{ color: 'cyan.400' }}
+                    color={textColor}
+                    gap={1.5}
+                    transition="all 0.15s"
                   >
-                    <DynamicIcon name="FaEnvelope" boxSize={3.5} />
-                    <Text fontSize="xs" fontFamily="mono">
+                    <DynamicIcon boxSize={3.5} name="FaEnvelope" />
+                    <Text fontFamily="mono" fontSize="xs">
                       email
                     </Text>
                   </HStack>
@@ -361,19 +363,19 @@ const HeroSection = ({
                   /
                 </Text>
                 <Link
-                  href={siteOwner.social.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   _hover={{ textDecoration: 'none' }}
+                  href={siteOwner.social.linkedin}
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
                   <HStack
-                    gap={1.5}
-                    color={textColor}
-                    transition="all 0.15s"
                     _hover={{ color: 'cyan.400' }}
+                    color={textColor}
+                    gap={1.5}
+                    transition="all 0.15s"
                   >
-                    <DynamicIcon name="FaLinkedin" boxSize={3.5} />
-                    <Text fontSize="xs" fontFamily="mono">
+                    <DynamicIcon boxSize={3.5} name="FaLinkedin" />
+                    <Text fontFamily="mono" fontSize="xs">
                       linkedin
                     </Text>
                   </HStack>
@@ -382,55 +384,55 @@ const HeroSection = ({
             </Flex>
           </VStack>
           <MotionBox
-            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.5 }}
           >
             <VStack gap={[2, 3]}>
               <Image
-                src={withBase(`images/${avatar}`)}
                 alt={title}
                 borderRadius="xl"
                 boxSize={['150px', '180px', '220px']}
                 objectFit="cover"
+                src={withBase(`images/${avatar}`)}
               />
               {/* Social icons row below avatar */}
               <HStack gap={[1, 1.5]} justify="center">
                 {heroSocialIcons.map((item) => (
                   <Link
-                    key={item.label}
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={item.label}
                     _hover={{ textDecoration: 'none' }}
+                    href={item.href}
+                    key={item.label}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    title={item.label}
                   >
                     <Box
-                      p={1.5}
-                      cursor="pointer"
-                      color={useColorModeValue('gray.400', 'gray.500')}
-                      transition="all 0.2s"
                       _hover={{ color: item.color, transform: 'scale(1.2)' }}
+                      color={useColorModeValue('gray.400', 'gray.500')}
+                      cursor="pointer"
+                      p={1.5}
+                      transition="all 0.2s"
                     >
-                      <DynamicIcon name={item.icon} boxSize={[3, 3.5]} />
+                      <DynamicIcon boxSize={[3, 3.5]} name={item.icon} />
                     </Box>
                   </Link>
                 ))}
               </HStack>
-              {((siteConfig.pets ?? []) as { name: string; emoji: string; image: string }[])
+              {((siteConfig.pets ?? []) as { emoji: string; image: string; name: string; }[])
                 .length > 0 && (
                 <HStack gap={[4, 5]} justify="center">
                   {(
-                    (siteConfig.pets ?? []) as { name: string; emoji: string; image: string }[]
+                    (siteConfig.pets ?? []) as { emoji: string; image: string; name: string; }[]
                   ).map((pet) => (
-                    <VStack key={pet.name} gap={2}>
+                    <VStack gap={2} key={pet.name}>
                       {pet.image && (
                         <Image
-                          src={pet.image}
                           alt={pet.name}
                           borderRadius="full"
                           boxSize={['40px', '50px']}
                           objectFit="cover"
+                          src={pet.image}
                         />
                       )}
                       <Text fontSize="sm" fontWeight="medium">

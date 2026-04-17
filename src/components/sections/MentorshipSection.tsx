@@ -1,12 +1,13 @@
 import {
   Box,
   Container,
-  VStack,
-  Text,
-  Heading,
   Flex,
-  Link
+  Heading,
+  Link,
+  Text,
+  VStack
 } from '@chakra-ui/react'
+
 import { useColorModeValue } from '@/color-mode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 
@@ -23,41 +24,41 @@ const MentorshipSection: React.FC = () => {
     <Box w="full">
       <Container maxW={['full', 'full', '7xl']} px={[2, 4, 8]}>
         <Flex align="center" gap={3} mb={3}>
-          <Box h="2px" w="20px" bg="cyan.400" borderRadius="full" flexShrink={0} />
-          <Heading size={['sm', 'md']} fontWeight="semibold">
+          <Box bg="cyan.400" borderRadius="full" flexShrink={0} h="2px" w="20px" />
+          <Heading fontWeight="semibold" size={['sm', 'md']}>
             {about.mentorship.heading}
           </Heading>
-          <Box flex="1" h="1px" bg={lineColor} />
+          <Box bg={lineColor} flex="1" h="1px" />
         </Flex>
         {about.mentorship.description && (
-          <Text fontSize="xs" lineHeight="tall" color={textColor} mb={4}>
+          <Text color={textColor} fontSize="xs" lineHeight="tall" mb={4}>
             {about.mentorship.description}
           </Text>
         )}
-        <VStack gap={0} align="stretch">
+        <VStack align="stretch" gap={0}>
           {about.mentorship.mentees.map((mentee, index) => (
             <Flex
-              key={index}
               align="center"
-              gap={3}
-              py={2.5}
               borderBottom="1px solid"
               borderColor={borderColor}
+              gap={3}
+              key={index}
+              py={2.5}
             >
-              <Box w="6px" h="6px" borderRadius="full" bg="cyan.400" flexShrink={0} />
-              <Link href={mentee.url} target="_blank" rel="noopener noreferrer" _hover={{ textDecoration: 'none' }}>
+              <Box bg="cyan.400" borderRadius="full" flexShrink={0} h="6px" w="6px" />
+              <Link _hover={{ textDecoration: 'none' }} href={mentee.url} rel="noopener noreferrer" target="_blank">
                 <Text
+                  _hover={{ color: 'cyan.400' }}
+                  color={nameColor}
                   fontSize="sm"
                   fontWeight="medium"
-                  color={nameColor}
                   transition="color 0.15s"
-                  _hover={{ color: 'cyan.400' }}
                 >
                   {mentee.name}
                 </Text>
               </Link>
               {mentee.note && (
-                <Text fontSize="2xs" fontFamily="mono" color={textColor}>
+                <Text color={textColor} fontFamily="mono" fontSize="2xs">
                   {mentee.note}
                 </Text>
               )}

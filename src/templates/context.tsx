@@ -10,33 +10,19 @@
  */
 
 import { createContext, useContext } from 'react'
+
 import type { ComponentSlots, SlotName } from './slots'
 
 const SlotContext = createContext<ComponentSlots | null>(null)
 
 interface SlotProviderProps {
+  children: React.ReactNode
   /** Resolved slot map (template defaults merged with user overrides) */
   slots: ComponentSlots
-  children: React.ReactNode
 }
 
-export const SlotProvider: React.FC<SlotProviderProps> = ({ slots, children }) => {
+export const SlotProvider: React.FC<SlotProviderProps> = ({ children, slots }) => {
   return <SlotContext.Provider value={slots}>{children}</SlotContext.Provider>
-}
-
-/**
- * Get the active component for a slot.
- *
- * @example
- * const Hero = useSlot('hero')
- * return <Hero title="Hi" avatar="me.jpg" />
- */
-export function useSlot<K extends SlotName>(name: K): ComponentSlots[K] {
-  const slots = useContext(SlotContext)
-  if (!slots) {
-    throw new Error(`useSlot("${name}") must be used within a <SlotProvider>`)
-  }
-  return slots[name]
 }
 
 /**
@@ -62,4 +48,19 @@ export function resolveSlots(
   }
 
   return resolved
+}
+
+/**
+ * Get the active component for a slot.
+ *
+ * @example
+ * const Hero = useSlot('hero')
+ * return <Hero title="Hi" avatar="me.jpg" />
+ */
+export function useSlot<K extends SlotName>(name: K): ComponentSlots[K] {
+  const slots = useContext(SlotContext)
+  if (!slots) {
+    throw new Error(`useSlot("${name}") must be used within a <SlotProvider>`)
+  }
+  return slots[name]
 }

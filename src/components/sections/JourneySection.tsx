@@ -1,15 +1,16 @@
 import {
   Box,
   Container,
-  VStack,
-  HStack,
-  Text,
-  Heading,
   Flex,
-  Link
+  Heading,
+  HStack,
+  Link,
+  Text,
+  VStack
 } from '@chakra-ui/react'
-import { useColorModeValue } from '@/color-mode'
 import { useTranslation } from 'react-i18next'
+
+import { useColorModeValue } from '@/color-mode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 
 /** Parse **bold** markers in text */
@@ -18,13 +19,13 @@ const renderBoldText = (text: string, color: string, boldColor: string) => {
   return parts.map((part, i) => {
     if (part.startsWith('**') && part.endsWith('**')) {
       return (
-        <Text as="span" key={i} fontWeight="semibold" color={boldColor}>
+        <Text as="span" color={boldColor} fontWeight="semibold" key={i}>
           {part.slice(2, -2)}
         </Text>
       )
     }
     return (
-      <Text as="span" key={i} color={color}>
+      <Text as="span" color={color} key={i}>
         {part}
       </Text>
     )
@@ -47,78 +48,78 @@ const JourneySection: React.FC = () => {
   return (
     <Box w="full">
       <Container maxW={['full', 'full', '7xl']} px={[2, 4, 8]}>
-        <Flex align="center" gap={3} w="full" mb={4}>
-          <Box h="2px" w="20px" bg="cyan.400" borderRadius="full" flexShrink={0} />
-          <Heading size={['sm', 'md']} fontWeight="semibold">
+        <Flex align="center" gap={3} mb={4} w="full">
+          <Box bg="cyan.400" borderRadius="full" flexShrink={0} h="2px" w="20px" />
+          <Heading fontWeight="semibold" size={['sm', 'md']}>
             {t('about.myJourney')}
           </Heading>
-          <Box flex="1" h="1px" bg={lineColor} />
+          <Box bg={lineColor} flex="1" h="1px" />
         </Flex>
 
-        <Box w="full" position="relative">
+        <Box position="relative" w="full">
           <Box
-            position="absolute"
-            left={['7px', '7px', '7px']}
-            top="12px"
-            bottom="12px"
-            w="1px"
             bg={lineColor}
+            bottom="12px"
+            left={['7px', '7px', '7px']}
+            position="absolute"
+            top="12px"
+            w="1px"
           />
 
-          <VStack gap={0} align="stretch">
+          <VStack align="stretch" gap={0}>
             {about.journeyPhases.map((phase, index) => (
-              <Flex key={index} gap={[3, 4]} align="start" py={3} position="relative">
+              <Flex align="start" gap={[3, 4]} key={index} position="relative" py={3}>
                 <Box flexShrink={0} mt="6px">
                   <Box
-                    w="14px"
-                    h="14px"
-                    borderRadius="full"
+                    bg={index === about.journeyPhases!.length - 1 ? 'cyan.400' : dotBg}
                     border="2px solid"
                     borderColor={index === about.journeyPhases!.length - 1 ? 'cyan.400' : dotBorder}
-                    bg={index === about.journeyPhases!.length - 1 ? 'cyan.400' : dotBg}
+                    borderRadius="full"
+                    h="14px"
+                    w="14px"
                   />
                 </Box>
                 <Box flex={1} pb={2}>
-                  <HStack gap={2} mb={1} flexWrap="wrap">
+                  <HStack flexWrap="wrap" gap={2} mb={1}>
                     <Text
-                      fontSize="2xs"
-                      fontFamily="mono"
                       color="cyan.400"
+                      fontFamily="mono"
+                      fontSize="2xs"
                       fontWeight="semibold"
-                      textTransform="uppercase"
                       letterSpacing="wide"
+                      textTransform="uppercase"
                     >
                       {phase.period}
                     </Text>
-                    <Text fontSize="2xs" color={useColorModeValue('gray.400', 'gray.600')}>
+                    <Text color={useColorModeValue('gray.400', 'gray.600')} fontSize="2xs">
                       /
                     </Text>
                     <Text
-                      fontSize="2xs"
-                      fontFamily="mono"
                       color={useColorModeValue('gray.400', 'gray.500')}
+                      fontFamily="mono"
+                      fontSize="2xs"
                     >
                       {phase.org}
                     </Text>
                   </HStack>
-                  <Text fontSize="sm" fontWeight="semibold" color={headingColor} mb={1}>
+                  <Text color={headingColor} fontSize="sm" fontWeight="semibold" mb={1}>
                     {phase.title}
                   </Text>
                   <Text fontSize="xs" lineHeight="tall" mb={2}>
                     {renderBoldText(phase.description, textColor, boldColor)}
                   </Text>
                   {phase.tags && (
-                    <HStack gap={1.5} flexWrap="wrap">
+                    <HStack flexWrap="wrap" gap={1.5}>
                       {phase.tags.map((tag) => (
                         <Text
-                          key={tag}
-                          fontSize="2xs"
-                          fontFamily="mono"
-                          color={textColor}
-                          px={1.5}
-                          py={0.5}
                           bg={tagBg}
                           borderRadius="sm"
+                          color={textColor}
+                          fontFamily="mono"
+                          fontSize="2xs"
+                          key={tag}
+                          px={1.5}
+                          py={0.5}
                         >
                           {tag}
                         </Text>
@@ -129,25 +130,25 @@ const JourneySection: React.FC = () => {
               </Flex>
             ))}
             {/* View all link */}
-            <Flex gap={[3, 4]} align="start" py={3} position="relative">
+            <Flex align="start" gap={[3, 4]} position="relative" py={3}>
               <Box flexShrink={0} mt="6px">
                 <Box
-                  w="14px"
-                  h="14px"
-                  borderRadius="full"
                   border="2px dashed"
                   borderColor={dotBorder}
+                  borderRadius="full"
+                  h="14px"
+                  w="14px"
                 />
               </Box>
-              <Link href="/experience" _hover={{ textDecoration: 'none' }}>
+              <Link _hover={{ textDecoration: 'none' }} href="/experience">
                 <HStack
-                  gap={2}
-                  color={textColor}
-                  fontSize="xs"
-                  fontFamily="mono"
-                  transition="all 0.15s"
                   _hover={{ color: 'cyan.400' }}
+                  color={textColor}
+                  fontFamily="mono"
+                  fontSize="xs"
+                  gap={2}
                   mt="3px"
+                  transition="all 0.15s"
                 >
                   <Text>{t('about.viewAllExperience')}</Text>
                   <Text>→</Text>

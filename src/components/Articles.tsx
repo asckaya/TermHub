@@ -1,22 +1,25 @@
-import React, { useMemo, useState, useEffect } from 'react'
-import { useColorMode, useColorModeValue } from '@/color-mode'
 import { Box, Collapsible, Flex, HStack, Icon, Input, Link, Text, VStack } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
-import { type IconType } from 'react-icons'
-import { FaGithub, FaMedium, FaYoutube, FaExternalLinkAlt } from 'react-icons/fa'
-import { SiZhihu, SiCsdn } from 'react-icons/si'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { ProjectItem } from '../types'
-import { highlightData } from '../utils/highlightData'
-import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { type IconType } from 'react-icons'
+import { FaExternalLinkAlt, FaGithub, FaMedium, FaYoutube } from 'react-icons/fa'
+import { SiCsdn, SiZhihu } from 'react-icons/si'
+
+import { useColorMode, useColorModeValue } from '@/color-mode'
 import { useThemeConfig } from '@/config/theme'
-import { MotionList, MotionBox, MotionHover } from './animations/MotionList'
+import { useLocalizedData } from '@/hooks/useLocalizedData'
+
+import type { ProjectItem } from '../types'
+
+import { highlightData } from '../utils/highlightData'
+import { MotionBox, MotionHover, MotionList } from './animations/MotionList'
 
 /* ── Keyframes ─────────────────────────────────────────────────── */
 const blink = keyframes`0%,100%{opacity:1}50%{opacity:0}`
 
 /* ── Types ─────────────────────────────────────────────────────── */
-type CategoryFilter = ProjectItem['category'] | 'all'
+type CategoryFilter = 'all' | ProjectItem['category']
 
 /* ── Category config (from config/theme.ts) ──────────────────── */
 
@@ -35,7 +38,7 @@ const fmtDate = (v?: string) => {
   if (!v) return ''
   const d = new Date(v)
   if (Number.isNaN(d.getTime())) return ''
-  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })
+  return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
 }
 
 const getYear = (v?: string) => {
@@ -45,19 +48,19 @@ const getYear = (v?: string) => {
 
 /** Known article-type tags — first match becomes the type label */
 const typeTags = new Set([
-  'tutorial',
-  'notes',
   'case study',
+  'deep dive',
+  'guide',
+  'notes',
+  'overview',
+  'review',
   'setup notes',
   'troubleshooting',
-  'guide',
-  'review',
-  'overview',
-  'deep dive',
+  'tutorial',
   'walkthrough',
 ])
 
-const getArticleType = (tags?: string[]): string | null => {
+const getArticleType = (tags?: string[]): null | string => {
   if (!tags) return null
   const found = tags.find((t) => typeTags.has(t.toLowerCase()))
   return found ?? null
@@ -76,7 +79,7 @@ const Articles: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all')
 
   /* Terminal palette (centralized) */
-  const { terminalPalette, articleCategoryColors: categoryColors } = useThemeConfig()
+  const { articleCategoryColors: categoryColors, terminalPalette } = useThemeConfig()
   const tc = terminalPalette.colors(isDark)
   const termBg = tc.bg
   const termText = tc.text
@@ -97,8 +100,8 @@ const Articles: React.FC = () => {
   }, [])
 
   const formattedTime = currentTime.toLocaleTimeString('en-US', {
-    hour12: false,
     hour: '2-digit',
+    hour12: false,
     minute: '2-digit',
     second: '2-digit',
   })
@@ -150,18 +153,18 @@ const Articles: React.FC = () => {
   const promptPath = selectedCategory === 'all' ? '~' : `~/${selectedCategory}`
 
   return (
-    <Box w="full" minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')} py={8}>
+    <Box bg={useColorModeValue('gray.50', 'gray.900')} minH="100vh" py={8} w="full">
       <VStack gap={6} maxW="1400px" mx="auto" px={[2, 4, 6]}>
         <Box
-          w="full"
-          borderRadius="md"
-          fontFamily="mono"
-          boxShadow={`0 0 0 1px ${termBorder}, 0 4px 16px ${isDark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.1)'}`}
-          overflow="hidden"
           bg={termBg}
+          borderRadius="md"
+          boxShadow={`0 0 0 1px ${termBorder}, 0 4px 16px ${isDark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.1)'}`}
+          fontFamily="mono"
+          overflow="hidden"
+          w="full"
         >
           {/* ═══ Pixel RGB light bar ═══ */}
-          <Flex h="3px" w="full" overflow="hidden" borderTopRadius="md">
+          <Flex borderTopRadius="md" h="3px" overflow="hidden" w="full">
             {(() => {
               const palette = [
                 '#bf616a',
@@ -177,28 +180,28 @@ const Articles: React.FC = () => {
               return Array.from({ length: total }, (_, i) => {
                 const colorIdx = (i + tick) % palette.length
                 const brightness = 0.6 + 0.4 * Math.abs(Math.sin((i + tick * 0.5) * 0.3))
-                return <Box key={i} flex={1} h="full" bg={palette[colorIdx]} opacity={brightness} />
+                return <Box bg={palette[colorIdx]} flex={1} h="full" key={i} opacity={brightness} />
               })
             })()}
           </Flex>
 
           {/* ═══ Title bar ═══ */}
           <Flex
-            bg={termHeader}
-            px={4}
-            py={2}
-            color={termText}
-            borderBottom={`1px solid ${termBorder}`}
-            justify="space-between"
             align="center"
+            bg={termHeader}
+            borderBottom={`1px solid ${termBorder}`}
+            color={termText}
             fontSize="xs"
             fontWeight="medium"
+            justify="space-between"
+            px={4}
+            py={2}
           >
             <HStack gap={3}>
               <HStack gap={1.5}>
-                <Box w="10px" h="10px" borderRadius="full" bg="#bf616a" />
-                <Box w="10px" h="10px" borderRadius="full" bg="#ebcb8b" />
-                <Box w="10px" h="10px" borderRadius="full" bg="#a3be8c" />
+                <Box bg="#bf616a" borderRadius="full" h="10px" w="10px" />
+                <Box bg="#ebcb8b" borderRadius="full" h="10px" w="10px" />
+                <Box bg="#a3be8c" borderRadius="full" h="10px" w="10px" />
               </HStack>
               <Text>
                 <Box as="span" color={termParam}>
@@ -233,14 +236,14 @@ const Articles: React.FC = () => {
 
           {/* ═══ Touch bar ═══ */}
           <Flex
+            align="center"
             bg={tc.touchBar}
-            px={4}
-            py={1}
             borderBottom={`1px solid ${termBorder}`}
             fontSize="2xs"
-            align="center"
             justify="space-between"
             overflow="hidden"
+            px={4}
+            py={1}
           >
             <Text
               color={termSecondary}
@@ -270,44 +273,44 @@ const Articles: React.FC = () => {
 
           {/* ═══ Toolbar ═══ */}
           <Flex
-            px={4}
-            py={2}
+            align="center"
             bg={termBg}
             borderBottom={`1px solid ${termBorder}`}
-            align="center"
-            gap={2}
             fontSize="xs"
+            gap={2}
+            px={4}
+            py={2}
           >
             <Text color={termPrompt} flexShrink={0}>
               {siteOwner.terminalUsername}@blog:{promptPath}$
             </Text>
             <Input
-              placeholder="grep -i '...'"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              size="xs"
-              variant="flushed"
-              color={termText}
-              fontFamily="mono"
-              flex="1"
-              minW="120px"
               _placeholder={{ color: termSecondary }}
+              color={termText}
+              flex="1"
+              fontFamily="mono"
+              minW="120px"
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="grep -i '...'"
+              size="xs"
+              value={searchQuery}
+              variant="flushed"
             />
             <select
-              value={selectedCategory}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                 setSelectedCategory(e.target.value as CategoryFilter)
               }
               style={{
-                width: '130px',
                 background: isDark ? 'rgba(0,0,0,0.2)' : 'white',
                 border: `1px solid ${termBorder}`,
+                borderRadius: '4px',
                 color: termText,
                 fontFamily: 'monospace',
-                borderRadius: '4px',
                 fontSize: '12px',
                 padding: '2px 6px',
+                width: '130px',
               }}
+              value={selectedCategory}
             >
               <option value="all">{t('articles.allTopics')}</option>
               {availableCategories.map((c) => (
@@ -322,12 +325,12 @@ const Articles: React.FC = () => {
           <Box
             bg={termBg}
             color={termText}
-            maxH="70vh"
-            overflowY="auto"
             css={{
-              '&::-webkit-scrollbar': { width: '6px', background: 'transparent' },
+              '&::-webkit-scrollbar': { background: 'transparent', width: '6px' },
               '&::-webkit-scrollbar-thumb': { background: tc.border, borderRadius: '3px' },
             }}
+            maxH="70vh"
+            overflowY="auto"
           >
             <Box px={[3, 4, 5]} py={4}>
               <MotionList staggerDelay={0.08}>
@@ -336,23 +339,23 @@ const Articles: React.FC = () => {
                     {/* Year heading */}
                     <HStack gap={2} mb={2} pl="2px">
                       <Text
-                        fontSize="2xs"
-                        fontFamily="mono"
                         color={termHighlight}
+                        fontFamily="mono"
+                        fontSize="2xs"
                         fontWeight="semibold"
                         letterSpacing="wide"
                       >
                         {year}
                       </Text>
-                      <Box flex="1" h="1px" bg={termBorder} opacity={0.3} />
-                      <Text fontSize="2xs" fontFamily="mono" color={termMuted}>
+                      <Box bg={termBorder} flex="1" h="1px" opacity={0.3} />
+                      <Text color={termMuted} fontFamily="mono" fontSize="2xs">
                         {items.length}{' '}
                         {items.length === 1 ? t('articles.article') : t('articles.articles')}
                       </Text>
                     </HStack>
 
                     {/* Articles in year */}
-                    <VStack gap={0} align="stretch">
+                    <VStack align="stretch" gap={0}>
                       {items.map((item) => {
                         const ct = categoryColors[item.category]
                         const articleType = getArticleType(item.tags)
@@ -369,23 +372,23 @@ const Articles: React.FC = () => {
                         return (
                           <MotionBox key={item.id}>
                             <Box
-                              borderBottom={`1px dotted ${termBorder}`}
                               _hover={{ bg: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)' }}
+                              borderBottom={`1px dotted ${termBorder}`}
                             >
                               <Flex
-                                py={3}
-                                px={[0, 0.5]}
-                                fontSize="sm"
                                 align="center"
                                 cursor="pointer"
+                                fontSize="sm"
                                 onClick={() => toggleExpanded(item.id)}
+                                px={[0, 0.5]}
+                                py={3}
                               >
                                 {/* Date */}
                                 <Text
-                                  w={['70px', '90px']}
-                                  fontSize="xs"
                                   color={termHighlight}
                                   flexShrink={0}
+                                  fontSize="xs"
+                                  w={['70px', '90px']}
                                 >
                                   {fmtDate(item.date)}
                                 </Text>
@@ -393,27 +396,27 @@ const Articles: React.FC = () => {
                                 {/* Category badge */}
                                 <Flex
                                   align="center"
-                                  gap={1}
-                                  px={1.5}
-                                  py={0.5}
                                   bg={ct.bg(isDark)}
-                                  color={ct.fg(isDark)}
                                   borderRadius="sm"
+                                  color={ct.fg(isDark)}
+                                  flexShrink={0}
                                   fontSize="2xs"
                                   fontWeight="bold"
+                                  gap={1}
+                                  justifyContent="center"
+                                  px={1.5}
+                                  py={0.5}
                                   textTransform="uppercase"
                                   w={['60px', '80px']}
-                                  flexShrink={0}
-                                  justifyContent="center"
                                 >
                                   {t(`categoryLabel.${item.category}`).split(' ')[0]}
                                 </Flex>
 
                                 {/* Title + type */}
-                                <Box flex="1" px={[2, 3]} minW={0}>
+                                <Box flex="1" minW={0} px={[2, 3]}>
                                   <Text
-                                    fontWeight="medium"
                                     color={termText}
+                                    fontWeight="medium"
                                     overflow="hidden"
                                     textOverflow="ellipsis"
                                     whiteSpace="nowrap"
@@ -421,40 +424,40 @@ const Articles: React.FC = () => {
                                     {item.title}
                                   </Text>
                                   {articleType && (
-                                    <Text fontSize="2xs" color={termSecondary} mt={0.5}>
+                                    <Text color={termSecondary} fontSize="2xs" mt={0.5}>
                                       {articleType}
                                     </Text>
                                   )}
                                 </Box>
 
                                 {/* Links (desktop) */}
-                                <HStack gap={1.5} display={['none', 'flex']} flexShrink={0}>
+                                <HStack display={['none', 'flex']} flexShrink={0} gap={1.5}>
                                   {resources.slice(0, 3).map((r) => (
                                     <MotionHover key={r.url}>
                                       <Link
-                                        href={r.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        onClick={(e) => e.stopPropagation()}
                                         _hover={{ textDecoration: 'none' }}
+                                        href={r.url}
+                                        onClick={(e) => e.stopPropagation()}
+                                        rel="noopener noreferrer"
+                                        target="_blank"
                                       >
                                         <Flex
-                                          align="center"
-                                          gap={1}
-                                          px={2}
-                                          py={0.5}
-                                          borderRadius="sm"
-                                          border="1px solid"
-                                          borderColor={termBorder}
-                                          color={termCommand}
-                                          fontSize="2xs"
-                                          fontFamily="mono"
-                                          whiteSpace="nowrap"
-                                          transition="all 0.15s"
                                           _hover={{
                                             borderColor: ct.fg(isDark),
                                             color: ct.fg(isDark),
                                           }}
+                                          align="center"
+                                          border="1px solid"
+                                          borderColor={termBorder}
+                                          borderRadius="sm"
+                                          color={termCommand}
+                                          fontFamily="mono"
+                                          fontSize="2xs"
+                                          gap={1}
+                                          px={2}
+                                          py={0.5}
+                                          transition="all 0.15s"
+                                          whiteSpace="nowrap"
                                         >
                                           <Icon as={linkIcon(r.url)} boxSize="10px" />
                                           <Text>{r.label}</Text>
@@ -465,11 +468,11 @@ const Articles: React.FC = () => {
                                 </HStack>
 
                                 {/* Expand */}
-                                <Flex w="40px" justify="center" flexShrink={0}>
+                                <Flex flexShrink={0} justify="center" w="40px">
                                   <Box
                                     color={isExpanded ? termInfo : termCommand}
-                                    fontWeight="bold"
                                     fontSize="xs"
+                                    fontWeight="bold"
                                   >
                                     {isExpanded ? '[-]' : '[+]'}
                                   </Box>
@@ -480,35 +483,35 @@ const Articles: React.FC = () => {
                               <Collapsible.Root open={isExpanded}>
                                 <Collapsible.Content>
                                   <Box
-                                    px={[3, 4, 8]}
-                                    py={3}
                                     bg={isDark ? 'rgba(76,86,106,0.1)' : 'rgba(203,213,225,0.15)'}
                                     borderLeft={`2px solid ${ct.fg(isDark)}`}
+                                    px={[3, 4, 8]}
+                                    py={3}
                                   >
                                     {/* Summary */}
-                                    <Text fontSize="xs" color={termText} lineHeight="1.7" mb={2}>
+                                    <Text color={termText} fontSize="xs" lineHeight="1.7" mb={2}>
                                       {highlightData(item.summary, {
-                                        num: termHighlight,
                                         kw: termCommand,
+                                        num: termHighlight,
                                         str: termSuccess,
                                       })}
                                     </Text>
 
                                     {/* Tags */}
                                     {item.tags.length > 0 && (
-                                      <HStack gap={1.5} flexWrap="wrap" mb={2}>
+                                      <HStack flexWrap="wrap" gap={1.5} mb={2}>
                                         {item.tags.map((t) => (
                                           <Text
-                                            key={t}
-                                            fontSize="2xs"
-                                            fontFamily="mono"
-                                            color={termMuted}
-                                            px={1.5}
-                                            py={0.5}
                                             bg={
                                               isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)'
                                             }
                                             borderRadius="sm"
+                                            color={termMuted}
+                                            fontFamily="mono"
+                                            fontSize="2xs"
+                                            key={t}
+                                            px={1.5}
+                                            py={0.5}
                                           >
                                             {t}
                                           </Text>
@@ -518,32 +521,32 @@ const Articles: React.FC = () => {
 
                                     {/* All links (visible on all screens when expanded) */}
                                     {resources.length > 0 && (
-                                      <Flex wrap="wrap" gap={2}>
+                                      <Flex gap={2} wrap="wrap">
                                         {resources.map((r) => (
                                           <MotionHover key={r.url}>
                                             <Link
-                                              key={r.url}
-                                              href={r.url}
-                                              target="_blank"
-                                              rel="noopener noreferrer"
-                                              onClick={(e) => e.stopPropagation()}
                                               _hover={{ textDecoration: 'none' }}
+                                              href={r.url}
+                                              key={r.url}
+                                              onClick={(e) => e.stopPropagation()}
+                                              rel="noopener noreferrer"
+                                              target="_blank"
                                             >
                                               <HStack
-                                                gap={1.5}
-                                                px={2.5}
-                                                py={1}
-                                                borderRadius="sm"
-                                                border="1px solid"
-                                                borderColor={termBorder}
-                                                color={termCommand}
-                                                fontSize="xs"
-                                                fontFamily="mono"
-                                                transition="all 0.15s"
                                                 _hover={{
                                                   borderColor: ct.fg(isDark),
                                                   color: ct.fg(isDark),
                                                 }}
+                                                border="1px solid"
+                                                borderColor={termBorder}
+                                                borderRadius="sm"
+                                                color={termCommand}
+                                                fontFamily="mono"
+                                                fontSize="xs"
+                                                gap={1.5}
+                                                px={2.5}
+                                                py={1}
+                                                transition="all 0.15s"
                                               >
                                                 <Icon as={linkIcon(r.url)} boxSize="11px" />
                                                 <Text>{r.label}</Text>
@@ -581,14 +584,14 @@ const Articles: React.FC = () => {
 
           {/* ═══ Status bar ═══ */}
           <Flex
-            px={4}
-            py={1.5}
+            align="center"
             bg={termHeader}
             borderTop={`1px solid ${termBorder}`}
-            align="center"
-            justify="space-between"
-            fontSize="2xs"
             color={termMuted}
+            fontSize="2xs"
+            justify="space-between"
+            px={4}
+            py={1.5}
           >
             <Text>
               {filteredArticles.length}/{articles.length} {t('articles.shown')}
@@ -599,10 +602,10 @@ const Articles: React.FC = () => {
                   {siteOwner.terminalUsername}@blog:{promptPath}$
                 </Text>
                 <Box
-                  w="6px"
-                  h="11px"
                   bg={termPrompt}
                   css={{ animation: `${blink} 1s step-end infinite` }}
+                  h="11px"
+                  w="6px"
                 />
               </HStack>
             </MotionBox>

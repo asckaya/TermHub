@@ -1,25 +1,27 @@
 import {
-  Box,
-  VStack,
-  Heading,
-  Text,
   Badge,
-  HStack,
+  Box,
   Button,
-  Link,
   Collapsible,
+  Heading,
+  HStack,
+  Link,
+  Text,
   useDisclosure,
+  VStack,
 } from '@chakra-ui/react'
+
 import { useColorModeValue } from '@/color-mode'
+
 import type { ProjectItem } from '../types'
 
 const categoryColors: Record<ProjectItem['category'], string> = {
-  robotics: 'purple',
-  nlp: 'pink',
-  'web-app': 'orange',
   data: 'green',
-  tooling: 'cyan',
   healthcare: 'red',
+  nlp: 'pink',
+  robotics: 'purple',
+  tooling: 'cyan',
+  'web-app': 'orange',
 }
 
 const linkColor = (label: string) => {
@@ -38,12 +40,12 @@ interface ProjectCardProps {
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
-  const { open: isOpen, onToggle } = useDisclosure()
+  const { onToggle, open: isOpen } = useDisclosure()
   const cardBg = useColorModeValue('white', 'gray.800')
   const chipBg = useColorModeValue('gray.50', 'gray.900')
   const textColor = useColorModeValue('gray.600', 'gray.400')
 
-  const { title, summary, tags = [], link, extraLinks, highlights, category, date } = project
+  const { category, date, extraLinks, highlights, link, summary, tags = [], title } = project
 
   const primaryLinks = [] as { label: string; url: string }[]
   if (link) primaryLinks.push({ label: 'Project', url: link })
@@ -57,15 +59,15 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
   return (
     <Box
-      p={[4, 5, 6]}
+      _hover={{ shadow: 'lg' }}
       bg={cardBg}
       borderRadius="lg"
+      p={[4, 5, 6]}
       shadow="md"
       transition="box-shadow 0.2s ease"
-      _hover={{ shadow: 'lg' }}
     >
       <VStack align="start" gap={[3, 4]} w="full">
-        <HStack gap={2} flexWrap="wrap">
+        <HStack flexWrap="wrap" gap={2}>
           <Badge colorPalette={categoryColors[category]} fontSize="xs">
             {category.replace('_', ' ').toUpperCase()}
           </Badge>
@@ -76,18 +78,18 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           )}
         </HStack>
 
-        <Heading size={['sm', 'md']} lineHeight="tall">
+        <Heading lineHeight="tall" size={['sm', 'md']}>
           {title}
         </Heading>
 
-        <Text fontSize={['sm', 'md']} color={textColor}>
+        <Text color={textColor} fontSize={['sm', 'md']}>
           {summary}
         </Text>
 
         {tags.length > 0 && (
-          <HStack gap={2} flexWrap="wrap">
+          <HStack flexWrap="wrap" gap={2}>
             {tags.map((tag) => (
-              <Badge key={tag} fontSize="xs" colorPalette="blue" variant="subtle">
+              <Badge colorPalette="blue" fontSize="xs" key={tag} variant="subtle">
                 {tag}
               </Badge>
             ))}
@@ -95,10 +97,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         )}
 
         {primaryLinks.length > 0 && (
-          <HStack gap={2} flexWrap="wrap">
+          <HStack flexWrap="wrap" gap={2}>
             {primaryLinks.map(({ label, url }) => (
-              <Link key={`${label}-${url}`} href={url} target="_blank" rel="noopener noreferrer">
-                <Button size="xs" colorPalette={linkColor(label)} variant="solid">
+              <Link href={url} key={`${label}-${url}`} rel="noopener noreferrer" target="_blank">
+                <Button colorPalette={linkColor(label)} size="xs" variant="solid">
                   {label} →
                 </Button>
               </Link>
@@ -108,21 +110,21 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
         {highlights && highlights.length > 0 && (
           <>
-            <Button size="xs" variant="outline" colorPalette="gray" onClick={onToggle}>
+            <Button colorPalette="gray" onClick={onToggle} size="xs" variant="outline">
               {isOpen ? 'Hide Highlights' : 'Show Highlights'}
             </Button>
             <Collapsible.Root open={isOpen}>
               <Collapsible.Content>
                 <Box
-                  mt={2}
-                  w="full"
-                  p={4}
                   bg={chipBg}
-                  borderRadius="md"
                   borderLeft="4px solid"
                   borderLeftColor={useColorModeValue('blue.400', 'blue.600')}
+                  borderRadius="md"
+                  mt={2}
+                  p={4}
+                  w="full"
                 >
-                  <VStack as="ul" align="start" gap={2} fontSize="sm" color={textColor} pl={2}>
+                  <VStack align="start" as="ul" color={textColor} fontSize="sm" gap={2} pl={2}>
                     {highlights.map((item, idx) => (
                       <Box as="li" key={idx}>
                         {item}

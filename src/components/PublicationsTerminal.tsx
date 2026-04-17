@@ -1,54 +1,56 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import {
-  Box,
-  VStack,
-  HStack,
-  Text,
-  Link,
-  Flex,
   Badge,
-  Image,
-  useDisclosure,
-  Input,
+  Box,
+  Flex,
+  HStack,
   Icon,
+  Image,
+  Input,
+  Link,
+  Text,
+  useDisclosure,
+  VStack,
 } from '@chakra-ui/react'
+import { Collapsible, Dialog } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
-import { getPublicationStats } from '../data'
-import { useLocalizedData } from '@/hooks/useLocalizedData'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { type IconType } from 'react-icons'
 import {
-  FaChartBar,
-  FaVideo,
-  FaProjectDiagram,
-  FaFileAlt,
   FaAtom,
-  FaStar,
-  FaRobot,
+  FaChartBar,
+  FaChevronRight,
+  FaCloudSun,
+  FaFileAlt,
+  FaFutbol,
   FaGlobe,
   FaHandRock,
-  FaCloudSun,
-  FaFutbol,
+  FaProjectDiagram,
+  FaRobot,
+  FaStar,
   FaTimes,
-  FaChevronRight,
+  FaVideo,
 } from 'react-icons/fa'
-import { type IconType } from 'react-icons'
-import { highlightData } from '../utils/highlightData'
-import { useThemeConfig } from '@/config/theme'
+
 import { useColorMode } from '@/color-mode'
-import { Dialog, Collapsible } from '@chakra-ui/react'
-import { MotionList, MotionBox, MotionHover } from './animations/MotionList'
+import { useThemeConfig } from '@/config/theme'
+import { useLocalizedData } from '@/hooks/useLocalizedData'
+
+import { getPublicationStats } from '../data'
+import { highlightData } from '../utils/highlightData'
+import { MotionBox, MotionHover, MotionList } from './animations/MotionList'
 
 /* ── Emoji → Icon mapping ─────────────────────────────────────── */
 const emojiIconMap: Record<string, IconType> = {
-  '🎬': FaVideo,
-  '🕸️': FaProjectDiagram,
-  '📝': FaFileAlt,
-  '🌀': FaAtom,
-  '🌟': FaStar,
-  '🤖': FaRobot,
-  '🌐': FaGlobe,
-  '🦾': FaHandRock,
-  '💭': FaCloudSun,
   '⚽': FaFutbol,
+  '🌀': FaAtom,
+  '🌐': FaGlobe,
+  '🌟': FaStar,
+  '🎬': FaVideo,
+  '💭': FaCloudSun,
+  '📝': FaFileAlt,
+  '🕸️': FaProjectDiagram,
+  '🤖': FaRobot,
+  '🦾': FaHandRock,
 }
 
 const blink = keyframes`
@@ -68,11 +70,11 @@ const PublicationsTerminal: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [, setCommandHistory] = useState<string[]>([])
   const [currentCommand, setCurrentCommand] = useState('')
-  const [imagePreview, setImagePreview] = useState<{ src: string; alt: string } | null>(null)
-  const { open: isImageOpen, onOpen: openImageModal, onClose: closeImageModal } = useDisclosure()
+  const [imagePreview, setImagePreview] = useState<null | { alt: string; src: string; }>(null)
+  const { onClose: closeImageModal, onOpen: openImageModal, open: isImageOpen } = useDisclosure()
 
   // Terminal theme colors
-  const { terminalPalette, publicationVenueColors } = useThemeConfig()
+  const { publicationVenueColors, terminalPalette } = useThemeConfig()
   const tc = terminalPalette.colors(isDark)
   const termBg = tc.bg
   const termText = tc.text
@@ -145,25 +147,25 @@ const PublicationsTerminal: React.FC = () => {
     const parts = cmd.toLowerCase().split(' ')
     const command = parts[0]
     switch (command) {
-      case 'search':
-        setSearchQuery(parts.slice(1).join(' '))
-        break
-      case 'filter':
-        if (parts[1] === 'year' && parts[2]) setSelectedYear(parts[2])
-        else if (parts[1] === 'venue' && parts[2]) setSelectedVenue(parts[2])
-        break
-      case 'stats':
-        setShowStats(!showStats)
-        break
       case 'clear':
         setSearchQuery('')
         setSelectedYear('all')
         setSelectedVenue('all')
         break
+      case 'filter':
+        if (parts[1] === 'year' && parts[2]) setSelectedYear(parts[2])
+        else if (parts[1] === 'venue' && parts[2]) setSelectedVenue(parts[2])
+        break
       case 'help':
         alert(
           'Commands: search <query>, filter year <year>, filter venue <type>, stats, clear, help',
         )
+        break
+      case 'search':
+        setSearchQuery(parts.slice(1).join(' '))
+        break
+      case 'stats':
+        setShowStats(!showStats)
         break
     }
     setCommandHistory((prev) => [...prev, cmd])
@@ -171,8 +173,8 @@ const PublicationsTerminal: React.FC = () => {
   }
 
   const formattedTime = currentTime.toLocaleTimeString('en-US', {
-    hour12: false,
     hour: '2-digit',
+    hour12: false,
     minute: '2-digit',
     second: '2-digit',
   })
@@ -180,27 +182,27 @@ const PublicationsTerminal: React.FC = () => {
   const showImagePreview = useCallback(
     (src?: string, alt?: string) => {
       if (!src) return
-      setImagePreview({ src, alt: alt ?? 'publication preview' })
+      setImagePreview({ alt: alt ?? 'publication preview', src })
       openImageModal()
     },
     [openImageModal],
   )
 
   return (
-    <Box w="full" py={8}>
+    <Box py={8} w="full">
       <VStack gap={6} maxW="1400px" mx="auto" px={[2, 4, 6]}>
         <Box
-          w="full"
-          borderRadius="md"
-          fontFamily="mono"
-          boxShadow={"lg"}
+          bg={termBg}
           border={"1px solid"}
           borderColor={termBorder}
+          borderRadius="md"
+          boxShadow={"lg"}
+          fontFamily="mono"
           overflow="hidden"
-          bg={termBg}
+          w="full"
         >
           {/* RGB Light Bar */}
-          <Flex h="3px" w="full" overflow="hidden">
+          <Flex h="3px" overflow="hidden" w="full">
             {(() => {
               const palette = [
                 '#bf616a', '#d08770', '#ebcb8b', '#a3be8c', '#88c0d0', '#5e81ac', '#b48ead',
@@ -210,28 +212,28 @@ const PublicationsTerminal: React.FC = () => {
               return Array.from({ length: total }, (_, i) => {
                 const colorIdx = (i + tick) % palette.length
                 const brightness = 0.6 + 0.4 * Math.abs(Math.sin((i + tick * 0.5) * 0.3))
-                return <Box key={i} flex={1} h="full" bg={palette[colorIdx]} opacity={brightness} />
+                return <Box bg={palette[colorIdx]} flex={1} h="full" key={i} opacity={brightness} />
               })
             })()}
           </Flex>
 
           {/* Title Bar */}
           <Flex
-            bg={termHeader}
-            px={4}
-            py={2}
-            color={termText}
-            borderBottom={`1px solid ${termBorder}`}
-            justify="space-between"
             align="center"
+            bg={termHeader}
+            borderBottom={`1px solid ${termBorder}`}
+            color={termText}
             fontSize="xs"
             fontWeight="medium"
+            justify="space-between"
+            px={4}
+            py={2}
           >
             <HStack gap={3}>
               <HStack gap={1.5}>
-                <Box w="10px" h="10px" borderRadius="full" bg="#bf616a" />
-                <Box w="10px" h="10px" borderRadius="full" bg="#ebcb8b" />
-                <Box w="10px" h="10px" borderRadius="full" bg="#a3be8c" />
+                <Box bg="#bf616a" borderRadius="full" h="10px" w="10px" />
+                <Box bg="#ebcb8b" borderRadius="full" h="10px" w="10px" />
+                <Box bg="#a3be8c" borderRadius="full" h="10px" w="10px" />
               </HStack>
               <Text>
                 <Box as="span" color={termParam}>const </Box>
@@ -249,14 +251,14 @@ const PublicationsTerminal: React.FC = () => {
 
           {/* Touch Bar */}
           <Flex
+            align="center"
             bg={tc.touchBar}
-            px={4}
-            py={1}
             borderBottom={`1px solid ${termBorder}`}
             fontSize="2xs"
-            align="center"
             justify="space-between"
             overflow="hidden"
+            px={4}
+            py={1}
           >
             <Text color={termSecondary}>
               <Text as="span" color={termPrompt} fontWeight="bold">{siteOwner.terminalUsername}</Text>
@@ -273,68 +275,68 @@ const PublicationsTerminal: React.FC = () => {
           </Flex>
 
           {/* Control Panel: Styled like terminal input */}
-          <Box px={4} py={3} bg={termBg} borderBottom={`1px solid ${termBorder}`}>
-            <Flex gap={3} direction={{ base: "column", md: "row" }} align={{ base: "stretch", md: "center" }}>
+          <Box bg={termBg} borderBottom={`1px solid ${termBorder}`} px={4} py={3}>
+            <Flex align={{ base: "stretch", md: "center" }} direction={{ base: "column", md: "row" }} gap={3}>
               {/* Search Bar */}
               <Flex
+                _focusWithin={{ borderColor: termHighlight, boxShadow: `0 0 0 1px ${termHighlight}` }}
                 align="center"
+                bg={isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.03)'}
+                border={`1px solid ${termBorder}`}
+                borderRadius="md"
+                flex="1"
                 px={3}
                 py={1.5}
-                bg={isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.03)'}
-                borderRadius="md"
-                border={`1px solid ${termBorder}`}
-                flex="1"
                 transition="all 0.2s"
-                _focusWithin={{ borderColor: termHighlight, boxShadow: `0 0 0 1px ${termHighlight}` }}
               >
                 <Icon as={FaChevronRight} color={termPrompt} fontSize="xs" mr={2} />
-                <Text color={termCommand} fontSize="xs" fontWeight="bold" mr={2} fontFamily="mono">grep</Text>
-                <Text color={termSecondary} fontSize="xs" mr={2} fontFamily="mono" display={{ base: "none", sm: "block" }}>-i</Text>
+                <Text color={termCommand} fontFamily="mono" fontSize="xs" fontWeight="bold" mr={2}>grep</Text>
+                <Text color={termSecondary} display={{ base: "none", sm: "block" }} fontFamily="mono" fontSize="xs" mr={2}>-i</Text>
                 <Input
-                  placeholder="'robotics' papers/*"
-                  value={searchQuery}
-                  onChange={(e: any) => setSearchQuery(e.target.value)}
-                  size="xs"
-                  variant="flushed"
-                  border="none"
                   _focus={{ border: 'none', outline: 'none' }}
-                  color={termText}
-                  fontFamily="mono"
-                  flex="1"
-                  p={0}
-                  h="auto"
-                  outline="none"
                   _placeholder={{ color: termSecondary, opacity: 0.6 }}
+                  border="none"
+                  color={termText}
+                  flex="1"
+                  fontFamily="mono"
+                  h="auto"
+                  onChange={(e: any) => setSearchQuery(e.target.value)}
+                  outline="none"
+                  p={0}
+                  placeholder="'robotics' papers/*"
+                  size="xs"
+                  value={searchQuery}
+                  variant="flushed"
                 />
               </Flex>
 
               {/* Filter Controls Group */}
-              <Flex gap={2} flexWrap="wrap" justify={{ base: "space-between", md: "flex-end" }}>
+              <Flex flexWrap="wrap" gap={2} justify={{ base: "space-between", md: "flex-end" }}>
                 {/* Year Select */}
-                <Box position="relative" flex={{ base: "1", md: "initial" }} minW="100px">
+                <Box flex={{ base: "1", md: "initial" }} minW="100px" position="relative">
                   <select
-                    value={selectedYear}
                     onChange={(e: any) => setSelectedYear(e.target.value)}
                     style={{
-                      height: '34px',
-                      width: '100%',
-                      backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : 'white',
-                      border: `1px solid ${termBorder}`,
-                      color: termParam,
-                      fontSize: '0.75rem',
-                      fontFamily: 'monospace',
-                      padding: '0 24px 0 10px',
-                      borderRadius: '6px',
-                      outline: 'none',
                       appearance: 'none',
-                      WebkitAppearance: 'none',
-                      MozAppearance: 'none',
+                      backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : 'white',
                       backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${encodeURIComponent(termParam)}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>')`,
-                      backgroundRepeat: 'no-repeat',
                       backgroundPosition: 'right 8px center',
+                      backgroundRepeat: 'no-repeat',
                       backgroundSize: '14px',
+                      border: `1px solid ${termBorder}`,
+                      borderRadius: '6px',
+                      color: termParam,
                       cursor: 'pointer',
+                      fontFamily: 'monospace',
+                      fontSize: '0.75rem',
+                      height: '34px',
+                      MozAppearance: 'none',
+                      outline: 'none',
+                      padding: '0 24px 0 10px',
+                      WebkitAppearance: 'none',
+                      width: '100%',
                     }}
+                    value={selectedYear}
                   >
                     <option value="all">--year=ALL</option>
                     {availableYears.map((year) => (<option key={year} value={year}>--year={year}</option>))}
@@ -342,30 +344,30 @@ const PublicationsTerminal: React.FC = () => {
                 </Box>
 
                 {/* Venue Select */}
-                <Box position="relative" flex={{ base: "1.2", md: "initial" }} minW="110px">
+                <Box flex={{ base: "1.2", md: "initial" }} minW="110px" position="relative">
                   <select
-                    value={selectedVenue}
                     onChange={(e: any) => setSelectedVenue(e.target.value)}
                     style={{
-                      height: '34px',
-                      width: '100%',
-                      backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : 'white',
-                      border: `1px solid ${termBorder}`,
-                      color: termParam,
-                      fontSize: '0.75rem',
-                      fontFamily: 'monospace',
-                      padding: '0 24px 0 10px',
-                      borderRadius: '6px',
-                      outline: 'none',
                       appearance: 'none',
-                      WebkitAppearance: 'none',
-                      MozAppearance: 'none',
+                      backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : 'white',
                       backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${encodeURIComponent(termParam)}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>')`,
-                      backgroundRepeat: 'no-repeat',
                       backgroundPosition: 'right 8px center',
+                      backgroundRepeat: 'no-repeat',
                       backgroundSize: '14px',
+                      border: `1px solid ${termBorder}`,
+                      borderRadius: '6px',
+                      color: termParam,
                       cursor: 'pointer',
+                      fontFamily: 'monospace',
+                      fontSize: '0.75rem',
+                      height: '34px',
+                      MozAppearance: 'none',
+                      outline: 'none',
+                      padding: '0 24px 0 10px',
+                      WebkitAppearance: 'none',
+                      width: '100%',
                     }}
+                    value={selectedVenue}
                   >
                     <option value="all">--type=ALL</option>
                     <option value="conference">--type=CONF</option>
@@ -377,24 +379,24 @@ const PublicationsTerminal: React.FC = () => {
 
                 {/* Stats Toggle Button */}
                 <Box
-                  as="button"
-                  onClick={() => setShowStats(!showStats)}
-                  bg={showStats ? termHighlight : 'transparent'}
-                  color={showStats ? termBg : termInfo}
-                  border={`1px solid ${showStats ? termHighlight : termBorder}`}
-                  px={3}
-                  height="34px"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  borderRadius="md"
-                  cursor="pointer"
-                  fontSize="xs"
-                  fontFamily="mono"
-                  fontWeight="bold"
-                  transition="all 0.2s"
                   _hover={{ opacity: 0.8 }}
+                  alignItems="center"
+                  as="button"
+                  bg={showStats ? termHighlight : 'transparent'}
+                  border={`1px solid ${showStats ? termHighlight : termBorder}`}
+                  borderRadius="md"
+                  color={showStats ? termBg : termInfo}
+                  cursor="pointer"
+                  display="flex"
                   flex={{ base: "1", md: "initial" }}
+                  fontFamily="mono"
+                  fontSize="xs"
+                  fontWeight="bold"
+                  height="34px"
+                  justifyContent="center"
+                  onClick={() => setShowStats(!showStats)}
+                  px={3}
+                  transition="all 0.2s"
                 >
                   <Icon as={FaChartBar} mr={2} />
                   <Text as="span">--stats</Text>
@@ -407,8 +409,8 @@ const PublicationsTerminal: React.FC = () => {
           <Collapsible.Root open={showStats}>
             <Collapsible.Content>
               <MotionBox delay={0.1}>
-                <Box px={4} py={3} bg={isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.03)'} borderBottom={`1px solid ${termBorder}`}>
-                  <Flex gap={4} flexWrap="wrap">
+                <Box bg={isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.03)'} borderBottom={`1px solid ${termBorder}`} px={4} py={3}>
+                  <Flex flexWrap="wrap" gap={4}>
                     <Box><Text color={termInfo} fontSize="xs">Total</Text><Text color={termHighlight} fontSize="lg" fontWeight="bold">{stats.total}</Text></Box>
                     <Box><Text color={termInfo} fontSize="xs">First Author</Text><Text color={termSuccess} fontSize="lg" fontWeight="bold">{stats.firstAuthor}</Text></Box>
                     <Box><Text color={termInfo} fontSize="xs">With Code</Text><Text color={termCommand} fontSize="lg" fontWeight="bold">{stats.withCode}</Text></Box>
@@ -421,58 +423,58 @@ const PublicationsTerminal: React.FC = () => {
           </Collapsible.Root>
 
           {/* List */}
-          <Box bg={termBg} color={termText} maxH="70vh" overflowY="auto"
-            css={{ '&::-webkit-scrollbar': { width: '8px', background: 'transparent' }, '&::-webkit-scrollbar-thumb': { background: tc.border, borderRadius: '4px' } }}
+          <Box bg={termBg} color={termText} css={{ '&::-webkit-scrollbar': { background: 'transparent', width: '8px' }, '&::-webkit-scrollbar-thumb': { background: tc.border, borderRadius: '4px' } }} maxH="70vh"
+            overflowY="auto"
           >
-            <Flex px={4} py={2} borderBottom={`1px solid ${termBorder}`} fontSize="xs" fontWeight="bold" color={termInfo}>
-              <Text w="320px" mr={6} display={{ base: "none", md: "block" }}>PREVIEW</Text>
+            <Flex borderBottom={`1px solid ${termBorder}`} color={termInfo} fontSize="xs" fontWeight="bold" px={4} py={2}>
+              <Text display={{ base: "none", md: "block" }} mr={6} w="320px">PREVIEW</Text>
               <Text flex="1">PUBLICATION</Text>
-              <Text w="150px" display={{ base: "none", md: "block" }}>RESOURCES</Text>
-              <Text w="50px" textAlign="center">MORE</Text>
+              <Text display={{ base: "none", md: "block" }} w="150px">RESOURCES</Text>
+              <Text textAlign="center" w="50px">MORE</Text>
             </Flex>
 
             <MotionList staggerDelay={0.08}>
               {filteredPublications.map((pub) => (
                 <MotionBox key={pub.id}>
-                  <Box borderBottom={`1px dotted ${termBorder}`} _hover={{ bg: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)' }}>
-                    <Flex px={4} py={6} align="center" cursor="pointer" onClick={() => toggleExpanded(pub.id)} fontSize="sm" position="relative" minH="200px">
+                  <Box _hover={{ bg: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)' }} borderBottom={`1px dotted ${termBorder}`}>
+                    <Flex align="center" cursor="pointer" fontSize="sm" minH="200px" onClick={() => toggleExpanded(pub.id)} position="relative" px={4} py={6}>
                       {pub.featuredImage && (
                         <MotionHover>
                           <Box
-                            w="320px" h="180px" mr={6} flexShrink={0} display={{ base: "none", md: "flex" }} alignItems="center" justifyContent="center"
-                            bg={isDark ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.8)'} borderRadius="lg" border={`1px solid ${termBorder}`}
-                            overflow="hidden" cursor="zoom-in" role="button" tabIndex={0}
-                            onClick={(e) => { e.stopPropagation(); showImagePreview(pub.featuredImage, `${pub.title} thumbnail`) }}
+                            alignItems="center" bg={isDark ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.8)'} border={`1px solid ${termBorder}`} borderRadius="lg" cursor="zoom-in" display={{ base: "none", md: "flex" }} flexShrink={0}
+                            h="180px" justifyContent="center" mr={6}
+                            onClick={(e) => { e.stopPropagation(); showImagePreview(pub.featuredImage, `${pub.title} thumbnail`) }} overflow="hidden" role="button" tabIndex={0}
+                            w="320px"
                           >
-                            <Image src={pub.featuredImage} alt={pub.title} w="full" h="full" objectFit="contain" p={3} transition="transform 0.2s" />
+                            <Image alt={pub.title} h="full" objectFit="contain" p={3} src={pub.featuredImage} transition="transform 0.2s" w="full" />
                           </Box>
                         </MotionHover>
                       )}
-                      <Box flex="1" pr={2} minW={0}>
-                        <HStack gap={1} mb={1} flexWrap="wrap" align="start">
+                      <Box flex="1" minW={0} pr={2}>
+                        <HStack align="start" flexWrap="wrap" gap={1} mb={1}>
                           {pub.emoji && emojiIconMap[pub.emoji] && (
                             <Icon
                               as={emojiIconMap[pub.emoji]}
                               color={venueColors[pub.venueType]?.fg}
-                              mt="3px"
                               mr={1}
+                              mt="3px"
                             />
                           )}
-                          <Text fontWeight="medium" whiteSpace="normal" overflowWrap="anywhere">
+                          <Text fontWeight="medium" overflowWrap="anywhere" whiteSpace="normal">
                             {pub.title}
                           </Text>
                         </HStack>
-                        <HStack gap={1} mb={1} flexWrap="wrap">
+                        <HStack flexWrap="wrap" gap={1} mb={1}>
                           <Badge
                             bg={venueColors[pub.venueType]?.bg}
                             color={venueColors[pub.venueType]?.fg}
                             fontSize="xs"
+                            fontWeight="bold"
+                            overflowWrap="anywhere"
                             px={2}
                             py={0.5}
-                            fontWeight="bold"
-                            whiteSpace="normal"
                             textAlign="left"
-                            overflowWrap="anywhere"
+                            whiteSpace="normal"
                           >
                             {pub.venue && String(pub.year) && pub.venue.includes(String(pub.year))
                               ? pub.venue
@@ -494,7 +496,6 @@ const PublicationsTerminal: React.FC = () => {
                           </Badge>
                           {pub.specialBadges?.map((badge, i) => (
                             <Badge
-                              key={i}
                               colorPalette={
                                 badge === 'Best Paper'
                                   ? 'red'
@@ -507,16 +508,17 @@ const PublicationsTerminal: React.FC = () => {
                                         : 'gray'
                               }
                               fontSize="2xs"
+                              key={i}
                             >
                               {badge}
                             </Badge>
                           ))}
                         </HStack>
                         <Text
-                          fontSize="xs"
                           color={termSecondary}
-                          whiteSpace="normal"
+                          fontSize="xs"
                           overflowWrap="anywhere"
+                          whiteSpace="normal"
                         >
                           {pub.authors.map((author, i) => {
                             const cleanAuthor = author.replace('*', '')
@@ -552,43 +554,43 @@ const PublicationsTerminal: React.FC = () => {
                             )
                           })}
                           {pub.coFirstAuthors && pub.coFirstAuthors.length > 0 && (
-                            <Text as="span" fontSize="2xs" color={termInfo} ml={2}>
+                            <Text as="span" color={termInfo} fontSize="2xs" ml={2}>
                               (* co-first)
                             </Text>
                           )}
                         </Text>
                       </Box>
 
-                      <Box w="150px" display={{ base: "none", md: "block" }}>
+                      <Box display={{ base: "none", md: "block" }} w="150px">
                         <HStack gap={1}>
-                          {pub.links.paper && <MotionHover><Box title="Paper"><Link href={pub.links.paper} target="_blank" onClick={(e) => e.stopPropagation()}><Badge colorPalette="blue" fontSize="2xs">PDF</Badge></Link></Box></MotionHover>}
-                          {pub.links.code && <MotionHover><Box title="Code"><Link href={pub.links.code} target="_blank" onClick={(e) => e.stopPropagation()}><Badge colorPalette="green" fontSize="2xs">CODE</Badge></Link></Box></MotionHover>}
-                          {pub.links.projectPage && <MotionHover><Box title="Project"><Link href={pub.links.projectPage} target="_blank" onClick={(e) => e.stopPropagation()}><Badge colorPalette="purple" fontSize="2xs">PROJ</Badge></Link></Box></MotionHover>}
+                          {pub.links.paper && <MotionHover><Box title="Paper"><Link href={pub.links.paper} onClick={(e) => e.stopPropagation()} target="_blank"><Badge colorPalette="blue" fontSize="2xs">PDF</Badge></Link></Box></MotionHover>}
+                          {pub.links.code && <MotionHover><Box title="Code"><Link href={pub.links.code} onClick={(e) => e.stopPropagation()} target="_blank"><Badge colorPalette="green" fontSize="2xs">CODE</Badge></Link></Box></MotionHover>}
+                          {pub.links.projectPage && <MotionHover><Box title="Project"><Link href={pub.links.projectPage} onClick={(e) => e.stopPropagation()} target="_blank"><Badge colorPalette="purple" fontSize="2xs">PROJ</Badge></Link></Box></MotionHover>}
                         </HStack>
                       </Box>
-                      <Text w="50px" textAlign="center" color={expandedItems[pub.id] ? termInfo : termCommand} fontWeight="bold">
+                      <Text color={expandedItems[pub.id] ? termInfo : termCommand} fontWeight="bold" textAlign="center" w="50px">
                         {expandedItems[pub.id] ? '[-]' : '[+]'}
                       </Text>
                     </Flex>
 
                     <Collapsible.Root open={!!expandedItems[pub.id]}>
                       <Collapsible.Content>
-                        <Box px={8} py={4} bg={isDark ? 'rgba(76, 86, 106, 0.15)' : 'rgba(203, 213, 225, 0.15)'} borderLeft={`3px solid ${venueColors[pub.venueType]?.fg || termBorder}`}>
-                          <Flex gap={4} flexDirection={{ base: "column", md: "row" }}>
+                        <Box bg={isDark ? 'rgba(76, 86, 106, 0.15)' : 'rgba(203, 213, 225, 0.15)'} borderLeft={`3px solid ${venueColors[pub.venueType]?.fg || termBorder}`} px={8} py={4}>
+                          <Flex flexDirection={{ base: "column", md: "row" }} gap={4}>
                             <Box flex="1">
                               {pub.abstract && (
                                 <Box mb={3}>
-                                  <Text fontSize="xs" color={termInfo} mb={1}>── ABSTRACT ─────────────</Text>
-                                  <Text fontSize="sm" color={termText} lineHeight="tall">
-                                    {highlightData(pub.abstract, { num: termHighlight, kw: termCommand, str: termSuccess })}
+                                  <Text color={termInfo} fontSize="xs" mb={1}>── ABSTRACT ─────────────</Text>
+                                  <Text color={termText} fontSize="sm" lineHeight="tall">
+                                    {highlightData(pub.abstract, { kw: termCommand, num: termHighlight, str: termSuccess })}
                                   </Text>
                                 </Box>
                               )}
                               {pub.keywords && (
                                 <Box mb={3}>
-                                  <Text fontSize="xs" color={termInfo} mb={1}>── KEYWORDS ─────────────</Text>
-                                  <HStack gap={2} flexWrap="wrap">
-                                    {pub.keywords.map((k, i) => <Badge key={i} colorPalette="cyan" fontSize="2xs">{k}</Badge>)}
+                                  <Text color={termInfo} fontSize="xs" mb={1}>── KEYWORDS ─────────────</Text>
+                                  <HStack flexWrap="wrap" gap={2}>
+                                    {pub.keywords.map((k, i) => <Badge colorPalette="cyan" fontSize="2xs" key={i}>{k}</Badge>)}
                                   </HStack>
                                 </Box>
                               )}
@@ -596,13 +598,13 @@ const PublicationsTerminal: React.FC = () => {
                             {pub.featuredImage && (
                               <MotionHover>
                                 <Box
-                                  w={{ base: "full", md: "450px" }}
-                                  h={{ base: "auto", md: "300px" }}
-                                  flexShrink={0} display="flex" alignItems="center" justifyContent="center"
-                                  bg={isDark ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.9)'} borderRadius="lg" border={`1px solid ${termBorder}`}
-                                  overflow="hidden" cursor="zoom-in" onClick={(e) => { e.stopPropagation(); showImagePreview(pub.featuredImage, pub.title) }}
+                                  alignItems="center"
+                                  bg={isDark ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.9)'}
+                                  border={`1px solid ${termBorder}`} borderRadius="lg" cursor="zoom-in" display="flex"
+                                  flexShrink={0} h={{ base: "auto", md: "300px" }} justifyContent="center"
+                                  onClick={(e) => { e.stopPropagation(); showImagePreview(pub.featuredImage, pub.title) }} overflow="hidden" w={{ base: "full", md: "450px" }}
                                 >
-                                  <Image src={pub.featuredImage} alt={pub.title} w="full" h="full" objectFit="contain" p={4} transition="transform 0.3s"/>
+                                  <Image alt={pub.title} h="full" objectFit="contain" p={4} src={pub.featuredImage} transition="transform 0.3s" w="full"/>
                                 </Box>
                               </MotionHover>
                             )}
@@ -623,28 +625,28 @@ const PublicationsTerminal: React.FC = () => {
           </Box>
 
           {/* Footer */}
-          <Flex px={4} py={2} bg={tc.header} borderTop={`1px solid ${termBorder}`} align="center" fontSize="xs">
+          <Flex align="center" bg={tc.header} borderTop={`1px solid ${termBorder}`} fontSize="xs" px={4} py={2}>
             <Text color={termPrompt} mr={2}>{siteOwner.terminalUsername}@research:~/papers$</Text>
             <Input
-              value={currentCommand}
-              onChange={(e: any) => setCurrentCommand(e.target.value)}
-              onKeyDown={(e: any) => { if (e.key === 'Enter') handleCommand(currentCommand) }}
-              placeholder="type 'help' for commands" size="xs" border="none" _focus={{ outline: "none" }} color={termText} fontFamily="mono" flex="1" outline="none"
+              _focus={{ outline: "none" }}
+              border="none"
+              color={termText}
+              flex="1" fontFamily="mono" onChange={(e: any) => setCurrentCommand(e.target.value)} onKeyDown={(e: any) => { if (e.key === 'Enter') handleCommand(currentCommand) }} outline="none" placeholder="type 'help' for commands" size="xs" value={currentCommand}
             />
-            <Box h="12px" w="6px" bg={termPrompt} ml={1} css={{ animation: `${blink} 1s step-end infinite` }} />
+            <Box bg={termPrompt} css={{ animation: `${blink} 1s step-end infinite` }} h="12px" ml={1} w="6px" />
           </Flex>
         </Box>
 
         {imagePreview && (
-          <Dialog.Root open={!!isImageOpen} onOpenChange={(e) => { if (!e.open) closeImageModal() }}>
+          <Dialog.Root onOpenChange={(e) => { if (!e.open) closeImageModal() }} open={!!isImageOpen}>
             <Dialog.Backdrop bg="rgba(0,0,0,0.8)" />
             <Dialog.Positioner>
               <Dialog.Content bg="transparent" boxShadow="none" p={0}>
-                <Flex justify="flex-end" w="full" mb={2}>
+                <Flex justify="flex-end" mb={2} w="full">
                   <Box as="button" color="white" onClick={closeImageModal}><Icon as={FaTimes} boxSize={6} /></Box>
                 </Flex>
-                <Dialog.Body p={0} display="flex" alignItems="center" justifyContent="center">
-                  <Image src={imagePreview.src} alt={imagePreview.alt} maxH="80vh" maxW="90vw" objectFit="contain" borderRadius="lg" bg={isDark ? 'rgba(0,0,0,0.85)' : 'white'} p={4} />
+                <Dialog.Body alignItems="center" display="flex" justifyContent="center" p={0}>
+                  <Image alt={imagePreview.alt} bg={isDark ? 'rgba(0,0,0,0.85)' : 'white'} borderRadius="lg" maxH="80vh" maxW="90vw" objectFit="contain" p={4} src={imagePreview.src} />
                 </Dialog.Body>
               </Dialog.Content>
             </Dialog.Positioner>
@@ -652,7 +654,7 @@ const PublicationsTerminal: React.FC = () => {
         )}
 
         <MotionBox delay={0.4}>
-          <Flex w="full" px={4} py={2} bg={termHeader} borderRadius="md" border={`1px solid ${termBorder}`} justify="space-between" fontSize="xs" fontFamily="mono" flexWrap="wrap" gap={2}>
+          <Flex bg={termHeader} border={`1px solid ${termBorder}`} borderRadius="md" flexWrap="wrap" fontFamily="mono" fontSize="xs" gap={2} justify="space-between" px={4} py={2} w="full">
             <Text color={termInfo}>Showing <Text as="span" color={termHighlight} fontWeight="bold">{filteredPublications.length}</Text> of {publications.length} papers</Text>
             <HStack gap={4}>
               <Text color={termSuccess}>First Author: {filteredPublications.filter((p) => p.isFirstAuthor).length}</Text>

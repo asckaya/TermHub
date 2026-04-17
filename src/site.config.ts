@@ -15,19 +15,19 @@ import siteJsonZh from '@content/zh/site.json'
 export const siteConfig = siteJson
 export const siteConfigZh = siteJsonZh
 
-/** Get site config for a given language */
-export function getLocalizedSiteConfig(lang: string) {
-  return lang === 'zh' ? siteConfigZh : siteJson
+/** Get GitHub username for a specific language */
+export function getLocalizedGithubUsername(lang: string) {
+  const cfg = getLocalizedSiteConfig(lang)
+  return cfg.social.github.split('/').pop() ?? ''
 }
 
 // ═══════════════════════════════════════════════════════════════
 // Derived values — computed automatically, do NOT edit
 // ═══════════════════════════════════════════════════════════════
 
-/** Get GitHub username for a specific language */
-export function getLocalizedGithubUsername(lang: string) {
-  const cfg = getLocalizedSiteConfig(lang)
-  return cfg.social.github.split('/').pop() ?? ''
+/** Get site config for a given language */
+export function getLocalizedSiteConfig(lang: string) {
+  return lang === 'zh' ? siteConfigZh : siteJson
 }
 
 /** GitHub username extracted from URL (static English default) */
@@ -40,14 +40,14 @@ export const selectedPublicationIds = new Set<string>(siteConfig.selectedPublica
 export function getLocalizedNavItems(lang: string) {
   const cfg = getLocalizedSiteConfig(lang)
   return [
-    { path: '/', labelKey: 'nav.home' },
-    ...(cfg.features.publications ? [{ path: '/publications', labelKey: 'nav.publications' }] : []),
-    ...(cfg.features.experience ? [{ path: '/experience', labelKey: 'nav.experience' }] : []),
-    ...(cfg.features.projects ? [{ path: '/projects', labelKey: 'nav.projects' }] : []),
-    ...(cfg.features.articles ? [{ path: '/articles', labelKey: 'nav.articles' }] : []),
-    ...(cfg.features.guide !== false ? [{ path: '/guide', labelKey: 'nav.guide' }] : []),
+    { labelKey: 'nav.home', path: '/' },
+    ...(cfg.features.publications ? [{ labelKey: 'nav.publications', path: '/publications' }] : []),
+    ...(cfg.features.experience ? [{ labelKey: 'nav.experience', path: '/experience' }] : []),
+    ...(cfg.features.projects ? [{ labelKey: 'nav.projects', path: '/projects' }] : []),
+    ...(cfg.features.articles ? [{ labelKey: 'nav.articles', path: '/articles' }] : []),
+    ...(cfg.features.guide !== false ? [{ labelKey: 'nav.guide', path: '/guide' }] : []),
     ...((cfg.features as Record<string, boolean>).about
-      ? [{ path: '/about', labelKey: 'nav.about' }]
+      ? [{ labelKey: 'nav.about', path: '/about' }]
       : []),
   ] as const
 }
@@ -59,10 +59,10 @@ export const navItems = getLocalizedNavItems('en')
 export function getLocalizedHeroSocialIcons(lang: string) {
   const cfg = getLocalizedSiteConfig(lang)
   return (cfg.heroSocialIcons ?? []).map((item) => ({
-    icon: item.icon,
-    label: item.label,
     color: item.color,
     href: (cfg.social as Record<string, string>)[item.platform] ?? '',
+    icon: item.icon,
+    label: item.label,
   }))
 }
 
@@ -73,26 +73,26 @@ export const heroSocialIcons = getLocalizedHeroSocialIcons('en')
 export function getLocalizedSiteOwner(lang: string) {
   const cfg = getLocalizedSiteConfig(lang)
   return {
-    name: cfg.name,
-    terminalUsername: cfg.terminal.username,
-    rotatingSubtitles: cfg.terminal.rotatingSubtitles,
     contact: {
-      email: cfg.contact.email,
       academicEmail: cfg.contact.academicEmail,
+      email: cfg.contact.email,
       hiringEmail: cfg.contact.hiringEmail,
-      location: cfg.contact.location,
       linkedin: cfg.social.linkedin,
+      location: cfg.contact.location,
     },
-    social: cfg.social,
-    timezone: cfg.terminal.timezone,
-    skills: cfg.terminal.skills,
+    name: cfg.name,
     pets: (cfg.pets ?? []) as {
-      name: string
+      description: string
       emoji: string
       image: string
+      name: string
       title: string
-      description: string
     }[],
+    rotatingSubtitles: cfg.terminal.rotatingSubtitles,
+    skills: cfg.terminal.skills,
+    social: cfg.social,
+    terminalUsername: cfg.terminal.username,
+    timezone: cfg.terminal.timezone,
   }
 }
 

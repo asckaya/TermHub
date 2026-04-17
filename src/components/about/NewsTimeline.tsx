@@ -1,21 +1,23 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react'
-import { useColorMode } from '@/color-mode'
 import {
   Box,
-  HStack,
-  Text,
-  Link,
-  Flex,
   Collapsible,
+  Flex,
+  HStack,
+  Link,
+  Text,
   useBreakpointValue
 } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import DynamicIcon from '../DynamicIcon'
+
+import { useColorMode } from '@/color-mode'
+import { useThemeConfig } from '@/config/theme'
+import { useLocalizedData } from '@/hooks/useLocalizedData'
+
 import { type NewsItem } from '../../types'
 import { highlightData } from '../../utils/highlightData'
-import { useLocalizedData } from '@/hooks/useLocalizedData'
-import { useThemeConfig } from '@/config/theme'
+import DynamicIcon from '../DynamicIcon'
 
 interface NewsTimelineProps {
   news: NewsItem[]
@@ -49,18 +51,18 @@ const formatDate = (dateString: string = ''): string => {
 
   // Simple conversion for dates like "Jan 2023"
   const months: Record<string, string> = {
-    Jan: '01',
-    Feb: '02',
-    Mar: '03',
     Apr: '04',
-    May: '05',
-    Jun: '06',
-    Jul: '07',
     Aug: '08',
-    Sep: '09',
-    Oct: '10',
-    Nov: '11',
     Dec: '12',
+    Feb: '02',
+    Jan: '01',
+    Jul: '07',
+    Jun: '06',
+    Mar: '03',
+    May: '05',
+    Nov: '11',
+    Oct: '10',
+    Sep: '09',
   }
 
   const parts = dateString.split(' ')
@@ -116,12 +118,12 @@ const termProcesses = [
 
 // Research process statuses - cycles in title bar
 const researchStatuses = [
-  { label: 'PAPER.ACCEPTED', suffix: '✓', colorKey: 'success' },
-  { label: 'MODEL.TRAINING', suffix: '▓▓░', colorKey: 'command' },
-  { label: 'IDEA.BREWING', suffix: '☕', colorKey: 'param' },
-  { label: 'DEADLINE.CRUNCH', suffix: '⚡', colorKey: 'warning' },
-  { label: 'REVIEW.PENDING', suffix: '⏳', colorKey: 'highlight' },
-  { label: 'CODE.SHIPPING', suffix: '📦', colorKey: 'info' },
+  { colorKey: 'success', label: 'PAPER.ACCEPTED', suffix: '✓' },
+  { colorKey: 'command', label: 'MODEL.TRAINING', suffix: '▓▓░' },
+  { colorKey: 'param', label: 'IDEA.BREWING', suffix: '☕' },
+  { colorKey: 'warning', label: 'DEADLINE.CRUNCH', suffix: '⚡' },
+  { colorKey: 'highlight', label: 'REVIEW.PENDING', suffix: '⏳' },
+  { colorKey: 'info', label: 'CODE.SHIPPING', suffix: '📦' },
 ]
 
 const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHeader = false }) => {
@@ -131,17 +133,17 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
   const { siteOwner } = useLocalizedData()
   const [currentTime, setCurrentTime] = useState(new Date())
   const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({})
-  const [hoveredItem, setHoveredItem] = useState<number | null>(null)
+  const [hoveredItem, setHoveredItem] = useState<null | number>(null)
 
   // Responsive check
   const isMobile = useBreakpointValue({ base: true, sm: false })
   const isSmallScreen = useBreakpointValue({ base: true, md: false })
   const isVerySmallScreen = useBreakpointValue({ base: true, xs: false })
-  const dateColumnWidth = useBreakpointValue({ base: '70px', xs: '75px', sm: '100px', md: '120px' })
-  const typeColumnWidth = useBreakpointValue({ base: '60px', xs: '65px', sm: '80px', md: '100px' })
-  const idColumnWidth = useBreakpointValue({ base: '60px', sm: '70px', md: '80px' })
-  const linksColumnWidth = useBreakpointValue({ base: '80px', sm: '100px', md: '130px' })
-  const controlColumnWidth = useBreakpointValue({ base: '30px', sm: '40px', md: '50px' })
+  const dateColumnWidth = useBreakpointValue({ base: '70px', md: '120px', sm: '100px', xs: '75px' })
+  const typeColumnWidth = useBreakpointValue({ base: '60px', md: '100px', sm: '80px', xs: '65px' })
+  const idColumnWidth = useBreakpointValue({ base: '60px', md: '80px', sm: '70px' })
+  const linksColumnWidth = useBreakpointValue({ base: '80px', md: '130px', sm: '100px' })
+  const controlColumnWidth = useBreakpointValue({ base: '30px', md: '50px', sm: '40px' })
 
   // Check if narrow screen
   // Simplified to two modes: narrow (mobile) and wide
@@ -223,38 +225,38 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
 
   // Type colors (for ANSI-like color coding)
   const typeColors: Record<string, { bg: string; fg: string; icon: string }> = {
-    publication: {
-      bg: isDark ? 'rgba(136, 192, 208, 0.15)' : 'rgba(42, 118, 156, 0.1)',
-      fg: tc.command,
-      icon: 'FaFileAlt',
-    },
-    talk: {
-      bg: isDark ? 'rgba(208, 135, 112, 0.15)' : 'rgba(179, 90, 46, 0.1)',
-      fg: tc.warning,
-      icon: 'FaChalkboardTeacher',
-    },
     course: {
       bg: isDark ? 'rgba(180, 142, 173, 0.15)' : 'rgba(154, 86, 162, 0.1)',
       fg: tc.param,
       icon: 'FaGraduationCap',
-    },
-    release: {
-      bg: isDark ? 'rgba(163, 190, 140, 0.15)' : 'rgba(54, 128, 90, 0.1)',
-      fg: tc.prompt,
-      icon: 'FaRocket',
     },
     default: {
       bg: isDark ? 'rgba(163, 190, 140, 0.15)' : 'rgba(54, 128, 90, 0.1)',
       fg: tc.prompt,
       icon: 'FaCode',
     },
+    publication: {
+      bg: isDark ? 'rgba(136, 192, 208, 0.15)' : 'rgba(42, 118, 156, 0.1)',
+      fg: tc.command,
+      icon: 'FaFileAlt',
+    },
+    release: {
+      bg: isDark ? 'rgba(163, 190, 140, 0.15)' : 'rgba(54, 128, 90, 0.1)',
+      fg: tc.prompt,
+      icon: 'FaRocket',
+    },
+    talk: {
+      bg: isDark ? 'rgba(208, 135, 112, 0.15)' : 'rgba(179, 90, 46, 0.1)',
+      fg: tc.warning,
+      icon: 'FaChalkboardTeacher',
+    },
   }
 
   // Format the time as HH:MM:SS in the configured timezone
   const bostonTime = new Date(currentTime.toLocaleString('en-US', { timeZone: siteOwner.timezone }))
   const formattedTime = bostonTime.toLocaleTimeString('en-US', {
-    hour12: false,
     hour: '2-digit',
+    hour12: false,
     minute: '2-digit',
     second: '2-digit',
   })
@@ -291,7 +293,7 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
         return (
           <>
             {withoutEllipsis}{' '}
-            <Box as="span" color={termCommand} fontWeight="medium" display="inline">
+            <Box as="span" color={termCommand} display="inline" fontWeight="medium">
               {t('newsTimeline.more')}
             </Box>
           </>
@@ -322,18 +324,18 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
   // Interaction tier for title bar right side
   const interactionTier =
     interactions >= 25
-      ? { label: t('interactionTier.singularity'), isRainbow: true, color: termHighlight }
+      ? { color: termHighlight, isRainbow: true, label: t('interactionTier.singularity') }
       : interactions >= 18
-        ? { label: t('interactionTier.overclocked'), isRainbow: false, color: termWarning }
+        ? { color: termWarning, isRainbow: false, label: t('interactionTier.overclocked') }
         : interactions >= 12
-          ? { label: t('interactionTier.deepFocus'), isRainbow: false, color: termParam }
+          ? { color: termParam, isRainbow: false, label: t('interactionTier.deepFocus') }
           : interactions >= 8
-            ? { label: t('interactionTier.engaged'), isRainbow: false, color: termSuccess }
+            ? { color: termSuccess, isRainbow: false, label: t('interactionTier.engaged') }
             : interactions >= 5
-              ? { label: t('interactionTier.curious'), isRainbow: false, color: termCommand }
+              ? { color: termCommand, isRainbow: false, label: t('interactionTier.curious') }
               : interactions >= 2
-                ? { label: t('interactionTier.scanning'), isRainbow: false, color: termInfo }
-                : { label: t('interactionTier.idle'), isRainbow: false, color: termSecondary }
+                ? { color: termInfo, isRainbow: false, label: t('interactionTier.scanning') }
+                : { color: termSecondary, isRainbow: false, label: t('interactionTier.idle') }
 
   // Current research status with resolved color
   const currentResearch = researchStatuses[researchStatusIndex]
@@ -352,17 +354,17 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
 
   return (
     <Box
-      w="full"
-      overflow="hidden"
       borderRadius="md"
-      fontFamily="mono"
       boxShadow={`0 0 0 1px ${termBorder}, 0 2px 8px ${isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.08)'}`}
-      letterSpacing="tight"
       display="flex"
       flexDirection="column"
+      fontFamily="mono"
+      letterSpacing="tight"
+      overflow="hidden"
+      w="full"
     >
       {/* ═══ Pixel RGB light bar (dynamic chase) ═══ */}
-      <Flex h="4px" w="full" flexShrink={0} borderTopRadius="md" overflow="hidden">
+      <Flex borderTopRadius="md" flexShrink={0} h="4px" overflow="hidden" w="full">
         {(() => {
           const total = 28
           const tick = Math.floor(currentTime.getTime() / 200)
@@ -371,10 +373,10 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
             const brightness = 0.6 + 0.4 * Math.abs(Math.sin((i + tick * 0.5) * 0.3))
             return (
               <Box
-                key={i}
+                bg={terminalPalette.rainbow[colorIdx]}
                 flex={1}
                 h="full"
-                bg={terminalPalette.rainbow[colorIdx]}
+                key={i}
                 opacity={brightness}
                 transition="background 0.2s, opacity 0.2s"
               />
@@ -386,25 +388,25 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
       {/* ═══ Title bar: syntax-highlighted title + interaction tier ═══ */}
       <Flex
         bg={termHeader}
-        px={[1.5, 2]}
-        py={[1, 1.5]}
-        color={termText}
         borderBottom={`1px solid ${termBorder}`}
-        justify="space-between"
+        color={termText}
+        flexShrink={0}
+        flexWrap={['wrap', 'nowrap']}
         fontSize={['3xs', '2xs', 'xs']}
         fontWeight="medium"
-        flexWrap={['wrap', 'nowrap']}
         gap={[1, 0]}
-        flexShrink={0}
+        justify="space-between"
+        px={[1.5, 2]}
+        py={[1, 1.5]}
       >
         {/* Left: traffic lights + syntax-highlighted title */}
-        <Flex align="center" gap={1} flex={['1 1 100%', '1 1 auto']}>
+        <Flex align="center" flex={['1 1 100%', '1 1 auto']} gap={1}>
           <HStack gap={1.5} mr={2}>
-            <Box w="10px" h="10px" borderRadius="full" bg="#bf616a" />
-            <Box w="10px" h="10px" borderRadius="full" bg="#ebcb8b" />
-            <Box w="10px" h="10px" borderRadius="full" bg="#a3be8c" />
+            <Box bg="#bf616a" borderRadius="full" h="10px" w="10px" />
+            <Box bg="#ebcb8b" borderRadius="full" h="10px" w="10px" />
+            <Box bg="#a3be8c" borderRadius="full" h="10px" w="10px" />
           </HStack>
-          <DynamicIcon name="FaTerminal" boxSize={[2.5, 3]} color={termCommand} />
+          <DynamicIcon boxSize={[2.5, 3]} color={termCommand} name="FaTerminal" />
           <Text overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
             <Box as="span" color={termParam}>
               const{' '}
@@ -419,7 +421,7 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
             <Box as="span" color={termParam} display={['none', 'inline']}>
               new{' '}
             </Box>
-            <Box as="span" color={termCommand} fontWeight="bold" display={['none', 'inline']}>
+            <Box as="span" color={termCommand} display={['none', 'inline']} fontWeight="bold">
               Terminal
             </Box>
             <Box as="span" color={termSecondary} display={['none', 'inline']}>
@@ -437,10 +439,10 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
         {/* Middle: research process status */}
         <Flex align="center">
           <Box
-            px={1.5}
             bg={isDark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.05)'}
             borderRadius="sm"
             flexShrink={0}
+            px={1.5}
           >
             <Text color={researchColor}>
               {currentResearch.label} {currentResearch.suffix}
@@ -455,13 +457,13 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
           </Text>
           <Flex
             align="center"
-            gap={1}
             color={interactionTier.color}
+            gap={1}
             {...(interactionTier.isRainbow
               ? { sx: { animation: `${rainbow} 3s linear infinite` } }
               : {})}
           >
-            <Box as="span" animation={`${pulse} 2s infinite ease-in-out`} display="inline-block">
+            <Box animation={`${pulse} 2s infinite ease-in-out`} as="span" display="inline-block">
               ◉
             </Box>
             <Text>{interactionTier.label}</Text>
@@ -471,85 +473,85 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
 
       {/* ═══ Status bar: tmux-style segments ═══ */}
       <Flex
+        align="center"
         bg={tc.touchBar}
+        borderBottom={`1px solid ${termBorder}`}
+        flexShrink={0}
+        fontSize={['3xs', '2xs']}
+        justify="space-between"
+        overflow="hidden"
         px={[1.5, 2]}
         py={[0.5, 1]}
-        borderBottom={`1px solid ${termBorder}`}
-        fontSize={['3xs', '2xs']}
-        align="center"
-        justify="space-between"
-        flexShrink={0}
-        overflow="hidden"
       >
         {/* Left segments */}
         <Flex align="center" gap={0} overflow="hidden">
-          <Flex align="center" gap={1} px={[1, 1.5]} flexShrink={0}>
-            <DynamicIcon name="FaUser" boxSize={[2, 2.5]} color={termPrompt} />
+          <Flex align="center" flexShrink={0} gap={1} px={[1, 1.5]}>
+            <DynamicIcon boxSize={[2, 2.5]} color={termPrompt} name="FaUser" />
             <Text color={termText} fontWeight="bold">
               {siteOwner.terminalUsername}
             </Text>
           </Flex>
           <Text color={tc.border}>│</Text>
-          <Flex align="center" gap={1} px={[1, 1.5]} flexShrink={0}>
-            <DynamicIcon name="FaClock" boxSize={[2, 2.5]} color={termHighlight} />
+          <Flex align="center" flexShrink={0} gap={1} px={[1, 1.5]}>
+            <DynamicIcon boxSize={[2, 2.5]} color={termHighlight} name="FaClock" />
             <Text color={termSecondary}>{bostonDateStr}</Text>
           </Flex>
           <Text color={tc.border} display={['none', 'inline']}>
             │
           </Text>
-          <Flex align="center" gap={1} px={1.5} flexShrink={0} display={['none', 'flex']}>
-            <DynamicIcon name="FaFolder" boxSize={[2, 2.5]} color={termCommand} />
+          <Flex align="center" display={['none', 'flex']} flexShrink={0} gap={1} px={1.5}>
+            <DynamicIcon boxSize={[2, 2.5]} color={termCommand} name="FaFolder" />
             <Text color={termCommand}>~/cortex/papers</Text>
           </Flex>
         </Flex>
 
         {/* Arrow */}
-        <Flex align="center" px={[1, 2]} flexShrink={0} display={['none', 'flex']}>
-          <DynamicIcon name="FaArrowRight" boxSize={[2, 2.5]} color={termSecondary} />
+        <Flex align="center" display={['none', 'flex']} flexShrink={0} px={[1, 2]}>
+          <DynamicIcon boxSize={[2, 2.5]} color={termSecondary} name="FaArrowRight" />
         </Flex>
 
         {/* Right segments */}
         <Flex align="center" gap={0} overflow="hidden">
-          <Flex align="center" gap={1} px={1.5} flexShrink={0} display={['none', 'none', 'flex']}>
-            <DynamicIcon name="FaCodeBranch" boxSize={[2, 2.5]} color={termInfo} />
+          <Flex align="center" display={['none', 'none', 'flex']} flexShrink={0} gap={1} px={1.5}>
+            <DynamicIcon boxSize={[2, 2.5]} color={termInfo} name="FaCodeBranch" />
             <Text color={termInfo}>{termProcesses[processIndex]}</Text>
           </Flex>
           <Text color={tc.border} display={['none', 'none', 'inline']}>
             │
           </Text>
-          <Flex align="center" gap={1} px={[1, 1.5]} flexShrink={0}>
-            <DynamicIcon name="FaBrain" boxSize={[2, 2.5]} color={termParam} />
+          <Flex align="center" flexShrink={0} gap={1} px={[1, 1.5]}>
+            <DynamicIcon boxSize={[2, 2.5]} color={termParam} name="FaBrain" />
             <Text
               color={memoryUsage > 90 ? termError : memoryUsage > 80 ? termWarning : termSuccess}
             >
               {memoryUsage}%
             </Text>
             <Box
-              w="30px"
-              h="3px"
               bg={tc.header}
               borderRadius="full"
-              overflow="hidden"
               display={['none', 'block']}
+              h="3px"
+              overflow="hidden"
+              w="30px"
             >
               <Box
-                h="full"
-                w={`${memoryUsage}%`}
                 bg={memoryUsage > 90 ? termError : memoryUsage > 80 ? termWarning : termSuccess}
                 borderRadius="full"
+                h="full"
                 transition="width 0.3s"
+                w={`${memoryUsage}%`}
               />
             </Box>
           </Flex>
           <Text color={tc.border}>│</Text>
-          <Flex align="center" gap={1} px={[1, 1.5]} flexShrink={0}>
-            <DynamicIcon name="FaBolt" boxSize={[2, 2.5]} color={termHighlight} />
+          <Flex align="center" flexShrink={0} gap={1} px={[1, 1.5]}>
+            <DynamicIcon boxSize={[2, 2.5]} color={termHighlight} name="FaBolt" />
           </Flex>
           <Text color={tc.border} display={['none', 'inline']}>
             │
           </Text>
-          <Flex align="center" gap={1} px={1.5} flexShrink={0} display={['none', 'flex']}>
-            <DynamicIcon name="FaCoffee" boxSize={[2, 2.5]} color={termWarning} />
+          <Flex align="center" display={['none', 'flex']} flexShrink={0} gap={1} px={1.5}>
+            <DynamicIcon boxSize={[2, 2.5]} color={termWarning} name="FaCoffee" />
             <Text color={termWarning}>∞</Text>
             <Text color={termSecondary} fontSize="3xs" letterSpacing="-1px">
               {sparkDisplay}
@@ -560,27 +562,27 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
 
       {/* ═══ Scrollable content area ═══ */}
       <Box
-        flex={1}
         bg={termBg}
         color={termText}
-        overflowY="auto"
-        maxH={['350px', '450px', '550px']}
         css={{
-          '&::-webkit-scrollbar': { width: '6px', background: 'transparent' },
+          '&::-webkit-scrollbar': { background: 'transparent', width: '6px' },
           '&::-webkit-scrollbar-thumb': { background: tc.border, borderRadius: '3px' },
         }}
+        flex={1}
+        maxH={['350px', '450px', '550px']}
+        overflowY="auto"
       >
         {/* Hint line - zsh-style syntax highlighting */}
         <Box
+          borderBottom={`1px dotted ${termBorder}`}
+          color={termInfo}
+          display={isVerySmallScreen ? 'none' : 'block'}
+          fontSize={['3xs', '2xs']}
           px={[2, 3]}
           py={[0.5, 1]}
-          fontSize={['3xs', '2xs']}
-          color={termInfo}
-          borderBottom={`1px dotted ${termBorder}`}
-          display={isVerySmallScreen ? 'none' : 'block'}
         >
           <Flex align="center" gap={[1, 2]}>
-            <DynamicIcon name="FaChevronRight" boxSize={[1.5, 2]} color={termPrompt} />
+            <DynamicIcon boxSize={[1.5, 2]} color={termPrompt} name="FaChevronRight" />
             <Text color={termSuccess} fontWeight="bold">
               grep
             </Text>
@@ -592,7 +594,7 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
             <Text color={termSecondary} display={['none', 'inline']}>
               |
             </Text>
-            <Text color={termSuccess} fontWeight="bold" display={['none', 'inline']}>
+            <Text color={termSuccess} display={['none', 'inline']} fontWeight="bold">
               sort
             </Text>
             <Text color={termCommand} display={['none', 'inline']}>
@@ -600,8 +602,8 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
             </Text>
             <Text
               color={tc.command}
-              fontStyle="italic"
               display={['none', 'none', 'inline']}
+              fontStyle="italic"
               opacity={0.7}
             >
               {t('newsTimeline.clickToExpand')}
@@ -613,17 +615,17 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
         <Box p={[0.5, 1, 2]}>
           <Flex
             borderBottom={`1px solid ${termBorder}`}
-            py={[0.5, 1]}
             fontSize={['3xs', '2xs', 'xs']}
             fontWeight="bold"
+            py={[0.5, 1]}
           >
-            <Text w={dateColumnWidth} color={termHighlight} overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+            <Text color={termHighlight} overflow="hidden" textOverflow="ellipsis" w={dateColumnWidth} whiteSpace="nowrap">
               {isVerySmallScreen ? t('newsTimeline.time') : t('newsTimeline.timestamp')}
             </Text>
-            <Text w={typeColumnWidth} color={termParam} overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+            <Text color={termParam} overflow="hidden" textOverflow="ellipsis" w={typeColumnWidth} whiteSpace="nowrap">
               {isVerySmallScreen ? t('newsTimeline.cat') : t('newsTimeline.category')}
             </Text>
-            <Text w={idColumnWidth} color={termInfo} display={['none', 'none', 'block']}>
+            <Text color={termInfo} display={['none', 'none', 'block']} w={idColumnWidth}>
               {t('newsTimeline.pid')}
             </Text>
             <Text flex="1">
@@ -637,10 +639,10 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
                 DUMP
               </Box>
             </Text>
-            <Text w={linksColumnWidth} color={termWarning} display={['none', 'block']}>
+            <Text color={termWarning} display={['none', 'block']} w={linksColumnWidth}>
               {t('newsTimeline.links')}
             </Text>
-            <Text w={controlColumnWidth} color={termPrompt} textAlign="center">
+            <Text color={termPrompt} textAlign="center" w={controlColumnWidth}>
               {isVerySmallScreen ? '+' : t('newsTimeline.ctrl')}
             </Text>
           </Flex>
@@ -648,20 +650,15 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
           {/* Table rows */}
           {news.map((item, index) => (
             <Box
-              key={index}
               borderBottom={`1px dotted ${termBorder}`}
-              role="group"
+              key={index}
               onMouseEnter={() => setHoveredItem(index)}
               onMouseLeave={() => setHoveredItem(null)}
+              role="group"
             >
               <Flex
-                py={[0.5, 1, 1.5]}
-                px={[0, 0.5]}
-                fontSize={['3xs', '2xs', 'xs']}
-                align="center"
-                cursor="pointer"
-                onClick={() => toggleExpanded(index)}
                 _hover={{ bg: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)' }}
+                align="center"
                 bg={
                   expandedItems[index]
                     ? isDark
@@ -669,39 +666,44 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
                       : 'rgba(203,213,225,0.3)'
                     : 'transparent'
                 }
+                cursor="pointer"
+                fontSize={['3xs', '2xs', 'xs']}
+                onClick={() => toggleExpanded(index)}
+                px={[0, 0.5]}
+                py={[0.5, 1, 1.5]}
               >
-                <Text w={dateColumnWidth} color={termHighlight} fontWeight="medium" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
+                <Text color={termHighlight} fontWeight="medium" overflow="hidden" textOverflow="ellipsis" w={dateColumnWidth} whiteSpace="nowrap">
                   {formatDate(item.date)}
                 </Text>
                 <Box w={typeColumnWidth}>
                   <Flex
-                    as="span"
                     align="center"
-                    gap={1}
-                    px={[0.5, 1, 1.5]}
+                    as="span"
                     bg={typeColors[item.type.toLowerCase()]?.bg || typeColors.default.bg}
-                    color={typeColors[item.type.toLowerCase()]?.fg || typeColors.default.fg}
                     borderRadius="sm"
+                    color={typeColors[item.type.toLowerCase()]?.fg || typeColors.default.fg}
+                    display="inline-flex"
                     fontSize={['4xs', '3xs', '2xs']}
                     fontWeight="bold"
+                    gap={1}
+                    px={[0.5, 1, 1.5]}
                     textTransform="uppercase"
-                    display="inline-flex"
                     w="fit-content"
                   >
                     {!isNarrowScreen && (
                       <DynamicIcon
-                        name={typeColors[item.type.toLowerCase()]?.icon || typeColors.default.icon}
                         boxSize={[2, 2.5]}
+                        name={typeColors[item.type.toLowerCase()]?.icon || typeColors.default.icon}
                       />
                     )}
                     {getCategoryLength(item.type)}
                   </Flex>
                 </Box>
                 <Text
-                  w={idColumnWidth}
                   color={termInfo}
-                  fontFamily="mono"
                   display={isWideEnough ? 'block' : 'none'}
+                  fontFamily="mono"
+                  w={idColumnWidth}
                 >
                   <Box as="span" color={termSecondary}>
                     0x
@@ -712,12 +714,12 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
                   <Flex align="center" gap={1}>
                     {item.badge && (
                       <Text
-                        fontSize={['4xs', '3xs']}
-                        px={[0.5, 1]}
-                        borderRadius="sm"
                         bg={typeColors[item.type.toLowerCase()]?.bg || typeColors.default.bg}
+                        borderRadius="sm"
                         color={typeColors[item.type.toLowerCase()]?.fg || typeColors.default.fg}
+                        fontSize={['4xs', '3xs']}
                         fontWeight="bold"
+                        px={[0.5, 1]}
                         whiteSpace="nowrap"
                       >
                         {item.badge
@@ -730,38 +732,38 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
                           .trim()}
                       </Text>
                     )}
-                    <Text fontWeight="medium" color={termText} overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" fontSize={['2xs', 'xs']}>
+                    <Text color={termText} fontSize={['2xs', 'xs']} fontWeight="medium" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
                       {isNarrowScreen ? truncateText(item.title, 60) : item.title}
                     </Text>
                   </Flex>
                   {showDescription && (
-                    <Text color={termSecondary} fontSize={['3xs', '2xs']} overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" mt={0.5}>
+                    <Text color={termSecondary} fontSize={['3xs', '2xs']} mt={0.5} overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
                       {getDescriptionLength(item.description)}
                     </Text>
                   )}
                 </Box>
                 <Flex
-                  w={linksColumnWidth}
                   align="center"
-                  justify="flex-start"
                   display={isWideEnough ? 'flex' : 'none'}
+                  justify="flex-start"
+                  w={linksColumnWidth}
                 >
                   {item.links.length > 0 ? (
                     <HStack gap={1}>
                       {item.links.slice(0, isSmallScreen ? 2 : 3).map((link, i) => (
                         <Link
-                          key={i}
-                          href={link.url}
-                          target="_blank" rel="noopener noreferrer"
-                          color={termCommand}
                           _hover={{ color: termHighlight }}
+                          color={termCommand}
+                          href={link.url} key={i}
                           onClick={(e) => e.stopPropagation()}
+                          rel="noopener noreferrer"
+                          target="_blank"
                         >
                           <Box>
                             [
                             <DynamicIcon
-                              name={link.icon || 'FaExternalLinkAlt'}
                               boxSize={[2, 2.5, 3]}
+                              name={link.icon || 'FaExternalLinkAlt'}
                             />
                             ]
                           </Box>
@@ -775,15 +777,15 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
                     <Text color={termInfo}>{t('newsTimeline.devNull')}</Text>
                   )}
                 </Flex>
-                <Flex w={controlColumnWidth} align="center" justify="center">
+                <Flex align="center" justify="center" w={controlColumnWidth}>
                   <Box
+                    _hover={{ bg: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }}
+                    borderRadius="sm"
                     color={expandedItems[index] ? termInfo : termCommand}
                     fontWeight="bold"
-                    borderRadius="sm"
+                    minW={['20px', '26px']}
                     px={[0.5, 1]}
                     py={0.5}
-                    _hover={{ bg: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }}
-                    minW={['20px', '26px']}
                     textAlign="center"
                   >
                     {expandedItems[index] ? '[-]' : '[+]'}
@@ -794,34 +796,34 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
               {/* Expanded details */}
               <Collapsible.Root open={expandedItems[index]}><Collapsible.Content>
                 <Box
+                  bg={isDark ? 'rgba(76,86,106,0.1)' : 'rgba(203,213,225,0.15)'}
+                  borderLeft={`2px solid ${typeColors[item.type.toLowerCase()]?.fg || typeColors.default.fg}`}
                   pl={[2, 3, 10]}
                   pr={[2, 3]}
                   py={[1.5, 2]}
-                  bg={isDark ? 'rgba(76,86,106,0.1)' : 'rgba(203,213,225,0.15)'}
-                  borderLeft={`2px solid ${typeColors[item.type.toLowerCase()]?.fg || typeColors.default.fg}`}
                 >
                   <Flex align="start" gap={2} mb={2}>
                     <Box
-                      p={1.5}
-                      borderRadius="md"
-                      bg={typeColors[item.type.toLowerCase()]?.bg || typeColors.default.bg}
-                      display={['none', 'flex']}
                       alignItems="center"
-                      justifyContent="center"
+                      bg={typeColors[item.type.toLowerCase()]?.bg || typeColors.default.bg}
+                      borderRadius="md"
+                      display={['none', 'flex']}
                       flexShrink={0}
+                      justifyContent="center"
                       mt={0.5}
+                      p={1.5}
                     >
                       <DynamicIcon
-                        name={typeColors[item.type.toLowerCase()]?.icon || typeColors.default.icon}
                         boxSize={[3, 4]}
                         color={typeColors[item.type.toLowerCase()]?.fg || typeColors.default.fg}
+                        name={typeColors[item.type.toLowerCase()]?.icon || typeColors.default.icon}
                       />
                     </Box>
                     <Box flex={1} minW={0}>
-                      <Text fontSize={['2xs', 'xs']} fontWeight="bold" color={termText} mb={0.5}>
+                      <Text color={termText} fontSize={['2xs', 'xs']} fontWeight="bold" mb={0.5}>
                         {item.title}
                       </Text>
-                      <Flex fontSize={['3xs', '2xs']} gap={[1, 2]} flexWrap="wrap" align="center">
+                      <Flex align="center" flexWrap="wrap" fontSize={['3xs', '2xs']} gap={[1, 2]}>
                         <Text
                           color={typeColors[item.type.toLowerCase()]?.fg || typeColors.default.fg}
                           fontWeight="bold"
@@ -849,17 +851,11 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
                   </Flex>
                   {item.description && (
                     <Text
-                      fontSize={['2xs', 'xs']}
                       color={tc.secondary}
-                      mb={2}
-                      whiteSpace="pre-line"
-                      lineHeight="1.6"
-                      maxH={isVerySmallScreen ? '100px' : isMobile ? '200px' : 'none'}
-                      overflowY={isVerySmallScreen || isMobile ? 'auto' : 'visible'}
                       css={
                         isVerySmallScreen || isMobile
                           ? {
-                              '&::-webkit-scrollbar': { width: '4px', background: 'transparent' },
+                              '&::-webkit-scrollbar': { background: 'transparent', width: '4px' },
                               '&::-webkit-scrollbar-thumb': {
                                 background: tc.border,
                                 borderRadius: '2px',
@@ -867,44 +863,50 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
                             }
                           : {}
                       }
+                      fontSize={['2xs', 'xs']}
+                      lineHeight="1.6"
+                      maxH={isVerySmallScreen ? '100px' : isMobile ? '200px' : 'none'}
+                      mb={2}
+                      overflowY={isVerySmallScreen || isMobile ? 'auto' : 'visible'}
+                      whiteSpace="pre-line"
                     >
                       {highlightData(item.description, {
-                        num: termHighlight,
                         kw: termCommand,
+                        num: termHighlight,
                         str: termSuccess,
                       })}
                     </Text>
                   )}
                   {item.links.length > 0 && (
-                    <Flex wrap="wrap" gap={[1.5, 2]} mt={1}>
+                    <Flex gap={[1.5, 2]} mt={1} wrap="wrap">
                       {item.links.map((link, i) => (
                         <Link
-                          key={i}
-                          href={link.url}
-                          target="_blank" rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
                           _hover={{ textDecoration: 'none' }}
+                          href={link.url}
+                          key={i} onClick={(e) => e.stopPropagation()}
+                          rel="noopener noreferrer"
+                          target="_blank"
                         >
                           <Flex
-                            align="center"
-                            gap={1}
-                            px={[1.5, 2]}
-                            py={[0.5, 1]}
-                            bg={isDark ? 'rgba(136,192,208,0.08)' : 'rgba(42,118,156,0.06)'}
-                            borderRadius="md"
-                            border="1px solid"
-                            borderColor={isDark ? 'rgba(136,192,208,0.2)' : 'rgba(42,118,156,0.15)'}
-                            color={termCommand}
-                            fontSize={['3xs', '2xs']}
-                            transition="all 0.15s"
                             _hover={{
                               bg: isDark ? 'rgba(136,192,208,0.15)' : 'rgba(42,118,156,0.1)',
                               borderColor: termCommand,
                             }}
+                            align="center"
+                            bg={isDark ? 'rgba(136,192,208,0.08)' : 'rgba(42,118,156,0.06)'}
+                            border="1px solid"
+                            borderColor={isDark ? 'rgba(136,192,208,0.2)' : 'rgba(42,118,156,0.15)'}
+                            borderRadius="md"
+                            color={termCommand}
+                            fontSize={['3xs', '2xs']}
+                            gap={1}
+                            px={[1.5, 2]}
+                            py={[0.5, 1]}
+                            transition="all 0.15s"
                           >
                             <DynamicIcon
-                              name={link.icon || 'FaExternalLinkAlt'}
                               boxSize={[2, 2.5]}
+                              name={link.icon || 'FaExternalLinkAlt'}
                             />
                             <Text>
                               {getResponsiveTextLength(
@@ -928,19 +930,19 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
 
       {/* ═══ Footer prompt: FIXED at bottom, never scrolls ═══ */}
       <Flex
+        align="center"
+        bg={termHeader}
+        borderTop={`1px solid ${termBorder}`}
+        flexShrink={0}
+        fontSize={['3xs', '2xs', 'xs']}
+        position="relative"
         px={[2, 3]}
         py={[1, 1.5]}
-        borderTop={`1px solid ${termBorder}`}
-        bg={termHeader}
-        fontSize={['3xs', '2xs', 'xs']}
-        align="center"
-        position="relative"
-        flexShrink={0}
       >
-        <Flex align="center" gap={1} mr={1.5} flexShrink={0}>
-          <DynamicIcon name="FaChevronRight" boxSize={[1.5, 2]} color={termPrompt} />
+        <Flex align="center" flexShrink={0} gap={1} mr={1.5}>
+          <DynamicIcon boxSize={[1.5, 2]} color={termPrompt} name="FaChevronRight" />
           {!isVerySmallScreen && (
-            <DynamicIcon name="FaChevronRight" boxSize={[1.5, 2]} color={termCommand} />
+            <DynamicIcon boxSize={[1.5, 2]} color={termCommand} name="FaChevronRight" />
           )}
         </Flex>
         <Text color={termSecondary} overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
@@ -981,7 +983,7 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
               <Box as="span" color={termSecondary} display={['none', 'inline']}>
                 |
               </Box>{' '}
-              <Box as="span" color={termSuccess} fontWeight="bold" display={['none', 'inline']}>
+              <Box as="span" color={termSuccess} display={['none', 'inline']} fontWeight="bold">
                 sort
               </Box>{' '}
               <Box as="span" color={termCommand} display={['none', 'inline']}>
@@ -990,7 +992,7 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
               <Box as="span" color={termSecondary} display={['none', 'inline']}>
                 |
               </Box>{' '}
-              <Box as="span" color={termSuccess} fontWeight="bold" display={['none', 'inline']}>
+              <Box as="span" color={termSuccess} display={['none', 'inline']} fontWeight="bold">
                 head
               </Box>{' '}
               <Box as="span" color={termWarning} display={['none', 'inline']}>
@@ -1000,22 +1002,22 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHead
           )}
         </Text>
         <Box
-          h={['10px', '14px']}
-          w={['5px', '7px']}
           bg={termPrompt}
-          ml={1.5}
           borderRadius="1px"
           css={{ animation: `${blink} 1s step-end infinite` }}
+          h={['10px', '14px']}
+          ml={1.5}
+          w={['5px', '7px']}
         />
         {/* Easter egg: changes with interaction count */}
         {!isMobile && (
           <Text
-            position="absolute"
-            right={[2, 3]}
             color={termInfo}
-            opacity={0.5}
             fontSize={['4xs', '3xs']}
             fontStyle="italic"
+            opacity={0.5}
+            position="absolute"
+            right={[2, 3]}
           >
             {interactions >= 6
               ? t('newsTimeline.easterEgg3')

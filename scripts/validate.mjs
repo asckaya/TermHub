@@ -8,8 +8,8 @@
  * Usage: node scripts/validate.mjs
  */
 
-import { readFileSync, existsSync, readdirSync } from 'fs'
-import { resolve, dirname } from 'path'
+import { existsSync, readdirSync, readFileSync } from 'fs'
+import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -18,23 +18,14 @@ const ROOT = resolve(__dirname, '..')
 let errors = 0
 let warnings = 0
 
-function pass(msg) {
-  console.log(`\x1b[32m✓\x1b[0m ${msg}`)
-}
-
 function fail(msg) {
   errors++
   console.log(`\x1b[31m✗\x1b[0m ${msg}`)
 }
 
-function warn(msg) {
-  warnings++
-  console.log(`\x1b[33m⚠\x1b[0m ${msg}`)
+function pass(msg) {
+  console.log(`\x1b[32m✓\x1b[0m ${msg}`)
 }
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
 
 function readJson(relPath) {
   const abs = resolve(ROOT, relPath)
@@ -45,6 +36,15 @@ function readJson(relPath) {
     fail(`${relPath} is not valid JSON: ${e.message}`)
     return null
   }
+}
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function warn(msg) {
+  warnings++
+  console.log(`\x1b[33m⚠\x1b[0m ${msg}`)
 }
 
 // ---------------------------------------------------------------------------

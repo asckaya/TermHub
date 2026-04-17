@@ -1,17 +1,19 @@
 import {
-  VStack,
-  Heading,
-  Text,
+  Badge,
   Box,
+  Link as ChakraLink,
   Code,
   Container,
+  Heading,
   HStack,
-  Link as ChakraLink,
-  Badge,
+  Text,
+  VStack,
 } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
+
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+
 import type { NewsItem } from '../types'
 
 const MotionBox = motion(Box)
@@ -33,13 +35,13 @@ const News = () => {
 
   return (
     <Container maxW="7xl" px={4}>
-      <VStack gap={8} align="stretch">
+      <VStack align="stretch" gap={8}>
         <MotionBox
-          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
         >
-          <Heading as="h1" size="xl" mb={6}>
+          <Heading as="h1" mb={6} size="xl">
             {t('news.title')}
           </Heading>
           <Box className="meta">
@@ -53,22 +55,22 @@ const News = () => {
             </Box>
           </Box>
 
-          <VStack gap={6} align="stretch">
+          <VStack align="stretch" gap={6}>
             {news.map((item, index) => (
               <MotionBox
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                p={5}
-                borderWidth="1px"
                 borderRadius="md"
+                borderWidth="1px"
                 className="card"
+                initial={{ opacity: 0, y: 20 }}
+                key={index}
+                p={5}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
               >
                 <Box mb={2}>
                   <Code>{item.date}</Code>{' '}
                   {item.badge && (
-                    <Badge ml={2} colorPalette={item.iconColor?.split('.')[0] || 'gray'}>
+                    <Badge colorPalette={item.iconColor?.split('.')[0] || 'gray'} ml={2}>
                       {item.badge}
                     </Badge>
                   )}{' '}
@@ -80,7 +82,7 @@ const News = () => {
                 {item.links && item.links.length > 0 && (
                   <HStack gap={3} mt={3} wrap="wrap">
                     {item.links.map((l, i) => (
-                      <ChakraLink key={i} href={l.url} target="_blank" rel="noopener noreferrer" color="var(--accent-color)">
+                      <ChakraLink color="var(--accent-color)" href={l.url} key={i} rel="noopener noreferrer" target="_blank">
                         {l.text} →
                       </ChakraLink>
                     ))}
@@ -92,14 +94,14 @@ const News = () => {
         </MotionBox>
 
         <MotionBox
-          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
         >
-          <Heading as="h2" size="lg" mb={4}>
+          <Heading as="h2" mb={4} size="lg">
             {t('news.currentFocus')}
           </Heading>
-          <Box as="pre" p={4} bg="var(--header-bg)" borderRadius="md" fontFamily="mono">
+          <Box as="pre" bg="var(--header-bg)" borderRadius="md" fontFamily="mono" p={4}>
             {`# Active Projects (2024-Q4)
 - ThinkGrasp extensions    // Working on improved vision-language integration
 - Equivariant Models       // Refining SE(2) models for grasping

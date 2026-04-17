@@ -1,22 +1,23 @@
 import { lazy } from 'react'
-import type { TemplateConfig } from '../types'
-import theme from '../../theme'
 
+import type { TemplateConfig } from '../types'
+
+import Footer from '../../components/about/Footer'
+import HeroSection from '../../components/about/HeroSection'
+import NewsTimeline from '../../components/about/NewsTimeline'
+import AccomplishmentsTerminal from '../../components/AccomplishmentsTerminal'
 // ── Layout & slots — eagerly loaded (always visible on every route) ──────────
 import Layout from '../../components/Layout'
 import Navbar from '../../components/Navbar'
-import HeroSection from '../../components/about/HeroSection'
-import Footer from '../../components/about/Footer'
-import NewsTimeline from '../../components/about/NewsTimeline'
-import AccomplishmentsTerminal from '../../components/AccomplishmentsTerminal'
 import BioSection from '../../components/sections/BioSection'
-import SkillsSection from '../../components/sections/SkillsSection'
+import ContactSection from '../../components/sections/ContactSection'
 import JourneySection from '../../components/sections/JourneySection'
 import MentorshipSection from '../../components/sections/MentorshipSection'
 import SelectedPublicationsSection from '../../components/sections/SelectedPublicationsSection'
+import SkillsSection from '../../components/sections/SkillsSection'
 import TalksSection from '../../components/sections/TalksSection'
 import TeachingSection from '../../components/sections/TeachingSection'
-import ContactSection from '../../components/sections/ContactSection'
+import theme from '../../theme'
 
 // ── Pages — lazily loaded, each becomes its own JS chunk ────────────────────
 // Vite splits these at the dynamic import() boundary, so the visitor only
@@ -29,34 +30,34 @@ const Experience = lazy(() => import('../../components/Experience'))
 const AboutPage = lazy(() => import('../../components/AboutPage'))
 
 const terminalTemplate: TemplateConfig = {
-  id: 'terminal',
-  name: 'Terminal',
   description: 'Nord-inspired terminal aesthetic with monospace typography',
-  theme,
+  id: 'terminal',
   layout: Layout,
+  name: 'Terminal',
   pages: {
-    home: Home,
-    publications: Publications,
-    projects: Projects,
+    aboutPage: AboutPage,
     articles: Articles,
     experience: Experience,
-    aboutPage: AboutPage,
+    home: Home,
+    projects: Projects,
+    publications: Publications,
   },
   slots: {
-    navbar: Navbar,
-    hero: HeroSection,
-    footer: Footer,
-    newsDisplay: NewsTimeline,
     accomplishments: AccomplishmentsTerminal,
     bio: BioSection,
-    skills: SkillsSection,
+    contact: ContactSection,
+    footer: Footer,
+    hero: HeroSection,
     journey: JourneySection,
     mentorship: MentorshipSection,
+    navbar: Navbar,
+    newsDisplay: NewsTimeline,
     selectedPublications: SelectedPublicationsSection,
+    skills: SkillsSection,
     talks: TalksSection,
     teaching: TeachingSection,
-    contact: ContactSection,
   },
+  theme,
 }
 
 export default terminalTemplate

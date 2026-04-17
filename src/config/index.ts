@@ -1,12 +1,12 @@
 // Re-export site config (primary config lives in src/site.config.ts)
-export { siteOwner, siteConfig, githubUsername, heroSocialIcons, navItems } from '../site.config'
+export { githubUsername, heroSocialIcons, navItems, siteConfig, siteOwner } from '../site.config'
 
 // Theme config
 export {
-  terminalPalette,
-  buildCategoryThemes,
-  articleCategoryLabels,
   articleCategoryColors,
+  articleCategoryLabels,
+  buildCategoryThemes,
   publicationVenueColors,
+  terminalPalette,
 } from './theme'
 export type { CatTheme } from './theme'

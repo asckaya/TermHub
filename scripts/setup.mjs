@@ -10,19 +10,15 @@
  * Usage:  pnpm setup
  */
 
-import readline from 'node:readline'
 import fs from 'node:fs'
 import path from 'node:path'
+import readline from 'node:readline'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
 
 // ── Helpers ──────────────────────────────────────────────────────
-
-function rl() {
-  return readline.createInterface({ input: process.stdin, output: process.stdout })
-}
 
 function ask(iface, question, defaultValue) {
   const suffix = defaultValue ? ` [${defaultValue}]` : ''
@@ -44,32 +40,60 @@ function banner() {
   console.log()
 }
 
-function sectionHeader(title) {
-  console.log()
-  console.log(`  ── ${title} ${'─'.repeat(Math.max(0, 48 - title.length))}`)
-  console.log()
-}
-
-// ── Build site.json ──────────────────────────────────────────────
-
 function buildSiteJson(a) {
   return {
     _comment: 'Your basic info. Edit the values below, then run: pnpm dev',
 
-    name: {
-      full: a.fullName,
-      first: a.firstName,
-      nickname: a.nickname,
-      last: a.lastName,
-      display: a.fullName,
-      authorVariants: [a.fullName],
-    },
-
-    title: `Hi there, I'm ${a.fullName}`,
     avatar: a.avatar,
 
+    contact: {
+      academicEmail: a.email,
+      email: a.email,
+      hiringEmail: a.email,
+      location: a.location,
+    },
+    features: {
+      articles: true,
+      experience: true,
+      guide: false,
+      news: true,
+      pets: false,
+      projects: true,
+      publications: true,
+    },
+
+    heroSocialIcons: [
+      { color: '#333', icon: 'FaGithub', label: 'GitHub', platform: 'github' },
+      { color: '#0A66C2', icon: 'FaLinkedin', label: 'LinkedIn', platform: 'linkedin' },
+    ],
+
+    name: {
+      authorVariants: [a.fullName],
+      display: a.fullName,
+      first: a.firstName,
+      full: a.fullName,
+      last: a.lastName,
+      nickname: a.nickname,
+    },
+
+    pets: [],
+
+    selectedPublicationIds: [],
+
+    social: {
+      bilibili: '',
+      blog: '',
+      csdn: '',
+      github: a.github,
+      googleScholar: '',
+      linkedin: a.linkedin,
+      medium: '',
+      twitter: '',
+      youtube: '',
+      zhihu: '',
+    },
+
     terminal: {
-      username: a.terminalUser,
       rotatingSubtitles: [
         'build cool projects',
         'write some code',
@@ -79,50 +103,12 @@ function buildSiteJson(a) {
       ],
       skills: ['Python', 'TypeScript', 'Go', 'PyTorch', 'React', 'ROS2', 'Docker', 'Kubernetes'],
       timezone: 'America/Los_Angeles',
+      username: a.terminalUser,
     },
 
-    contact: {
-      email: a.email,
-      academicEmail: a.email,
-      hiringEmail: a.email,
-      location: a.location,
-    },
-
-    social: {
-      github: a.github,
-      linkedin: a.linkedin,
-      medium: '',
-      googleScholar: '',
-      twitter: '',
-      youtube: '',
-      bilibili: '',
-      zhihu: '',
-      csdn: '',
-      blog: '',
-    },
-
-    pets: [],
-
-    features: {
-      publications: true,
-      projects: true,
-      articles: true,
-      experience: true,
-      news: true,
-      pets: false,
-      guide: false,
-    },
-
-    heroSocialIcons: [
-      { platform: 'github', icon: 'FaGithub', label: 'GitHub', color: '#333' },
-      { platform: 'linkedin', icon: 'FaLinkedin', label: 'LinkedIn', color: '#0A66C2' },
-    ],
-
-    selectedPublicationIds: [],
+    title: `Hi there, I'm ${a.fullName}`,
   }
 }
-
-// ── Main ─────────────────────────────────────────────────────────
 
 async function main() {
   banner()
@@ -162,16 +148,16 @@ async function main() {
   iface.close()
 
   const answers = {
-    fullName,
-    firstName,
-    lastName,
-    nickname,
-    email,
-    location,
-    github,
-    linkedin,
-    terminalUser,
     avatar,
+    email,
+    firstName,
+    fullName,
+    github,
+    lastName,
+    linkedin,
+    location,
+    nickname,
+    terminalUser,
   }
 
   // ── Write content/site.json ─────────────────────────────────
@@ -217,6 +203,20 @@ async function main() {
   console.log('  ║  3. Run:  pnpm dev                                 ║')
   console.log('  ║                                                       ║')
   console.log('  ╚═══════════════════════════════════════════════════════╝')
+  console.log()
+}
+
+// ── Build site.json ──────────────────────────────────────────────
+
+function rl() {
+  return readline.createInterface({ input: process.stdin, output: process.stdout })
+}
+
+// ── Main ─────────────────────────────────────────────────────────
+
+function sectionHeader(title) {
+  console.log()
+  console.log(`  ── ${title} ${'─'.repeat(Math.max(0, 48 - title.length))}`)
   console.log()
 }
 

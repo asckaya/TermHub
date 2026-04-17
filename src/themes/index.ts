@@ -36,4 +36,4 @@
 export { catppuccinoMochaTheme as activeTheme } from './catppuccin'
 
 // Re-export types so consumers can import from one place.
-export type { ThemeDefinition, CSSVarTokens, TerminalColors, CatTheme } from './types'
+export type { CatTheme, CSSVarTokens, TerminalColors, ThemeDefinition } from './types'

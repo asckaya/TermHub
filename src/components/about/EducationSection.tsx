@@ -1,14 +1,15 @@
-import React from 'react'
-import { useColorModeValue } from '@/color-mode'
 import {
   Box,
-  HStack,
-  VStack,
-  SimpleGrid,
   Heading,
+  HStack,
+  Image,
+  SimpleGrid,
   Text,
-  Image
+  VStack
 } from '@chakra-ui/react'
+import React from 'react'
+
+import { useColorModeValue } from '@/color-mode'
 
 interface Course {
   course: string
@@ -32,51 +33,51 @@ const EducationSection: React.FC<EducationSectionProps> = ({ courses, logos = {}
         const logo = logos[course.institution]
         return (
           <Box
-            key={index}
-            p={[3, 4]}
+            _hover={{ shadow: 'md', transform: 'translateY(-2px)' }}
             bg={bg}
             borderRadius="lg"
+            key={index}
+            p={[3, 4]}
             shadow="sm"
             transition="all 0.2s"
-            _hover={{ shadow: 'md', transform: 'translateY(-2px)' }}
           >
             <HStack align="start" gap={3}>
               {logo ? (
                 <Image
-                  src={logo}
                   alt={course.institution}
-                  w={['36px', '44px']}
-                  h={['36px', '44px']}
                   borderRadius="md"
-                  objectFit="contain"
                   flexShrink={0}
+                  h={['36px', '44px']}
                   mt={0.5}
+                  objectFit="contain"
+                  src={logo}
+                  w={['36px', '44px']}
                 />
               ) : (
                 <Box
-                  w={['36px', '44px']}
-                  h={['36px', '44px']}
-                  borderRadius="md"
-                  bg={accentBg}
-                  display="flex"
                   alignItems="center"
-                  justifyContent="center"
+                  bg={accentBg}
+                  borderRadius="md"
+                  display="flex"
                   flexShrink={0}
+                  h={['36px', '44px']}
+                  justifyContent="center"
                   mt={0.5}
+                  w={['36px', '44px']}
                 >
-                  <Text fontSize={['md', 'lg']} fontWeight="bold" color="blue.500">
+                  <Text color="blue.500" fontSize={['md', 'lg']} fontWeight="bold">
                     {course.institution.charAt(0)}
                   </Text>
                 </Box>
               )}
-              <VStack align="start" gap={1} flex={1}>
+              <VStack align="start" flex={1} gap={1}>
                 <Text color="blue.500" fontSize={['2xs', 'xs', 'sm']} fontWeight="medium">
                   {course.year}
                 </Text>
-                <Heading size={['xs', 'sm']} lineHeight="short">
+                <Heading lineHeight="short" size={['xs', 'sm']}>
                   {course.course}
                 </Heading>
-                <Text fontSize={['2xs', 'xs', 'sm']} color={textColor}>
+                <Text color={textColor} fontSize={['2xs', 'xs', 'sm']}>
                   {course.institution}
                 </Text>
               </VStack>

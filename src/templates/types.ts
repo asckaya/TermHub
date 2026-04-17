@@ -7,28 +7,12 @@
  */
 
 import type { SystemContext } from '@chakra-ui/react/styled-system'
+
 import type { ComponentSlots } from './slots'
 
 /** Props passed to the template's root layout component */
 export interface LayoutProps {
   children: React.ReactNode
-}
-
-/**
- * Page component map — every template must provide `home`.
- * Other pages are optional: if omitted, the route is still
- * governed by `features` in site.json but falls back to a
- * default "page not available" placeholder.
- */
-export interface TemplatePages {
-  home: React.ComponentType
-  publications?: React.ComponentType
-  projects?: React.ComponentType
-  articles?: React.ComponentType
-  experience?: React.ComponentType
-  guide?: React.ComponentType
-  guideDocs?: React.ComponentType
-  aboutPage?: React.ComponentType
 }
 
 /**
@@ -46,18 +30,35 @@ export interface TemplatePages {
  * 3. Users can override via `"components"` in content/site.json
  */
 export interface TemplateConfig {
-  /** Unique template identifier, e.g. "terminal", "academic", "minimal" */
-  id: string
-  /** Human-readable display name */
-  name: string
   /** Short description of the template style */
   description?: string
-  /** Chakra UI theme override for this template */
-  theme: SystemContext
+  /** Unique template identifier, e.g. "terminal", "academic", "minimal" */
+  id: string
   /** Root layout component (nav, footer, etc.) */
   layout: React.ComponentType<LayoutProps>
+  /** Human-readable display name */
+  name: string
   /** Page components provided by this template */
   pages: TemplatePages
   /** Component slot implementations (navbar, hero, footer, etc.) */
   slots: ComponentSlots
+  /** Chakra UI theme override for this template */
+  theme: SystemContext
+}
+
+/**
+ * Page component map — every template must provide `home`.
+ * Other pages are optional: if omitted, the route is still
+ * governed by `features` in site.json but falls back to a
+ * default "page not available" placeholder.
+ */
+export interface TemplatePages {
+  aboutPage?: React.ComponentType
+  articles?: React.ComponentType
+  experience?: React.ComponentType
+  guide?: React.ComponentType
+  guideDocs?: React.ComponentType
+  home: React.ComponentType
+  projects?: React.ComponentType
+  publications?: React.ComponentType
 }

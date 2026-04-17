@@ -1,38 +1,14 @@
-import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import markdown from './plugins/vite-plugin-markdown'
-import contentImages from './plugins/vite-plugin-content-images'
-import { resolve } from 'path'
 import { copyFileSync, mkdirSync, writeFileSync } from 'fs'
+import { resolve } from 'path'
+import { defineConfig } from 'vite'
+
+import contentImages from './plugins/vite-plugin-content-images'
+import markdown from './plugins/vite-plugin-markdown'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: process.env.BASE_URL || '/',
-  plugins: [
-    react(),
-    markdown(),
-    contentImages(),
-    {
-      name: 'spa-fallback-postbuild',
-      closeBundle() {
-        const outDir = resolve(__dirname, 'dist')
-        try {
-          mkdirSync(outDir, { recursive: true })
-          copyFileSync(resolve(outDir, 'index.html'), resolve(outDir, '404.html'))
-          writeFileSync(resolve(outDir, '.nojekyll'), '')
-        } catch {
-          // Build output not available (e.g. dev mode) — skip
-        }
-      },
-    },
-  ],
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, 'src'),
-      '@content/zh': resolve(__dirname, 'content/zh'),
-      '@content': resolve(__dirname, 'content'),
-    },
-  },
   build: {
     outDir: 'dist',
     rollupOptions: {
@@ -79,6 +55,31 @@ export default defineConfig({
           return 'vendor'
         },
       },
+    },
+  },
+  plugins: [
+    react(),
+    markdown(),
+    contentImages(),
+    {
+      closeBundle() {
+        const outDir = resolve(__dirname, 'dist')
+        try {
+          mkdirSync(outDir, { recursive: true })
+          copyFileSync(resolve(outDir, 'index.html'), resolve(outDir, '404.html'))
+          writeFileSync(resolve(outDir, '.nojekyll'), '')
+        } catch {
+          // Build output not available (e.g. dev mode) — skip
+        }
+      },
+      name: 'spa-fallback-postbuild',
+    },
+  ],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+      '@content': resolve(__dirname, 'content'),
+      '@content/zh': resolve(__dirname, 'content/zh'),
     },
   },
 })

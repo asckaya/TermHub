@@ -10,14 +10,14 @@
 // ============================================================
 
 import type {
-  Research,
-  Experience,
-  NewsItem,
   About,
-  Publication,
-  ProjectItem,
   Award,
+  Experience,
   ExperienceEntry,
+  NewsItem,
+  ProjectItem,
+  Publication,
+  Research,
   Talk,
   TeachingEntry,
 } from '../types'
@@ -77,6 +77,17 @@ function decodeEntities(str: string) {
     .replace(/&apos;/g, "'")
 }
 
+function mdToAbout(raw: Record<string, unknown>): About {
+  const { _body, bio, ...rest } = raw
+  const bodyStr = (_body as string) || ''
+  const journey = decodeEntities(bodyStr.replace(/<[^>]+>/g, '').trim())
+  return { 
+    bio: (bio as string) || '', 
+    journey,
+    ...rest 
+  } as unknown as About
+}
+
 // Convert Markdown body into the fields components expect
 function mdToProject(raw: Record<string, unknown>): ProjectItem {
   const { _body, ...rest } = raw
@@ -97,8 +108,8 @@ function mdToProject(raw: Record<string, unknown>): ProjectItem {
   )
 
   return {
-    summary,
     highlights: highlights.length > 0 ? highlights : undefined,
+    summary,
     ...rest,
   } as unknown as ProjectItem
 }
@@ -110,33 +121,21 @@ function mdToPublication(raw: Record<string, unknown>): Publication {
   return { abstract, ...rest } as unknown as Publication
 }
 
-function mdToAbout(raw: Record<string, unknown>): About {
-  const { _body, bio, ...rest } = raw
-  const bodyStr = (_body as string) || ''
-  const journey = decodeEntities(bodyStr.replace(/<[^>]+>/g, '').trim())
-  return { 
-    journey, 
-    bio: (bio as string) || '',
-    ...rest 
-  } as unknown as About
-}
-
 // ── JSON imports (both languages) ──
 
-import experienceJsonEn from '@content/experience.json'
-import newsJsonEn from '@content/news.json'
 import awardsJsonEn from '@content/awards.json'
-import researchJsonEn from '@content/research.json'
+import experienceJsonEn from '@content/experience.json'
 import logosJsonEn from '@content/logos.json'
+import newsJsonEn from '@content/news.json'
+import researchJsonEn from '@content/research.json'
 import siteJsonEn from '@content/site.json'
 import talksJsonEn from '@content/talks.json'
 import teachingJsonEn from '@content/teaching.json'
-
-import experienceJsonZh from '@content/zh/experience.json'
-import newsJsonZh from '@content/zh/news.json'
 import awardsJsonZh from '@content/zh/awards.json'
-import researchJsonZh from '@content/zh/research.json'
+import experienceJsonZh from '@content/zh/experience.json'
 import logosJsonZh from '@content/zh/logos.json'
+import newsJsonZh from '@content/zh/news.json'
+import researchJsonZh from '@content/zh/research.json'
 import siteJsonZh from '@content/zh/site.json'
 import talksJsonZh from '@content/zh/talks.json'
 import teachingJsonZh from '@content/zh/teaching.json'
@@ -144,35 +143,35 @@ import teachingJsonZh from '@content/zh/teaching.json'
 // ── Build both language datasets ──
 
 const enData = {
-  projects: collectMd(projectMdsEn).map(mdToProject),
-  articles: collectMd(articleMdsEn).map(mdToProject),
-  publications: collectMd(publicationMdsEn).map(mdToPublication),
   about: mdToAbout(collectMd(aboutMdEn)[0] ?? {}),
-  research: researchJsonEn as Research,
-  experience: { ...experienceJsonEn, professional: [], academic: [] } as Experience,
-  experienceTimeline: experienceJsonEn.timeline as ExperienceEntry[],
-  news: newsJsonEn as NewsItem[],
+  articles: collectMd(articleMdsEn).map(mdToProject),
   awards: awardsJsonEn as Award[],
+  experience: { ...experienceJsonEn, academic: [], professional: [] } as Experience,
+  experienceTimeline: experienceJsonEn.timeline as ExperienceEntry[],
+  institutionLogos: logosJsonEn as Record<string, string>,
+  news: newsJsonEn as NewsItem[],
+  projects: collectMd(projectMdsEn).map(mdToProject),
+  publications: collectMd(publicationMdsEn).map(mdToPublication),
+  research: researchJsonEn as Research,
+  siteConfig: siteJsonEn,
   talks: talksJsonEn as Talk[],
   teaching: teachingJsonEn as TeachingEntry[],
-  institutionLogos: logosJsonEn as Record<string, string>,
-  siteConfig: siteJsonEn,
 }
 
 const zhData = {
-  projects: collectMd(projectMdsZh).map(mdToProject),
-  articles: collectMd(articleMdsZh).map(mdToProject),
-  publications: collectMd(publicationMdsZh).map(mdToPublication),
   about: mdToAbout(collectMd(aboutMdZh)[0] ?? {}),
-  research: researchJsonZh as Research,
-  experience: { ...experienceJsonZh, professional: [], academic: [] } as Experience,
-  experienceTimeline: experienceJsonZh.timeline as ExperienceEntry[],
-  news: newsJsonZh as NewsItem[],
+  articles: collectMd(articleMdsZh).map(mdToProject),
   awards: awardsJsonZh as Award[],
+  experience: { ...experienceJsonZh, academic: [], professional: [] } as Experience,
+  experienceTimeline: experienceJsonZh.timeline as ExperienceEntry[],
+  institutionLogos: logosJsonZh as Record<string, string>,
+  news: newsJsonZh as NewsItem[],
+  projects: collectMd(projectMdsZh).map(mdToProject),
+  publications: collectMd(publicationMdsZh).map(mdToPublication),
+  research: researchJsonZh as Research,
+  siteConfig: siteJsonZh,
   talks: talksJsonZh as Talk[],
   teaching: teachingJsonZh as TeachingEntry[],
-  institutionLogos: logosJsonZh as Record<string, string>,
-  siteConfig: siteJsonZh,
 }
 
 const dataByLang: Record<string, typeof enData> = { en: enData, zh: zhData }
@@ -209,11 +208,11 @@ export const getFirstAuthorPublications = () => publications.filter((pub) => pub
 
 export const getPublicationStats = () => {
   const stats = {
-    total: publications.length,
-    byYear: {} as Record<number, number>,
     byVenue: {} as Record<string, number>,
-    firstAuthor: 0,
+    byYear: {} as Record<number, number>,
     correspondingAuthor: 0,
+    firstAuthor: 0,
+    total: publications.length,
     withCode: 0,
     withDataset: 0,
   }

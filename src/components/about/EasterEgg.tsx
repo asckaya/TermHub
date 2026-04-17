@@ -1,23 +1,24 @@
+import { Badge, Box, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
+
 import { useColorModeValue } from '@/color-mode'
-import { Box, VStack, Text, Badge } from '@chakra-ui/react'
 
 interface EasterEggProps {
-  trigger: React.ReactNode
+  content: React.ReactNode | string
   title: string
-  content: string | React.ReactNode
-  type?: 'info' | 'tip' | 'fun'
+  trigger: React.ReactNode
+  type?: 'fun' | 'info' | 'tip'
 }
 
-const EasterEgg: React.FC<EasterEggProps> = ({ trigger, title, content, type = 'info' }) => {
+const EasterEgg: React.FC<EasterEggProps> = ({ content, title, trigger, type = 'info' }) => {
   const getBadgeProps = () => {
     switch (type) {
-      case 'tip':
-        return { colorPalette: 'purple', children: '💡 Pro Tip' }
       case 'fun':
-        return { colorPalette: 'pink', children: '🎮 Fun Fact' }
+        return { children: '🎮 Fun Fact', colorPalette: 'pink' }
+      case 'tip':
+        return { children: '💡 Pro Tip', colorPalette: 'purple' }
       default:
-        return { colorPalette: 'cyan', children: 'ℹ️ Did you know?' }
+        return { children: 'ℹ️ Did you know?', colorPalette: 'cyan' }
     }
   }
 
@@ -25,18 +26,18 @@ const EasterEgg: React.FC<EasterEggProps> = ({ trigger, title, content, type = '
     <VStack align="start" gap={2}>
       {trigger}
       <Box
-        title={`${title}: ${typeof content === 'string' ? content : ''}`}
-        p={4}
-        maxW="400px"
         bg={useColorModeValue('white', 'gray.800')}
         border="1px solid"
         borderColor={useColorModeValue('gray.200', 'gray.600')}
-        shadow="xl"
         borderRadius="md"
+        maxW="400px"
+        p={4}
+        shadow="xl"
+        title={`${title}: ${typeof content === 'string' ? content : ''}`}
       >
         <VStack align="start" gap={3}>
           <Badge {...getBadgeProps()} />
-          <Text fontWeight="bold" fontSize="sm">
+          <Text fontSize="sm" fontWeight="bold">
             {title}
           </Text>
           <Text fontSize="sm">{content}</Text>

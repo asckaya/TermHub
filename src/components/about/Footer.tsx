@@ -1,16 +1,17 @@
-import React from 'react'
-import { useColorModeValue } from '@/color-mode'
 import {
   Box,
   Container,
-  VStack,
   HStack,
+  Link,
   Text,
-  Link
+  VStack
 } from '@chakra-ui/react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { SiCloudflare, SiGithub } from 'react-icons/si'
+
+import { useColorModeValue } from '@/color-mode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
-import { SiGithub, SiCloudflare } from 'react-icons/si'
 
 const Footer: React.FC = () => {
   const { t } = useTranslation()
@@ -21,12 +22,12 @@ const Footer: React.FC = () => {
   return (
     <Box
       as="footer"
-      w="full"
       bg={footerBg}
-      py={[6, 8]}
-      mt={[6, 8]}
-      borderTop="1px"
       borderColor={useColorModeValue('gray.200', 'gray.700')}
+      borderTop="1px"
+      mt={[6, 8]}
+      py={[6, 8]}
+      w="full"
     >
       <Container maxW="7xl" px={[4, 6, 8]}>
         <VStack gap={[3, 4]} textAlign="center">
@@ -34,33 +35,33 @@ const Footer: React.FC = () => {
           {/* Icons Row */}
           <HStack gap={6} mb={2}>
             <Link
-              href="https://github.com"
-              target="_blank" rel="noopener noreferrer"
-              color={textColor}
               _hover={{ color: 'var(--accent-color)', transform: 'translateY(-2px)' }}
+              color={textColor} href="https://github.com"
+              rel="noopener noreferrer"
+              target="_blank"
               transition="all 0.2s"
             >
               <Box as={SiGithub} boxSize="20px" />
             </Link>
             <Link
-              href="https://cloudflare.com"
-              target="_blank" rel="noopener noreferrer"
-              color={textColor}
               _hover={{ color: 'orange.500', transform: 'translateY(-2px)' }}
+              color={textColor} href="https://cloudflare.com"
+              rel="noopener noreferrer"
+              target="_blank"
               transition="all 0.2s"
             >
               <Box as={SiCloudflare} boxSize="22px" />
             </Link>
           </HStack>
 
-          <HStack gap={1} color={textColor} fontSize={['xs', 'sm']}>
+          <HStack color={textColor} fontSize={['xs', 'sm']} gap={1}>
             <Text>{t('footer.poweredBy')}</Text>
             <Link
-              href="https://github.com/H-Freax/TermHub"
-              target="_blank" rel="noopener noreferrer"
-              color="cyan.500"
-              fontWeight="medium"
               _hover={{ textDecoration: 'underline' }}
+              color="cyan.500" fontWeight="medium"
+              href="https://github.com/H-Freax/TermHub"
+              rel="noopener noreferrer"
+              target="_blank"
             >
               TermHub
             </Link>
@@ -68,7 +69,7 @@ const Footer: React.FC = () => {
             <Text fontWeight="bold">Ascka</Text>
           </HStack>
 
-          <Text fontSize={['2xs', 'xs']} color={textColor}>
+          <Text color={textColor} fontSize={['2xs', 'xs']}>
             © {new Date().getFullYear()} {siteOwner.name.display}
           </Text>
         </VStack>

@@ -1,10 +1,11 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import { Suspense } from 'react'
-import { ThemeInjector } from './themes/ThemeInjector'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { getTemplate, getResolvedSlots, SlotProvider } from './templates'
-import { ThemeProvider } from './themes/ThemeContext'
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+
 import { useLocalizedData } from './hooks/useLocalizedData'
+import { getResolvedSlots, getTemplate, SlotProvider } from './templates'
+import { ThemeProvider } from './themes/ThemeContext'
+import { ThemeInjector } from './themes/ThemeInjector'
 import './styles/globals.css'
 import './i18n'
 
@@ -26,27 +27,27 @@ function App() {
             <TemplateLayout>
               <Suspense fallback={null}>
                 <Routes>
-                  <Route path="/" element={<pages.home />} />
+                  <Route element={<pages.home />} path="/" />
                   {features.publications && pages.publications && (
-                    <Route path="/publications" element={<pages.publications />} />
+                    <Route element={<pages.publications />} path="/publications" />
                   )}
                   {features.projects && pages.projects && (
-                    <Route path="/projects" element={<pages.projects />} />
+                    <Route element={<pages.projects />} path="/projects" />
                   )}
                   {features.articles && pages.articles && (
-                    <Route path="/articles" element={<pages.articles />} />
+                    <Route element={<pages.articles />} path="/articles" />
                   )}
                   {features.experience && pages.experience && (
-                    <Route path="/experience" element={<pages.experience />} />
+                    <Route element={<pages.experience />} path="/experience" />
                   )}
                   {features.about && pages.aboutPage && (
-                    <Route path="/about" element={<pages.aboutPage />} />
+                    <Route element={<pages.aboutPage />} path="/about" />
                   )}
                   {features.guide !== false && pages.guide && (
-                    <Route path="/guide" element={<pages.guide />} />
+                    <Route element={<pages.guide />} path="/guide" />
                   )}
                   {features.guide !== false && pages.guideDocs && (
-                    <Route path="/docs" element={<pages.guideDocs />} />
+                    <Route element={<pages.guideDocs />} path="/docs" />
                   )}
                 </Routes>
               </Suspense>

@@ -10,55 +10,55 @@ import type { NewsItem } from '../types'
 
 /* ── Slot prop interfaces ──────────────────────────────────── */
 
+export interface AccomplishmentsSlotProps {}
+
+export interface BioSlotProps {}
+
+export interface ComponentSlots {
+  accomplishments: React.ComponentType<AccomplishmentsSlotProps>
+  bio: React.ComponentType<BioSlotProps>
+  contact: React.ComponentType<ContactSlotProps>
+  footer: React.ComponentType<FooterSlotProps>
+  hero: React.ComponentType<HeroSlotProps>
+  journey: React.ComponentType<JourneySlotProps>
+  mentorship: React.ComponentType<MentorshipSlotProps>
+  navbar: React.ComponentType<NavbarSlotProps>
+  newsDisplay: React.ComponentType<NewsDisplaySlotProps>
+  selectedPublications: React.ComponentType<SelectedPublicationsSlotProps>
+  skills: React.ComponentType<SkillsSlotProps>
+  talks: React.ComponentType<TalksSlotProps>
+  teaching: React.ComponentType<TeachingSlotProps>
+}
+
+export interface ContactSlotProps {}
+
+export interface FooterSlotProps {}
+export interface HeroSlotProps {
+  avatar: string
+  education?: { course: string; institution: string; year: string }[]
+  educationLogos?: Record<string, string>
+  research?: { advisor?: string; emoji: string; focus: string; lab: string; link: string }[]
+  researchLogos?: Record<string, string>
+  title: string
+}
+export interface JourneySlotProps {}
+export interface MentorshipSlotProps {}
 export interface NavbarSlotProps {
   children?: React.ReactNode
 }
-
-export interface HeroSlotProps {
-  title: string
-  avatar: string
-  research?: { lab: string; emoji: string; advisor?: string; focus: string; link: string }[]
-  researchLogos?: Record<string, string>
-  education?: { course: string; institution: string; year: string }[]
-  educationLogos?: Record<string, string>
-}
-
-export interface FooterSlotProps {}
-
 export interface NewsDisplaySlotProps {
   news: NewsItem[]
   showHeader?: boolean
 }
-
-export interface AccomplishmentsSlotProps {}
-export interface BioSlotProps {}
-export interface SkillsSlotProps {}
-export interface JourneySlotProps {}
-export interface MentorshipSlotProps {}
 export interface SelectedPublicationsSlotProps {}
-export interface TalksSlotProps {}
-export interface TeachingSlotProps {}
-export interface ContactSlotProps {}
+export interface SkillsSlotProps {}
+export type SlotName = keyof ComponentSlots
 
 /* ── Slot map type ─────────────────────────────────────────── */
 
-export interface ComponentSlots {
-  navbar: React.ComponentType<NavbarSlotProps>
-  hero: React.ComponentType<HeroSlotProps>
-  footer: React.ComponentType<FooterSlotProps>
-  newsDisplay: React.ComponentType<NewsDisplaySlotProps>
-  accomplishments: React.ComponentType<AccomplishmentsSlotProps>
-  bio: React.ComponentType<BioSlotProps>
-  skills: React.ComponentType<SkillsSlotProps>
-  journey: React.ComponentType<JourneySlotProps>
-  mentorship: React.ComponentType<MentorshipSlotProps>
-  selectedPublications: React.ComponentType<SelectedPublicationsSlotProps>
-  talks: React.ComponentType<TalksSlotProps>
-  teaching: React.ComponentType<TeachingSlotProps>
-  contact: React.ComponentType<ContactSlotProps>
-}
+export interface TalksSlotProps {}
 
-export type SlotName = keyof ComponentSlots
+export interface TeachingSlotProps {}
 
 /**
  * Default section order for the home page.

@@ -1,7 +1,8 @@
-import { ThemeProvider, useTheme } from 'next-themes'
 import type { ReactNode } from 'react'
 
-type ColorMode = 'light' | 'dark'
+import { ThemeProvider, useTheme } from 'next-themes'
+
+type ColorMode = 'dark' | 'light'
 
 export function ColorModeProvider({ children }: { children: ReactNode }) {
   return (
@@ -15,7 +16,7 @@ export function useColorMode() {
   const { resolvedTheme, setTheme } = useTheme()
   const colorMode: ColorMode = resolvedTheme === 'dark' ? 'dark' : 'light'
 
-  const toggleColorMode = (event?: React.MouseEvent | MouseEvent) => {
+  const toggleColorMode = (event?: MouseEvent | React.MouseEvent) => {
     // Check for browser support and respect system motion preferences
     const isSupported =
       // @ts-ignore - View Transitions API

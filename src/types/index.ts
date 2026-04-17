@@ -6,37 +6,56 @@
 // template components for type safety.
 // ============================================================
 
-export interface NewsLink {
-  text: string
-  url: string
-  icon?: string
+export interface About {
+  bio: string
+  journey: string
+  journeyPhases?: JourneyPhase[]
+  mentorship?: {
+    description?: string
+    heading: string
+    mentees: {
+      name: string
+      note?: string
+      url: string
+    }[]
+  }
+  researchTitle?: string
+  version: {
+    current: string
+    history: {
+      features: string[]
+      title: string
+      version: string
+    }[]
+  }
 }
 
-export interface NewsItem {
-  type: string
-  badge: string
-  icon: string
-  iconColor: string
+export interface Award {
+  date: string
+  egg?: string
+  kind?:
+    | 'competition'
+    | 'employment'
+    | 'grant'
+    | 'hackathon'
+    | 'honor'
+    | 'innovation'
+    | 'other'
+    | 'scholarship'
+    | 'travel'
+  link?: string
+  org?: string
   title: string
-  description: string
-  date?: string
-  emoji?: string
-  sortDate?: string
-  links: NewsLink[]
-}
-
-export interface Research {
-  currentResearch: {
-    lab: string
-    emoji: string
-    advisor?: string
-    focus: string
-    link: string
-    institution?: string
-  }[]
 }
 
 export interface Experience {
+  academic: {
+    description?: string
+    isCurrent?: boolean
+    organization: string
+    period?: string
+    title: string
+  }[]
   education: {
     courses: {
       course: string
@@ -45,72 +64,75 @@ export interface Experience {
     }[]
   }
   professional: {
-    title: string
     company: string
+    description?: string
+    isCurrent?: boolean
     period: string
-    description?: string
-    isCurrent?: boolean
-  }[]
-  academic: {
     title: string
-    organization: string
-    period?: string
-    description?: string
-    isCurrent?: boolean
   }[]
   reviewing?: {
-    venue: string
     role: string
+    venue: string
   }[]
 }
 
-export type ExperienceCategory = 'research' | 'industry' | 'academic' | 'leadership'
-export type RoleType = 'research' | 'mle' | 'sde' | 'teaching' | 'leadership'
+export type ExperienceCategory = 'academic' | 'industry' | 'leadership' | 'research'
 
 export interface ExperienceEntry {
-  title: string
+  category: ExperienceCategory
   company: string
   companyUrl?: string
-  location?: string
-  start: string
   end?: string
-  category: ExperienceCategory
-  roleType?: RoleType
-  summary?: string
   highlights: string[]
   isCurrent?: boolean
-}
-
-export interface JourneyPhase {
-  period: string
+  location?: string
+  roleType?: RoleType
+  start: string
+  summary?: string
   title: string
-  org: string
+}
+export interface JourneyPhase {
   description: string
+  org: string
+  period: string
   tags?: string[]
+  title: string
 }
 
-export interface About {
-  researchTitle?: string
-  bio: string
-  journey: string
-  journeyPhases?: JourneyPhase[]
-  mentorship?: {
-    heading: string
-    description?: string
-    mentees: {
-      name: string
-      url: string
-      note?: string
-    }[]
-  }
-  version: {
-    current: string
-    history: {
-      version: string
-      title: string
-      features: string[]
-    }[]
-  }
+export interface NewsItem {
+  badge: string
+  date?: string
+  description: string
+  emoji?: string
+  icon: string
+  iconColor: string
+  links: NewsLink[]
+  sortDate?: string
+  title: string
+  type: string
+}
+
+export interface NewsLink {
+  icon?: string
+  text: string
+  url: string
+}
+
+export interface ProjectItem {
+  badge?: string
+  category: 'data' | 'healthcare' | 'nlp' | 'robotics' | 'tooling' | 'web-app'
+  date?: string
+  extraLinks?: ProjectLink[]
+  featured?: boolean
+  featuredImage?: string
+  highlights?: string[]
+  isOpenSource?: boolean
+  link?: string
+  role?: 'independent' | 'lead' | 'maintainer' | 'tech-lead'
+  story?: string
+  summary: string
+  tags: string[]
+  title: string
 }
 
 export interface ProjectLink {
@@ -118,93 +140,71 @@ export interface ProjectLink {
   url: string
 }
 
-export interface ProjectItem {
-  title: string
-  summary: string
-  link?: string
-  extraLinks?: ProjectLink[]
-  tags: string[]
-  date?: string
-  category: 'robotics' | 'nlp' | 'web-app' | 'data' | 'tooling' | 'healthcare'
-  highlights?: string[]
-  featuredImage?: string
-  isOpenSource?: boolean
-  role?: 'independent' | 'lead' | 'tech-lead' | 'maintainer'
-  story?: string
-  badge?: string
-  featured?: boolean
-}
-
 export interface Publication {
-  id: string
-  title: string
-  authors: string[]
-  venue: string
-  venueType: 'conference' | 'workshop' | 'demo' | 'preprint'
-  year: number
-  month?: string
-  status: 'accepted' | 'published' | 'preprint'
   abstract?: string
-  keywords?: string[]
-  links: {
-    paper?: string
-    arxiv?: string
-    projectPage?: string
-    code?: string
-    dataset?: string
-    demo?: string
-  }
-  specialBadges?: string[]
+  authors: string[]
   citations?: number
-  isFirstAuthor?: boolean
-  isCorrespondingAuthor?: boolean
-  isCoFirst?: boolean
   coFirstAuthors?: string[]
   emoji?: string
   featuredImage?: string
+  id: string
+  isCoFirst?: boolean
+  isCorrespondingAuthor?: boolean
+  isFirstAuthor?: boolean
+  keywords?: string[]
+  links: {
+    arxiv?: string
+    code?: string
+    dataset?: string
+    demo?: string
+    paper?: string
+    projectPage?: string
+  }
+  month?: string
+  specialBadges?: string[]
+  status: 'accepted' | 'preprint' | 'published'
+  title: string
+  venue: string
+  venueType: 'conference' | 'demo' | 'preprint' | 'workshop'
+  year: number
 }
 
-export interface Award {
-  title: string
-  org?: string
-  date: string
-  kind?:
-    | 'grant'
-    | 'hackathon'
-    | 'travel'
-    | 'scholarship'
-    | 'honor'
-    | 'employment'
-    | 'competition'
-    | 'innovation'
-    | 'other'
-  link?: string
-  egg?: string
+export interface Research {
+  currentResearch: {
+    advisor?: string
+    emoji: string
+    focus: string
+    institution?: string
+    lab: string
+    link: string
+  }[]
+}
+
+export type RoleType = 'leadership' | 'mle' | 'research' | 'sde' | 'teaching'
+
+export interface Skill {
+  category?: string
+  level?: number
+  name: string
 }
 
 export interface Talk {
-  title: string
-  event: string
   date: string
-  location?: string
-  type?: 'keynote' | 'invited' | 'oral' | 'poster' | 'tutorial' | 'workshop' | 'panel' | 'other'
   description?: string
-  slidesUrl?: string
-  videoUrl?: string
+  event: string
   links?: { label: string; url: string }[]
+  location?: string
+  slidesUrl?: string
+  title: string
+  type?: 'invited' | 'keynote' | 'oral' | 'other' | 'panel' | 'poster' | 'tutorial' | 'workshop'
+  videoUrl?: string
 }
 
 export interface TeachingEntry {
   course: string
-  institution: string
-  semester: string
-  role: 'instructor' | 'ta' | 'guest-lecturer' | 'co-instructor' | 'other'
   description?: string
+  institution: string
   link?: string
-}
-
-export interface Skill {
-  name: string
-  category?: string
-  level?: number
+  role: 'co-instructor' | 'guest-lecturer' | 'instructor' | 'other' | 'ta'
+  semester: string
 }

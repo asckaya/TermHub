@@ -1,6 +1,7 @@
 import type { ProjectItem } from '@/types'
-import { useThemeContext } from '@/themes/ThemeContext'
+
 import { activeTheme as staticActiveTheme } from '@/themes/index'
+import { useThemeContext } from '@/themes/ThemeContext'
 
 export type { CatTheme } from '@/themes'
 
@@ -8,10 +9,10 @@ export type { CatTheme } from '@/themes'
 export const useThemeConfig = () => {
   const { activeTheme } = useThemeContext()
   return {
-    terminalPalette: activeTheme.terminal,
-    buildCategoryThemes: activeTheme.categoryThemes,
     articleCategoryColors: activeTheme.articleCategoryColors,
+    buildCategoryThemes: activeTheme.categoryThemes,
     publicationVenueColors: activeTheme.publicationVenueColors,
+    terminalPalette: activeTheme.terminal,
   }
 }
 
@@ -22,10 +23,10 @@ export const articleCategoryColors = staticActiveTheme.articleCategoryColors
 export const publicationVenueColors = staticActiveTheme.publicationVenueColors
 
 export const articleCategoryLabels: Record<ProjectItem['category'], string> = {
-  robotics: 'Robotics',
-  nlp: 'NLP / AI',
-  'web-app': 'Web / App',
   data: 'Data / ML',
-  tooling: 'Tooling',
   healthcare: 'Healthcare',
+  nlp: 'NLP / AI',
+  robotics: 'Robotics',
+  tooling: 'Tooling',
+  'web-app': 'Web / App',
 }

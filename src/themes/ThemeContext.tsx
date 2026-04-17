@@ -1,40 +1,41 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
-import { nordTheme } from './nord'
-import {
-  catppuccinoMochaTheme,
-  catppuccinoMacchiatoTheme,
-  catppuccinoFrappeTheme,
-} from './catppuccin'
-import { ayuDarkTheme, ayuMirageTheme } from './ayu'
-import { draculaTheme } from './dracula'
-import { oneDarkTheme } from './onedark'
-import { everforestTheme } from './everforest'
-import { githubTheme } from './github'
 import type { ThemeDefinition } from './types'
 
+import { ayuDarkTheme, ayuMirageTheme } from './ayu'
+import {
+  catppuccinoFrappeTheme,
+  catppuccinoMacchiatoTheme,
+  catppuccinoMochaTheme,
+} from './catppuccin'
+import { draculaTheme } from './dracula'
+import { everforestTheme } from './everforest'
+import { githubTheme } from './github'
+import { nordTheme } from './nord'
+import { oneDarkTheme } from './onedark'
+
 export const themes = {
-  nord: nordTheme,
-  'catppuccin-mocha': catppuccinoMochaTheme,
-  'catppuccin-macchiato': catppuccinoMacchiatoTheme,
-  'catppuccin-frappe': catppuccinoFrappeTheme,
   'ayu-dark': ayuDarkTheme,
   'ayu-mirage': ayuMirageTheme,
+  'catppuccin-frappe': catppuccinoFrappeTheme,
+  'catppuccin-macchiato': catppuccinoMacchiatoTheme,
+  'catppuccin-mocha': catppuccinoMochaTheme,
   dracula: draculaTheme,
-  'one-dark': oneDarkTheme,
   everforest: everforestTheme,
   github: githubTheme,
+  nord: nordTheme,
+  'one-dark': oneDarkTheme,
 }
 
 export type ThemeKey = keyof typeof themes
 
 interface ThemeContextValue {
+  activeTheme: ThemeDefinition
   currentThemeKey: ThemeKey
   setTheme: (key: ThemeKey) => void
-  activeTheme: ThemeDefinition
 }
 
-const ThemeContext = createContext<ThemeContextValue | null>(null)
+const ThemeContext = createContext<null | ThemeContextValue>(null)
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [themeKey, setThemeKey] = useState<ThemeKey>('catppuccin-mocha')
@@ -52,7 +53,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }
 
   return (
-    <ThemeContext.Provider value={{ currentThemeKey: themeKey, setTheme: handleSetTheme, activeTheme: themes[themeKey] }}>
+    <ThemeContext.Provider value={{ activeTheme: themes[themeKey], currentThemeKey: themeKey, setTheme: handleSetTheme }}>
       {children}
     </ThemeContext.Provider>
   )

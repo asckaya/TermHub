@@ -1,48 +1,51 @@
-import React, { useState, useMemo } from 'react'
-import { useColorMode } from '@/color-mode'
 import {
   Box,
   Collapsible,
   Flex,
   HStack,
   Icon,
+  Image,
   Input,
+  Link,
   Text,
   VStack,
-  Image,
-  Link,
 } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
-import { FaChevronDown } from 'react-icons/fa'
+import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { RoleType } from '../types'
-import { highlightData } from '../utils/highlightData'
-import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { FaChevronDown } from 'react-icons/fa'
+
+import { useColorMode } from '@/color-mode'
 import { useThemeConfig } from '@/config/theme'
-import { MotionList, MotionBox, MotionHover } from './animations/MotionList'
+import { useLocalizedData } from '@/hooks/useLocalizedData'
+
+import type { RoleType } from '../types'
+
+import { highlightData } from '../utils/highlightData'
+import { MotionBox, MotionHover, MotionList } from './animations/MotionList'
 
 /* ── Keyframes ─────────────────────────────────────────────────── */
 const blink = keyframes`0%,100%{opacity:1}50%{opacity:0}`
 
 /* ── Types & config ────────────────────────────────────────────── */
-type FilterType = 'all' | 'academic' | 'industry'
+type FilterType = 'academic' | 'all' | 'industry'
 
 const categoryFilter: Record<string, FilterType> = {
   academic: 'academic',
-  research: 'academic',
   industry: 'industry',
   leadership: 'academic',
+  research: 'academic',
 }
 
-const roleTypeConfig: Record<RoleType, { labelKey: string; color: (dk: boolean) => string }> = {
-  research: { labelKey: 'experience.roleResearch', color: (dk) => (dk ? '#b48ead' : '#9a56a2') },
-  mle: { labelKey: 'experience.roleMLE', color: (dk) => (dk ? '#88c0d0' : '#2a769c') },
-  sde: { labelKey: 'experience.roleSDE', color: (dk) => (dk ? '#d08770' : '#b35a2e') },
-  teaching: { labelKey: 'experience.roleTeaching', color: (dk) => (dk ? '#a3be8c' : '#34744e') },
+const roleTypeConfig: Record<RoleType, { color: (dk: boolean) => string; labelKey: string; }> = {
   leadership: {
-    labelKey: 'experience.roleLeadership',
     color: (dk) => (dk ? '#ebcb8b' : '#c47d46'),
+    labelKey: 'experience.roleLeadership',
   },
+  mle: { color: (dk) => (dk ? '#88c0d0' : '#2a769c'), labelKey: 'experience.roleMLE' },
+  research: { color: (dk) => (dk ? '#b48ead' : '#9a56a2'), labelKey: 'experience.roleResearch' },
+  sde: { color: (dk) => (dk ? '#d08770' : '#b35a2e'), labelKey: 'experience.roleSDE' },
+  teaching: { color: (dk) => (dk ? '#a3be8c' : '#34744e'), labelKey: 'experience.roleTeaching' },
 }
 
 /* ── Logos helper ────────────────────────────────────────────── */
@@ -75,10 +78,10 @@ const fmtDateFn = (v: string | undefined, presentLabel: string, lang: string) =>
 const Experience: React.FC = () => {
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
-  const { t, i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
   const {
-    experienceTimeline,
     experience: experienceData,
+    experienceTimeline,
     institutionLogos,
     siteOwner,
   } = useLocalizedData()
@@ -103,7 +106,7 @@ const Experience: React.FC = () => {
   const termSuccess = tc.success
   const termSecondary = tc.secondary
   const hoverBg = isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)'
-  const hlc = { num: termHighlight, kw: termCommand, str: termSuccess }
+  const hlc = { kw: termCommand, num: termHighlight, str: termSuccess }
 
   /* ── Data ──────────────────────────────────────────────────── */
   const sorted = useMemo(() => {
@@ -135,8 +138,8 @@ const Experience: React.FC = () => {
         return Number(b) - Number(a)
       })
       .map(([year, items]) => ({
-        year,
         items: items.sort((a, b) => new Date(b.start).getTime() - new Date(a.start).getTime()),
+        year,
       }))
   }, [filtered])
 
@@ -144,7 +147,7 @@ const Experience: React.FC = () => {
     const current = sorted.filter((e) => e.isCurrent).length
     const academic = sorted.filter((e) => categoryFilter[e.category] === 'academic').length
     const industry = sorted.filter((e) => categoryFilter[e.category] === 'industry').length
-    return { total: sorted.length, current, academic, industry }
+    return { academic, current, industry, total: sorted.length }
   }, [sorted])
 
   const education = experienceData.education.courses
@@ -169,6 +172,14 @@ const Experience: React.FC = () => {
     const parts = raw.toLowerCase().split(' ')
     const out = (lines: string[]) => setCmdOutput(lines)
     switch (parts[0]) {
+      case 'cat':
+        if (parts[1] === 'skills') out([siteOwner.skills.join(' · ')])
+        else out([`cat: ${parts[1] || ''}: not found`])
+        break
+      case 'clear':
+        setFilter('all')
+        setCmdOutput([])
+        break
       case 'filter':
         if (parts[1] === 'academic' || parts[1] === 'industry') {
           setFilter(parts[1])
@@ -177,13 +188,6 @@ const Experience: React.FC = () => {
           setFilter('all')
           out(['filter: all'])
         }
-        break
-      case 'clear':
-        setFilter('all')
-        setCmdOutput([])
-        break
-      case 'whoami':
-        out([siteOwner.name.full, 'researcher · ml engineer · builder'])
         break
       case 'help':
         out(['filter [all|academic|industry]  clear  whoami', 'sudo hire-me  cat skills'])
@@ -197,9 +201,8 @@ const Experience: React.FC = () => {
           ])
         else out([`sudo: ${parts.slice(1).join(' ')}: permission denied`])
         break
-      case 'cat':
-        if (parts[1] === 'skills') out([siteOwner.skills.join(' · ')])
-        else out([`cat: ${parts[1] || ''}: not found`])
+      case 'whoami':
+        out([siteOwner.name.full, 'researcher · ml engineer · builder'])
         break
       default:
         out([`bash: ${parts[0]}: command not found`])
@@ -211,18 +214,18 @@ const Experience: React.FC = () => {
   const termWarning = tc.warning
 
   return (
-    <Box w="full" py={8}>
+    <Box py={8} w="full">
       <VStack gap={6} maxW="1400px" mx="auto" px={[2, 4, 6]}>
         <Box
-          w="full"
-          borderRadius="md"
-          fontFamily="mono"
-          boxShadow={`0 0 0 1px ${termBorder}, 0 4px 16px ${isDark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.1)'}`}
-          overflow="hidden"
           bg={termBg}
+          borderRadius="md"
+          boxShadow={`0 0 0 1px ${termBorder}, 0 4px 16px ${isDark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.1)'}`}
+          fontFamily="mono"
+          overflow="hidden"
+          w="full"
         >
           {/* ═══ Pixel RGB light bar ═══ */}
-          <Flex h="3px" w="full" overflow="hidden" borderTopRadius="md">
+          <Flex borderTopRadius="md" h="3px" overflow="hidden" w="full">
             {(() => {
               const total = 28
               const tick = Math.floor(Date.now() / 200)
@@ -231,10 +234,10 @@ const Experience: React.FC = () => {
                 const brightness = 0.6 + 0.4 * Math.abs(Math.sin((i + tick * 0.5) * 0.3))
                 return (
                   <Box
-                    key={i}
+                    bg={terminalPalette.rainbow[colorIdx]}
                     flex={1}
                     h="full"
-                    bg={terminalPalette.rainbow[colorIdx]}
+                    key={i}
                     opacity={brightness}
                   />
                 )
@@ -244,20 +247,20 @@ const Experience: React.FC = () => {
 
           {/* ═══ Title bar ═══ */}
           <Flex
-            bg={termHeader}
-            px={4}
-            py={2}
-            borderBottom={`1px solid ${termBorder}`}
-            justify="space-between"
             align="center"
+            bg={termHeader}
+            borderBottom={`1px solid ${termBorder}`}
             fontSize="xs"
             fontWeight="medium"
+            justify="space-between"
+            px={4}
+            py={2}
           >
             <HStack gap={3}>
               <HStack gap={1.5}>
-                <Box w="10px" h="10px" borderRadius="full" bg="#bf616a" />
-                <Box w="10px" h="10px" borderRadius="full" bg="#ebcb8b" />
-                <Box w="10px" h="10px" borderRadius="full" bg="#a3be8c" />
+                <Box bg="#bf616a" borderRadius="full" h="10px" w="10px" />
+                <Box bg="#ebcb8b" borderRadius="full" h="10px" w="10px" />
+                <Box bg="#a3be8c" borderRadius="full" h="10px" w="10px" />
               </HStack>
               <Text>
                 <Box as="span" color={termParam}>
@@ -289,8 +292,8 @@ const Experience: React.FC = () => {
             </HStack>
             <Text color={termHighlight}>
               {new Date().toLocaleTimeString('en-US', {
-                hour12: false,
                 hour: '2-digit',
+                hour12: false,
                 minute: '2-digit',
                 second: '2-digit',
               })}
@@ -299,14 +302,14 @@ const Experience: React.FC = () => {
 
           {/* ═══ Touch bar ═══ */}
           <Flex
+            align="center"
             bg={tc.touchBar}
-            px={4}
-            py={1}
             borderBottom={`1px solid ${termBorder}`}
             fontSize="2xs"
-            align="center"
             justify="space-between"
             overflow="hidden"
+            px={4}
+            py={1}
           >
             <Text
               color={termSecondary}
@@ -347,36 +350,36 @@ const Experience: React.FC = () => {
 
           {/* Education */}
           <MotionBox delay={0.1}>
-            <Box px={[3, 5]} py={3} bg={termBg} borderBottom={`1px solid ${termBorder}`}>
+            <Box bg={termBg} borderBottom={`1px solid ${termBorder}`} px={[3, 5]} py={3}>
               <Flex align="center" gap={2} mb={2.5}>
-                <Box w="14px" h="3px" borderRadius="full" bg={termCommand} />
-                <Text fontSize="xs" fontWeight="bold" color={termInfo} letterSpacing="0.06em">
+                <Box bg={termCommand} borderRadius="full" h="3px" w="14px" />
+                <Text color={termInfo} fontSize="xs" fontWeight="bold" letterSpacing="0.06em">
                   {t('experience.education')}
                 </Text>
-                <Box flex="1" h="1px" bg={termBorder} />
+                <Box bg={termBorder} flex="1" h="1px" />
               </Flex>
               <VStack align="stretch" gap={1.5} pl={1}>
                 {education.map((edu) => {
                   const logo = institutionLogos[edu.institution]
                   return (
-                    <HStack key={edu.course} fontSize="xs" gap={2}>
+                    <HStack fontSize="xs" gap={2} key={edu.course}>
                       {logo ? (
                         <Image
-                          src={logo}
                           alt=""
-                          w="16px"
-                          h="16px"
                           borderRadius="sm"
-                          objectFit="contain"
                           flexShrink={0}
+                          h="16px"
+                          objectFit="contain"
+                          src={logo}
+                          w="16px"
                         />
                       ) : (
                         <Box
-                          w="16px"
-                          h="16px"
-                          borderRadius="sm"
                           bg={`${termCommand}20`}
+                          borderRadius="sm"
                           flexShrink={0}
+                          h="16px"
+                          w="16px"
                         />
                       )}
                       <Text color={termText} fontWeight="medium">
@@ -384,7 +387,7 @@ const Experience: React.FC = () => {
                       </Text>
                       <Text color={termSecondary}>·</Text>
                       <Text color={termCommand}>{edu.institution}</Text>
-                      <Text color={termSecondary} ml="auto" flexShrink={0}>
+                      <Text color={termSecondary} flexShrink={0} ml="auto">
                         {edu.year}
                       </Text>
                     </HStack>
@@ -396,12 +399,12 @@ const Experience: React.FC = () => {
 
           {/* Filter bar */}
           <Flex
-            px={[3, 5]}
-            py={2}
+            align="center"
             bg={termBg}
             borderBottom={`1px solid ${termBorder}`}
             gap={1.5}
-            align="center"
+            px={[3, 5]}
+            py={2}
           >
             {(['all', 'academic', 'industry'] as FilterType[]).map((f) => {
               const active = filter === f
@@ -409,21 +412,21 @@ const Experience: React.FC = () => {
                 f === 'all' ? stats.total : f === 'academic' ? stats.academic : stats.industry
               return (
                 <Text
-                  key={f}
+                  _hover={{ bg: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)' }}
                   as="button"
-                  px={3}
-                  py={1}
-                  fontSize="xs"
-                  fontWeight={active ? 'bold' : 'medium'}
-                  borderRadius="full"
                   bg={
                     active ? (isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.07)') : 'transparent'
                   }
+                  borderRadius="full"
                   color={active ? termText : termSecondary}
-                  onClick={() => setFilter(f)}
                   cursor="pointer"
+                  fontSize="xs"
+                  fontWeight={active ? 'bold' : 'medium'}
+                  key={f}
+                  onClick={() => setFilter(f)}
+                  px={3}
+                  py={1}
                   transition="all 0.15s"
-                  _hover={{ bg: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)' }}
                 >
                   {f === 'all'
                     ? t('experience.filterAll')
@@ -443,35 +446,35 @@ const Experience: React.FC = () => {
                 <Box key={group.year}>
                   {/* Year heading */}
                   <Flex
-                    px={[3, 5]}
-                    py={2}
                     align="center"
-                    gap={2}
                     bg={isDark ? 'rgba(0,0,0,0.12)' : 'rgba(0,0,0,0.03)'}
                     borderBottom={`1px solid ${termBorder}`}
+                    gap={2}
+                    px={[3, 5]}
+                    py={2}
                   >
                     <Box
-                      w="8px"
-                      h="8px"
-                      borderRadius="full"
+                      bg={group.year === 'Present' ? termSuccess : 'transparent'}
                       border="2px solid"
                       borderColor={group.year === 'Present' ? termSuccess : termHighlight}
-                      bg={group.year === 'Present' ? termSuccess : 'transparent'}
+                      borderRadius="full"
+                      h="8px"
+                      w="8px"
                     />
                     <Text
+                      color={group.year === 'Present' ? termSuccess : termHighlight}
                       fontSize="xs"
                       fontWeight="bold"
-                      color={group.year === 'Present' ? termSuccess : termHighlight}
                       letterSpacing="0.04em"
                     >
                       {group.year === 'Present' ? t('experience.present').toUpperCase() : group.year}
                     </Text>
-                    <Text fontSize="2xs" color={termSecondary}>
+                    <Text color={termSecondary} fontSize="2xs">
                       {group.year === 'Present'
                         ? `${group.items.length} ${t('experience.active')}`
                         : `${group.items.length}`}
                     </Text>
-                    <Box flex="1" h="1px" bg={termBorder} />
+                    <Box bg={termBorder} flex="1" h="1px" />
                   </Flex>
 
                   {/* Entries */}
@@ -488,41 +491,41 @@ const Experience: React.FC = () => {
                     return (
                       <MotionBox key={id}>
                         <Box
-                          borderBottom={`1px solid ${isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)'}`}
                           _hover={{ bg: hoverBg }}
+                          borderBottom={`1px solid ${isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)'}`}
                           transition="background 0.15s"
                         >
                           <Flex
-                            px={[3, 5]}
-                            py={3}
-                            gap={3}
                             align="start"
                             cursor="pointer"
+                            gap={3}
                             onClick={() => toggleExpanded(id)}
+                            px={[3, 5]}
+                            py={3}
                           >
                             {/* Logo */}
                             <Box flexShrink={0} mt="2px">
                               <MotionHover>
                                 {icon ? (
                                   <Image
-                                    src={icon}
                                     alt=""
-                                    w="32px"
-                                    h="32px"
                                     borderRadius="md"
+                                    h="32px"
                                     objectFit="contain"
+                                    src={icon}
+                                    w="32px"
                                   />
                                 ) : (
                                   <Flex
-                                    w="32px"
-                                    h="32px"
-                                    borderRadius="md"
-                                    bg={`${rtColor}18`}
-                                    color={rtColor}
                                     align="center"
-                                    justify="center"
+                                    bg={`${rtColor}18`}
+                                    borderRadius="md"
+                                    color={rtColor}
                                     fontSize="sm"
                                     fontWeight="bold"
+                                    h="32px"
+                                    justify="center"
+                                    w="32px"
                                   >
                                     {exp.company.charAt(0)}
                                   </Flex>
@@ -533,45 +536,45 @@ const Experience: React.FC = () => {
                             {/* Content */}
                             <Box flex="1" minW={0}>
                               {/* Title + role badge */}
-                              <Flex align="center" gap={2} flexWrap="wrap" mb={0.5}>
-                                <Text fontSize="sm" fontWeight="semibold" color={termText}>
+                              <Flex align="center" flexWrap="wrap" gap={2} mb={0.5}>
+                                <Text color={termText} fontSize="sm" fontWeight="semibold">
                                   {exp.title}
                                 </Text>
                                 <Text
+                                  bg={`${rtColor}15`}
+                                  borderRadius="sm"
+                                  color={rtColor}
                                   fontSize="2xs"
                                   fontWeight="bold"
-                                  color={rtColor}
                                   letterSpacing="0.04em"
-                                  textTransform="uppercase"
                                   px={1.5}
                                   py={0}
-                                  borderRadius="sm"
-                                  bg={`${rtColor}15`}
+                                  textTransform="uppercase"
                                 >
                                   {t(rtCfg.labelKey)}
                                 </Text>
                                 {exp.isCurrent && (
                                   <Box
-                                    w="6px"
-                                    h="6px"
-                                    borderRadius="full"
                                     bg={termSuccess}
+                                    borderRadius="full"
                                     flexShrink={0}
+                                    h="6px"
+                                    w="6px"
                                   />
                                 )}
                               </Flex>
 
                               {/* Company + location */}
-                              <Flex align="center" gap={1} flexWrap="wrap" fontSize="xs">
+                              <Flex align="center" flexWrap="wrap" fontSize="xs" gap={1}>
                                 {exp.companyUrl ? (
                                   <Link
-                                    href={exp.companyUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                    _hover={{ textDecoration: 'underline' }}
                                     color={termCommand}
                                     fontSize="xs"
+                                    href={exp.companyUrl}
                                     onClick={(e) => e.stopPropagation()}
-                                    _hover={{ textDecoration: 'underline' }}
+                                    rel="noopener noreferrer"
+                                    target="_blank"
                                   >
                                     {exp.company}
                                   </Link>
@@ -582,20 +585,20 @@ const Experience: React.FC = () => {
                               </Flex>
 
                               {/* Date on mobile */}
-                              <Text fontSize="2xs" color={termSecondary} mt={0.5} display={{ base: "block", md: "none" }}>
+                              <Text color={termSecondary} display={{ base: "block", md: "none" }} fontSize="2xs" mt={0.5}>
                                 {fmtDate(exp.start)} – {fmtDate(exp.end)}
                               </Text>
                             </Box>
 
                             {/* Period (desktop) */}
                             <Text
-                              fontSize="xs"
                               color={termSecondary}
-                              flexShrink={0}
-                              pt="2px"
-                              w="160px"
-                              textAlign="right"
                               display={{ base: "none", md: "block" }}
+                              flexShrink={0}
+                              fontSize="xs"
+                              pt="2px"
+                              textAlign="right"
+                              w="160px"
                             >
                               {fmtDate(exp.start)} – {fmtDate(exp.end)}
                             </Text>
@@ -605,10 +608,10 @@ const Experience: React.FC = () => {
                               as={FaChevronDown}
                               boxSize="10px"
                               color={termSecondary}
-                              mt="6px"
                               flexShrink={0}
-                              transition="transform 0.2s"
+                              mt="6px"
                               transform={isExpanded ? 'rotate(180deg)' : 'rotate(0)'}
+                              transition="transform 0.2s"
                             />
                           </Flex>
 
@@ -616,20 +619,20 @@ const Experience: React.FC = () => {
                           <Collapsible.Root open={isExpanded}>
                             <Collapsible.Content>
                               <Box
-                                mx={[3, 5]}
+                                borderLeft={`2px solid ${rtColor}`}
                                 mb={3}
                                 ml={[3, '69px']}
+                                mx={[3, 5]}
                                 pl={3}
-                                borderLeft={`2px solid ${rtColor}`}
                               >
                                 {exp.summary && (
-                                  <Text fontSize="xs" color={termHighlight} mb={2} lineHeight="1.6">
+                                  <Text color={termHighlight} fontSize="xs" lineHeight="1.6" mb={2}>
                                     {highlightData(exp.summary, hlc)}
                                   </Text>
                                 )}
                                 <VStack align="stretch" gap={1}>
                                   {exp.highlights.map((line: string, i: number) => (
-                                    <HStack key={i} fontSize="xs" align="start" gap={2}>
+                                    <HStack align="start" fontSize="xs" gap={2} key={i}>
                                       <Text color={rtColor} flexShrink={0} mt="1px">
                                         ·
                                       </Text>
@@ -654,41 +657,41 @@ const Experience: React.FC = () => {
           {/* Academic Reviewing */}
           {reviewingItems.length > 0 && (
             <MotionBox delay={0.2}>
-              <Box px={[3, 5]} py={4} bg={termBg} borderTop={`1px solid ${termBorder}`}>
+              <Box bg={termBg} borderTop={`1px solid ${termBorder}`} px={[3, 5]} py={4}>
                 <Flex align="center" gap={2} mb={3}>
-                  <Box w="14px" h="3px" borderRadius="full" bg={tc.param} />
-                  <Text fontSize="xs" fontWeight="bold" color={termInfo} letterSpacing="0.06em">
+                  <Box bg={tc.param} borderRadius="full" h="3px" w="14px" />
+                  <Text color={termInfo} fontSize="xs" fontWeight="bold" letterSpacing="0.06em">
                     {t('experience.academicReviewing')}
                   </Text>
-                  <Text fontSize="2xs" color={termSecondary}>
+                  <Text color={termSecondary} fontSize="2xs">
                     {reviewingItems.length}
                   </Text>
-                  <Box flex="1" h="1px" bg={termBorder} />
+                  <Box bg={termBorder} flex="1" h="1px" />
                 </Flex>
                 <VStack align="stretch" gap={2}>
                   {reviewingByYear.map(([year, items]) => (
-                    <HStack key={year} gap={3} align="start" flexWrap="wrap">
+                    <HStack align="start" flexWrap="wrap" gap={3} key={year}>
                       <Text
+                        color={termHighlight}
+                        flexShrink={0}
                         fontSize="xs"
                         fontWeight="bold"
-                        color={termHighlight}
                         w="35px"
-                        flexShrink={0}
                       >
                         {year}
                       </Text>
-                      <HStack gap={1.5} flexWrap="wrap">
+                      <HStack flexWrap="wrap" gap={1.5}>
                         {items.map((item, idx) => (
                           <MotionHover key={`${item.venue}-${idx}`}>
                             <Text
-                              px={2}
-                              py={0.5}
-                              fontSize="xs"
-                              borderRadius="full"
                               border="1px solid"
                               borderColor={isDark ? 'whiteAlpha.150' : 'blackAlpha.100'}
+                              borderRadius="full"
                               color={termCommand}
                               cursor="default"
+                              fontSize="xs"
+                              px={2}
+                              py={0.5}
                             >
                               {item.venue.replace(/\s*\d{4}\s*/, ' ').trim()}
                             </Text>
@@ -705,17 +708,17 @@ const Experience: React.FC = () => {
           {/* Command output */}
           {cmdOutput.length > 0 && (
             <Box
-              px={[3, 5]}
-              py={2}
               bg={isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.03)'}
               borderTop={`1px solid ${termBorder}`}
+              px={[3, 5]}
+              py={2}
             >
               {cmdOutput.map((line, i) => (
                 <Text
-                  key={i}
-                  fontSize="xs"
-                  fontFamily="mono"
                   color={termText}
+                  fontFamily="mono"
+                  fontSize="xs"
+                  key={i}
                   whiteSpace="pre-wrap"
                 >
                   {line}
@@ -726,35 +729,35 @@ const Experience: React.FC = () => {
 
           {/* Command line */}
           <Flex
-            px={[3, 5]}
-            py={2}
+            align="center"
             bg={termHeader}
             borderTop={`1px solid ${termBorder}`}
-            align="center"
             fontSize="xs"
+            px={[3, 5]}
+            py={2}
           >
-            <Text color={termPrompt} mr={2} fontFamily="mono" flexShrink={0}>
+            <Text color={termPrompt} flexShrink={0} fontFamily="mono" mr={2}>
               $
             </Text>
             <Input
-              value={command}
+              color={termText}
+              flex="1"
+              fontFamily="mono"
               onChange={(e) => setCommand(e.target.value)}
               onKeyPress={(e) => {
                 if (e.key === 'Enter') handleCommand(command)
               }}
               placeholder={t('experience.typeHelp')}
               size="xs"
+              value={command}
               variant="flushed"
-              color={termText}
-              fontFamily="mono"
-              flex="1"
             />
             <Box
-              h="12px"
-              w="6px"
               bg={termPrompt}
-              ml={1}
               css={{ animation: `${blink} 1s step-end infinite` }}
+              h="12px"
+              ml={1}
+              w="6px"
             />
           </Flex>
         </Box>

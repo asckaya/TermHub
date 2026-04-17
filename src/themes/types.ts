@@ -1,57 +1,9 @@
 import type { IconType } from 'react-icons'
+
 import type { ProjectItem } from '@/types'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CSS custom property tokens
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Every CSS variable consumed by globals.css and Chakra component variants.
- * Values are plain colour strings (hex, rgb, rgba …).
- */
-export interface CSSVarTokens {
-  '--bg-color': string
-  '--text-color': string
-  '--accent-color': string
-  '--accent-light': string
-  '--secondary-text': string
-  '--border-color': string
-  '--card-bg': string
-  '--header-bg': string
-  '--hover-color': string
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Terminal palette
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Semantic colour roles used by every terminal-styled component
- * (typewriter, project cards, publications, experience timeline …).
- */
-export interface TerminalColors {
-  bg: string
-  text: string
-  header: string
-  border: string
-  prompt: string
-  command: string
-  param: string
-  info: string
-  highlight: string
-  error: string
-  success: string
-  warning: string
-  secondary: string
-  muted: string
-  /** Compact "touch-bar" strip background */
-  touchBar: string
-  /** Tab-bar background */
-  tabBar: string
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Category themes
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
@@ -61,12 +13,61 @@ export interface TerminalColors {
 export interface CatTheme {
   bg: string
   border: string
-  stripe: string
+  cmd: string
   color: string
   glow: string
   icon: IconType
   label: string
-  cmd: string
+  stripe: string
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Terminal palette
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Every CSS variable consumed by globals.css and Chakra component variants.
+ * Values are plain colour strings (hex, rgb, rgba …).
+ */
+export interface CSSVarTokens {
+  '--accent-color': string
+  '--accent-light': string
+  '--bg-color': string
+  '--border-color': string
+  '--card-bg': string
+  '--header-bg': string
+  '--hover-color': string
+  '--secondary-text': string
+  '--text-color': string
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Category themes
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Semantic colour roles used by every terminal-styled component
+ * (typewriter, project cards, publications, experience timeline …).
+ */
+export interface TerminalColors {
+  bg: string
+  border: string
+  command: string
+  error: string
+  header: string
+  highlight: string
+  info: string
+  muted: string
+  param: string
+  prompt: string
+  secondary: string
+  success: string
+  /** Tab-bar background */
+  tabBar: string
+  text: string
+  /** Compact "touch-bar" strip background */
+  touchBar: string
+  warning: string
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -85,31 +86,17 @@ export interface CatTheme {
  * in `src/config/theme.ts`, which always resolves to the active theme.
  */
 export interface ThemeDefinition {
-  /** Human-readable name shown in dev tooling / future theme-picker UI. */
-  name: string
-
   /**
-   * CSS custom property values injected at runtime onto `document.documentElement`.
-   * Provide separate token sets for light and dark colour modes.
+   * Foreground / background colour pair for article category badges.
+   * Each resolver accepts a boolean `dark` flag.
    */
-  cssVars: {
-    light: CSSVarTokens
-    dark: CSSVarTokens
-  }
-
-  /** Terminal UI palette — shared rainbow bar + semantic colour resolver. */
-  terminal: {
-    /**
-     * Fixed 7-colour array used for the animated rainbow progress bars.
-     * Order matters: the animation cycles through indices sequentially.
-     */
-    rainbow: readonly string[]
-    /**
-     * Returns the full set of semantic terminal colours for the given mode.
-     * Call with `true` for dark, `false` for light.
-     */
-    colors: (dark: boolean) => TerminalColors
-  }
+  articleCategoryColors: Record<
+    ProjectItem['category'],
+    {
+      bg: (dark: boolean) => string
+      fg: (dark: boolean) => string
+    }
+  >
 
   /**
    * Returns per-category visual themes for project cards.
@@ -118,16 +105,16 @@ export interface ThemeDefinition {
   categoryThemes: (dark: boolean) => Record<ProjectItem['category'], CatTheme>
 
   /**
-   * Foreground / background colour pair for article category badges.
-   * Each resolver accepts a boolean `dark` flag.
+   * CSS custom property values injected at runtime onto `document.documentElement`.
+   * Provide separate token sets for light and dark colour modes.
    */
-  articleCategoryColors: Record<
-    ProjectItem['category'],
-    {
-      fg: (dark: boolean) => string
-      bg: (dark: boolean) => string
-    }
-  >
+  cssVars: {
+    dark: CSSVarTokens
+    light: CSSVarTokens
+  }
+
+  /** Human-readable name shown in dev tooling / future theme-picker UI. */
+  name: string
 
   /**
    * Foreground / background colour pair + display label for publication
@@ -141,4 +128,18 @@ export interface ThemeDefinition {
       label: string
     }
   >
+
+  /** Terminal UI palette — shared rainbow bar + semantic colour resolver. */
+  terminal: {
+    /**
+     * Returns the full set of semantic terminal colours for the given mode.
+     * Call with `true` for dark, `false` for light.
+     */
+    colors: (dark: boolean) => TerminalColors
+    /**
+     * Fixed 7-colour array used for the animated rainbow progress bars.
+     * Order matters: the animation cycles through indices sequentially.
+     */
+    rainbow: readonly string[]
+  }
 }
