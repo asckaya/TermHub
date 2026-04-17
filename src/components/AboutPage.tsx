@@ -45,7 +45,7 @@ const TerminalTypewriter: React.FC = () => {
   const username = siteOwner.terminalUsername ?? 'user'
   const fullName = siteOwner.name.full ?? ''
 
-  const paragraphs = (about.journey ?? '')
+  const paragraphs = (about.bio ?? '')
     .split('\n')
     .map((s) => s.trim())
     .filter(Boolean)
@@ -200,9 +200,11 @@ const TerminalTypewriter: React.FC = () => {
               {siteOwner.name.full}
               {' · M.S. Student @ NUAA ──────────────'}
             </Text>
-            <Text color={tc.secondary} mb={3} css={fadeIn(0.18)}>
-              {'# Research: LLM Multi-Agent Systems · Reasoning Optimization'}
-            </Text>
+            {about.researchTitle && (
+              <Text color={tc.secondary} mb={3} css={fadeIn(0.18)}>
+                {`# ${about.researchTitle}`}
+              </Text>
+            )}
 
             {/* Bio paragraphs — each fades in with increasing delay */}
             <VStack gap={2} align="start">

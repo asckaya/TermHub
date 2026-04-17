@@ -68,6 +68,15 @@ function collectMd(
   })
 }
 
+function decodeEntities(str: string) {
+  return str.replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&#39;/g, "'")
+    .replace(/&apos;/g, "'")
+}
+
 // Convert Markdown body into the fields components expect
 function mdToProject(raw: Record<string, unknown>): ProjectItem {
   const { _body, ...rest } = raw
@@ -77,13 +86,15 @@ function mdToProject(raw: Record<string, unknown>): ProjectItem {
   const lines = bodyStr.replace(/<[^>]+>/g, '').split('\n')
   for (const line of lines) {
     const m = line.match(/^[-*]\s+(.+)/)
-    if (m) highlights.push(m[1].trim())
+    if (m) highlights.push(decodeEntities(m[1].trim()))
   }
 
-  const summary = lines
-    .filter((l) => l.trim() && !l.match(/^[-*#]/) && !l.match(/^</))
-    .map((l) => l.trim())
-    .join(' ')
+  const summary = decodeEntities(
+    lines
+      .filter((l) => l.trim() && !l.match(/^[-*#]/) && !l.match(/^</))
+      .map((l) => l.trim())
+      .join(' ')
+  )
 
   return {
     summary,
@@ -95,15 +106,19 @@ function mdToProject(raw: Record<string, unknown>): ProjectItem {
 function mdToPublication(raw: Record<string, unknown>): Publication {
   const { _body, ...rest } = raw
   const bodyStr = (_body as string) || ''
-  const abstract = bodyStr.replace(/<[^>]+>/g, '').trim()
+  const abstract = decodeEntities(bodyStr.replace(/<[^>]+>/g, '').trim())
   return { abstract, ...rest } as unknown as Publication
 }
 
 function mdToAbout(raw: Record<string, unknown>): About {
-  const { _body, ...rest } = raw
+  const { _body, bio, ...rest } = raw
   const bodyStr = (_body as string) || ''
-  const journey = bodyStr.replace(/<[^>]+>/g, '').trim()
-  return { journey, ...rest } as unknown as About
+  const journey = decodeEntities(bodyStr.replace(/<[^>]+>/g, '').trim())
+  return { 
+    journey, 
+    bio: (bio as string) || '',
+    ...rest 
+  } as unknown as About
 }
 
 // ── JSON imports (both languages) ──
@@ -132,7 +147,7 @@ const enData = {
   projects: collectMd(projectMdsEn).map(mdToProject),
   articles: collectMd(articleMdsEn).map(mdToProject),
   publications: collectMd(publicationMdsEn).map(mdToPublication),
-  about: mdToAbout(Object.values(aboutMdEn)[0]?.default ?? {}),
+  about: mdToAbout(collectMd(aboutMdEn)[0] ?? {}),
   research: researchJsonEn as Research,
   experience: { ...experienceJsonEn, professional: [], academic: [] } as Experience,
   experienceTimeline: experienceJsonEn.timeline as ExperienceEntry[],
@@ -148,7 +163,7 @@ const zhData = {
   projects: collectMd(projectMdsZh).map(mdToProject),
   articles: collectMd(articleMdsZh).map(mdToProject),
   publications: collectMd(publicationMdsZh).map(mdToPublication),
-  about: mdToAbout(Object.values(aboutMdZh)[0]?.default ?? {}),
+  about: mdToAbout(collectMd(aboutMdZh)[0] ?? {}),
   research: researchJsonZh as Research,
   experience: { ...experienceJsonZh, professional: [], academic: [] } as Experience,
   experienceTimeline: experienceJsonZh.timeline as ExperienceEntry[],

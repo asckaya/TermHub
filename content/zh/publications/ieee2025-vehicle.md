@@ -1,7 +1,7 @@
 ---
 id: ieee2025-vehicle-detection
-title: 'CCTV视频中的快速逆行骑行检测：稀疏采样即可'
-authors: [徐静, 史文涛, 任笙, 张丽娟, 杨伟凯, 高攀, 秦杰]
+title: 'Fast Wrong-way Cycling Detection in CCTV Videos: Sparse Sampling is All You Need'
+authors: [Jing Xu, Wentao Shi, Sheng Ren, Lijuan Zhang, Weikai Yang, Pan Gao, Jie Qin]
 venue: IEEE Transactions on Intelligent Transportation Systems
 venueType: journal
 year: 2025

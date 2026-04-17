@@ -1,7 +1,7 @@
 ---
 id: arxiv2026-compress-explore
-title: '压缩简单问题，探索困难问题：面向高效LLM推理的难度感知熵正则化'
-authors: [罗钦文, 任笙, 陈想, 刘瑞, 方俊, 谭乃强, 黄生俊]
+title: 'Compress the Easy, Explore the Hard: Difficulty-Aware Entropy Regularization for Efficient LLM Reasoning'
+authors: [Qin-Wen Luo, Sheng Ren, Xiang Chen, Rui Liu, Jun Fang, Naiqiang Tan, Sheng-Jun Huang]
 venue: arXiv
 venueType: preprint
 year: 2026

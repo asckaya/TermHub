@@ -90,6 +90,8 @@ export interface JourneyPhase {
 }
 
 export interface About {
+  researchTitle?: string
+  bio: string
   journey: string
   journeyPhases?: JourneyPhase[]
   mentorship?: {

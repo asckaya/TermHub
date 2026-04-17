@@ -1,4 +1,7 @@
 ---
+researchTitle: 'LLM Multi-Agent Systems · Reasoning Optimization'
+bio: |
+  I'm a terminal enthusiast and Linux tinkerer who loves following tech trends and exploring emerging breakthroughs in the open-source community.
 journeyPhases:
   - period: '2025 - Present'
     title: M.S. Student
@@ -14,18 +17,27 @@ mentorship:
   heading: Tech Stack
   description: 'Main technologies and tools'
   mentees:
-    - name: PyTorch
+    - name: Python
       url: ''
-      note: 'Deep Learning Framework'
-    - name: Transformers
+      note: 'Passion for Pythonic code & Type Hinting'
+    - name: Transformers / Agent
       url: ''
-      note: 'LLM & NLP'
-    - name: Linux/Shell
+      note: 'LLM Multi-Agent systems & Engineering'
+    - name: VeRL
+      url: 'https://github.com/volcengine/verl'
+      note: 'High-performance Reinforcement Learning'
+    - name: Rust
       url: ''
-      note: 'Command Line & Scripting'
+      note: 'Systems Programming (Actively learning)'
+    - name: Dart & Flutter
+      url: ''
+      note: 'Experience in cross-platform mobile apps'
+    - name: Linux / Shell
+      url: ''
+      note: 'Environment & Maintenance'
     - name: Git
       url: ''
-      note: 'Version Control'
+      note: 'Team Collaboration'
 version:
   current: v1.0.0
   history:
@@ -37,8 +49,8 @@ version:
         - Awards
 ---
 
-I'm a M.S. student at Nanjing University of Aeronautics and Astronautics, researching on LLM multi-agent systems and reasoning optimization.
+I'm a M.S. student at Nanjing University of Aeronautics and Astronautics, deeply invested in the world of Large Language Models. My current work centers on LLM multi-agent systems and reasoning optimization, aiming to make AI more agentic and efficient.
 
-Passionate about computer technology, learning, and open source. Active participant in open source community events and talks. Interested in new technologies and computer science developments.
+Beyond academia, I am a passionate terminal user and open-source enthusiast. I spend my free time tinkering with Linux configurations, exploring new command-line tools, and staying on top of the latest breakthroughs in the global tech community. I believe in the power of open source to drive innovation and love participating in community discussions and sharing knowledge.
 
 Feel free to reach out via email or GitHub!

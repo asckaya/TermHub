@@ -17,14 +17,14 @@
   "terminal": {
     "username": "Ascka",
     "rotatingSubtitles": ["想做Linux极客", "和LLM玩耍", "学习新东西", "努力成为更好的自己"],
-    "skills": ["Python", "PyTorch", "Transformers", "Linux", "Git"],
+    "skills": ["Python", "Transformers", "VeRL", "Agent", "Rust", "Linux", "Flutter"],
     "timezone": "Asia/Shanghai"
   },
 
   "contact": {
-    "email": "rensheng@nuaa.edu.cn",
+    "email": "rensheng0410@gmail.com",
     "academicEmail": "rensheng@nuaa.edu.cn",
-    "hiringEmail": "rensheng@nuaa.edu.cn",
+    "hiringEmail": "rensheng0410@outlook.com",
     "location": "中国江苏南京"
   },
 

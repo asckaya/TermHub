@@ -14,9 +14,11 @@ export function highlightData(
 ): React.ReactNode {
   if (!text) return null
 
-  // numbers (incl. decimals, %, x, +) | quoted strings | CAPS acronyms
+  // 1. Numbers/Versions (digits, units, common prefixes like 'V') 
+  // 2. Quoted strings
+  // 3. Technical Acronyms (mostly letters, avoid splitting versions)
   const rx =
-    /(\b\d+(?:[.,]\d+)*\s*(?:%|x|\+|K|M|k|GB|MB|TB|ms|s|px)?\b)|("[^"]+"|'[^']+')|(\b[A-Z][A-Z0-9_]{1,}(?:[-/][A-Z0-9]+)*\b)/g
+    /(\b(?:V\d+(?:\.\d+)*)|\d+(?:[.,]\d+)*\s*(?:%|[xX]|\+|K|M|k|B|GB|MB|TB|ms|s|px)?\b)|("[^"]+"|'[^']+')|(\b[A-Z][A-Z0-9_]{1,}(?:[-/][A-Z0-9]+)*\b)/g
 
   const parts: React.ReactNode[] = []
   let last = 0

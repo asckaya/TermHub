@@ -1,44 +1,56 @@
 ---
+researchTitle: '大语言模型多智能体系统 · 推理优化'
+bio: |
+  我是一个喜欢折腾各种工具和 Linux 的人，热衷于追踪技术热点，喜欢研究开源社区的新动向。
 journeyPhases:
-  - period: '2025 - Present'
-    title: M.S. Student
-    org: Nanjing University of Aeronautics and Astronautics
-    description: 'Computer Science & Technology, Advisor: Xiang Chen. Research on LLM multi-agent systems and reasoning optimization.'
-    tags: [LLM, Multi-Agent, Knowledge Graph]
+  - period: '2025 - 至今'
+    title: 硕士研究生
+    org: 南京航空航天大学
+    description: '计算机科学与技术，导师：陈响。研究方向涵盖 LLM 多智能体系统与推理优化。'
+    tags: [LLM, Multi-Agent, 知识图谱]
   - period: '2021 - 2025'
-    title: Undergraduate
-    org: Nanjing University of Aeronautics and Astronautics
-    description: 'Artificial Intelligence, GPA 3.5/5.0. Key courses: Pattern Recognition Lab (99), NLP (91), AI Design (93), OS (90).'
-    tags: [AI, PyTorch, Deep Learning]
+    title: 本科生
+    org: 南京航空航天大学
+    description: '人工智能专业，GPA 3.5/5.0。核心课程：模式识别实验室 (99), NLP (91), AI 设计 (93), 操作系统 (90)。'
+    tags: [AI, PyTorch, 深度学习]
 mentorship:
-  heading: Tech Stack
-  description: 'Main technologies and tools'
+  heading: 技术栈
+  description: '核心技术与开发工具'
   mentees:
-    - name: PyTorch
+    - name: Python
       url: ''
-      note: 'Deep Learning Framework'
-    - name: Transformers
+      note: 'Pythonic 风格与 Type Hinting 深度爱好者'
+    - name: Transformers / Agent
       url: ''
-      note: 'LLM & NLP'
-    - name: Linux/Shell
+      note: '大语言模型多智能体系统与工程化'
+    - name: VeRL
+      url: 'https://github.com/volcengine/verl'
+      note: '高性能强化学习框架 (字节跳动开源)'
+    - name: Rust
       url: ''
-      note: 'Command Line & Scripting'
+      note: '系统级编程 (学习探索中)'
+    - name: Dart & Flutter
+      url: ''
+      note: '曾有跨平台移动端应用开发经验'
+    - name: Linux / Shell
+      url: ''
+      note: '环境配置与系统维护'
     - name: Git
       url: ''
-      note: 'Version Control'
+      note: '版本控制与团队协作'
 version:
   current: v1.0.0
   history:
     - version: v1.0.0
-      title: Initial Portfolio
+      title: 初始版本发布
       features:
-        - Personal bio and journey timeline
-        - Project showcase
-        - Awards
+        - 个人简介与职业时间轴
+        - 项目展示与详情
+        - 获奖荣誉展示
 ---
 
-I'm a M.S. student at Nanjing University of Aeronautics and Astronautics, researching on LLM multi-agent systems and reasoning optimization.
+我是南京航空航天大学的硕士研究生，目前深耕于大语言模型（LLM）领域。我的研究重点是多智能体系统与推理优化，致力于让 AI 具备更强的自主性和执行效率。
 
-Passionate about computer technology, learning, and open source. Active participant in open source community events and talks. Interested in new technologies and computer science developments.
+在学术研究之外，我是一个坚定的 Linux 爱好者和“折腾”控。我喜欢配置各种终端工具，追踪全球技术新闻，并第一时间研究开源社区涌现出的各种新热点。我深信开源的力量能够加速技术创新，并积极参与社区讨论与知识共享。
 
-Feel free to reach out via email or GitHub!
+欢迎通过邮件或 GitHub 与我交流！
