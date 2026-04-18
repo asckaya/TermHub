@@ -4,6 +4,7 @@ import { FaCheck, FaPalette } from 'react-icons/fa'
 import { Button } from '@/components/ui/button'
 import { useColorMode } from '@/hooks/useColorMode'
 import { type ThemeKey, themes, useThemeContext } from '@/themes/hooks'
+
 import { MotionHover } from './animations/MotionList'
 
 export const ThemePicker: React.FC = () => {
@@ -82,7 +83,9 @@ export const ThemePicker: React.FC = () => {
                 >
                   {themes[key].name}
                 </span>
-                {currentThemeKey === key && <FaCheck className="h-2.5 w-2.5" style={{ color: tc.success }} />}
+                {currentThemeKey === key && (
+                  <FaCheck className="h-2.5 w-2.5" style={{ color: tc.success }} />
+                )}
               </div>
             ))}
           </div>

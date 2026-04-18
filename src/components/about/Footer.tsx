@@ -51,7 +51,10 @@ const Footer: React.FC = () => {
             </a>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-1 text-xs md:text-sm" style={{ color: tc.text }}>
+          <div
+            className="flex flex-wrap items-center justify-center gap-1 text-xs md:text-sm"
+            style={{ color: tc.text }}
+          >
             <p>{t('footer.poweredBy')}</p>
             <a
               className="font-medium text-cyan-500 hover:underline no-underline"

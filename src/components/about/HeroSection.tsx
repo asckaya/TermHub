@@ -117,9 +117,9 @@ const HeroSection = ({
                 <MotionText
                   animate={{ opacity: 1 }}
                   className={cn(
-                    "flex flex-wrap lg:flex-nowrap items-center justify-center lg:justify-start",
-                    "text-xl md:text-2xl lg:text-4xl font-bold leading-tight mb-2 text-foreground w-full",
-                    "text-center lg:text-left"
+                    'flex flex-wrap lg:flex-nowrap items-center justify-center lg:justify-start',
+                    'text-xl md:text-2xl lg:text-4xl font-bold leading-tight mb-2 text-foreground w-full',
+                    'text-center lg:text-left',
                   )}
                   initial={{ opacity: 0 }}
                   transition={{ duration: 0.8 }}
@@ -159,7 +159,9 @@ const HeroSection = ({
 
                 <div className="flex flex-row flex-wrap items-center justify-center lg:justify-start gap-2 mb-4 w-full font-mono">
                   <p className="text-yellow-400 text-sm md:text-base">$</p>
-                  <p className="text-muted-foreground text-sm md:text-base">{t('hero.sometimesI')}</p>
+                  <p className="text-muted-foreground text-sm md:text-base">
+                    {t('hero.sometimesI')}
+                  </p>
                   <div className="h-[20px] md:h-[24px] lg:h-[30px] overflow-hidden">
                     <MotionBox
                       animate={{ y: [0, -20, -40, -60, -80, -100, 0] }}
@@ -243,7 +245,10 @@ const HeroSection = ({
                         {education.map((item, index) => {
                           const logo = educationLogos[item.institution]
                           return (
-                            <div className="flex flex-row items-center bg-secondary/5 rounded-lg gap-3 p-3 w-full border border-border/20" key={index}>
+                            <div
+                              className="flex flex-row items-center bg-secondary/5 rounded-lg gap-3 p-3 w-full border border-border/20"
+                              key={index}
+                            >
                               {logo ? (
                                 <img
                                   alt={item.institution}
@@ -272,7 +277,7 @@ const HeroSection = ({
                     )}
                   </div>
                 )}
-                
+
                 <div className="border-t border-dashed border-border/50 w-full my-4" />
 
                 {/* Welcome + contact */}
@@ -310,7 +315,7 @@ const HeroSection = ({
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex flex-col items-center gap-6">
                 <MotionBox
                   animate={{ opacity: 1, scale: 1 }}
@@ -330,7 +335,7 @@ const HeroSection = ({
                     />
                   </div>
                 </MotionBox>
-                
+
                 {/* Social icons row below avatar */}
                 <div className="flex flex-row items-center gap-2 justify-center">
                   {heroSocialIcons.map((item) => (
@@ -348,12 +353,16 @@ const HeroSection = ({
                     </a>
                   ))}
                 </div>
-                
-                {(siteConfig.pets as { emoji: string; image: string; name: string }[]).length > 0 && (
+
+                {(siteConfig.pets as { emoji: string; image: string; name: string }[]).length >
+                  0 && (
                   <div className="flex flex-row items-center gap-6 justify-center mt-2">
                     {(siteConfig.pets as { emoji: string; image: string; name: string }[]).map(
                       (pet) => (
-                        <div className="flex flex-col items-center gap-2 group cursor-help" key={pet.name}>
+                        <div
+                          className="flex flex-col items-center gap-2 group cursor-help"
+                          key={pet.name}
+                        >
                           {pet.image && (
                             <img
                               alt={pet.name}
@@ -372,7 +381,7 @@ const HeroSection = ({
               </div>
             </div>
           </div>
-          
+
           {/* Bottom Status Bar */}
           <div
             className="px-4 py-1.5 text-[9px] md:text-[10px] font-mono border-t flex items-center justify-between"

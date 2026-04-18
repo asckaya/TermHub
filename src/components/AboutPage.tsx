@@ -11,10 +11,6 @@ import { withBase } from '@/utils/asset'
 import { MotionBox, MotionHover } from './animations/MotionList'
 import DynamicIcon from './DynamicIcon'
 import BioSection from './sections/BioSection'
-import JourneySection from './sections/JourneySection'
-import MentorshipSection from './sections/MentorshipSection'
-
-/* ── Typewriter Terminal ──────────────────────────────────── */
 
 const TYPING_SPEED = 65
 const DELETING_SPEED = 32
@@ -226,8 +222,6 @@ const TerminalTypewriter: React.FC = () => {
   )
 }
 
-/* ── Profile Sidebar ──────────────────────────────────────── */
-
 const ProfileSidebar: React.FC = () => {
   const { siteConfig, siteOwner } = useLocalizedData()
   const { t } = useTranslation()
@@ -381,7 +375,10 @@ const ProfileSidebar: React.FC = () => {
           <div className="px-5 py-4">
             <div className="flex items-center gap-2 mb-3">
               <div className="bg-cyan-400 rounded-full h-0.5 w-3" />
-              <p className="font-mono text-xs font-semibold tracking-wider uppercase" style={{ color: tc.heading }}>
+              <p
+                className="font-mono text-xs font-semibold tracking-wider uppercase"
+                style={{ color: tc.heading }}
+              >
                 {t('about.skills', 'Skills')}
               </p>
             </div>
@@ -396,7 +393,11 @@ const ProfileSidebar: React.FC = () => {
                   }}
                 >
                   {getIcon(skill) && (
-                    <DynamicIcon className="h-2.5 w-2.5" name={getIcon(skill)} style={{ color: tc.skillIcon }} />
+                    <DynamicIcon
+                      className="h-2.5 w-2.5"
+                      name={getIcon(skill)}
+                      style={{ color: tc.skillIcon }}
+                    />
                   )}
                   <p>{getName(skill)}</p>
                 </div>
@@ -408,8 +409,6 @@ const ProfileSidebar: React.FC = () => {
     </div>
   )
 }
-
-/* ── Page Header ──────────────────────────────────────────── */
 
 const PageHeader: React.FC = () => {
   const { t } = useTranslation()
@@ -433,10 +432,11 @@ const PageHeader: React.FC = () => {
       </div>
       <div className="flex items-center gap-3 mt-3">
         <div className="bg-cyan-400 rounded-full h-0.5 w-8" />
-        <h2 className="text-xl md:text-2xl font-bold">
-          {t('nav.about', 'About')}
-        </h2>
-        <Badge className="font-mono text-[10px] px-2 bg-cyan-400/10 text-cyan-400 border-none" variant="secondary">
+        <h2 className="text-xl md:text-2xl font-bold">{t('nav.about', 'About')}</h2>
+        <Badge
+          className="font-mono text-[10px] px-2 bg-cyan-400/10 text-cyan-400 border-none"
+          variant="secondary"
+        >
           {siteOwner.name.full}
         </Badge>
       </div>
@@ -446,8 +446,6 @@ const PageHeader: React.FC = () => {
     </div>
   )
 }
-
-/* ── About Page ───────────────────────────────────────────── */
 
 const AboutPage: React.FC = () => {
   return (

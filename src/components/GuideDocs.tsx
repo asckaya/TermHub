@@ -9,10 +9,10 @@ const GuideDocs = () => {
             the project README and source for setup/configuration details.
           </p>
           <a
+            className="text-cyan-500 hover:underline font-medium"
             href="https://github.com/asckaya/TermHub"
             rel="noopener noreferrer"
             target="_blank"
-            className="text-cyan-500 hover:underline font-medium"
           >
             Open repository
           </a>

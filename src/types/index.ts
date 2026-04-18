@@ -22,22 +22,14 @@ import type {
   VenueTypeSchema,
 } from '../schemas'
 
-// ── Types that include a React MDX component ──────────────────────────────
-
 /** Frontmatter fields + the MDX component tree rendered from the markdown body. */
 export type About = z.infer<typeof AboutFrontmatterSchema> & {
   Content?: React.ComponentType
 }
 
-// ── Plain data types (no React dependencies) ───────────────────────────────
-
 export type Award = z.infer<typeof AwardSchema>
 
-// ── Enum types ─────────────────────────────────────────────────────────────
-
 export type AwardKind = z.infer<typeof AwardKindSchema>
-
-// ── Composite types ────────────────────────────────────────────────────────
 
 /**
  * Legacy composite shape assembled in data/index.ts for backwards compat.

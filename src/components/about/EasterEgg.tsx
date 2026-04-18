@@ -13,11 +13,20 @@ const EasterEgg: React.FC<EasterEggProps> = ({ content, title, trigger, type = '
   const getBadgeProps = () => {
     switch (type) {
       case 'fun':
-        return { children: '🎮 Fun Fact', className: 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300' }
+        return {
+          children: '🎮 Fun Fact',
+          className: 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300',
+        }
       case 'tip':
-        return { children: '💡 Pro Tip', className: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300' }
+        return {
+          children: '💡 Pro Tip',
+          className: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300',
+        }
       default:
-        return { children: 'ℹ️ Did you know?', className: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300' }
+        return {
+          children: 'ℹ️ Did you know?',
+          className: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300',
+        }
     }
   }
 
@@ -36,15 +45,9 @@ const EasterEgg: React.FC<EasterEggProps> = ({ content, title, trigger, type = '
         title={`${title}: ${typeof content === 'string' ? content : ''}`}
       >
         <div className="flex flex-col items-start gap-3">
-          <Badge className={badge.className}>
-            {badge.children}
-          </Badge>
-          <div className="text-sm font-bold">
-            {title}
-          </div>
-          <div className="text-sm opacity-90">
-            {content}
-          </div>
+          <Badge className={badge.className}>{badge.children}</Badge>
+          <div className="text-sm font-bold">{title}</div>
+          <div className="text-sm opacity-90">{content}</div>
         </div>
       </div>
     </div>

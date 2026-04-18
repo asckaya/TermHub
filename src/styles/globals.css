@@ -20,7 +20,7 @@
 
 body {
   font-family:
-    'Maple Mono CN', 'Maple Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+    'Maple Mono CN', 'Maple Mono', monospace;
   line-height: 1.6;
   color: var(--text-color);
   background-color: var(--bg-color);
@@ -34,7 +34,7 @@ pre {
   overflow-x: auto;
   margin-bottom: 1rem;
   font-family:
-    'Maple Mono CN', 'Maple Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+    'Maple Mono CN', 'Maple Mono', monospace;
 }
 
 code {
@@ -43,7 +43,7 @@ code {
   border-radius: 4px;
   font-size: 0.9em;
   font-family:
-    'Maple Mono CN', 'Maple Mono', 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+    'Maple Mono CN', 'Maple Mono', monospace;
 }
 
 .tag {
@@ -89,5 +89,3 @@ code {
   align-items: center;
   gap: 0.3rem;
 }
-
-

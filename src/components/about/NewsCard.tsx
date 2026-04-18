@@ -28,7 +28,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
   // Helper to map Chakra colors to Tailwind colors
   // blue.400 -> bg-blue-400, text-blue-400, etc.
   const colorBase = news.iconColor.split('.')[0]
-  
+
   return (
     <div
       aria-labelledby={`news-title-${news.title.replace(/\s+/g, '-').toLowerCase()}`}
@@ -36,15 +36,15 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
       role="article"
     >
       {/* Top color bar */}
-      <div className={cn("h-1 w-full", `bg-${colorBase}-400`)} />
+      <div className={cn('h-1 w-full', `bg-${colorBase}-400`)} />
 
       {/* Date Badge - Top Right Absolute Position */}
       {news.date && (
         <div className="absolute top-2 right-2 z-10">
           <Badge
             className={cn(
-              "font-medium text-xs px-2 py-1 flex items-center gap-1",
-              `bg-${colorBase}-500 hover:bg-${colorBase}-600 text-white border-none shadow-sm`
+              'font-medium text-xs px-2 py-1 flex items-center gap-1',
+              `bg-${colorBase}-500 hover:bg-${colorBase}-600 text-white border-none shadow-sm`,
             )}
           >
             <DynamicIcon className="w-3 h-3" name="FaClock" />
@@ -60,8 +60,8 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
           <div
             aria-hidden="true"
             className={cn(
-              "flex items-center justify-center rounded-md w-8 h-8 flex-shrink-0 mr-3 p-2",
-              `bg-${colorBase}-400/10 text-${colorBase}-400`
+              'flex items-center justify-center rounded-md w-8 h-8 flex-shrink-0 mr-3 p-2',
+              `bg-${colorBase}-400/10 text-${colorBase}-400`,
             )}
           >
             <DynamicIcon className="w-4 h-4" name={getIconName()} />
@@ -77,8 +77,8 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
             {news.badge && (
               <Badge
                 className={cn(
-                  "rounded-full text-[10px] px-2 py-0.5 border",
-                  `border-${colorBase}-400/30 text-${colorBase}-400 bg-${colorBase}-400/5`
+                  'rounded-full text-[10px] px-2 py-0.5 border',
+                  `border-${colorBase}-400/30 text-${colorBase}-400 bg-${colorBase}-400/5`,
                 )}
                 variant="outline"
               >
@@ -89,14 +89,14 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
         </div>
 
         {/* Description text */}
-        <p className="text-muted-foreground text-sm leading-relaxed mb-3">
-          {news.description}
-        </p>
+        <p className="text-muted-foreground text-sm leading-relaxed mb-3">{news.description}</p>
 
         {/* Button link area */}
         <div className="flex flex-wrap gap-2 mt-2">
           {news.links.map((link, index) => {
-            const LinkIcon = link.icon ? <DynamicIcon className="text-xs" name={link.icon} /> : undefined
+            const LinkIcon = link.icon ? (
+              <DynamicIcon className="text-xs" name={link.icon} />
+            ) : undefined
             return (
               <a
                 aria-label={`${link.text} for ${news.title}`}
@@ -108,8 +108,8 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
               >
                 <Button
                   className={cn(
-                    "h-7 text-xs px-2.5 py-0 gap-1.5",
-                    `border-${colorBase}-400/50 hover:bg-${colorBase}-400/10 hover:text-${colorBase}-500`
+                    'h-7 text-xs px-2.5 py-0 gap-1.5',
+                    `border-${colorBase}-400/50 hover:bg-${colorBase}-400/10 hover:text-${colorBase}-500`,
                   )}
                   size="sm"
                   variant="outline"

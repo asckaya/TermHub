@@ -23,7 +23,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg-color);
   color: var(--text-color);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 #root {
@@ -79,10 +81,42 @@ body::before {
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .animate-blink {
   animation: blink 1s step-end infinite;
+}
+
+/* Project MDX Content Styling */
+.project-mdx-content h2,
+.project-mdx-content h3 {
+  font-weight: bold;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent-color);
+}
+
+.project-mdx-content p {
+  margin-bottom: 0.75rem;
+}
+
+.project-mdx-content ul {
+  list-style-type: disc;
+  padding-left: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.project-mdx-content li {
+  margin-bottom: 0.25rem;
+}
+
+.project-mdx-content strong {
+  color: var(--highlight-color, inherit);
 }

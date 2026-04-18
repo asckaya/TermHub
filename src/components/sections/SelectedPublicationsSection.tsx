@@ -2,14 +2,8 @@ import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaTimes } from 'react-icons/fa'
 
-import {
-  Collapsible,
-  CollapsibleContent,
-} from '@/components/ui/collapsible'
-import {
-  Dialog,
-  DialogContent,
-} from '@/components/ui/dialog'
+import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
+import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import { selectedPublicationIds } from '@/site.config'
@@ -19,7 +13,7 @@ import DynamicIcon from '../DynamicIcon'
 const PubLink = ({ href, icon, label }: { href: string; icon: string; label: string }) => {
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
-  
+
   const tc = {
     border: isDark ? 'rgb(75, 85, 99)' : 'rgb(229, 231, 235)', // gray-600 : gray-200
     hoverBg: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgb(249, 250, 251)', // whiteAlpha.50 : gray-50
@@ -152,9 +146,7 @@ const PublicationCard = ({ pub }: { pub: Publication }) => {
                     style={{ color: isHighlighted ? tc.highlightAuthor : undefined }}
                   >
                     {author}
-                    {isHighlighted && (
-                      <sup className="text-cyan-400 text-[10px] ml-0.5">*</sup>
-                    )}
+                    {isHighlighted && <sup className="text-cyan-400 text-[10px] ml-0.5">*</sup>}
                     {idx < pub.authors.length - 1 && ', '}
                   </span>
                 )
@@ -317,9 +309,7 @@ const SelectedPublicationsSection: React.FC = () => {
       <div className="max-w-full lg:max-w-7xl px-2 md:px-4 lg:px-8 mx-auto">
         <div className="flex items-center gap-3 mb-3 md:mb-4">
           <div className="bg-cyan-400 rounded-full flex-shrink-0 h-0.5 w-5" />
-          <h3 className="text-base md:text-lg font-semibold">
-            {t('about.selectedPublications')}
-          </h3>
+          <h3 className="text-base md:text-lg font-semibold">{t('about.selectedPublications')}</h3>
           <div className="flex-1 h-px" style={{ backgroundColor: tc.line }} />
         </div>
         <div className="flex flex-col gap-4 md:gap-5 lg:gap-6">
@@ -333,7 +323,9 @@ const SelectedPublicationsSection: React.FC = () => {
                 style={{ color: tc.viewAll }}
               >
                 <span>{t('about.viewAllPublications')}</span>
-                <span className="transition-transform duration-150 group-hover:translate-x-1">→</span>
+                <span className="transition-transform duration-150 group-hover:translate-x-1">
+                  →
+                </span>
               </div>
             </a>
           </div>

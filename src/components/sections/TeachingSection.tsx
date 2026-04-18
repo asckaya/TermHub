@@ -35,9 +35,7 @@ const TeachingSection: React.FC = () => {
       <div className="max-w-full lg:max-w-7xl px-2 md:px-4 lg:px-8 mx-auto">
         <div className="flex items-center gap-3 mb-4">
           <div className="bg-cyan-400 rounded-full flex-shrink-0 h-0.5 w-5" />
-          <h3 className="text-lg font-semibold">
-            {t('about.teaching', 'Teaching')}
-          </h3>
+          <h3 className="text-lg font-semibold">{t('about.teaching', 'Teaching')}</h3>
           <div className="flex-1 h-px" style={{ backgroundColor: tc.line }} />
         </div>
         <div className="flex flex-col">
@@ -55,10 +53,7 @@ const TeachingSection: React.FC = () => {
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <h4
-                  className="text-xs font-medium leading-short"
-                  style={{ color: tc.title }}
-                >
+                <h4 className="text-xs font-medium leading-short" style={{ color: tc.title }}>
                   {entry.link ? (
                     <a
                       className="transition-colors hover:text-cyan-400"

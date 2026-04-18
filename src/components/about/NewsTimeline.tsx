@@ -366,24 +366,38 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news }) => {
             <div className="bg-[#ebcb8b] rounded-full h-2.5 w-2.5" />
             <div className="bg-[#a3be8c] rounded-full h-2.5 w-2.5" />
           </div>
-          <DynamicIcon className="h-2.5 md:h-3 w-2.5 md:w-3 text-primary" name="FaTerminal" style={{ color: termCommand }} />
+          <DynamicIcon
+            className="h-2.5 md:h-3 w-2.5 md:w-3 text-primary"
+            name="FaTerminal"
+            style={{ color: termCommand }}
+          />
           <p className="overflow-hidden text-ellipsis whitespace-nowrap">
             <span style={{ color: termParam }}>const </span>
-            <span className="font-bold" style={{ color: termPrompt }}>{siteOwner.terminalUsername}</span>
+            <span className="font-bold" style={{ color: termPrompt }}>
+              {siteOwner.terminalUsername}
+            </span>
             <span style={{ color: termSecondary }}> = </span>
-            <span className="hidden sm:inline" style={{ color: termParam }}>new </span>
-            <span className="hidden sm:inline font-bold" style={{ color: termCommand }}>Terminal</span>
-            <span className="hidden sm:inline" style={{ color: termSecondary }}>(</span>
-            <span className="hidden sm:inline" style={{ color: termHighlight }}>'research'</span>
-            <span className="hidden sm:inline" style={{ color: termSecondary }}>)</span>
+            <span className="hidden sm:inline" style={{ color: termParam }}>
+              new{' '}
+            </span>
+            <span className="hidden sm:inline font-bold" style={{ color: termCommand }}>
+              Terminal
+            </span>
+            <span className="hidden sm:inline" style={{ color: termSecondary }}>
+              (
+            </span>
+            <span className="hidden sm:inline" style={{ color: termHighlight }}>
+              'research'
+            </span>
+            <span className="hidden sm:inline" style={{ color: termSecondary }}>
+              )
+            </span>
           </p>
         </div>
 
         {/* Middle: research process status */}
         <div className="flex items-center">
-          <div
-            className="rounded-sm flex-shrink-0 px-1.5 bg-black/5 dark:bg-black/30"
-          >
+          <div className="rounded-sm flex-shrink-0 px-1.5 bg-black/5 dark:bg-black/30">
             <p style={{ color: researchColor }}>
               {currentResearch.label} {currentResearch.suffix}
             </p>
@@ -397,8 +411,8 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news }) => {
           </p>
           <div
             className={cn(
-              "flex items-center gap-1",
-              interactionTier.isRainbow ? "animate-rainbow" : ""
+              'flex items-center gap-1',
+              interactionTier.isRainbow ? 'animate-rainbow' : '',
             )}
             style={{ color: interactionTier.isRainbow ? undefined : interactionTier.color }}
           >
@@ -416,37 +430,69 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news }) => {
         {/* Left segments */}
         <div className="flex items-center gap-0 overflow-hidden">
           <div className="flex items-center flex-shrink-0 gap-1 px-1 md:px-1.5">
-            <DynamicIcon className="h-2 md:h-2.5 w-2 md:w-2.5" name="FaUser" style={{ color: termPrompt }} />
-            <p className="font-bold" style={{ color: termText }}>{siteOwner.terminalUsername}</p>
+            <DynamicIcon
+              className="h-2 md:h-2.5 w-2 md:w-2.5"
+              name="FaUser"
+              style={{ color: termPrompt }}
+            />
+            <p className="font-bold" style={{ color: termText }}>
+              {siteOwner.terminalUsername}
+            </p>
           </div>
           <span style={{ color: tc.border }}>│</span>
           <div className="flex items-center flex-shrink-0 gap-1 px-1 md:px-1.5">
-            <DynamicIcon className="h-2 md:h-2.5 w-2 md:w-2.5" name="FaClock" style={{ color: termHighlight }} />
+            <DynamicIcon
+              className="h-2 md:h-2.5 w-2 md:w-2.5"
+              name="FaClock"
+              style={{ color: termHighlight }}
+            />
             <p style={{ color: termSecondary }}>{bostonDateStr}</p>
           </div>
-          <span className="hidden md:inline" style={{ color: tc.border }}>│</span>
+          <span className="hidden md:inline" style={{ color: tc.border }}>
+            │
+          </span>
           <div className="hidden md:flex items-center flex-shrink-0 gap-1 px-1.5">
-            <DynamicIcon className="h-2 md:h-2.5 w-2 md:w-2.5" name="FaFolder" style={{ color: termCommand }} />
+            <DynamicIcon
+              className="h-2 md:h-2.5 w-2 md:w-2.5"
+              name="FaFolder"
+              style={{ color: termCommand }}
+            />
             <p style={{ color: termCommand }}>~/cortex/papers</p>
           </div>
         </div>
 
         {/* Arrow */}
         <div className="hidden md:flex items-center flex-shrink-0 px-1 md:px-2">
-          <DynamicIcon className="h-2 md:h-2.5 w-2 md:w-2.5" name="FaArrowRight" style={{ color: termSecondary }} />
+          <DynamicIcon
+            className="h-2 md:h-2.5 w-2 md:w-2.5"
+            name="FaArrowRight"
+            style={{ color: termSecondary }}
+          />
         </div>
 
         {/* Right segments */}
         <div className="flex items-center gap-0 overflow-hidden">
           <div className="hidden sm:flex lg:flex items-center flex-shrink-0 gap-1 px-1.5">
-            <DynamicIcon className="h-2 md:h-2.5 w-2 md:w-2.5" name="FaCodeBranch" style={{ color: termInfo }} />
+            <DynamicIcon
+              className="h-2 md:h-2.5 w-2 md:w-2.5"
+              name="FaCodeBranch"
+              style={{ color: termInfo }}
+            />
             <p style={{ color: termInfo }}>{termProcesses[processIndex]}</p>
           </div>
-          <span className="hidden sm:inline lg:inline" style={{ color: tc.border }}>│</span>
+          <span className="hidden sm:inline lg:inline" style={{ color: tc.border }}>
+            │
+          </span>
           <div className="flex items-center flex-shrink-0 gap-1 px-1 md:px-1.5">
-            <DynamicIcon className="h-2 md:h-2.5 w-2 md:w-2.5" name="FaBrain" style={{ color: termParam }} />
+            <DynamicIcon
+              className="h-2 md:h-2.5 w-2 md:w-2.5"
+              name="FaBrain"
+              style={{ color: termParam }}
+            />
             <p
-              style={{ color: memoryUsage > 90 ? termError : memoryUsage > 80 ? termWarning : termSuccess }}
+              style={{
+                color: memoryUsage > 90 ? termError : memoryUsage > 80 ? termWarning : termSuccess,
+              }}
             >
               {memoryUsage}%
             </p>
@@ -457,7 +503,8 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news }) => {
               <div
                 className="h-full transition-all duration-300 rounded-full"
                 style={{
-                  backgroundColor: memoryUsage > 90 ? termError : memoryUsage > 80 ? termWarning : termSuccess,
+                  backgroundColor:
+                    memoryUsage > 90 ? termError : memoryUsage > 80 ? termWarning : termSuccess,
                   width: `${String(memoryUsage)}%`,
                 }}
               />
@@ -465,13 +512,25 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news }) => {
           </div>
           <span style={{ color: tc.border }}>│</span>
           <div className="flex items-center flex-shrink-0 gap-1 px-1 md:px-1.5">
-            <DynamicIcon className="h-2 md:h-2.5 w-2 md:w-2.5" name="FaBolt" style={{ color: termHighlight }} />
+            <DynamicIcon
+              className="h-2 md:h-2.5 w-2 md:w-2.5"
+              name="FaBolt"
+              style={{ color: termHighlight }}
+            />
           </div>
-          <span className="hidden md:inline" style={{ color: tc.border }}>│</span>
+          <span className="hidden md:inline" style={{ color: tc.border }}>
+            │
+          </span>
           <div className="hidden md:flex items-center flex-shrink-0 gap-1 px-1.5">
-            <DynamicIcon className="h-2 md:h-2.5 w-2 md:w-2.5" name="FaCoffee" style={{ color: termWarning }} />
+            <DynamicIcon
+              className="h-2 md:h-2.5 w-2 md:w-2.5"
+              name="FaCoffee"
+              style={{ color: termWarning }}
+            />
             <p style={{ color: termWarning }}>∞</p>
-            <p className="text-[8px] tracking-tighter" style={{ color: termSecondary }}>{sparkDisplay}</p>
+            <p className="text-[8px] tracking-tighter" style={{ color: termSecondary }}>
+              {sparkDisplay}
+            </p>
           </div>
         </div>
       </div>
@@ -488,26 +547,39 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news }) => {
         {/* Hint line - zsh-style syntax highlighting */}
         <div
           className={cn(
-            "border-b border-dotted text-info px-2 md:px-3 py-0.5 md:py-1",
-            isVerySmallScreen ? "hidden" : "block"
+            'border-b border-dotted text-info px-2 md:px-3 py-0.5 md:py-1',
+            isVerySmallScreen ? 'hidden' : 'block',
           )}
-          style={{ borderBottomColor: termBorder, color: termInfo, fontSize: isMobile ? '8px' : '10px' }}
+          style={{
+            borderBottomColor: termBorder,
+            color: termInfo,
+            fontSize: isMobile ? '8px' : '10px',
+          }}
         >
           <div className="flex items-center gap-1 md:gap-2">
-            <DynamicIcon className="h-1.5 md:h-2 w-1.5 md:w-2" name="FaChevronRight" style={{ color: termPrompt }} />
-            <span className="font-bold" style={{ color: termSuccess }}>grep</span>
+            <DynamicIcon
+              className="h-1.5 md:h-2 w-1.5 md:w-2"
+              name="FaChevronRight"
+              style={{ color: termPrompt }}
+            />
+            <span className="font-bold" style={{ color: termSuccess }}>
+              grep
+            </span>
             <span style={{ color: termCommand }}>-riI</span>
             <span style={{ color: termHighlight }}>"knowledge"</span>
             <span style={{ color: termParam }}>--context</span>
             <span style={{ color: termSecondary }}>=</span>
             <span style={{ color: termWarning }}>3</span>
-            <span className="hidden sm:inline" style={{ color: termSecondary }}>|</span>
-            <span className="hidden sm:inline font-bold" style={{ color: termSuccess }}>sort</span>
-            <span className="hidden sm:inline" style={{ color: termCommand }}>-r</span>
-            <span
-              className="hidden lg:inline italic opacity-70"
-              style={{ color: tc.command }}
-            >
+            <span className="hidden sm:inline" style={{ color: termSecondary }}>
+              |
+            </span>
+            <span className="hidden sm:inline font-bold" style={{ color: termSuccess }}>
+              sort
+            </span>
+            <span className="hidden sm:inline" style={{ color: termCommand }}>
+              -r
+            </span>
+            <span className="hidden lg:inline italic opacity-70" style={{ color: tc.command }}>
               {t('newsTimeline.clickToExpand')}
             </span>
           </div>
@@ -517,7 +589,10 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news }) => {
         <div className="p-0.5 md:p-1 lg:p-2">
           <div
             className="flex items-center border-b font-bold py-0.5 md:py-1"
-            style={{ borderBottomColor: termBorder, fontSize: isVerySmallScreen ? '8px' : isMobile ? '10px' : '12px' }}
+            style={{
+              borderBottomColor: termBorder,
+              fontSize: isVerySmallScreen ? '8px' : isMobile ? '10px' : '12px',
+            }}
           >
             <p
               className="overflow-hidden text-ellipsis whitespace-nowrap"
@@ -585,7 +660,8 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news }) => {
                   <div
                     className="inline-flex items-center rounded-sm font-bold gap-1 px-0.5 md:px-1 lg:px-1.5 uppercase"
                     style={{
-                      backgroundColor: typeColors[item.type.toLowerCase()]?.bg ?? typeColors.default.bg,
+                      backgroundColor:
+                        typeColors[item.type.toLowerCase()]?.bg ?? typeColors.default.bg,
                       color: typeColors[item.type.toLowerCase()]?.fg ?? typeColors.default.fg,
                       fontSize: isVerySmallScreen ? '6px' : isMobile ? '8px' : '10px',
                     }}
@@ -612,13 +688,17 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news }) => {
                       <span
                         className="rounded-sm font-bold px-0.5 md:px-1 whitespace-nowrap"
                         style={{
-                          backgroundColor: typeColors[item.type.toLowerCase()]?.bg ?? typeColors.default.bg,
+                          backgroundColor:
+                            typeColors[item.type.toLowerCase()]?.bg ?? typeColors.default.bg,
                           color: typeColors[item.type.toLowerCase()]?.fg ?? typeColors.default.fg,
                           fontSize: isVerySmallScreen ? '6px' : '8px',
                         }}
                       >
                         {item.badge
-                          .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{1F900}-\u{1F9FF}]/gu, '')
+                          .replace(
+                            /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{1F900}-\u{1F9FF}]/gu,
+                            '',
+                          )
                           .replace(/[\u{FE00}-\u{FE0F}]/gu, '')
                           .replace(/\u{200D}/gu, '')
                           .replace(/\u{20E3}/gu, '')
@@ -670,14 +750,19 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news }) => {
                         </a>
                       ))}
                       {item.links.length > (isSmallScreen ? 2 : 3) && (
-                        <p style={{ color: termInfo }}>+{item.links.length - (isSmallScreen ? 2 : 3)}</p>
+                        <p style={{ color: termInfo }}>
+                          +{item.links.length - (isSmallScreen ? 2 : 3)}
+                        </p>
                       )}
                     </div>
                   ) : (
                     <p style={{ color: termInfo }}>{t('newsTimeline.devNull')}</p>
                   )}
                 </div>
-                <div className="flex items-center justify-center" style={{ width: controlColumnWidth }}>
+                <div
+                  className="flex items-center justify-center"
+                  style={{ width: controlColumnWidth }}
+                >
                   <div
                     className={cn(
                       'rounded-sm font-bold text-center px-0.5 md:px-1 py-0.5 min-w-[20px] md:min-w-[26px] transition-colors',
@@ -710,7 +795,9 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news }) => {
                       >
                         <DynamicIcon
                           className="h-3 md:h-4 w-3 md:w-4"
-                          name={typeColors[item.type.toLowerCase()]?.icon ?? typeColors.default.icon}
+                          name={
+                            typeColors[item.type.toLowerCase()]?.icon ?? typeColors.default.icon
+                          }
                           style={{
                             color: typeColors[item.type.toLowerCase()]?.fg ?? typeColors.default.fg,
                           }}
@@ -730,7 +817,8 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news }) => {
                           <p
                             className="font-bold uppercase"
                             style={{
-                              color: typeColors[item.type.toLowerCase()]?.fg ?? typeColors.default.fg,
+                              color:
+                                typeColors[item.type.toLowerCase()]?.fg ?? typeColors.default.fg,
                             }}
                           >
                             {item.type}
@@ -818,8 +906,8 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news }) => {
               </Collapsible>
             </div>
           ))}
-          </div>
         </div>
+      </div>
 
       {/* ═══ Footer prompt: FIXED at bottom, never scrolls ═══ */}
       <div
@@ -831,15 +919,28 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news }) => {
         }}
       >
         <div className="flex items-center flex-shrink-0 gap-1 mr-1.5">
-          <DynamicIcon className="h-1.5 md:h-2 w-1.5 md:w-2" name="FaChevronRight" style={{ color: termPrompt }} />
+          <DynamicIcon
+            className="h-1.5 md:h-2 w-1.5 md:w-2"
+            name="FaChevronRight"
+            style={{ color: termPrompt }}
+          />
           {!isVerySmallScreen && (
-            <DynamicIcon className="h-1.5 md:h-2 w-1.5 md:w-2" name="FaChevronRight" style={{ color: termCommand }} />
+            <DynamicIcon
+              className="h-1.5 md:h-2 w-1.5 md:w-2"
+              name="FaChevronRight"
+              style={{ color: termCommand }}
+            />
           )}
         </div>
-        <p className="overflow-hidden text-ellipsis whitespace-nowrap" style={{ color: termSecondary }}>
+        <p
+          className="overflow-hidden text-ellipsis whitespace-nowrap"
+          style={{ color: termSecondary }}
+        >
           {hoveredItem !== null ? (
             <>
-              <span className="font-bold" style={{ color: termSuccess }}>cat</span>{' '}
+              <span className="font-bold" style={{ color: termSuccess }}>
+                cat
+              </span>{' '}
               <span style={{ color: termParam }}>./brain/memories/</span>
               <span style={{ color: termHighlight }}>
                 {truncateText(news[hoveredItem]?.title, isVerySmallScreen ? 12 : 25)
@@ -849,18 +950,32 @@ const NewsTimeline: React.FC<NewsTimelineProps> = ({ news }) => {
             </>
           ) : (
             <>
-              <span className="font-bold" style={{ color: termSuccess }}>find</span>{' '}
+              <span className="font-bold" style={{ color: termSuccess }}>
+                find
+              </span>{' '}
               <span style={{ color: termHighlight }}>./brain</span>{' '}
               <span style={{ color: termCommand }}>-type</span>{' '}
               <span style={{ color: termWarning }}>f</span>{' '}
               <span style={{ color: termCommand }}>-name</span>{' '}
               <span style={{ color: termHighlight }}>"*.memory"</span>{' '}
-              <span className="hidden sm:inline" style={{ color: termSecondary }}>|</span>{' '}
-              <span className="hidden sm:inline font-bold" style={{ color: termSuccess }}>sort</span>{' '}
-              <span className="hidden sm:inline" style={{ color: termCommand }}>-r</span>{' '}
-              <span className="hidden sm:inline" style={{ color: termSecondary }}>|</span>{' '}
-              <span className="hidden sm:inline font-bold" style={{ color: termSuccess }}>head</span>{' '}
-              <span className="hidden sm:inline" style={{ color: termWarning }}>-10</span>
+              <span className="hidden sm:inline" style={{ color: termSecondary }}>
+                |
+              </span>{' '}
+              <span className="hidden sm:inline font-bold" style={{ color: termSuccess }}>
+                sort
+              </span>{' '}
+              <span className="hidden sm:inline" style={{ color: termCommand }}>
+                -r
+              </span>{' '}
+              <span className="hidden sm:inline" style={{ color: termSecondary }}>
+                |
+              </span>{' '}
+              <span className="hidden sm:inline font-bold" style={{ color: termSuccess }}>
+                head
+              </span>{' '}
+              <span className="hidden sm:inline" style={{ color: termWarning }}>
+                -10
+              </span>
             </>
           )}
         </p>

@@ -2,14 +2,11 @@ import { FaBrain, FaChartBar, FaGlobe, FaHeartbeat, FaRobot, FaWrench } from 're
 
 import type { ThemeDefinition } from './types'
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Internal types
-// ─────────────────────────────────────────────────────────────────────────────
 
 interface CatppuccinoFlavor {
   base: string
   blue: string
-  // ── Neutral scale (dark → light within each flavor) ──
   crust: string
   flamingo: string
   green: string
@@ -23,7 +20,6 @@ interface CatppuccinoFlavor {
   peach: string
   pink: string
   red: string
-  // ── Accent colors ──────────────────────────────────
   rosewater: string
   sapphire: string
   sky: string
@@ -37,9 +33,7 @@ interface CatppuccinoFlavor {
   yellow: string
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Utility
-// ─────────────────────────────────────────────────────────────────────────────
 
 /** Convert a 6-digit hex color to a comma-separated RGB triplet for use in rgba(). */
 function hex2rgb(hex: string): string {
@@ -53,9 +47,7 @@ function hex2rgb(hex: string): string {
 /** Build a semi-transparent overlay: rgba(accentHex, alpha). */
 const tint = (hex: string, alpha: number) => `rgba(${hex2rgb(hex)}, ${alpha.toString()})`
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Flavor palettes — exact values from https://catppuccin.com/palette/
-// ─────────────────────────────────────────────────────────────────────────────
 
 /** Latte — the one light flavor; used as the light-mode companion for every theme. */
 const latte: CatppuccinoFlavor = {
@@ -177,9 +169,7 @@ const mocha: CatppuccinoFlavor = {
   yellow: '#f9e2af',
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Factory
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Build a complete ThemeDefinition for a Catppuccin flavor pair.
@@ -193,7 +183,6 @@ function makeCatppuccinoTheme(
   darkFlavor: CatppuccinoFlavor,
   lightFlavor: CatppuccinoFlavor = latte,
 ): ThemeDefinition {
-  // ── CSS custom properties ──────────────────────────────────────────────────
   const cssVars: ThemeDefinition['cssVars'] = {
     dark: {
       '--accent-color': darkFlavor.blue,
@@ -219,7 +208,6 @@ function makeCatppuccinoTheme(
     },
   }
 
-  // ── Terminal palette ───────────────────────────────────────────────────────
   const terminal: ThemeDefinition['terminal'] = {
     colors: (isDark) => {
       const p = isDark ? darkFlavor : lightFlavor
@@ -256,7 +244,6 @@ function makeCatppuccinoTheme(
     ],
   }
 
-  // ── Category card themes ───────────────────────────────────────────────────
   // Each card gets a semi-transparent accent tint layered over the base
   // background, keeping the palette's character without fully saturating.
 
@@ -321,7 +308,6 @@ function makeCatppuccinoTheme(
     }
   }
 
-  // ── Article category badge colors ──────────────────────────────────────────
   const articleCategoryColors: ThemeDefinition['articleCategoryColors'] = {
     data: {
       bg: (dk) => tint(dk ? darkFlavor.green : lightFlavor.green, 0.15),
@@ -349,7 +335,6 @@ function makeCatppuccinoTheme(
     },
   }
 
-  // ── Publication venue badge colors ─────────────────────────────────────────
   const publicationVenueColors: ThemeDefinition['publicationVenueColors'] = {
     conference: {
       bg: (dk) => tint(dk ? darkFlavor.sky : lightFlavor.sky, 0.15),
@@ -388,7 +373,6 @@ function makeCatppuccinoTheme(
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 // Exported themes
 //
 // Each dark flavor is paired with Latte as the light-mode companion —
@@ -396,7 +380,6 @@ function makeCatppuccinoTheme(
 //
 // To activate one of these, edit src/themes/index.ts:
 //   export { catppuccinoMochaTheme as activeTheme } from './catppuccin'
-// ─────────────────────────────────────────────────────────────────────────────
 
 /** Mocha — the original Catppuccin; darkest and most color-rich. */
 export const catppuccinoMochaTheme = makeCatppuccinoTheme('Catppuccin Mocha', mocha)

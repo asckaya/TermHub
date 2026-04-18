@@ -19,10 +19,10 @@ const BOOT_LOGS = [
 ]
 
 const ASCII_LOGO = `
-   _      ____     ____   _  __     _    
-  / \\    / ___|   / ___| | |/ /    / \   
- / _ \\   \\___ \\  | |     | ' /    / _ \\  
-/ ___ \\   ___) | | |___  | . \\   / ___ \\ 
+   _      ____     ____   _  __     _
+  / \\    / ___|   / ___| | |/ /    / \\
+ / _ \\   \\___ \\  | |     | ' /    / _ \\
+/ ___ \\   ___) | | |___  | . \\   / ___ \\
 /_/   \\_\\ |____/   \\____| |_|\\_\\ /_/   \\_\\
 `
 
@@ -73,9 +73,9 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
       {!isExiting && (
         <motion.div
           animate={{ opacity: 1 }}
+          className="fixed inset-0 z-[9999] overflow-hidden"
           exit={{ filter: 'blur(20px)', opacity: 0, scale: 1.1 }}
           initial={{ opacity: 1 }}
-          className="fixed inset-0 z-[9999] overflow-hidden"
           style={{ backgroundColor: 'var(--bg-color)', transition: 'background-color 0.3s ease' }}
           transition={{ duration: 0.6, ease: 'easeInOut' }}
         >
@@ -85,8 +85,8 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
               <div className="flex flex-col items-start gap-1 mb-6 w-full">
                 {visibleLogs.map((log, i) => (
                   <div
-                    key={i}
                     className="font-mono text-[10px] md:text-xs lg:text-sm opacity-90"
+                    key={i}
                     style={{ color: tc.prompt }}
                   >
                     {log}
@@ -108,7 +108,10 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
                     >
                       {ASCII_LOGO}
                     </pre>
-                    <p className="font-mono text-xs mt-4 opacity-80" style={{ color: tc.secondary }}>
+                    <p
+                      className="font-mono text-xs mt-4 opacity-80"
+                      style={{ color: tc.secondary }}
+                    >
                       Welcome to Ascka Personal System v1.0
                     </p>
                   </motion.div>
@@ -121,7 +124,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
           <div
             className="absolute inset-0 pointer-events-none z-[10000]"
             style={{
-              background: isDark 
+              background: isDark
                 ? 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%)'
                 : 'linear-gradient(rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.03) 50%)',
               backgroundSize: '100% 4px',

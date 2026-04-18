@@ -3,7 +3,7 @@ import type { ProjectItem } from '@/types'
 import { useThemeContext } from '@/themes/hooks'
 import { activeTheme as staticActiveTheme } from '@/themes/index'
 
-export type { CatTheme } from '@/themes'
+export type { CatTheme, TerminalColors } from '@/themes'
 
 // Hooks for components to get the reactive theme
 export const useThemeConfig = () => {

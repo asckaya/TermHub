@@ -1,7 +1,5 @@
-// ─────────────────────────────────────────────────────────────────────────────
 // Active theme — change this one import to switch the entire colour scheme.
 //
-// ── Available themes ─────────────────────────────────────────────────────────
 //
 //  Nord (default)
 //    import { nordTheme as activeTheme } from './nord'
@@ -24,14 +22,12 @@
 //  Ayu Mirage            soothing, low contrast (dark) + Ayu Light (light)
 //    import { ayuMirageTheme as activeTheme } from './ayu'
 //
-// ── To add your own theme ────────────────────────────────────────────────────
 //   1. Duplicate `nord.ts` → e.g. `dracula.ts`
 //   2. Replace colour values inside the ThemeDefinition object
 //   3. Change the import below to point at your new file
 //
 // Nothing else needs to change — all components import through the adapter
 // in `src/config/theme.ts`, which always resolves to the active theme.
-// ─────────────────────────────────────────────────────────────────────────────
 
 export { catppuccinoMochaTheme as activeTheme } from './catppuccin'
 

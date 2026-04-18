@@ -16,8 +16,6 @@ import {
   TeachingJsonSchema,
 } from '../schemas'
 
-// ── Glob Imports ──────────────────────────────────────────────────────────
-
 const globsEn = {
   about: import.meta.glob('@content/about.mdx', { eager: true }),
   articles: import.meta.glob('@content/articles/*.mdx', { eager: true }),
@@ -31,8 +29,6 @@ const globsZh = {
   projects: import.meta.glob('@content/zh/projects/*.mdx', { eager: true }),
   pubs: import.meta.glob('@content/zh/publications/*.mdx', { eager: true }),
 }
-
-// ── Helpers ───────────────────────────────────────────────────────────────
 
 interface MdxModule {
   default: React.ComponentType
@@ -72,8 +68,6 @@ function parseContent<T>(schema: z.ZodType<T>, data: unknown, label: string): T 
   return result.data
 }
 
-// ── JSON imports ──────────────────────────────────────────────────────────
-
 import awardsEn from '@content/awards.json'
 import expEn from '@content/experience.json'
 import logosEn from '@content/logos.json'
@@ -90,8 +84,6 @@ import resZh from '@content/zh/research.json'
 import siteZh from '@content/zh/site.json'
 import talksZh from '@content/zh/talks.json'
 import teachZh from '@content/zh/teaching.json'
-
-// ── Data assembly ─────────────────────────────────────────────────────────
 
 const build = (lang: 'en' | 'zh') => {
   const g = lang === 'en' ? globsEn : globsZh
@@ -149,8 +141,6 @@ const build = (lang: 'en' | 'zh') => {
 
 const cache = { en: build('en'), zh: build('zh') }
 export const getLocalizedData = (l: string) => (l === 'zh' ? cache.zh : cache.en)
-
-// ── Static exports ────────────────────────────────────────────────────────
 
 export const projects = cache.en.projects
 export const publications = cache.en.publications

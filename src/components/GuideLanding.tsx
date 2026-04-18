@@ -10,27 +10,20 @@ const GuideLanding = () => {
           </p>
 
           <div className="flex flex-col gap-3 max-w-3xl">
-            <div
-              className="flex items-center justify-between p-4 rounded-md border bg-card text-card-foreground shadow-sm"
-            >
+            <div className="flex items-center justify-between p-4 rounded-md border bg-card text-card-foreground shadow-sm">
               <span className="text-sm md:text-base">Open documentation</span>
-              <a 
-                href="/docs" 
-                className="text-cyan-500 hover:underline font-mono text-sm"
-              >
+              <a className="text-cyan-500 hover:underline font-mono text-sm" href="/docs">
                 /docs
               </a>
             </div>
 
-            <div
-              className="flex items-center justify-between p-4 rounded-md border bg-card text-card-foreground shadow-sm"
-            >
+            <div className="flex items-center justify-between p-4 rounded-md border bg-card text-card-foreground shadow-sm">
               <span className="text-sm md:text-base">Project repository</span>
               <a
+                className="text-cyan-500 hover:underline font-mono text-sm"
                 href="https://github.com/asckaya/TermHub"
                 rel="noopener noreferrer"
                 target="_blank"
-                className="text-cyan-500 hover:underline font-mono text-sm"
               >
                 GitHub
               </a>

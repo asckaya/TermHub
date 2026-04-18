@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-
 import { type IconType } from 'react-icons'
 import {
   FaAtom,
@@ -18,16 +17,8 @@ import {
 } from 'react-icons/fa'
 
 import { Badge } from '@/components/ui/badge'
-import {
-  Collapsible,
-  CollapsibleContent,
-} from '@/components/ui/collapsible'
-import {
-  Dialog,
-  DialogContent,
-  DialogOverlay,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
+import { Dialog, DialogContent, DialogOverlay, DialogTitle } from '@/components/ui/dialog'
 import { useThemeConfig } from '@/config/theme'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
@@ -38,7 +29,7 @@ import { highlightData } from '../utils/highlightData'
 import { MotionBox, MotionHover, MotionList } from './animations/MotionList'
 
 /* ── Emoji → Icon mapping ─────────────────────────────────────── */
-const emojiIconMap: Record<string, IconType> = {
+const emojiIconMap: Record<string, IconType | undefined> = {
   '⚽': FaFutbol,
   '🌀': FaAtom,
   '🌐': FaGlobe,
@@ -158,14 +149,11 @@ const PublicationsTerminal: React.FC = () => {
     second: '2-digit',
   })
 
-  const showImagePreview = useCallback(
-    (src?: string, alt?: string) => {
-      if (!src) return
-      setImagePreview({ alt: alt ?? 'publication preview', src })
-      setIsImageOpen(true)
-    },
-    [],
-  )
+  const showImagePreview = useCallback((src?: string, alt?: string) => {
+    if (!src) return
+    setImagePreview({ alt: alt ?? 'publication preview', src })
+    setIsImageOpen(true)
+  }, [])
 
   const closeImageModal = () => setIsImageOpen(false)
 
@@ -199,8 +187,8 @@ const PublicationsTerminal: React.FC = () => {
                 const brightness = 0.6 + 0.4 * Math.abs(Math.sin((i + tick * 0.5) * 0.3))
                 return (
                   <div
-                    key={i}
                     className="flex-1 h-full"
+                    key={i}
                     style={{ backgroundColor: palette[colorIdx], opacity: brightness }}
                   />
                 )
@@ -221,10 +209,14 @@ const PublicationsTerminal: React.FC = () => {
               </div>
               <div className="flex items-center gap-1">
                 <span style={{ color: tc.param }}>const </span>
-                <span className="font-bold" style={{ color: tc.prompt }}>papers</span>
+                <span className="font-bold" style={{ color: tc.prompt }}>
+                  papers
+                </span>
                 <span style={{ color: tc.secondary }}> = </span>
                 <span style={{ color: tc.param }}>new </span>
-                <span className="font-bold" style={{ color: tc.command }}>Explorer</span>
+                <span className="font-bold" style={{ color: tc.command }}>
+                  Explorer
+                </span>
                 <span style={{ color: tc.secondary }}>(</span>
                 <span style={{ color: tc.highlight }}>'publications'</span>
                 <span style={{ color: tc.secondary }}>)</span>
@@ -242,20 +234,20 @@ const PublicationsTerminal: React.FC = () => {
               <span className="font-bold" style={{ color: tc.prompt }}>
                 {siteOwner.terminalUsername}
               </span>
-              <span className="mx-1" style={{ color: tc.border }}>·</span>
+              <span className="mx-1" style={{ color: tc.border }}>
+                ·
+              </span>
               <span style={{ color: tc.highlight }}>{stats.total}</span>
               <span> papers, </span>
-              <span style={{ color: tc.success }}>
-                {stats.firstAuthor} first-authored
-              </span>
+              <span style={{ color: tc.success }}>{stats.firstAuthor} first-authored</span>
               <span> across </span>
               <span style={{ color: tc.command }}>
                 {Object.keys(stats.byVenue).length} venue types
               </span>
-              <span className="mx-1" style={{ color: tc.border }}>·</span>
-              <span style={{ color: tc.param }}>
-                {stats.withCode} open-source
+              <span className="mx-1" style={{ color: tc.border }}>
+                ·
               </span>
+              <span style={{ color: tc.param }}>{stats.withCode} open-source</span>
             </div>
             <div className="flex-shrink-0" style={{ color: tc.command }}>
               ~/papers
@@ -263,19 +255,26 @@ const PublicationsTerminal: React.FC = () => {
           </div>
 
           {/* Control Panel: Styled like terminal input */}
-          <div className="px-4 py-3 border-b" style={{ backgroundColor: tc.bg, borderColor: tc.border }}>
+          <div
+            className="px-4 py-3 border-b"
+            style={{ backgroundColor: tc.bg, borderColor: tc.border }}
+          >
             <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
               {/* Search Bar */}
               <div
                 className={cn(
-                  "flex items-center flex-1 px-3 py-1.5 rounded-md border transition-all duration-200 focus-within:ring-1",
-                  isDark ? "bg-black/20" : "bg-black/5"
+                  'flex items-center flex-1 px-3 py-1.5 rounded-md border transition-all duration-200 focus-within:ring-1',
+                  isDark ? 'bg-black/20' : 'bg-black/5',
                 )}
                 style={{ borderColor: tc.border }}
               >
                 <FaChevronRight className="text-[10px] mr-2" style={{ color: tc.prompt }} />
-                <span className="text-xs font-bold mr-2" style={{ color: tc.command }}>grep</span>
-                <span className="hidden sm:inline text-xs mr-2" style={{ color: tc.secondary }}>-i</span>
+                <span className="text-xs font-bold mr-2" style={{ color: tc.command }}>
+                  grep
+                </span>
+                <span className="hidden sm:inline text-xs mr-2" style={{ color: tc.secondary }}>
+                  -i
+                </span>
                 <input
                   className="flex-1 bg-transparent border-none outline-none focus:ring-0 p-0 text-xs font-mono placeholder:opacity-50"
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -295,12 +294,12 @@ const PublicationsTerminal: React.FC = () => {
                     onChange={(e) => setSelectedYear(e.target.value)}
                     style={{
                       backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : 'white',
-                      borderColor: tc.border,
-                      color: tc.param,
                       backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${encodeURIComponent(tc.param)}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>')`,
                       backgroundPosition: 'right 8px center',
                       backgroundRepeat: 'no-repeat',
                       backgroundSize: '12px',
+                      borderColor: tc.border,
+                      color: tc.param,
                     }}
                     value={selectedYear}
                   >
@@ -320,12 +319,12 @@ const PublicationsTerminal: React.FC = () => {
                     onChange={(e) => setSelectedVenue(e.target.value)}
                     style={{
                       backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : 'white',
-                      borderColor: tc.border,
-                      color: tc.param,
                       backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${encodeURIComponent(tc.param)}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>')`,
                       backgroundPosition: 'right 8px center',
                       backgroundRepeat: 'no-repeat',
                       backgroundSize: '12px',
+                      borderColor: tc.border,
+                      color: tc.param,
                     }}
                     value={selectedVenue}
                   >
@@ -340,8 +339,8 @@ const PublicationsTerminal: React.FC = () => {
                 {/* Stats Toggle Button */}
                 <button
                   className={cn(
-                    "flex items-center justify-center flex-1 md:flex-initial h-[34px] px-3 rounded-md border text-xs font-bold font-mono transition-all duration-200 cursor-pointer",
-                    showStats ? "shadow-inner" : "hover:opacity-80"
+                    'flex items-center justify-center flex-1 md:flex-initial h-[34px] px-3 rounded-md border text-xs font-bold font-mono transition-all duration-200 cursor-pointer',
+                    showStats ? 'shadow-inner' : 'hover:opacity-80',
                   )}
                   onClick={() => setShowStats(!showStats)}
                   style={{
@@ -363,30 +362,65 @@ const PublicationsTerminal: React.FC = () => {
               <MotionBox delay={0.1}>
                 <div
                   className="px-4 py-3 border-b flex flex-wrap gap-6"
-                  style={{ 
+                  style={{
                     backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.03)',
-                    borderColor: tc.border 
+                    borderColor: tc.border,
                   }}
                 >
                   <div>
-                    <div className="text-[10px] uppercase tracking-wider" style={{ color: tc.info }}>Total</div>
-                    <div className="text-xl font-bold" style={{ color: tc.highlight }}>{stats.total}</div>
+                    <div
+                      className="text-[10px] uppercase tracking-wider"
+                      style={{ color: tc.info }}
+                    >
+                      Total
+                    </div>
+                    <div className="text-xl font-bold" style={{ color: tc.highlight }}>
+                      {stats.total}
+                    </div>
                   </div>
                   <div>
-                    <div className="text-[10px] uppercase tracking-wider" style={{ color: tc.info }}>First Author</div>
-                    <div className="text-xl font-bold" style={{ color: tc.success }}>{stats.firstAuthor}</div>
+                    <div
+                      className="text-[10px] uppercase tracking-wider"
+                      style={{ color: tc.info }}
+                    >
+                      First Author
+                    </div>
+                    <div className="text-xl font-bold" style={{ color: tc.success }}>
+                      {stats.firstAuthor}
+                    </div>
                   </div>
                   <div>
-                    <div className="text-[10px] uppercase tracking-wider" style={{ color: tc.info }}>With Code</div>
-                    <div className="text-xl font-bold" style={{ color: tc.command }}>{stats.withCode}</div>
+                    <div
+                      className="text-[10px] uppercase tracking-wider"
+                      style={{ color: tc.info }}
+                    >
+                      With Code
+                    </div>
+                    <div className="text-xl font-bold" style={{ color: tc.command }}>
+                      {stats.withCode}
+                    </div>
                   </div>
                   <div>
-                    <div className="text-[10px] uppercase tracking-wider" style={{ color: tc.info }}>Conferences</div>
-                    <div className="text-xl font-bold" style={{ color: tc.param }}>{stats.byVenue.conference || 0}</div>
+                    <div
+                      className="text-[10px] uppercase tracking-wider"
+                      style={{ color: tc.info }}
+                    >
+                      Conferences
+                    </div>
+                    <div className="text-xl font-bold" style={{ color: tc.param }}>
+                      {stats.byVenue.conference || 0}
+                    </div>
                   </div>
                   <div>
-                    <div className="text-[10px] uppercase tracking-wider" style={{ color: tc.info }}>Workshops</div>
-                    <div className="text-xl font-bold" style={{ color: tc.warning }}>{stats.byVenue.workshop || 0}</div>
+                    <div
+                      className="text-[10px] uppercase tracking-wider"
+                      style={{ color: tc.info }}
+                    >
+                      Workshops
+                    </div>
+                    <div className="text-xl font-bold" style={{ color: tc.warning }}>
+                      {stats.byVenue.workshop || 0}
+                    </div>
                   </div>
                 </div>
               </MotionBox>
@@ -427,9 +461,11 @@ const PublicationsTerminal: React.FC = () => {
                               e.stopPropagation()
                               showImagePreview(pub.featuredImage, `${pub.title} thumbnail`)
                             }}
-                            style={{ 
-                              backgroundColor: isDark ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.8)',
-                              borderColor: tc.border
+                            style={{
+                              backgroundColor: isDark
+                                ? 'rgba(0,0,0,0.05)'
+                                : 'rgba(255,255,255,0.8)',
+                              borderColor: tc.border,
                             }}
                           >
                             <img
@@ -442,14 +478,16 @@ const PublicationsTerminal: React.FC = () => {
                       )}
                       <div className="flex-1 min-w-0 pr-2">
                         <div className="flex items-start gap-1 mb-1.5">
-                          {pub.emoji && emojiIconMap[pub.emoji] && (
-                            <React.Fragment>
-                              {React.createElement(emojiIconMap[pub.emoji], {
-                                className: "flex-shrink-0 mt-1 mr-1",
-                                style: { color: venueColors[pub.venueType].fg }
-                              })}
-                            </React.Fragment>
-                          )}
+                          {(() => {
+                            const Icon = pub.emoji ? emojiIconMap[pub.emoji] : null
+                            if (!Icon) return null
+                            return (
+                              <Icon
+                                className="flex-shrink-0 mt-1 mr-1"
+                                style={{ color: venueColors[pub.venueType].fg }}
+                              />
+                            )
+                          })()}
                           <h3
                             className="text-sm md:text-base font-semibold leading-relaxed"
                             style={{ color: tc.text }}
@@ -460,10 +498,10 @@ const PublicationsTerminal: React.FC = () => {
                         <div className="flex items-center flex-wrap gap-2 mb-2">
                           <span
                             className="px-1.5 py-0 text-[10px] font-mono border rounded-sm whitespace-normal text-left"
-                            style={{ 
+                            style={{
                               backgroundColor: `${venueColors[pub.venueType].bg}20`,
                               borderColor: venueColors[pub.venueType].fg,
-                              color: venueColors[pub.venueType].fg 
+                              color: venueColors[pub.venueType].fg,
                             }}
                           >
                             {pub.venue.includes(pub.year.toString())
@@ -472,30 +510,30 @@ const PublicationsTerminal: React.FC = () => {
                           </span>
                           <Badge
                             className="text-[10px] border-none"
-                            style={{ 
+                            style={{
                               backgroundColor: `${venueColors[pub.venueType].fg}20`,
-                              color: venueColors[pub.venueType].fg
+                              color: venueColors[pub.venueType].fg,
                             }}
                           >
                             {venueColors[pub.venueType].label}
                           </Badge>
                           {pub.specialBadges?.map((badge, i) => (
                             <Badge
-                              key={i}
                               className="text-[10px] border-none"
-                              style={{ 
-                                backgroundColor: badge === 'Best Paper' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(107, 114, 128, 0.2)',
-                                color: badge === 'Best Paper' ? '#ef4444' : tc.secondary
+                              key={i}
+                              style={{
+                                backgroundColor:
+                                  badge === 'Best Paper'
+                                    ? 'rgba(239, 68, 68, 0.2)'
+                                    : 'rgba(107, 114, 128, 0.2)',
+                                color: badge === 'Best Paper' ? '#ef4444' : tc.secondary,
                               }}
                             >
                               {badge}
                             </Badge>
                           ))}
                         </div>
-                        <div
-                          className="text-xs leading-relaxed"
-                          style={{ color: tc.secondary }}
-                        >
+                        <div className="text-xs leading-relaxed" style={{ color: tc.secondary }}>
                           {pub.authors.map((author, i) => {
                             const cleanAuthor = author.replace('*', '')
                             const hasAsterisk = author.includes('*')
@@ -508,7 +546,12 @@ const PublicationsTerminal: React.FC = () => {
                                   <span className="font-bold" style={{ color: tc.success }}>
                                     {cleanAuthor}
                                     {hasAsterisk && (
-                                      <span className="relative -top-0.5" style={{ color: tc.warning }}>*</span>
+                                      <span
+                                        className="relative -top-0.5"
+                                        style={{ color: tc.warning }}
+                                      >
+                                        *
+                                      </span>
                                     )}
                                     {pub.isFirstAuthor && i === 0 && !hasAsterisk && ' (1st)'}
                                     {pub.isCorrespondingAuthor && ' (†)'}
@@ -517,7 +560,12 @@ const PublicationsTerminal: React.FC = () => {
                                   <span>
                                     {cleanAuthor}
                                     {hasAsterisk && (
-                                      <span className="relative -top-0.5" style={{ color: tc.warning }}>*</span>
+                                      <span
+                                        className="relative -top-0.5"
+                                        style={{ color: tc.warning }}
+                                      >
+                                        *
+                                      </span>
                                     )}
                                   </span>
                                 )}
@@ -543,7 +591,9 @@ const PublicationsTerminal: React.FC = () => {
                                 onClick={(e) => e.stopPropagation()}
                                 target="_blank"
                               >
-                                <Badge className="bg-blue-500/20 text-blue-400 border-none text-[10px]">PDF</Badge>
+                                <Badge className="bg-blue-500/20 text-blue-400 border-none text-[10px]">
+                                  PDF
+                                </Badge>
                               </a>
                             </MotionHover>
                           )}
@@ -555,7 +605,9 @@ const PublicationsTerminal: React.FC = () => {
                                 onClick={(e) => e.stopPropagation()}
                                 target="_blank"
                               >
-                                <Badge className="bg-green-500/20 text-green-400 border-none text-[10px]">CODE</Badge>
+                                <Badge className="bg-green-500/20 text-green-400 border-none text-[10px]">
+                                  CODE
+                                </Badge>
                               </a>
                             </MotionHover>
                           )}
@@ -567,7 +619,9 @@ const PublicationsTerminal: React.FC = () => {
                                 onClick={(e) => e.stopPropagation()}
                                 target="_blank"
                               >
-                                <Badge className="bg-purple-500/20 text-purple-400 border-none text-[10px]">PROJ</Badge>
+                                <Badge className="bg-purple-500/20 text-purple-400 border-none text-[10px]">
+                                  PROJ
+                                </Badge>
                               </a>
                             </MotionHover>
                           )}
@@ -585,17 +639,25 @@ const PublicationsTerminal: React.FC = () => {
                       <CollapsibleContent>
                         <div
                           className="px-6 py-4 border-l-2 mb-4 mx-4"
-                          style={{ 
+                          style={{
                             borderColor: venueColors[pub.venueType].fg,
-                            marginLeft: pub.featuredImage ? 'calc(320px + var(--spacing) * 6 + 1rem)' : '1rem'
+                            marginLeft: pub.featuredImage
+                              ? 'calc(320px + var(--spacing) * 6 + 1rem)'
+                              : '1rem',
                           }}
                         >
                           {pub.abstract && (
                             <div className="mb-4">
-                              <div className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: tc.info }}>
+                              <div
+                                className="text-[10px] font-bold uppercase tracking-widest mb-1"
+                                style={{ color: tc.info }}
+                              >
                                 // Abstract
                               </div>
-                              <p className="text-xs leading-relaxed italic" style={{ color: tc.secondary }}>
+                              <p
+                                className="text-xs leading-relaxed italic"
+                                style={{ color: tc.secondary }}
+                              >
                                 {pub.abstract}
                               </p>
                             </div>
@@ -604,8 +666,8 @@ const PublicationsTerminal: React.FC = () => {
                             <div className="flex flex-wrap gap-2">
                               {pub.keywords.map((kw, i) => (
                                 <span
-                                  key={i}
                                   className="text-[10px] font-mono"
+                                  key={i}
                                   style={{ color: tc.highlight }}
                                 >
                                   #{kw}
@@ -615,7 +677,7 @@ const PublicationsTerminal: React.FC = () => {
                           )}
                           {pub.Content && (
                             <div className="mt-4">
-                                <pub.Content />
+                              <pub.Content />
                             </div>
                           )}
                         </div>
@@ -632,7 +694,9 @@ const PublicationsTerminal: React.FC = () => {
             className="flex items-center px-4 py-2 border-t text-xs font-mono"
             style={{ backgroundColor: tc.header, borderColor: tc.border }}
           >
-            <span className="flex-shrink-0 mr-2" style={{ color: tc.prompt }}>$</span>
+            <span className="flex-shrink-0 mr-2" style={{ color: tc.prompt }}>
+              $
+            </span>
             <input
               className="flex-1 bg-transparent border-none outline-none focus:ring-0 p-0 text-xs font-mono placeholder:opacity-50"
               onChange={(e) => setCurrentCommand(e.target.value)}
@@ -644,10 +708,7 @@ const PublicationsTerminal: React.FC = () => {
               type="text"
               value={currentCommand}
             />
-            <div
-              className="ml-1 h-3 w-1.5 animate-pulse"
-              style={{ backgroundColor: tc.prompt }}
-            />
+            <div className="ml-1 h-3 w-1.5 animate-pulse" style={{ backgroundColor: tc.prompt }} />
           </div>
         </div>
       </div>

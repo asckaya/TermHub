@@ -51,9 +51,7 @@ const Contact = () => {
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="flex flex-col gap-8 items-stretch">
         <MotionBox delay={0.1}>
-          <h1 className="text-3xl font-bold mb-6">
-            {t('contact.title')}
-          </h1>
+          <h1 className="text-3xl font-bold mb-6">{t('contact.title')}</h1>
           <div className="flex items-center gap-2 mb-4" style={{ color: tc.secondary }}>
             <i className="fa-solid fa-clock text-sm" />
             <span className="text-sm">{t('contact.responseTime')}</span>
@@ -62,10 +60,10 @@ const Contact = () => {
           <MotionBox delay={0.2}>
             <pre
               className="font-mono text-sm mb-6 p-4 rounded-md border shadow-inner overflow-x-auto"
-              style={{ 
+              style={{
                 backgroundColor: tc.header,
                 borderColor: tc.border,
-                color: tc.text
+                color: tc.text,
               }}
             >
               {`# ${t('contact.contactInfo')}
@@ -79,9 +77,9 @@ LOCATION = "${siteOwner.contact.location}"`}
           <MotionBox delay={0.3}>
             <div
               className="rounded-md border shadow-lg mt-8 p-6"
-              style={{ 
+              style={{
                 backgroundColor: tc.bg,
-                borderColor: tc.border
+                borderColor: tc.border,
               }}
             >
               <h2
@@ -108,7 +106,7 @@ LOCATION = "${siteOwner.contact.location}"`}
                             href={link.href}
                             rel="noopener noreferrer"
                             style={{
-                              color: tc.command
+                              color: tc.command,
                             }}
                             target="_blank"
                           >

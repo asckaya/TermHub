@@ -99,7 +99,7 @@ const NotFound: React.FC = () => {
         className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] rounded-full blur-[120px] pointer-events-none -z-10"
         style={{
           backgroundColor: tc.highlight,
-          opacity: isDark ? 0.15 : 0.05
+          opacity: isDark ? 0.15 : 0.05,
         }}
       />
 
@@ -107,25 +107,27 @@ const NotFound: React.FC = () => {
         <div
           className="w-full rounded-xl border font-mono text-xs md:text-sm overflow-hidden relative transition-shadow duration-300"
           style={{
+            animation: 'flicker 0.15s infinite alternate',
             backgroundColor: tc.bg,
             borderColor: tc.border,
             boxShadow: isDark ? '0 20px 50px rgba(0,0,0,0.6)' : '0 10px 30px rgba(0,0,0,0.1)',
-            animation: 'flicker 0.15s infinite alternate'
           }}
         >
           {/* CRT Overlay */}
           <div
             className="absolute inset-0 pointer-events-none z-10"
             style={{
-              background: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02))',
-              backgroundSize: '100% 3px, 2px 100%'
+              background:
+                'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02))',
+              backgroundSize: '100% 3px, 2px 100%',
             }}
           />
           <div
             className="absolute left-0 -top-[100px] w-full h-[100px] pointer-events-none z-[11]"
             style={{
-              background: 'linear-gradient(to bottom, transparent 0%, rgba(32, 255, 32, 0.02) 50%, transparent 100%)',
-              animation: 'scanline 8s linear infinite'
+              animation: 'scanline 8s linear infinite',
+              background:
+                'linear-gradient(to bottom, transparent 0%, rgba(32, 255, 32, 0.02) 50%, transparent 100%)',
             }}
           />
 
@@ -149,15 +151,17 @@ const NotFound: React.FC = () => {
 
           {/* Terminal body */}
           <div className="px-4 md:px-6 py-4 md:py-5 leading-relaxed">
-            <div className={cn("flex flex-wrap items-center gap-2", showLogs ? "mb-2" : "mb-0")}>
+            <div className={cn('flex flex-wrap items-center gap-2', showLogs ? 'mb-2' : 'mb-0')}>
               <span style={{ color: tc.prompt }}>{prompt}</span>
-              <span className="whitespace-pre" style={{ color: tc.text }}>{commandText}</span>
+              <span className="whitespace-pre" style={{ color: tc.text }}>
+                {commandText}
+              </span>
               {!showLogs && (
                 <div
                   className="inline-block w-[0.58em] h-[1.15em] ml-0.5 rounded-[1px] transition-opacity duration-75"
-                  style={{ 
+                  style={{
                     backgroundColor: tc.text,
-                    opacity: cursorOn ? 0.85 : 0
+                    opacity: cursorOn ? 0.85 : 0,
                   }}
                 />
               )}
@@ -166,7 +170,7 @@ const NotFound: React.FC = () => {
             {showLogs && (
               <div className="mb-4">
                 {logs.map((log, i) => (
-                  <div key={i} className="text-xs" style={{ color: tc.muted }}>
+                  <div className="text-xs" key={i} style={{ color: tc.muted }}>
                     {log}
                   </div>
                 ))}
@@ -175,13 +179,22 @@ const NotFound: React.FC = () => {
 
             {showFinalResponse && (
               <div className="text-xs">
-                <div className="animate-fade-in" style={{ color: tc.secondary, animationDelay: '0.05s' }}>
+                <div
+                  className="animate-fade-in"
+                  style={{ animationDelay: '0.05s', color: tc.secondary }}
+                >
                   HTTP/1.1 404 Not Found
                 </div>
-                <div className="animate-fade-in" style={{ color: tc.secondary, animationDelay: '0.1s' }}>
+                <div
+                  className="animate-fade-in"
+                  style={{ animationDelay: '0.1s', color: tc.secondary }}
+                >
                   {t('notFound.date', 'Date:')} {currentDate}
                 </div>
-                <div className="animate-fade-in" style={{ color: tc.secondary, animationDelay: '0.15s' }}>
+                <div
+                  className="animate-fade-in"
+                  style={{ animationDelay: '0.15s', color: tc.secondary }}
+                >
                   {t('notFound.contentType', 'Content-Type: text/plain')}
                 </div>
                 <div className="h-4" />
@@ -189,7 +202,7 @@ const NotFound: React.FC = () => {
                 {/* ASCII Art 404 */}
                 <div
                   className="whitespace-pre font-mono animate-fade-in"
-                  style={{ color: tc.error, animationDelay: '0.3s' }}
+                  style={{ animationDelay: '0.3s', color: tc.error }}
                 >
                   {ASCII_404}
                 </div>
@@ -197,13 +210,13 @@ const NotFound: React.FC = () => {
                 <div className="h-4" />
                 <div
                   className="font-bold animate-fade-in"
-                  style={{ color: tc.error, animationDelay: '0.5s' }}
+                  style={{ animationDelay: '0.5s', color: tc.error }}
                 >
                   {t('notFound.errorMessage', 'Error: 404 Page Not Found')}
                 </div>
                 <div
                   className="mt-2 animate-fade-in"
-                  style={{ color: tc.muted, animationDelay: '0.7s' }}
+                  style={{ animationDelay: '0.7s', color: tc.muted }}
                 >
                   {t('notFound.description', 'The requested URL was not found on this server.')}
                 </div>
@@ -212,9 +225,9 @@ const NotFound: React.FC = () => {
                   <span style={{ color: tc.prompt }}>{prompt}</span>
                   <div
                     className="inline-block w-[0.58em] h-[1.15em] ml-0.5 rounded-[1px] transition-opacity duration-75"
-                    style={{ 
+                    style={{
                       backgroundColor: tc.text,
-                      opacity: cursorOn ? 0.85 : 0
+                      opacity: cursorOn ? 0.85 : 0,
                     }}
                   />
                 </div>
@@ -226,8 +239,8 @@ const NotFound: React.FC = () => {
         {/* Buttons */}
         <div
           className={cn(
-            "flex items-center gap-6 transition-opacity duration-500",
-            showFinalResponse ? "opacity-100" : "opacity-0"
+            'flex items-center gap-6 transition-opacity duration-500',
+            showFinalResponse ? 'opacity-100' : 'opacity-0',
           )}
           style={{ transitionDelay: '0.6s' }}
         >
@@ -241,7 +254,9 @@ const NotFound: React.FC = () => {
               }}
               to="/"
             >
-              <span className="font-bold" style={{ color: tc.prompt }}>~</span>
+              <span className="font-bold" style={{ color: tc.prompt }}>
+                ~
+              </span>
               <span>{t('notFound.returnHome', 'cd ~')}</span>
             </Link>
           </MotionHover>
@@ -256,14 +271,18 @@ const NotFound: React.FC = () => {
                 color: tc.secondary,
               }}
             >
-              <span className="font-bold" style={{ color: tc.muted }}>←</span>
+              <span className="font-bold" style={{ color: tc.muted }}>
+                ←
+              </span>
               <span>{t('notFound.goBack', 'history -1')}</span>
             </button>
           </MotionHover>
         </div>
       </div>
 
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         @keyframes flicker {
           0% { opacity: 0.97; }
           5% { opacity: 0.95; }
@@ -288,7 +307,9 @@ const NotFound: React.FC = () => {
           from { opacity: 0; transform: translateY(5px); }
           to { opacity: 1; transform: translateY(0); }
         }
-      `}} />
+      `,
+        }}
+      />
     </div>
   )
 }

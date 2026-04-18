@@ -29,13 +29,13 @@ const News = () => {
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-3xl font-bold mb-6">
-            {t('news.title')}
-          </h1>
+          <h1 className="text-3xl font-bold mb-6">{t('news.title')}</h1>
           <div className="flex items-center gap-4 mb-6 text-sm opacity-70">
             <div className="flex items-center gap-2">
               <i className="fa-solid fa-clock-rotate-left"></i>
-              <span>{t('news.lastUpdated')} {lastUpdated}</span>
+              <span>
+                {t('news.lastUpdated')} {lastUpdated}
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <i className="fa-solid fa-sort"></i>
@@ -46,10 +46,10 @@ const News = () => {
           <div className="flex flex-col gap-6">
             {news.map((item, index) => (
               <motion.div
-                key={item.title}
                 animate={{ opacity: 1, y: 0 }}
                 className="p-5 rounded-md border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow"
                 initial={{ opacity: 0, y: 20 }}
+                key={item.title}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
               >
                 <div className="flex items-center flex-wrap gap-2 mb-2">
@@ -57,25 +57,23 @@ const News = () => {
                     {item.date}
                   </code>
                   {item.badge !== '' && (
-                    <Badge variant="secondary" className="font-bold">
+                    <Badge className="font-bold" variant="secondary">
                       {item.badge}
                     </Badge>
                   )}
-                  <span className="font-bold ml-1">
-                    {item.title}
-                  </span>
+                  <span className="font-bold ml-1">{item.title}</span>
                 </div>
                 <p className="text-sm leading-relaxed opacity-90">{item.description}</p>
                 {item.links.length > 0 && (
                   <div className="flex flex-wrap gap-3 mt-3">
                     {item.links.map((l) => (
                       <a
-                        key={l.url}
                         className="text-primary hover:underline font-medium text-sm"
                         href={l.url}
+                        key={l.url}
                         rel="noopener noreferrer"
-                        target="_blank"
                         style={{ color: 'var(--accent-color)' }}
+                        target="_blank"
                       >
                         {l.text} →
                       </a>
@@ -92,9 +90,7 @@ const News = () => {
           initial={{ opacity: 0, y: 20 }}
           transition={{ delay: 0.3, duration: 0.5 }}
         >
-          <h2 className="text-2xl font-bold mb-4">
-            {t('news.currentFocus')}
-          </h2>
+          <h2 className="text-2xl font-bold mb-4">{t('news.currentFocus')}</h2>
           <pre
             className="p-4 rounded-md font-mono text-sm overflow-x-auto"
             style={{ backgroundColor: 'var(--header-bg)', color: 'var(--text-color)' }}

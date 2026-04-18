@@ -1,7 +1,5 @@
 import { z } from 'zod'
 
-// ── Shared enums ──────────────────────────────────────────────────────────
-
 export const AwardKindSchema = z.enum([
   'competition',
   'employment',
@@ -24,6 +22,8 @@ export const ProjectCategorySchema = z.enum([
   'tooling',
   'web-app',
 ])
+
+export const ProjectStatusSchema = z.enum(['ongoing', 'completed', 'archived', 'planned'])
 
 export const ProjectRoleSchema = z.enum(['independent', 'lead', 'maintainer', 'tech-lead'])
 
@@ -52,8 +52,6 @@ export const TeachingRoleSchema = z.enum([
 
 // journal is used in real content files alongside the legacy set
 export const VenueTypeSchema = z.enum(['conference', 'demo', 'journal', 'preprint', 'workshop'])
-
-// ── Atomic schemas ─────────────────────────────────────────────────────────
 
 export const AwardSchema = z.object({
   date: z.string(),
@@ -147,8 +145,6 @@ export const TeachingEntrySchema = z.object({
   semester: z.string(),
 })
 
-// ── Compound schemas ───────────────────────────────────────────────────────
-
 /** Frontmatter-only shape (no Content component) */
 export const ProjectFrontmatterSchema = z.object({
   badge: z.string().optional(),
@@ -161,6 +157,7 @@ export const ProjectFrontmatterSchema = z.object({
   isOpenSource: z.boolean().optional(),
   link: z.string().optional(),
   role: ProjectRoleSchema.optional(),
+  status: ProjectStatusSchema.optional(),
   story: z.string().optional(),
   summary: z.string(),
   tags: z.array(z.string()),
@@ -213,8 +210,6 @@ export const AboutFrontmatterSchema = z.object({
     })
     .optional(),
 })
-
-// ── JSON file schemas ──────────────────────────────────────────────────────
 
 export const AwardsJsonSchema = z.array(AwardSchema)
 

@@ -1,10 +1,11 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import type { ExperienceEntry, JourneyPhase } from '@/types'
+
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 
-/** Parse **bold** markers in text */
 const renderBoldText = (text: string, color: string, boldColor: string) => {
   if (!text) return null
   const parts = text.split(/(\*\*.*?\*\*)/g)
@@ -17,7 +18,7 @@ const renderBoldText = (text: string, color: string, boldColor: string) => {
       )
     }
     return (
-      <span key={i} style={{ color: color }}>
+      <span key={i} style={{ color }}>
         {part}
       </span>
     )
@@ -28,15 +29,6 @@ interface JourneySectionProps {
   filterEducation?: boolean
 }
 
-interface JourneyPhase {
-  description: string
-  kind: 'education' | 'work'
-  org: string
-  period: string
-  tags: string[]
-  title: string
-}
-
 const JourneySection: React.FC<JourneySectionProps> = ({ filterEducation = false }) => {
   const { t } = useTranslation()
   const { experienceTimeline } = useLocalizedData()
@@ -44,15 +36,13 @@ const JourneySection: React.FC<JourneySectionProps> = ({ filterEducation = false
   const isDark = colorMode === 'dark'
 
   const phases = useMemo<JourneyPhase[]>(() => {
-    if (!experienceTimeline) return []
-    
     // Map experience timeline to journey phases structure
-    const mapped: JourneyPhase[] = experienceTimeline.map((entry: any) => ({
-      description: entry.summary || entry.highlights?.join(' · ') || '',
+    const mapped: JourneyPhase[] = experienceTimeline.map((entry: ExperienceEntry) => ({
+      description: entry.summary ?? entry.highlights.join(' · '),
       kind: entry.category === 'academic' ? 'education' : 'work',
       org: entry.company,
-      period: `${entry.start} - ${entry.isCurrent ? t('experience.present') : entry.end || ''}`,
-      tags: entry.highlights || [],
+      period: `${entry.start} - ${entry.isCurrent ? t('experience.present') : (entry.end ?? '')}`,
+      tags: entry.highlights,
       title: entry.title,
     }))
 
@@ -74,16 +64,14 @@ const JourneySection: React.FC<JourneySectionProps> = ({ filterEducation = false
     text: isDark ? 'rgb(156, 163, 175)' : 'rgb(107, 114, 128)', // gray-400 : gray-500
   }
 
-  if (!phases || phases.length === 0) return null
+  if (phases.length === 0) return null
 
   return (
     <section className="w-full">
       <div className="max-w-full lg:max-w-7xl px-2 md:px-4 lg:px-8 mx-auto">
         <div className="flex items-center gap-3 mb-4 w-full">
           <div className="bg-cyan-400 rounded-full flex-shrink-0 h-0.5 w-5" />
-          <h3 className="text-base md:text-lg font-semibold">
-            {t('about.myJourney')}
-          </h3>
+          <h3 className="text-base md:text-lg font-semibold">{t('about.myJourney')}</h3>
           <div className="flex-1 h-px" style={{ backgroundColor: tc.line }} />
         </div>
 
@@ -101,10 +89,8 @@ const JourneySection: React.FC<JourneySectionProps> = ({ filterEducation = false
                   <div
                     className="h-3.5 w-3.5 rounded-full border-2"
                     style={{
-                      backgroundColor:
-                        index === 0 ? 'rgb(34, 211, 238)' : tc.dotBg, // Top item (latest) is highlighted
-                      borderColor:
-                        index === 0 ? 'rgb(34, 211, 238)' : tc.border,
+                      backgroundColor: index === 0 ? 'rgb(34, 211, 238)' : tc.dotBg, // Top item (latest) is highlighted
+                      borderColor: index === 0 ? 'rgb(34, 211, 238)' : tc.border,
                     }}
                   />
                 </div>

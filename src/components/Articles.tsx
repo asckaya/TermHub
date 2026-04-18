@@ -4,10 +4,7 @@ import { type IconType } from 'react-icons'
 import { FaExternalLinkAlt, FaGithub, FaMedium, FaYoutube } from 'react-icons/fa'
 import { SiCsdn, SiZhihu } from 'react-icons/si'
 
-import {
-  Collapsible,
-  CollapsibleContent,
-} from '@/components/ui/collapsible'
+import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import { useThemeConfig } from '@/config/theme'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
@@ -173,8 +170,8 @@ const Articles: React.FC = () => {
                 const brightness = 0.6 + 0.4 * Math.abs(Math.sin((i + tick * 0.5) * 0.3))
                 return (
                   <div
-                    key={i}
                     className="flex-1 h-full"
+                    key={i}
                     style={{ backgroundColor: palette[colorIdx], opacity: brightness }}
                   />
                 )
@@ -195,10 +192,14 @@ const Articles: React.FC = () => {
               </div>
               <div className="flex items-center gap-1">
                 <span style={{ color: tc.param }}>const </span>
-                <span className="font-bold" style={{ color: tc.prompt }}>articles</span>
+                <span className="font-bold" style={{ color: tc.prompt }}>
+                  articles
+                </span>
                 <span style={{ color: tc.secondary }}> = </span>
                 <span style={{ color: tc.param }}>new </span>
-                <span className="font-bold" style={{ color: tc.command }}>Reader</span>
+                <span className="font-bold" style={{ color: tc.command }}>
+                  Reader
+                </span>
                 <span style={{ color: tc.secondary }}>(</span>
                 <span style={{ color: tc.highlight }}>'blog'</span>
                 <span style={{ color: tc.secondary }}>)</span>
@@ -216,7 +217,9 @@ const Articles: React.FC = () => {
               <span className="font-bold" style={{ color: tc.prompt }}>
                 {siteOwner.terminalUsername}
               </span>
-              <span className="mx-1" style={{ color: tc.border }}>·</span>
+              <span className="mx-1" style={{ color: tc.border }}>
+                ·
+              </span>
               <span style={{ color: tc.highlight }}>{articles.length}</span>
               <span> {t('articles.technicalArticles')} </span>
               <span style={{ color: tc.command }}>
@@ -252,12 +255,12 @@ const Articles: React.FC = () => {
                 onChange={(e) => setSelectedCategory(e.target.value as CategoryFilter)}
                 style={{
                   backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : 'white',
-                  borderColor: tc.border,
-                  color: tc.text,
                   backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${encodeURIComponent(tc.text)}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>')`,
                   backgroundPosition: 'right 6px center',
                   backgroundRepeat: 'no-repeat',
                   backgroundSize: '10px',
+                  borderColor: tc.border,
+                  color: tc.text,
                 }}
                 value={selectedCategory}
               >
@@ -279,13 +282,19 @@ const Articles: React.FC = () => {
             <div className="px-3 md:px-4 lg:px-5 py-4">
               <MotionList staggerDelay={0.08}>
                 {yearGroups.map(([year, items], gi) => (
-                  <div key={year} className={cn(gi < yearGroups.length - 1 ? "mb-6" : "")}>
+                  <div className={cn(gi < yearGroups.length - 1 ? 'mb-6' : '')} key={year}>
                     {/* Year heading */}
                     <div className="flex items-center gap-2 mb-2 pl-0.5">
-                      <span className="font-mono text-[10px] font-semibold tracking-wide" style={{ color: tc.highlight }}>
+                      <span
+                        className="font-mono text-[10px] font-semibold tracking-wide"
+                        style={{ color: tc.highlight }}
+                      >
                         {year}
                       </span>
-                      <div className="flex-1 h-px opacity-30" style={{ backgroundColor: tc.border }} />
+                      <div
+                        className="flex-1 h-px opacity-30"
+                        style={{ backgroundColor: tc.border }}
+                      />
                       <span className="font-mono text-[10px]" style={{ color: tc.muted }}>
                         {items.length}{' '}
                         {items.length === 1 ? t('articles.article') : t('articles.articles')}
@@ -330,7 +339,7 @@ const Articles: React.FC = () => {
                                   className="flex-shrink-0 w-[60px] md:w-[80px] px-1.5 py-0.5 rounded-sm text-[10px] font-bold text-center uppercase"
                                   style={{
                                     backgroundColor: ct.bg(isDark),
-                                    color: ct.fg(isDark)
+                                    color: ct.fg(isDark),
                                   }}
                                 >
                                   {t(`categoryLabel.${item.category}`).split(' ')[0]}
@@ -338,14 +347,14 @@ const Articles: React.FC = () => {
 
                                 {/* Title + type */}
                                 <div className="flex-1 min-w-0 px-2 md:px-3">
-                                  <div
-                                    className="font-medium truncate"
-                                    style={{ color: tc.text }}
-                                  >
+                                  <div className="font-medium truncate" style={{ color: tc.text }}>
                                     {item.title}
                                   </div>
                                   {articleType && (
-                                    <div className="text-[10px] mt-0.5" style={{ color: tc.secondary }}>
+                                    <div
+                                      className="text-[10px] mt-0.5"
+                                      style={{ color: tc.secondary }}
+                                    >
                                       {articleType}
                                     </div>
                                   )}
@@ -360,13 +369,15 @@ const Articles: React.FC = () => {
                                         href={r.url}
                                         onClick={(e) => e.stopPropagation()}
                                         rel="noopener noreferrer"
-                                        style={{ 
+                                        style={{
                                           borderColor: tc.border,
-                                          color: tc.command
+                                          color: tc.command,
                                         }}
                                         target="_blank"
                                       >
-                                        {React.createElement(linkIcon(r.url), { className: "w-2.5 h-2.5" })}
+                                        {React.createElement(linkIcon(r.url), {
+                                          className: 'w-2.5 h-2.5',
+                                        })}
                                         <span>{r.label}</span>
                                       </a>
                                     </MotionHover>
@@ -387,12 +398,17 @@ const Articles: React.FC = () => {
                                   <div
                                     className="px-3 md:px-4 lg:px-8 py-3 border-l-2 mb-2"
                                     style={{
-                                      backgroundColor: isDark ? 'rgba(76,86,106,0.1)' : 'rgba(203,213,225,0.15)',
-                                      borderColor: ct.fg(isDark)
+                                      backgroundColor: isDark
+                                        ? 'rgba(76,86,106,0.1)'
+                                        : 'rgba(203,213,225,0.15)',
+                                      borderColor: ct.fg(isDark),
                                     }}
                                   >
                                     {/* Summary */}
-                                    <p className="text-xs leading-relaxed mb-2" style={{ color: tc.text }}>
+                                    <p
+                                      className="text-xs leading-relaxed mb-2"
+                                      style={{ color: tc.text }}
+                                    >
                                       {highlightData(item.summary, hlc)}
                                     </p>
 
@@ -401,11 +417,13 @@ const Articles: React.FC = () => {
                                       <div className="flex flex-wrap gap-1.5 mb-2">
                                         {item.tags.map((t) => (
                                           <span
-                                            key={t}
                                             className="px-1.5 py-0.5 font-mono text-[10px] rounded-sm"
-                                            style={{ 
-                                              backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
-                                              color: tc.muted 
+                                            key={t}
+                                            style={{
+                                              backgroundColor: isDark
+                                                ? 'rgba(255,255,255,0.05)'
+                                                : 'rgba(0,0,0,0.04)',
+                                              color: tc.muted,
                                             }}
                                           >
                                             {t}
@@ -424,13 +442,15 @@ const Articles: React.FC = () => {
                                               href={r.url}
                                               onClick={(e) => e.stopPropagation()}
                                               rel="noopener noreferrer"
-                                              style={{ 
+                                              style={{
                                                 borderColor: tc.border,
-                                                color: tc.command
+                                                color: tc.command,
                                               }}
                                               target="_blank"
                                             >
-                                              {React.createElement(linkIcon(r.url), { className: "w-[11px] h-[11px]" })}
+                                              {React.createElement(linkIcon(r.url), {
+                                                className: 'w-[11px] h-[11px]',
+                                              })}
                                               <span>{r.label}</span>
                                             </a>
                                           </MotionHover>
@@ -476,10 +496,7 @@ const Articles: React.FC = () => {
                 <span style={{ color: tc.prompt }}>
                   {siteOwner.terminalUsername}@blog:{promptPath}$
                 </span>
-                <div
-                  className="w-1.5 h-3 animate-pulse"
-                  style={{ backgroundColor: tc.prompt }}
-                />
+                <div className="w-1.5 h-3 animate-pulse" style={{ backgroundColor: tc.prompt }} />
               </div>
             </MotionBox>
           </div>

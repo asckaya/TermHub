@@ -36,7 +36,7 @@ export function useBreakpointValue<T>(values: Partial<Record<Breakpoint, T>> & {
   // Find the largest breakpoint that is <= currentBreakpoint and has a value
   const sortedBreakpoints: Breakpoint[] = ['base', 'xs', 'sm', 'md', 'lg', 'xl', '2xl']
   const currentIndex = sortedBreakpoints.indexOf(currentBreakpoint)
-  
+
   for (let i = currentIndex; i >= 0; i--) {
     const bp = sortedBreakpoints[i]
     if (values[bp] !== undefined) {

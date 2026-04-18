@@ -2,10 +2,6 @@ import type { IconType } from 'react-icons'
 
 import type { ProjectItem } from '@/types'
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CSS custom property tokens
-// ─────────────────────────────────────────────────────────────────────────────
-
 /**
  * Visual identity for one project category card.
  * Includes colours, gradient stripe, icon, display label, and sample command.
@@ -20,10 +16,6 @@ export interface CatTheme {
   label: string
   stripe: string
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Terminal palette
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Every CSS variable consumed by globals.css and Chakra component variants.
@@ -40,10 +32,6 @@ export interface CSSVarTokens {
   '--secondary-text': string
   '--text-color': string
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Category themes
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Semantic colour roles used by every terminal-styled component
@@ -69,10 +57,6 @@ export interface TerminalColors {
   touchBar: string
   warning: string
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Full theme definition
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * The contract that every colour scheme must satisfy.

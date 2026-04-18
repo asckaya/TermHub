@@ -102,10 +102,15 @@ interface DynamicIconProps extends React.SVGAttributes<SVGElement> {
 const DynamicIcon: React.FC<DynamicIconProps> = ({ boxSize, name, ...props }) => {
   if (!name) return null
   const IconComponent = (icons as Record<string, IconType | undefined>)[name] ?? FaCode
-  
+
   // Map boxSize to width/height if it's a number/string
-  const size = typeof boxSize === 'number' ? `${String(boxSize * 4)}px` : (typeof boxSize === 'string' ? boxSize : undefined)
-  
+  const size =
+    typeof boxSize === 'number'
+      ? `${String(boxSize * 4)}px`
+      : typeof boxSize === 'string'
+        ? boxSize
+        : undefined
+
   return <IconComponent {...props} style={{ height: size, width: size, ...props.style }} />
 }
 

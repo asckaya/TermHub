@@ -31,9 +31,7 @@ const SkillsSection: React.FC = () => {
       <div className="max-w-full lg:max-w-7xl px-2 md:px-4 lg:px-8 mx-auto">
         <div className="flex items-center gap-3 mb-4">
           <div className="bg-cyan-400 rounded-full flex-shrink-0 h-0.5 w-5" />
-          <h3 className="text-base md:text-lg font-semibold">
-            {t('about.skills', 'Skills')}
-          </h3>
+          <h3 className="text-base md:text-lg font-semibold">{t('about.skills', 'Skills')}</h3>
           <div className="flex-1 h-px" style={{ backgroundColor: tc.line }} />
         </div>
         <div className="flex flex-wrap gap-2">
@@ -44,11 +42,7 @@ const SkillsSection: React.FC = () => {
               style={{ backgroundColor: tc.tagBg, color: tc.tagColor }}
             >
               {getIcon(skill) && (
-                <DynamicIcon
-                  boxSize={3}
-                  name={getIcon(skill)}
-                  style={{ color: tc.icon }}
-                />
+                <DynamicIcon boxSize={3} name={getIcon(skill)} style={{ color: tc.icon }} />
               )}
               <span>{getName(skill)}</span>
             </div>

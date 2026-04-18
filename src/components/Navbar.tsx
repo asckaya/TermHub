@@ -34,9 +34,7 @@ const Navbar: React.FC = () => {
   ].filter((link) => link.href)
 
   return (
-    <nav
-      className="sticky top-0 w-full z-[1000] py-4 bg-[var(--bg-color)] border-b border-[var(--border-color)]"
-    >
+    <nav className="sticky top-0 w-full z-[1000] py-4 bg-[var(--bg-color)] border-b border-[var(--border-color)]">
       <div className="max-w-screen-2xl mx-auto h-full px-4 md:px-8">
         <div className="grid grid-cols-2 md:grid-cols-3 items-center h-full">
           {/* 1. Left Section: Mobile hamburger + Always-visible Logo */}
@@ -85,9 +83,7 @@ const Navbar: React.FC = () => {
                 key={item.path}
                 to={item.path}
               >
-                <MotionHover>
-                  {t(item.labelKey)}
-                </MotionHover>
+                <MotionHover>{t(item.labelKey)}</MotionHover>
               </Link>
             ))}
           </div>
@@ -120,9 +116,7 @@ const Navbar: React.FC = () => {
                 size="sm"
                 variant="ghost"
               >
-                <MotionHover>
-                  {i18n.language === 'zh' ? 'EN' : '中'}
-                </MotionHover>
+                <MotionHover>{i18n.language === 'zh' ? 'EN' : '中'}</MotionHover>
               </Button>
               <ThemePicker />
               <Button
@@ -133,7 +127,11 @@ const Navbar: React.FC = () => {
                 variant="ghost"
               >
                 <MotionHover>
-                  {colorMode === 'dark' ? <FiSun className="h-5 w-5" /> : <FiMoon className="h-5 w-5" />}
+                  {colorMode === 'dark' ? (
+                    <FiSun className="h-5 w-5" />
+                  ) : (
+                    <FiMoon className="h-5 w-5" />
+                  )}
                 </MotionHover>
               </Button>
             </div>
@@ -164,9 +162,7 @@ const Navbar: React.FC = () => {
                   onClick={onClose}
                   to={item.path}
                 >
-                  <MotionHover>
-                    {t(item.labelKey)}
-                  </MotionHover>
+                  <MotionHover>{t(item.labelKey)}</MotionHover>
                 </Link>
               )
             })}
@@ -202,7 +198,11 @@ const Navbar: React.FC = () => {
                 size="icon"
                 variant="outline"
               >
-                {colorMode === 'dark' ? <FiSun className="h-5 w-5" /> : <FiMoon className="h-5 w-5" />}
+                {colorMode === 'dark' ? (
+                  <FiSun className="h-5 w-5" />
+                ) : (
+                  <FiMoon className="h-5 w-5" />
+                )}
               </Button>
             </div>
           </div>

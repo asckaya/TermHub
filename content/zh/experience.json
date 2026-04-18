@@ -27,10 +27,7 @@
       "roleType": "mle",
       "isCurrent": true,
       "summary": "算法与 Agent 研究",
-      "highlights": [
-        "研究大模型算法与 Agent 系统",
-        "涉及相关的基础设施 (Infra) 优化"
-      ]
+      "highlights": ["研究大模型算法与 Agent 系统", "涉及相关的基础设施 (Infra) 优化"]
     },
     {
       "title": "硕士研究生",

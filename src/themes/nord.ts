@@ -2,8 +2,6 @@ import { FaBrain, FaChartBar, FaGlobe, FaHeartbeat, FaRobot, FaWrench } from 're
 
 import type { ThemeDefinition } from './types'
 
-// Nord — Arctic, north-bluish colour palette. https://www.nordtheme.com/
-// Duplicate this file and swap colour values to create a new theme.
 export const nordTheme: ThemeDefinition = {
   articleCategoryColors: {
     data: {
@@ -31,10 +29,6 @@ export const nordTheme: ThemeDefinition = {
       fg: (dk) => (dk ? '#ffbe8d' : '#c27435'),
     },
   },
-
-  // ── CSS custom properties ────────────────────────────────────────────────
-  // Injected onto document.documentElement at runtime by ThemeInjector.
-  // These drive globals.css utilities and Chakra component variants.
 
   categoryThemes: (dk) => ({
     data: {
@@ -99,8 +93,6 @@ export const nordTheme: ThemeDefinition = {
     },
   }),
 
-  // ── Terminal palette ─────────────────────────────────────────────────────
-
   cssVars: {
     dark: {
       '--accent-color': '#88c0d0',
@@ -126,11 +118,7 @@ export const nordTheme: ThemeDefinition = {
     },
   },
 
-  // ── Project category card themes ─────────────────────────────────────────
-
   name: 'Nord',
-
-  // ── Article category badge colors ────────────────────────────────────────
 
   publicationVenueColors: {
     conference: {
@@ -159,8 +147,6 @@ export const nordTheme: ThemeDefinition = {
       label: 'WORKSHOP',
     },
   },
-
-  // ── Publication venue badge colors ───────────────────────────────────────
 
   terminal: {
     colors: (dk) => ({

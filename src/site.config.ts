@@ -1,10 +1,6 @@
 import siteJson from '@content/site.json'
 import siteJsonZh from '@content/zh/site.json'
 
-// ═══════════════════════════════════════════════════════════════
-// The config object — mirrors content/site.json
-// ═══════════════════════════════════════════════════════════════
-
 export const siteConfig = siteJson
 export const siteConfigZh = siteJsonZh
 
@@ -13,10 +9,6 @@ export function getLocalizedGithubUsername(lang: string) {
   const cfg = getLocalizedSiteConfig(lang)
   return cfg.social.github.split('/').pop() ?? ''
 }
-
-// ═══════════════════════════════════════════════════════════════
-// Derived values — computed automatically, do NOT edit
-// ═══════════════════════════════════════════════════════════════
 
 /** Get site config for a given language */
 export function getLocalizedSiteConfig(lang: string) {

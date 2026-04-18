@@ -2,10 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaChevronDown } from 'react-icons/fa'
 
-import {
-  Collapsible,
-  CollapsibleContent,
-} from '@/components/ui/collapsible'
+import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import { useThemeConfig } from '@/config/theme'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
@@ -212,8 +209,8 @@ const Experience: React.FC = () => {
               const brightness = 0.6 + 0.4 * Math.abs(Math.sin((i + tick * 0.5) * 0.3))
               return (
                 <div
-                  key={i}
                   className="flex-1 h-full"
+                  key={i}
                   style={{
                     backgroundColor: terminalPalette.rainbow[colorIdx],
                     opacity: brightness,
@@ -236,10 +233,14 @@ const Experience: React.FC = () => {
               </div>
               <div className="flex items-center gap-1">
                 <span style={{ color: tc.param }}>const </span>
-                <span className="font-bold" style={{ color: tc.prompt }}>career</span>
+                <span className="font-bold" style={{ color: tc.prompt }}>
+                  career
+                </span>
                 <span style={{ color: tc.secondary }}> = </span>
                 <span style={{ color: tc.param }}>new </span>
-                <span className="font-bold" style={{ color: tc.command }}>Explorer</span>
+                <span className="font-bold" style={{ color: tc.command }}>
+                  Explorer
+                </span>
                 <span style={{ color: tc.secondary }}>(</span>
                 <span style={{ color: tc.highlight }}>'experience'</span>
                 <span style={{ color: tc.secondary }}>)</span>
@@ -267,13 +268,17 @@ const Experience: React.FC = () => {
               <span className="font-bold" style={{ color: tc.prompt }}>
                 {siteOwner.terminalUsername}
               </span>
-              <span className="mx-1" style={{ color: tc.border }}>·</span>
+              <span className="mx-1" style={{ color: tc.border }}>
+                ·
+              </span>
               <span style={{ color: tc.highlight }}>{stats.total}</span>
               <span> {t('experience.rolesAcross')} </span>
               <span style={{ color: tc.success }}>
                 {stats.current} {t('experience.currentlyActive')}
               </span>
-              <span className="mx-1" style={{ color: tc.border }}>·</span>
+              <span className="mx-1" style={{ color: tc.border }}>
+                ·
+              </span>
               <span style={{ color: tc.param }}>
                 {stats.academic} {t('experience.research')}
               </span>
@@ -289,10 +294,19 @@ const Experience: React.FC = () => {
 
           {/* Education */}
           <MotionBox delay={0.1}>
-            <div className="px-3 md:px-5 py-3 border-b" style={{ backgroundColor: tc.bg, borderColor: tc.border }}>
+            <div
+              className="px-3 md:px-5 py-3 border-b"
+              style={{ backgroundColor: tc.bg, borderColor: tc.border }}
+            >
               <div className="flex items-center gap-2 mb-2.5">
-                <div className="rounded-full h-[3px] w-[14px]" style={{ backgroundColor: tc.command }} />
-                <span className="text-xs font-bold tracking-widest uppercase" style={{ color: tc.info }}>
+                <div
+                  className="rounded-full h-[3px] w-[14px]"
+                  style={{ backgroundColor: tc.command }}
+                />
+                <span
+                  className="text-xs font-bold tracking-widest uppercase"
+                  style={{ color: tc.info }}
+                >
                   {t('experience.education')}
                 </span>
                 <div className="flex-1 h-px" style={{ backgroundColor: tc.border }} />
@@ -340,18 +354,20 @@ const Experience: React.FC = () => {
                 f === 'all' ? stats.total : f === 'academic' ? stats.academic : stats.industry
               return (
                 <button
-                  key={f}
                   className={cn(
-                    "px-3 py-1 text-xs rounded-full transition-all duration-150 cursor-pointer",
-                    active ? "font-bold" : "font-medium"
+                    'px-3 py-1 text-xs rounded-full transition-all duration-150 cursor-pointer',
+                    active ? 'font-bold' : 'font-medium',
                   )}
+                  key={f}
+                  onClick={() => setFilter(f)}
                   style={{
-                    backgroundColor: active 
-                      ? (isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.07)') 
+                    backgroundColor: active
+                      ? isDark
+                        ? 'rgba(255,255,255,0.1)'
+                        : 'rgba(0,0,0,0.07)'
                       : 'transparent',
                     color: active ? tc.text : tc.secondary,
                   }}
-                  onClick={() => setFilter(f)}
                 >
                   {f === 'all'
                     ? t('experience.filterAll')
@@ -372,9 +388,9 @@ const Experience: React.FC = () => {
                   {/* Year heading */}
                   <div
                     className="flex items-center gap-2 px-3 md:px-5 py-2 border-b"
-                    style={{ 
+                    style={{
                       backgroundColor: isDark ? 'rgba(0,0,0,0.12)' : 'rgba(0,0,0,0.03)',
-                      borderColor: tc.border 
+                      borderColor: tc.border,
                     }}
                   >
                     <div
@@ -415,8 +431,8 @@ const Experience: React.FC = () => {
                       <MotionBox key={id}>
                         <div
                           className="border-b transition-colors duration-150"
-                          style={{ 
-                            borderColor: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)' 
+                          style={{
+                            borderColor: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)',
                           }}
                         >
                           <div
@@ -435,9 +451,9 @@ const Experience: React.FC = () => {
                                 ) : (
                                   <div
                                     className="flex items-center justify-center h-8 w-8 rounded-md text-sm font-bold"
-                                    style={{ 
+                                    style={{
                                       backgroundColor: `${rtColor}18`,
-                                      color: rtColor 
+                                      color: rtColor,
                                     }}
                                   >
                                     {exp.company.charAt(0)}
@@ -455,9 +471,9 @@ const Experience: React.FC = () => {
                                 </span>
                                 <span
                                   className="px-1.5 py-0 text-[10px] font-bold tracking-wider uppercase rounded-sm"
-                                  style={{ 
+                                  style={{
                                     backgroundColor: `${rtColor}15`,
-                                    color: rtColor 
+                                    color: rtColor,
                                   }}
                                 >
                                   {t(rtCfg.labelKey)}
@@ -511,8 +527,8 @@ const Experience: React.FC = () => {
                             {/* Chevron */}
                             <FaChevronDown
                               className={cn(
-                                "flex-shrink-0 mt-1.5 w-2.5 h-2.5 transition-transform duration-200",
-                                isExpanded && "rotate-180"
+                                'flex-shrink-0 mt-1.5 w-2.5 h-2.5 transition-transform duration-200',
+                                isExpanded && 'rotate-180',
                               )}
                               style={{ color: tc.secondary }}
                             />
@@ -523,20 +539,26 @@ const Experience: React.FC = () => {
                             <CollapsibleContent>
                               <div
                                 className="mb-3 mx-3 md:mx-5 pl-3 border-l-2"
-                                style={{ 
+                                style={{
                                   borderColor: rtColor,
-                                  marginLeft: 'calc(var(--spacing) * 3 + 32px)' // align with content after logo
+                                  marginLeft: 'calc(var(--spacing) * 3 + 32px)', // align with content after logo
                                 }}
                               >
                                 {exp.summary && (
-                                  <div className="mb-2 text-xs leading-relaxed" style={{ color: tc.highlight }}>
+                                  <div
+                                    className="mb-2 text-xs leading-relaxed"
+                                    style={{ color: tc.highlight }}
+                                  >
                                     {highlightData(exp.summary, hlc)}
                                   </div>
                                 )}
                                 <div className="flex flex-col gap-1">
                                   {exp.highlights.map((line: string, i: number) => (
                                     <div className="flex items-start gap-2 text-xs" key={i}>
-                                      <span className="flex-shrink-0 mt-0.5" style={{ color: rtColor }}>
+                                      <span
+                                        className="flex-shrink-0 mt-0.5"
+                                        style={{ color: rtColor }}
+                                      >
                                         ·
                                       </span>
                                       <span className="leading-relaxed" style={{ color: tc.text }}>
@@ -565,8 +587,14 @@ const Experience: React.FC = () => {
                 style={{ backgroundColor: tc.bg, borderColor: tc.border }}
               >
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="rounded-full h-[3px] w-[14px]" style={{ backgroundColor: tc.param }} />
-                  <span className="text-xs font-bold tracking-widest uppercase" style={{ color: tc.info }}>
+                  <div
+                    className="rounded-full h-[3px] w-[14px]"
+                    style={{ backgroundColor: tc.param }}
+                  />
+                  <span
+                    className="text-xs font-bold tracking-widest uppercase"
+                    style={{ color: tc.info }}
+                  >
                     {t('experience.academicReviewing')}
                   </span>
                   <span className="text-[10px]" style={{ color: tc.secondary }}>
@@ -588,9 +616,9 @@ const Experience: React.FC = () => {
                           <MotionHover key={`${item.venue}-${idx.toString()}`}>
                             <span
                               className="px-2 py-0.5 text-xs rounded-full border cursor-default transition-colors"
-                              style={{ 
+                              style={{
                                 borderColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)',
-                                color: tc.command 
+                                color: tc.command,
                               }}
                             >
                               {item.venue.replace(/\s*\d{4}\s*/, ' ').trim()}
@@ -609,10 +637,10 @@ const Experience: React.FC = () => {
           {cmdOutput.length > 0 && (
             <div
               className="px-3 md:px-5 py-2 border-t font-mono text-xs whitespace-pre-wrap"
-              style={{ 
+              style={{
                 backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.03)',
                 borderColor: tc.border,
-                color: tc.text
+                color: tc.text,
               }}
             >
               {cmdOutput.map((line, i) => (
@@ -626,7 +654,9 @@ const Experience: React.FC = () => {
             className="flex items-center px-3 md:px-5 py-2 border-t text-xs font-mono"
             style={{ backgroundColor: tc.header, borderColor: tc.border }}
           >
-            <span className="flex-shrink-0 mr-2" style={{ color: tc.prompt }}>$</span>
+            <span className="flex-shrink-0 mr-2" style={{ color: tc.prompt }}>
+              $
+            </span>
             <input
               className="flex-1 bg-transparent border-none outline-none focus:ring-0 p-0 text-xs font-mono placeholder:opacity-50"
               onChange={(e) => setCommand(e.target.value)}
@@ -638,10 +668,7 @@ const Experience: React.FC = () => {
               type="text"
               value={command}
             />
-            <div
-              className="ml-1 h-3 w-1.5 animate-pulse"
-              style={{ backgroundColor: tc.prompt }}
-            />
+            <div className="ml-1 h-3 w-1.5 animate-pulse" style={{ backgroundColor: tc.prompt }} />
           </div>
         </div>
       </div>

@@ -13,12 +13,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div
-      className={colorMode === 'dark' ? 'dark-theme min-h-screen w-full overflow-x-hidden' : 'min-h-screen w-full overflow-x-hidden'}
+      className={
+        colorMode === 'dark'
+          ? 'dark-theme min-h-screen w-full overflow-x-hidden'
+          : 'min-h-screen w-full overflow-x-hidden'
+      }
     >
       {React.createElement(NavbarSlot)}
-      <main className="w-full px-3 md:px-4 lg:px-6">
-        {children}
-      </main>
+      <main className="w-full px-3 md:px-4 lg:px-6">{children}</main>
     </div>
   )
 }

@@ -1,10 +1,7 @@
 import React, { useState } from 'react'
 
 import { Badge } from '@/components/ui/badge'
-import {
-  Collapsible,
-  CollapsibleContent,
-} from '@/components/ui/collapsible'
+import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 
 import type { ProjectItem } from '../types'
 
@@ -31,28 +28,24 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     <div className="p-4 md:p-5 lg:p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 border bg-card text-card-foreground">
       <div className="flex flex-col gap-3 md:gap-4 items-start w-full">
         <div className="flex flex-wrap gap-2">
-          <Badge variant="outline" className="text-[10px] uppercase font-bold tracking-wider">
+          <Badge className="text-[10px] uppercase font-bold tracking-wider" variant="outline">
             {category.replace('_', ' ')}
           </Badge>
           {date && (
-            <Badge variant="secondary" className="text-[10px]">
+            <Badge className="text-[10px]" variant="secondary">
               {date}
             </Badge>
           )}
         </div>
 
-        <h3 className="text-lg md:text-xl font-bold leading-tight">
-          {title}
-        </h3>
+        <h3 className="text-lg md:text-xl font-bold leading-tight">{title}</h3>
 
-        <p className="text-sm md:text-base opacity-70 leading-relaxed">
-          {summary}
-        </p>
+        <p className="text-sm md:text-base opacity-70 leading-relaxed">{summary}</p>
 
         {tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
-              <Badge key={tag} variant="secondary" className="text-[10px] opacity-80">
+              <Badge className="text-[10px] opacity-80" key={tag} variant="secondary">
                 {tag}
               </Badge>
             ))}
@@ -63,11 +56,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           <div className="flex flex-wrap gap-2">
             {primaryLinks.map(({ label, url }) => (
               <a
-                key={`${label}-${url}`}
+                className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-primary text-primary-foreground hover:opacity-90 transition-opacity no-underline"
                 href={url}
+                key={`${label}-${url}`}
                 rel="noopener noreferrer"
                 target="_blank"
-                className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-primary text-primary-foreground hover:opacity-90 transition-opacity no-underline"
               >
                 {label} →
               </a>
@@ -78,8 +71,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         {highlights && highlights.length > 0 && (
           <>
             <button
-              onClick={() => setIsOpen(!isOpen)}
               className="text-xs font-bold px-2.5 py-1 rounded-md border bg-muted hover:bg-muted/80 transition-colors cursor-pointer"
+              onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? 'Hide Highlights' : 'Show Highlights'}
             </button>
@@ -91,7 +84,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                 >
                   <ul className="text-sm space-y-2 pl-2 opacity-80 list-disc list-inside">
                     {highlights.map((item, idx) => (
-                      <li key={idx} className="leading-relaxed">
+                      <li className="leading-relaxed" key={idx}>
                         {item}
                       </li>
                     ))}
