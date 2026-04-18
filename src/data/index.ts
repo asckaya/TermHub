@@ -64,17 +64,15 @@ function collectMd<T extends Record<string, unknown>>(
 }
 
 /**
- * Parse `data` against `schema`.  In development, failed validation emits a
- * console warning so content authors catch typos immediately.  The raw data
- * is returned as fallback so the app never hard-crashes due to a content mismatch.
+ * Parse `data` against `schema`.  Throws on validation failure so content
+ * errors are surfaced immediately rather than silently propagating invalid data.
  */
 function parseContent<T>(schema: z.ZodType<T>, data: unknown, label: string): T {
   const result = schema.safeParse(data)
   if (!result.success) {
-    if (import.meta.env.DEV) {
-      console.warn(`[TermHub] Content validation warning — ${label}:`, result.error.issues)
-    }
-    return data as T
+    throw new Error(
+      `[TermHub] Content validation failed — ${label}:\n${JSON.stringify(result.error.issues, null, 2)}`,
+    )
   }
   return result.data
 }

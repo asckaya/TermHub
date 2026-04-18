@@ -298,7 +298,9 @@ export const SiteConfigSchema = z.object({
     })
     .optional(),
   features: z.record(z.string(), z.boolean()).optional(),
-  heroSocialIcons: z.array(z.string()).optional(),
+  heroSocialIcons: z
+    .array(z.object({ color: z.string().optional(), icon: z.string(), label: z.string(), platform: z.string() }))
+    .optional(),
   name: z.object({
     authorVariants: z.array(z.string()).optional(),
     display: z.string(),

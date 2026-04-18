@@ -10,6 +10,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useLocalizedData } from '@/hooks/useLocalizedData'
@@ -18,20 +19,19 @@ import type { NewsItem } from '../types'
 
 const MotionBox = motion(Box)
 
-const sortNews = (arr: NewsItem[]) => {
-  return [...arr].sort((a, b) => {
+const sortNews = (arr: NewsItem[]) =>
+  [...arr].sort((a, b) => {
     if (!a.sortDate && !b.sortDate) return 0
     if (!a.sortDate) return 1
     if (!b.sortDate) return -1
     return b.sortDate.localeCompare(a.sortDate)
   })
-}
 
 const News = () => {
   const { t } = useTranslation()
   const { news: dataNews } = useLocalizedData()
-  const news = sortNews(dataNews)
-  const lastUpdated = news.length > 0 ? news[0].date ?? 'N/A' : 'N/A'
+  const news = useMemo(() => sortNews(dataNews), [dataNews])
+  const lastUpdated = news.length > 0 ? (news[0].date ?? 'N/A') : 'N/A'
 
   return (
     <Container maxW="7xl" px={4}>
@@ -63,14 +63,14 @@ const News = () => {
                 borderWidth="1px"
                 className="card"
                 initial={{ opacity: 0, y: 20 }}
-                key={index}
+                key={item.title}
                 p={5}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
               >
                 <Box mb={2}>
                   <Code>{item.date}</Code>{' '}
                   {item.badge !== '' && (
-                    <Badge colorPalette={item.iconColor.split('.')[0] ?? 'gray'} ml={2}>
+                    <Badge colorPalette={item.iconColor.split('.')[0]} ml={2}>
                       {item.badge}
                     </Badge>
                   )}{' '}
@@ -81,8 +81,14 @@ const News = () => {
                 <Text>{item.description}</Text>
                 {item.links.length > 0 && (
                   <HStack gap={3} mt={3} wrap="wrap">
-                    {item.links.map((l, i) => (
-                      <ChakraLink color="var(--accent-color)" href={l.url} key={i} rel="noopener noreferrer" target="_blank">
+                    {item.links.map((l) => (
+                      <ChakraLink
+                        color="var(--accent-color)"
+                        href={l.url}
+                        key={l.url}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
                         {l.text} →
                       </ChakraLink>
                     ))}

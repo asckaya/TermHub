@@ -48,7 +48,6 @@ export interface NavbarSlotProps {
 }
 export interface NewsDisplaySlotProps {
   news: NewsItem[]
-  showHeader?: boolean
 }
 export interface SelectedPublicationsSlotProps {}
 export interface SkillsSlotProps {}

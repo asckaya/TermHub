@@ -96,7 +96,7 @@ function About() {
                 </Badge>
                 <Box bg={lineColor} flex="1" h="1px" />
               </Flex>
-              <NewsDisplay news={sortedNews} showHeader={false} />
+              <NewsDisplay news={sortedNews} />
             </Container>
           </Box>
         )

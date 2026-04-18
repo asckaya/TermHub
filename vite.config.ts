@@ -70,7 +70,7 @@ export default defineConfig({
         remarkGfm,
         remarkFrontmatter,
         // Injects plain-text body into frontmatter for card summaries
-        () => (tree: unknown, _file: unknown) => {
+        () => (tree: unknown) => {
           interface MdxNode {
             children?: MdxNode[]
             type: string

@@ -49,10 +49,7 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-non-null-assertion': 'warn',
       
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
-      ],
+      '@typescript-eslint/no-unused-vars': 'error',
       'no-console': ['error', { allow: ['warn', 'error'] }],
       'no-var': 'error',
       'prefer-const': 'error',

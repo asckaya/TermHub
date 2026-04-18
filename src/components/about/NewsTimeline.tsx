@@ -21,7 +21,6 @@ import DynamicIcon from '../DynamicIcon'
 
 interface NewsTimelineProps {
   news: NewsItem[]
-  showHeader?: boolean
 }
 
 const blink = keyframes`
@@ -126,7 +125,7 @@ const researchStatuses = [
   { colorKey: 'info', label: 'CODE.SHIPPING', suffix: '📦' },
 ]
 
-const NewsTimeline: React.FC<NewsTimelineProps> = ({ news, showHeader: _showHeader = false }) => {
+const NewsTimeline: React.FC<NewsTimelineProps> = ({ news }) => {
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
   const { t } = useTranslation()
