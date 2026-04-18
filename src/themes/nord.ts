@@ -2,14 +2,8 @@ import { FaBrain, FaChartBar, FaGlobe, FaHeartbeat, FaRobot, FaWrench } from 're
 
 import type { ThemeDefinition } from './types'
 
-/**
- * Nord — Arctic, north-bluish colour palette.
- * https://www.nordtheme.com/
- *
- * This is the default TermHub theme and the reference implementation of
- * ThemeDefinition. When creating a new theme, duplicate this file and swap
- * the colour values; no other file needs to change.
- */
+// Nord — Arctic, north-bluish colour palette. https://www.nordtheme.com/
+// Duplicate this file and swap colour values to create a new theme.
 export const nordTheme: ThemeDefinition = {
   articleCategoryColors: {
     data: {

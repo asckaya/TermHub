@@ -1,7 +1,3 @@
-/**
- * Component slot context.
- */
-
 import React from 'react'
 
 import type { ComponentSlots } from './slots'

@@ -1,10 +1,3 @@
-/**
- * Zod schemas for all TermHub content types.
- *
- * TypeScript types are derived from these schemas via `z.infer<>`.
- * Components should import types from `../types`, not directly from here.
- */
-
 import { z } from 'zod'
 
 // ── Shared enums ──────────────────────────────────────────────────────────

@@ -1,10 +1,3 @@
-/**
- * Site configuration — imports from content/site.json
- *
- * Users edit content/site.json (pure JSON, no code needed).
- * This file computes derived values used by components.
- */
-
 import siteJson from '@content/site.json'
 import siteJsonZh from '@content/zh/site.json'
 

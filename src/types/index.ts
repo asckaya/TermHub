@@ -1,11 +1,3 @@
-// ============================================================
-// Type definitions — derived from Zod schemas in ../schemas.
-//
-// If you're just editing your portfolio content you can
-// IGNORE this file entirely.  It's used internally by the
-// template components for type safety.
-// ============================================================
-
 import type { z } from 'zod'
 
 import type {

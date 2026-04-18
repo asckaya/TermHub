@@ -16,7 +16,7 @@ const GuideDocs = () => {
           </Text>
           <Link
             color="cyan.400"
-            href="https://github.com/H-Freax/TermHub"
+            href="https://github.com/asckaya/TermHub"
             rel="noopener noreferrer"
             target="_blank"
           >

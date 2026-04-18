@@ -10,7 +10,7 @@ const GuideLanding = () => {
     <Box py={10} w="full">
       <Container maxW="7xl">
         <VStack align="stretch" gap={6}>
-          <Heading size="lg">TermHub Guide</Heading>
+          <Heading size="lg">Guide</Heading>
           <Text color={muted}>
             The guide content is now on the docs page. Use the links below for documentation and
             repository resources.
@@ -40,7 +40,7 @@ const GuideLanding = () => {
               <Text>Project repository</Text>
               <Link
                 color="cyan.400"
-                href="https://github.com/H-Freax/TermHub"
+                href="https://github.com/asckaya/TermHub"
                 rel="noopener noreferrer"
                 target="_blank"
               >

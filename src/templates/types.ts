@@ -1,11 +1,3 @@
-/**
- * Multi-template system type definitions.
- *
- * Each template implements TemplateConfig to provide its own
- * layout, page components, component slots, and Chakra UI theme.
- * Content (content/ folder) is shared across all templates.
- */
-
 import type { SystemContext } from '@chakra-ui/react/styled-system'
 
 import type { ComponentSlots } from './slots'

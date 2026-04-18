@@ -1,17 +1,3 @@
-/**
- * Vite plugin: serves images from content/images/ as if they were in public/
- *
- * In dev mode:  middleware rewrites /images/* → content/images/*
- * In build mode: copies content/images/ → dist/images/
- *
- * This lets users keep ALL their content (text + images) in one folder.
- *
- * Usage:
- *   content/images/avatar.jpg       → accessible at /images/avatar.jpg
- *   content/images/logos/mit.png     → accessible at /images/logos/mit.png
- *   content/images/projects/demo.png → accessible at /images/projects/demo.png
- */
-
 import { resolve, relative, dirname } from 'path'
 import { existsSync, readdirSync, statSync, copyFileSync, mkdirSync } from 'fs'
 import type { Plugin } from 'vite'

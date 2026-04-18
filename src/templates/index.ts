@@ -1,17 +1,3 @@
-/**
- * Template registry — single entry point for all templates.
- *
- * To register a new template:
- * 1. Create `src/templates/<name>/index.ts` exporting a TemplateConfig
- * 2. Import it here and add to `templates`
- * 3. Users set `"template": "<name>"` in content/site.json
- *
- * To register a component variant:
- * 1. Create a component implementing the slot's props interface
- * 2. Add it to `variantRegistry` below
- * 3. Users set `"components": { "slotName": "variantId" }` in site.json
- */
-
 import type { ComponentSlots } from './slots'
 import type { TemplateConfig } from './types'
 

@@ -1,11 +1,3 @@
-/**
- * Component slot definitions.
- *
- * Each slot has a well-defined props interface.
- * Templates provide default implementations; users can
- * override individual slots via `components` in site.json.
- */
-
 import type { NewsItem } from '../types'
 
 /* ── Slot prop interfaces ──────────────────────────────────── */
