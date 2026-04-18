@@ -1,17 +1,17 @@
 {
   "currentResearch": [
     {
-      "lab": "The Cozy Corner",
-      "emoji": "🛋️",
-      "advisor": "Dr. Warm Lap",
-      "focus": "warmth-seeking behavior and human-proximity optimization",
+      "lab": "Open Source Community",
+      "emoji": "🛠️",
+      "advisor": "Community Explorer",
+      "focus": "Enjoy exploring various TUI, Agent, and CLI tools in the open-source community.",
       "link": "#"
     },
     {
-      "lab": "Lucas & Cookie Play Lab",
-      "emoji": "🐱",
-      "advisor": "Prof. Lucas",
-      "focus": "cross-species play dynamics and cooperative napping",
+      "lab": "DiDi L Lab",
+      "emoji": "🚗",
+      "advisor": "Algorithm Researcher",
+      "focus": "Researching LLM algorithms and Agents at DiDi L Lab, with a focus on infra.",
       "link": "#"
     }
   ]

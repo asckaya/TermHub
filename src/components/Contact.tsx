@@ -1,4 +1,3 @@
-import { Box, Container, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 
 import { useThemeConfig } from '@/config/theme'
@@ -49,109 +48,83 @@ const Contact = () => {
   ]
 
   return (
-    <Container maxW="7xl" px={4} py={8}>
-      <VStack align="stretch" gap={8}>
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="flex flex-col gap-8 items-stretch">
         <MotionBox delay={0.1}>
-          <Heading as="h1" mb={6} size="xl">
+          <h1 className="text-3xl font-bold mb-6">
             {t('contact.title')}
-          </Heading>
-          <Box className="meta" mb={4}>
-            <Box className="meta-item" color={tc.secondary} fontSize="sm">
-              <Box as="i" className="fa-solid fa-clock" mr={2} />
-              {t('contact.responseTime')}
-            </Box>
-          </Box>
+          </h1>
+          <div className="flex items-center gap-2 mb-4" style={{ color: tc.secondary }}>
+            <i className="fa-solid fa-clock text-sm" />
+            <span className="text-sm">{t('contact.responseTime')}</span>
+          </div>
 
           <MotionBox delay={0.2}>
-            <Box
-              as="pre"
-              bg={tc.header}
-              border="1px solid"
-              borderColor={tc.border}
-              borderRadius="md"
-              boxShadow="inner"
-              color={tc.text}
-              fontFamily="mono"
-              mb={6}
-              p={4}
+            <pre
+              className="font-mono text-sm mb-6 p-4 rounded-md border shadow-inner overflow-x-auto"
+              style={{ 
+                backgroundColor: tc.header,
+                borderColor: tc.border,
+                color: tc.text
+              }}
             >
               {`# ${t('contact.contactInfo')}
 EMAIL    = "${siteOwner.contact.email}"
 LINKEDIN = "${siteOwner.social.linkedin}"
 GITHUB   = "${siteOwner.social.github}"
 LOCATION = "${siteOwner.contact.location}"`}
-            </Box>
+            </pre>
           </MotionBox>
 
           <MotionBox delay={0.3}>
-            <Box
-              bg={tc.bg}
-              borderColor={tc.border}
-              borderRadius="md"
-              borderWidth="1px"
-              boxShadow="lg"
-              mt={8}
-              p={6}
+            <div
+              className="rounded-md border shadow-lg mt-8 p-6"
+              style={{ 
+                backgroundColor: tc.bg,
+                borderColor: tc.border
+              }}
             >
-              <Heading
-                as="h2"
-                color={tc.highlight}
-                fontFamily="mono"
-                letterSpacing="widest"
-                mb={6}
-                size="sm"
+              <h2
+                className="font-mono text-sm font-bold tracking-widest mb-6"
+                style={{ color: tc.highlight }}
               >
                 // {t('contact.quickLinks').toUpperCase()}
-              </Heading>
+              </h2>
 
               <MotionList staggerDelay={0.1}>
                 {contactLinks.map((link) => (
                   <MotionBox key={link.label}>
-                    <HStack gap={4} justify="space-between" mb={4} wrap="wrap">
-                      <Text
-                        as="span"
-                        color={tc.prompt}
-                        fontFamily="mono"
-                        fontSize="sm"
-                        fontWeight="bold"
-                        w="120px"
+                    <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+                      <span
+                        className="font-mono text-sm font-bold w-[120px]"
+                        style={{ color: tc.prompt }}
                       >
                         {link.label}:
-                      </Text>
+                      </span>
                       <MotionHover>
-                        <Box flex="1">
+                        <div className="flex-1">
                           <a
+                            className="font-mono text-[0.9rem] no-underline transition-all duration-200 border-b border-transparent hover:border-current"
                             href={link.href}
-                            onMouseOut={(e) =>
-                              (e.currentTarget.style.borderBottomColor = 'transparent')
-                            }
-                            onMouseOver={(e) =>
-                              (e.currentTarget.style.borderBottomColor = tc.command)
-                            }
                             rel="noopener noreferrer"
                             style={{
-                              borderBottom: `1px solid transparent`,
-                              color: tc.command,
-                              fontFamily: 'var(--font-mono)',
-                              fontSize: '0.9rem',
-                              textDecoration: 'none',
-                              transition: 'border-color 0.2s',
+                              color: tc.command
                             }}
                             target="_blank"
                           >
                             {link.display}
                           </a>
-                        </Box>
+                        </div>
                       </MotionHover>
-                    </HStack>
+                    </div>
                   </MotionBox>
                 ))}
               </MotionList>
-            </Box>
+            </div>
           </MotionBox>
         </MotionBox>
-      </VStack>
-    </Container>
+      </div>
+    </div>
   )
 }
 

@@ -1,17 +1,17 @@
 {
   "currentResearch": [
     {
-      "lab": "温暖角落",
-      "emoji": "🛋️",
-      "advisor": "暖膝盖博士",
-      "focus": "取暖行为和人类距离最小化优化",
+      "lab": "开源社区",
+      "emoji": "🛠️",
+      "advisor": "社区探索者",
+      "focus": "喜欢在社区到处玩玩具，研究各种 TUI, Agent, CLI 工具。",
       "link": "#"
     },
     {
-      "lab": "Lucas & Cookie 玩耍实验室",
-      "emoji": "🐱",
-      "advisor": "Lucas 教授",
-      "focus": "跨物种玩耍动力学和协作午睡",
+      "lab": "滴滴 L Lab",
+      "emoji": "🚗",
+      "advisor": "算法研究员",
+      "focus": "研究大模型算法/Agent，以及相关的基础设施 (Infra)。",
       "link": "#"
     }
   ]

@@ -1,76 +1,76 @@
-import { Box, Container, HStack, Link, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { SiCloudflare, SiGithub } from 'react-icons/si'
 
-import { useColorModeValue } from '@/hooks/useColorMode'
+import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 
 const Footer: React.FC = () => {
   const { t } = useTranslation()
   const { siteOwner } = useLocalizedData()
-  const footerBg = useColorModeValue('gray.50', 'gray.900')
-  const textColor = useColorModeValue('gray.600', 'gray.400')
+  const { colorMode } = useColorMode()
+  const isDark = colorMode === 'dark'
+
+  const tc = {
+    bg: isDark ? 'rgb(17, 24, 39)' : 'rgb(249, 250, 251)', // gray-900 : gray-50
+    border: isDark ? 'rgb(55, 65, 81)' : 'rgb(229, 231, 235)', // gray-700 : gray-200
+    text: isDark ? 'rgb(156, 163, 175)' : 'rgb(75, 85, 99)', // gray-400 : gray-600
+  }
 
   return (
-    <Box
-      as="footer"
-      bg={footerBg}
-      borderColor={useColorModeValue('gray.200', 'gray.700')}
-      borderTop="1px"
-      mt={[6, 8]}
-      py={[6, 8]}
-      w="full"
+    <footer
+      className="w-full border-t mt-6 md:mt-8 py-6 md:py-8"
+      style={{
+        backgroundColor: tc.bg,
+        borderColor: tc.border,
+      }}
     >
-      <Container maxW="7xl" px={[4, 6, 8]}>
-        <VStack gap={[3, 4]} textAlign="center">
-          {/* Logo */}
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+        <div className="flex flex-col items-center gap-3 md:gap-4 text-center">
+          {/* Logo placeholder if needed */}
+
           {/* Icons Row */}
-          <HStack gap={6} mb={2}>
-            <Link
-              _hover={{ color: 'var(--accent-color)', transform: 'translateY(-2px)' }}
-              color={textColor}
+          <div className="flex items-center gap-6 mb-2">
+            <a
+              className="transition-all duration-200 hover:text-[var(--accent-color)] hover:-translate-y-0.5 no-underline"
               href="https://github.com"
               rel="noopener noreferrer"
+              style={{ color: tc.text }}
               target="_blank"
-              transition="all 0.2s"
             >
-              <Box as={SiGithub} boxSize="20px" />
-            </Link>
-            <Link
-              _hover={{ color: 'orange.500', transform: 'translateY(-2px)' }}
-              color={textColor}
+              <SiGithub className="h-5 w-5" />
+            </a>
+            <a
+              className="transition-all duration-200 hover:text-orange-500 hover:-translate-y-0.5 no-underline"
               href="https://cloudflare.com"
               rel="noopener noreferrer"
+              style={{ color: tc.text }}
               target="_blank"
-              transition="all 0.2s"
             >
-              <Box as={SiCloudflare} boxSize="22px" />
-            </Link>
-          </HStack>
+              <SiCloudflare className="h-[22px] w-[22px]" />
+            </a>
+          </div>
 
-          <HStack color={textColor} fontSize={['xs', 'sm']} gap={1}>
-            <Text>{t('footer.poweredBy')}</Text>
-            <Link
-              _hover={{ textDecoration: 'underline' }}
-              color="cyan.500"
-              fontWeight="medium"
+          <div className="flex flex-wrap items-center justify-center gap-1 text-xs md:text-sm" style={{ color: tc.text }}>
+            <p>{t('footer.poweredBy')}</p>
+            <a
+              className="font-medium text-cyan-500 hover:underline no-underline"
               href="https://github.com/H-Freax/TermHub"
               rel="noopener noreferrer"
               target="_blank"
             >
               TermHub
-            </Link>
-            <Text>{t('footer.forkedBy', 'forked by')}</Text>
-            <Text fontWeight="bold">Ascka</Text>
-          </HStack>
+            </a>
+            <p>{t('footer.forkedBy', 'forked by')}</p>
+            <p className="font-bold">Ascka</p>
+          </div>
 
-          <Text color={textColor} fontSize={['2xs', 'xs']}>
+          <p className="text-[10px] md:text-xs" style={{ color: tc.text }}>
             © {new Date().getFullYear()} {siteOwner.name.display}
-          </Text>
-        </VStack>
-      </Container>
-    </Box>
+          </p>
+        </div>
+      </div>
+    </footer>
   )
 }
 

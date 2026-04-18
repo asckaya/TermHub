@@ -1,69 +1,66 @@
-import { Box, Container, Flex, Heading, Link, Text, VStack } from '@chakra-ui/react'
-
-import { useColorModeValue } from '@/hooks/useColorMode'
+import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 
 const MentorshipSection: React.FC = () => {
   const { about } = useLocalizedData()
-  const textColor = useColorModeValue('gray.500', 'gray.400')
-  const nameColor = useColorModeValue('gray.700', 'gray.200')
-  const lineColor = useColorModeValue('gray.200', 'gray.700')
-  const borderColor = useColorModeValue('gray.100', 'gray.800')
+  const { colorMode } = useColorMode()
+  const isDark = colorMode === 'dark'
+
+  const tc = {
+    border: isDark ? 'rgb(31, 41, 55)' : 'rgb(243, 244, 246)', // gray-800 : gray-100
+    line: isDark ? 'rgb(55, 65, 81)' : 'rgb(229, 231, 235)', // gray-700 : gray-200
+    name: isDark ? 'rgb(229, 231, 235)' : 'rgb(55, 65, 81)', // gray-200 : gray-700
+    text: isDark ? 'rgb(156, 163, 175)' : 'rgb(107, 114, 128)', // gray-400 : gray-500
+  }
 
   if (!about.mentorship) return null
 
   return (
-    <Box w="full">
-      <Container maxW={['full', 'full', '7xl']} px={[2, 4, 8]}>
-        <Flex align="center" gap={3} mb={3}>
-          <Box bg="cyan.400" borderRadius="full" flexShrink={0} h="2px" w="20px" />
-          <Heading fontWeight="semibold" size={['sm', 'md']}>
+    <section className="w-full">
+      <div className="max-w-full lg:max-w-7xl px-2 md:px-4 lg:px-8 mx-auto">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="bg-cyan-400 rounded-full flex-shrink-0 h-0.5 w-5" />
+          <h3 className="text-base md:text-lg font-semibold">
             {about.mentorship.heading}
-          </Heading>
-          <Box bg={lineColor} flex="1" h="1px" />
-        </Flex>
+          </h3>
+          <div className="flex-1 h-px" style={{ backgroundColor: tc.line }} />
+        </div>
         {about.mentorship.description && (
-          <Text color={textColor} fontSize="xs" lineHeight="tall" mb={4}>
+          <p className="text-xs leading-relaxed mb-4" style={{ color: tc.text }}>
             {about.mentorship.description}
-          </Text>
+          </p>
         )}
-        <VStack align="stretch" gap={0}>
+        <div className="flex flex-col">
           {about.mentorship.mentees.map((mentee, index) => (
-            <Flex
-              align="center"
-              borderBottom="1px solid"
-              borderColor={borderColor}
-              gap={3}
+            <div
+              className="flex items-center border-b gap-3 py-2.5"
               key={index}
-              py={2.5}
+              style={{ borderColor: tc.border }}
             >
-              <Box bg="cyan.400" borderRadius="full" flexShrink={0} h="6px" w="6px" />
-              <Link
-                _hover={{ textDecoration: 'none' }}
+              <div className="bg-cyan-400 rounded-full flex-shrink-0 h-1.5 w-1.5" />
+              <a
+                className="no-underline hover:no-underline group"
                 href={mentee.url}
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <Text
-                  _hover={{ color: 'cyan.400' }}
-                  color={nameColor}
-                  fontSize="sm"
-                  fontWeight="medium"
-                  transition="color 0.15s"
+                <span
+                  className="text-sm font-medium transition-colors group-hover:text-cyan-400"
+                  style={{ color: tc.name }}
                 >
                   {mentee.name}
-                </Text>
-              </Link>
+                </span>
+              </a>
               {mentee.note && (
-                <Text color={textColor} fontFamily="mono" fontSize="2xs">
+                <span className="font-mono text-[10px]" style={{ color: tc.text }}>
                   {mentee.note}
-                </Text>
+                </span>
               )}
-            </Flex>
+            </div>
           ))}
-        </VStack>
-      </Container>
-    </Box>
+        </div>
+      </div>
+    </section>
   )
 }
 

@@ -1,24 +1,9 @@
-import {
-  Badge,
-  Box,
-  Container,
-  Flex,
-  Grid,
-  GridItem,
-  Heading,
-  HStack,
-  Image,
-  Link,
-  Separator,
-  Text,
-  VStack,
-} from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
-import { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { Badge } from '@/components/ui/badge'
 import { useThemeConfig } from '@/config/theme'
-import { useColorMode, useColorModeValue } from '@/hooks/useColorMode'
+import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import { heroSocialIcons } from '@/site.config'
 import { withBase } from '@/utils/asset'
@@ -30,11 +15,6 @@ import JourneySection from './sections/JourneySection'
 import MentorshipSection from './sections/MentorshipSection'
 
 /* ── Typewriter Terminal ──────────────────────────────────── */
-
-const termFadeIn = keyframes`
-  from { opacity: 0; transform: translateY(5px); }
-  to   { opacity: 1; transform: translateY(0); }
-`
 
 const TYPING_SPEED = 65
 const DELETING_SPEED = 32
@@ -62,13 +42,6 @@ const TerminalTypewriter: React.FC = () => {
   const [displayText, setDisplayText] = useState('')
   const [phraseIndex, setPhraseIndex] = useState(0)
   const [phase, setPhase] = useState<TypePhase>('typing')
-  const [cursorOn, setCursorOn] = useState(true)
-
-  // Cursor blink — always blinks, just less noticeable while typing
-  useEffect(() => {
-    const id = setInterval(() => setCursorOn((v) => !v), 530)
-    return () => clearInterval(id)
-  }, [])
 
   // State machine
   useEffect(() => {
@@ -122,136 +95,134 @@ const TerminalTypewriter: React.FC = () => {
     },
   ]
 
-  const fadeIn = (delay: number) => ({
-    animation: `${termFadeIn} 0.4s ease ${delay.toString()}s forwards`,
+  const fadeInStyle = (delay: number) => ({
+    animation: `fadeIn 0.4s ease ${delay.toString()}s forwards`,
     opacity: 0,
   })
 
   return (
-    <Box
-      bg={tc.bg}
-      border={`1px solid ${tc.border}`}
-      borderRadius="xl"
-      boxShadow={isDark ? '0 8px 32px rgba(0,0,0,0.4)' : '0 4px 24px rgba(0,0,0,0.08)'}
-      fontFamily="mono"
-      fontSize={['xs', 'sm']}
-      overflow="hidden"
+    <div
+      className="font-mono overflow-hidden rounded-xl"
+      style={{
+        backgroundColor: tc.bg,
+        border: `1px solid ${tc.border}`,
+        boxShadow: isDark ? '0 8px 32px rgba(0,0,0,0.4)' : '0 4px 24px rgba(0,0,0,0.08)',
+        fontSize: '0.875rem',
+      }}
     >
       {/* macOS-style title bar */}
-      <Flex
-        align="center"
-        bg={tc.header}
-        borderBottom={`1px solid ${tc.border}`}
-        position="relative"
-        px={4}
-        py={2.5}
+      <div
+        className="relative flex items-center px-4 py-2.5"
+        style={{
+          backgroundColor: tc.header,
+          borderBottom: `1px solid ${tc.border}`,
+        }}
       >
-        <HStack gap={1.5}>
-          <Box bg="#ff5f57" borderRadius="full" flexShrink={0} h="11px" w="11px" />
-          <Box bg="#febc2e" borderRadius="full" flexShrink={0} h="11px" w="11px" />
-          <Box bg="#28c840" borderRadius="full" flexShrink={0} h="11px" w="11px" />
-        </HStack>
-        <Text
-          color={tc.secondary}
-          fontSize="xs"
-          left="50%"
-          letterSpacing="wide"
-          pointerEvents="none"
-          position="absolute"
-          transform="translateX(-50%)"
+        <div className="flex items-center gap-1.5">
+          <div className="bg-[#ff5f57] rounded-full flex-shrink-0 h-[11px] w-[11px]" />
+          <div className="bg-[#febc2e] rounded-full flex-shrink-0 h-[11px] w-[11px]" />
+          <div className="bg-[#28c840] rounded-full flex-shrink-0 h-[11px] w-[11px]" />
+        </div>
+        <p
+          className="absolute left-1/2 -translate-x-1/2 pointer-events-none text-xs tracking-wide"
+          style={{ color: tc.secondary }}
         >
           {username} — zsh
-        </Text>
-      </Flex>
+        </p>
+      </div>
 
       {/* Terminal body */}
-      <Box lineHeight="tall" px={[4, 5, 6]} py={[4, 5]}>
+      <div className="leading-relaxed px-4 md:px-5 lg:px-6 py-4 md:py-5">
         {/* Login hint */}
-        <Text color={tc.muted} fontSize="xs" mb={4}>
+        <p className="text-xs mb-4" style={{ color: tc.muted }}>
           Last login: {new Date().toDateString()} on ttys001
-        </Text>
+        </p>
 
         {/* Static history */}
         {historyLines.map((line, i) => (
-          <Box key={i} mb={3}>
-            <HStack flexWrap="wrap" gap={2}>
-              <Text color={tc.prompt} flexShrink={0}>
+          <div className="mb-3" key={i}>
+            <div className="flex flex-wrap gap-2 items-center">
+              <p className="flex-shrink-0" style={{ color: tc.prompt }}>
                 {line.prompt}
-              </Text>
-              <Text color={tc.command}>{line.cmd}</Text>
-            </HStack>
+              </p>
+              <p style={{ color: tc.command }}>{line.cmd}</p>
+            </div>
             {line.output && (
-              <Text color={tc.text} mt={0.5} pl={0}>
+              <p className="mt-0.5" style={{ color: tc.text }}>
                 {line.output}
-              </Text>
+              </p>
             )}
-          </Box>
+          </div>
         ))}
 
         {/* cat profile.md */}
-        <Box mb={5}>
-          <HStack flexWrap="wrap" gap={2} mb={2}>
-            <Text color={tc.prompt} flexShrink={0}>
+        <div className="mb-5">
+          <div className="flex flex-wrap gap-2 items-center mb-2">
+            <p className="flex-shrink-0" style={{ color: tc.prompt }}>
               {prompt}
-            </Text>
-            <Text color={tc.command}>cat</Text>
-            <Text color={tc.param}>profile.md</Text>
-          </HStack>
+            </p>
+            <p style={{ color: tc.command }}>cat</p>
+            <p style={{ color: tc.param }}>profile.md</p>
+          </div>
 
-          <Box fontSize="xs" pl={1}>
+          <div className="text-xs pl-1">
             {/* Comment header — staggered */}
-            <Text color={tc.highlight} css={fadeIn(0.05)} fontWeight="semibold" mb={0.5}>
+            <p
+              className="font-semibold mb-0.5"
+              style={{ ...fadeInStyle(0.05), color: tc.highlight }}
+            >
               {'# ── '}
               {siteOwner.name.full}
               {' · M.S. Student @ NUAA ──────────────'}
-            </Text>
+            </p>
             {about.researchTitle && (
-              <Text color={tc.secondary} css={fadeIn(0.18)} mb={3}>
+              <p className="mb-3" style={{ ...fadeInStyle(0.18), color: tc.secondary }}>
                 {`# ${about.researchTitle}`}
-              </Text>
+              </p>
             )}
 
             {/* Bio paragraphs — each fades in with increasing delay */}
-            <VStack align="start" gap={2}>
+            <div className="flex flex-col gap-2">
               {paragraphs.map((para, i) => (
-                <Text color={tc.text} css={fadeIn(0.35 + i * 0.22)} key={i} lineHeight="tall">
+                <p
+                  className="leading-relaxed"
+                  key={i}
+                  style={{ ...fadeInStyle(0.35 + i * 0.22), color: tc.text }}
+                >
                   {para}
-                </Text>
+                </p>
               ))}
-            </VStack>
-          </Box>
-        </Box>
+            </div>
+          </div>
+        </div>
 
         {/* Live typewriter line */}
-        <Box>
-          <HStack flexWrap="wrap" gap={2}>
-            <Text color={tc.prompt} flexShrink={0}>
+        <div>
+          <div className="flex flex-wrap gap-2 items-center">
+            <p className="flex-shrink-0" style={{ color: tc.prompt }}>
               {prompt}
-            </Text>
-            <Text color={tc.command}>echo</Text>
-            <Text color={tc.param}>$INTRO</Text>
-          </HStack>
+            </p>
+            <p style={{ color: tc.command }}>echo</p>
+            <p style={{ color: tc.param }}>$INTRO</p>
+          </div>
 
           {/* Output line with cursor */}
-          <HStack align="center" gap={0} minH="1.5em" mt={0.5}>
-            <Text color={tc.text} whiteSpace="pre">
+          <div className="flex items-center gap-0 min-h-[1.5em] mt-0.5">
+            <p className="whitespace-pre" style={{ color: tc.text }}>
               {displayText}
-            </Text>
+            </p>
             {/* Block cursor */}
-            <Box
-              bg={tc.text}
-              borderRadius="1px"
-              display="inline-block"
-              h="1.15em"
-              ml="1px"
-              opacity={cursorOn ? 0.85 : 0}
-              transition="opacity 0.08s"
-              w="0.58em"
+            <div
+              className="inline-block rounded-[1px] h-[1.15em] ml-[1px] transition-opacity duration-75 w-[0.58em]"
+              style={{
+                backgroundColor: tc.text,
+                opacity: 1,
+              }}
             />
-          </HStack>
-        </Box>
-      </Box>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -260,18 +231,21 @@ const TerminalTypewriter: React.FC = () => {
 const ProfileSidebar: React.FC = () => {
   const { siteConfig, siteOwner } = useLocalizedData()
   const { t } = useTranslation()
+  const { colorMode } = useColorMode()
+  const isDark = colorMode === 'dark'
 
-  const cardBg = useColorModeValue('white', 'gray.800')
-  const borderColor = useColorModeValue('gray.200', 'gray.700')
-  const textColor = useColorModeValue('gray.600', 'gray.400')
-  const headingColor = useColorModeValue('gray.800', 'gray.100')
-  const promptColor = 'yellow.400'
-  const tagBg = useColorModeValue('gray.100', 'gray.700')
-  const tagColor = useColorModeValue('gray.600', 'gray.300')
-  const dividerColor = useColorModeValue('gray.100', 'gray.700')
-  const headerBg = useColorModeValue('gray.50', 'gray.900')
-  const avatarBorderColor = useColorModeValue('gray.200', 'gray.600')
-  const skillIconColor = useColorModeValue('gray.500', 'gray.400')
+  const tc = {
+    avatarBorder: isDark ? 'rgb(75, 85, 99)' : 'rgb(229, 231, 235)', // gray-600 : gray-200
+    bg: isDark ? 'rgb(31, 41, 55)' : 'white', // gray-800 : white
+    border: isDark ? 'rgb(55, 65, 81)' : 'rgb(229, 231, 235)', // gray-700 : gray-200
+    divider: isDark ? 'rgb(55, 65, 81)' : 'rgb(243, 244, 246)', // gray-700 : gray-100
+    headerBg: isDark ? 'rgb(17, 24, 39)' : 'rgb(249, 250, 251)', // gray-900 : gray-50
+    heading: isDark ? 'rgb(243, 244, 246)' : 'rgb(31, 41, 55)', // gray-100 : gray-800
+    skillIcon: isDark ? 'rgb(156, 163, 175)' : 'rgb(107, 114, 128)', // gray-400 : gray-500
+    tagBg: isDark ? 'rgb(55, 65, 81)' : 'rgb(243, 244, 246)', // gray-700 : gray-100
+    tagColor: isDark ? 'rgb(209, 213, 219)' : 'rgb(75, 85, 99)', // gray-300 : gray-600
+    text: isDark ? 'rgb(156, 163, 175)' : 'rgb(75, 85, 99)', // gray-400 : gray-600
+  }
 
   type SkillItem = string | { icon?: string; name: string }
   const skills = siteOwner.skills as SkillItem[]
@@ -279,197 +253,159 @@ const ProfileSidebar: React.FC = () => {
   const getIcon = (s: SkillItem) => (typeof s === 'string' ? undefined : s.icon)
 
   return (
-    <Box
-      bg={cardBg}
-      border="1px solid"
-      borderColor={borderColor}
-      borderRadius="xl"
-      overflow="hidden"
-      position={['static', 'static', 'sticky']}
-      top="80px"
+    <div
+      className="overflow-hidden rounded-xl sticky top-20"
+      style={{
+        backgroundColor: tc.bg,
+        border: `1px solid ${tc.border}`,
+      }}
     >
       {/* Terminal title bar */}
-      <Flex
-        align="center"
-        bg={headerBg}
-        borderBottom="1px solid"
-        borderColor={borderColor}
-        gap={2}
-        px={4}
-        py={2.5}
+      <div
+        className="flex items-center gap-2 px-4 py-2.5"
+        style={{
+          backgroundColor: tc.headerBg,
+          borderBottom: `1px solid ${tc.border}`,
+        }}
       >
-        <HStack gap={1.5}>
-          <Box bg="red.400" borderRadius="full" h="10px" w="10px" />
-          <Box bg="yellow.400" borderRadius="full" h="10px" w="10px" />
-          <Box bg="green.400" borderRadius="full" h="10px" w="10px" />
-        </HStack>
-        <Text color={textColor} fontFamily="mono" fontSize="xs" ml={2}>
+        <div className="flex items-center gap-1.5">
+          <div className="bg-red-400 rounded-full h-2.5 w-2.5" />
+          <div className="bg-yellow-400 rounded-full h-2.5 w-2.5" />
+          <div className="bg-green-400 rounded-full h-2.5 w-2.5" />
+        </div>
+        <p className="font-mono text-xs ml-2" style={{ color: tc.text }}>
           whoami
-        </Text>
-      </Flex>
+        </p>
+      </div>
 
-      <VStack align="stretch" gap={0}>
+      <div className="flex flex-col">
         {/* Avatar + Name */}
-        <VStack align="center" gap={3} pb={4} pt={6} px={5}>
+        <div className="flex flex-col items-center gap-3 pb-4 pt-6 px-5">
           <MotionHover>
-            <Image
+            <img
               alt={siteOwner.name.full}
-              border="2px solid"
-              borderColor={avatarBorderColor}
-              borderRadius="xl"
-              boxSize={['100px', '120px', '128px']}
-              objectFit="cover"
+              className="rounded-xl object-cover h-24 w-24 md:h-28 md:w-28 lg:h-32 lg:w-32"
               src={withBase(`images/${siteConfig.avatar}`)}
+              style={{ border: `2px solid ${tc.avatarBorder}` }}
             />
           </MotionHover>
-          <VStack align="center" gap={1}>
-            <HStack fontFamily="mono" fontSize="sm" gap={1}>
-              <Text color={promptColor} fontWeight="bold">
-                ~
-              </Text>
-              <Text color="cyan.400" fontWeight="semibold">
-                {siteOwner.name.full}
-              </Text>
-            </HStack>
-            <Text color={textColor} fontSize="xs" lineHeight="short" textAlign="center">
+          <div className="flex flex-col items-center gap-1">
+            <div className="flex font-mono text-sm gap-1">
+              <span className="text-yellow-400 font-bold">~</span>
+              <span className="text-cyan-400 font-semibold">{siteOwner.name.full}</span>
+            </div>
+            <p className="text-xs leading-relaxed text-center" style={{ color: tc.text }}>
               {siteConfig.tagline}
-            </Text>
-          </VStack>
-        </VStack>
+            </p>
+          </div>
+        </div>
 
-        <Separator borderColor={dividerColor} />
+        <div className="h-px w-full" style={{ backgroundColor: tc.divider }} />
 
         {/* Meta info */}
-        <VStack align="stretch" gap={2.5} px={5} py={4}>
+        <div className="flex flex-col gap-2.5 px-5 py-4">
           {siteOwner.contact.location && (
-            <HStack gap={2.5}>
-              <DynamicIcon boxSize={3} color="cyan.400" name="FaMapMarkerAlt" />
-              <Text color={textColor} fontFamily="mono" fontSize="xs">
+            <div className="flex items-center gap-2.5">
+              <DynamicIcon className="h-3 w-3 text-cyan-400" name="FaMapMarkerAlt" />
+              <p className="font-mono text-xs" style={{ color: tc.text }}>
                 {siteOwner.contact.location}
-              </Text>
-            </HStack>
+              </p>
+            </div>
           )}
           {siteOwner.contact.email && (
-            <HStack gap={2.5}>
-              <DynamicIcon boxSize={3} color="cyan.400" name="FaEnvelope" />
+            <div className="flex items-center gap-2.5">
+              <DynamicIcon className="h-3 w-3 text-cyan-400" name="FaEnvelope" />
               <MotionHover>
-                <Link
-                  _hover={{ color: 'cyan.400', textDecoration: 'none' }}
-                  color={textColor}
-                  fontFamily="mono"
-                  fontSize="xs"
+                <a
+                  className="font-mono text-xs overflow-hidden text-ellipsis whitespace-nowrap hover:text-cyan-400 no-underline"
                   href={`mailto:${siteOwner.contact.email}`}
-                  overflow="hidden"
-                  textOverflow="ellipsis"
-                  whiteSpace="nowrap"
+                  style={{ color: tc.text }}
                 >
                   {siteOwner.contact.email}
-                </Link>
+                </a>
               </MotionHover>
-            </HStack>
+            </div>
           )}
           {siteOwner.social.github && (
-            <HStack gap={2.5}>
-              <DynamicIcon boxSize={3} color="cyan.400" name="FaGithub" />
+            <div className="flex items-center gap-2.5">
+              <DynamicIcon className="h-3 w-3 text-cyan-400" name="FaGithub" />
               <MotionHover>
-                <Link
-                  _hover={{ color: 'cyan.400', textDecoration: 'none' }}
-                  color={textColor}
-                  fontFamily="mono"
-                  fontSize="xs"
+                <a
+                  className="font-mono text-xs hover:text-cyan-400 no-underline"
                   href={siteOwner.social.github}
                   rel="noopener noreferrer"
+                  style={{ color: tc.text }}
                   target="_blank"
                 >
                   {siteOwner.social.github.replace('https://github.com/', '@')}
-                </Link>
+                </a>
               </MotionHover>
-            </HStack>
+            </div>
           )}
-        </VStack>
+        </div>
 
-        <Separator borderColor={dividerColor} />
+        <div className="h-px w-full" style={{ backgroundColor: tc.divider }} />
 
         {/* Social links */}
         {heroSocialIcons.length > 0 && (
           <>
-            <HStack flexWrap="wrap" gap={2} px={5} py={3}>
+            <div className="flex flex-wrap gap-2 px-5 py-3">
               {heroSocialIcons.map((item) => (
                 <MotionHover key={item.label}>
-                  <Link
-                    _hover={{ textDecoration: 'none' }}
+                  <a
+                    className="no-underline"
                     href={item.href}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    <HStack
-                      _hover={{
-                        borderColor: item.color,
-                        color: item.color,
-                        transform: 'translateY(-1px)',
+                    <div
+                      className="flex items-center rounded-md border transition-all duration-200 font-mono text-xs gap-1.5 px-2.5 py-1.5 hover:-translate-y-0.5"
+                      style={{
+                        borderColor: tc.border,
+                        color: tc.text,
                       }}
-                      border="1px solid"
-                      borderColor={borderColor}
-                      borderRadius="md"
-                      color={textColor}
-                      fontFamily="mono"
-                      fontSize="xs"
-                      gap={1.5}
-                      px={2.5}
-                      py={1.5}
-                      transition="all 0.2s"
                     >
-                      <DynamicIcon boxSize={3} name={item.icon} />
-                      <Text>{item.label}</Text>
-                    </HStack>
-                  </Link>
+                      <DynamicIcon className="h-3 w-3" name={item.icon} />
+                      <p>{item.label}</p>
+                    </div>
+                  </a>
                 </MotionHover>
               ))}
-            </HStack>
-            <Separator borderColor={dividerColor} />
+            </div>
+            <div className="h-px w-full" style={{ backgroundColor: tc.divider }} />
           </>
         )}
 
         {/* Skills */}
         {skills.length > 0 && (
-          <Box px={5} py={4}>
-            <HStack gap={2} mb={3}>
-              <Box bg="cyan.400" borderRadius="full" h="2px" w="12px" />
-              <Text
-                color={headingColor}
-                fontFamily="mono"
-                fontSize="xs"
-                fontWeight="semibold"
-                letterSpacing="wider"
-                textTransform="uppercase"
-              >
+          <div className="px-5 py-4">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="bg-cyan-400 rounded-full h-0.5 w-3" />
+              <p className="font-mono text-xs font-semibold tracking-wider uppercase" style={{ color: tc.heading }}>
                 {t('about.skills', 'Skills')}
-              </Text>
-            </HStack>
-            <Flex flexWrap="wrap" gap={1.5}>
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
               {skills.map((skill) => (
-                <HStack
-                  bg={tagBg}
-                  borderRadius="sm"
-                  color={tagColor}
-                  fontFamily="mono"
-                  fontSize="2xs"
-                  gap={1}
+                <div
+                  className="flex items-center rounded-sm font-mono text-[10px] gap-1 px-2 py-0.5"
                   key={getName(skill)}
-                  px={2}
-                  py={0.5}
+                  style={{
+                    backgroundColor: tc.tagBg,
+                    color: tc.tagColor,
+                  }}
                 >
                   {getIcon(skill) && (
-                    <DynamicIcon boxSize={2.5} color={skillIconColor} name={getIcon(skill)} />
+                    <DynamicIcon className="h-2.5 w-2.5" name={getIcon(skill)} style={{ color: tc.skillIcon }} />
                   )}
-                  <Text>{getName(skill)}</Text>
-                </HStack>
+                  <p>{getName(skill)}</p>
+                </div>
               ))}
-            </Flex>
-          </Box>
+            </div>
+          </div>
         )}
-      </VStack>
-    </Box>
+      </div>
+    </div>
   )
 }
 
@@ -478,46 +414,36 @@ const ProfileSidebar: React.FC = () => {
 const PageHeader: React.FC = () => {
   const { t } = useTranslation()
   const { siteOwner } = useLocalizedData()
-  const borderColor = useColorModeValue('gray.200', 'gray.700')
-  const textColor = useColorModeValue('gray.500', 'gray.500')
-  const cmdColor = useColorModeValue('gray.700', 'gray.200')
+  const { colorMode } = useColorMode()
+  const isDark = colorMode === 'dark'
+
+  const tc = {
+    border: isDark ? 'rgb(55, 65, 81)' : 'rgb(229, 231, 235)', // gray-700 : gray-200
+    cmd: isDark ? 'rgb(229, 231, 235)' : 'rgb(55, 65, 81)', // gray-200 : gray-700
+    text: 'rgb(107, 114, 128)', // gray-500
+  }
 
   return (
-    <Box borderBottom="1px solid" borderColor={borderColor} mb={2} pb={6}>
-      <HStack fontFamily="mono" fontSize={['sm', 'md']} gap={2} mb={2}>
-        <Text color="yellow.400" fontWeight="bold">
-          $
-        </Text>
-        <Text color="cyan.400">cat</Text>
-        <Text color={cmdColor}>about.md</Text>
-        <Box
-          animation="blink 1s step-end infinite"
-          as="span"
-          bg="cyan.400"
-          css={{
-            '@keyframes blink': {
-              '0%, 100%': { opacity: 1 },
-              '50%': { opacity: 0 },
-            },
-          }}
-          display="inline-block"
-          h="1em"
-          w="2px"
-        />
-      </HStack>
-      <HStack gap={3} mt={3}>
-        <Box bg="cyan.400" borderRadius="full" h="3px" w="32px" />
-        <Heading fontWeight="bold" size={['md', 'lg']}>
+    <div className="border-b mb-2 pb-6" style={{ borderColor: tc.border }}>
+      <div className="flex items-center font-mono text-sm md:text-base gap-2 mb-2">
+        <span className="text-yellow-400 font-bold">$</span>
+        <span className="text-cyan-400">cat</span>
+        <span style={{ color: tc.cmd }}>about.md</span>
+        <div className="inline-block bg-cyan-400 h-[1em] w-0.5 animate-blink" />
+      </div>
+      <div className="flex items-center gap-3 mt-3">
+        <div className="bg-cyan-400 rounded-full h-0.5 w-8" />
+        <h2 className="text-xl md:text-2xl font-bold">
           {t('nav.about', 'About')}
-        </Heading>
-        <Badge colorPalette="cyan" fontFamily="mono" fontSize="2xs" px={2} variant="subtle">
+        </h2>
+        <Badge className="font-mono text-[10px] px-2 bg-cyan-400/10 text-cyan-400 border-none" variant="secondary">
           {siteOwner.name.full}
         </Badge>
-      </HStack>
-      <Text color={textColor} fontFamily="mono" fontSize="xs" mt={1}>
+      </div>
+      <p className="font-mono text-xs mt-1" style={{ color: tc.text }}>
         # {t('about.aboutDescription', 'Personal background, experience & skills')}
-      </Text>
-    </Box>
+      </p>
+    </div>
   )
 }
 
@@ -525,44 +451,33 @@ const PageHeader: React.FC = () => {
 
 const AboutPage: React.FC = () => {
   return (
-    <Box py={[4, 6, 8]} w="full">
-      <Container maxW="7xl" px={[3, 4, 8]}>
+    <div className="py-4 md:py-6 lg:py-8 w-full">
+      <div className="max-w-7xl mx-auto px-3 md:px-4 lg:px-8">
         <PageHeader />
 
-        <Grid
-          alignItems="start"
-          gap={[6, 6, 8]}
-          mt={6}
-          templateColumns={['1fr', '1fr', '280px 1fr', '300px 1fr']}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-[280px_1fr] xl:grid-cols-[300px_1fr] items-start gap-6 lg:gap-8 mt-6">
           {/* Sidebar */}
-          <GridItem>
+          <div>
             <MotionBox delay={0.1}>
               <ProfileSidebar />
             </MotionBox>
-          </GridItem>
+          </div>
 
           {/* Main content */}
-          <GridItem>
+          <div>
             <MotionBox delay={0.2}>
-              <VStack align="stretch" gap={[6, 7, 8]}>
+              <div className="flex flex-col gap-6 md:gap-7 lg:gap-8">
                 {/* Typewriter terminal — self intro */}
                 <TerminalTypewriter />
 
                 {/* Bio */}
                 <BioSection />
-
-                {/* Journey / Timeline */}
-                <JourneySection />
-
-                {/* Tech Stack */}
-                <MentorshipSection />
-              </VStack>
+              </div>
             </MotionBox>
-          </GridItem>
-        </Grid>
-      </Container>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 

@@ -1,4 +1,3 @@
-import { ChakraProvider } from '@chakra-ui/react'
 import { Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import React from 'react'
@@ -30,17 +29,15 @@ export function RootLayout() {
   const { layout: TemplateLayout } = template
 
   return (
-    <ChakraProvider value={template.theme}>
-      <ThemeProvider>
-        {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
-        <ThemeInjector />
-        <SlotProvider slots={slots}>
-          <TemplateLayout>
-            <Outlet />
-          </TemplateLayout>
-        </SlotProvider>
-        {import.meta.env.DEV && <TanStackRouterDevtools />}
-      </ThemeProvider>
-    </ChakraProvider>
+    <ThemeProvider>
+      {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
+      <ThemeInjector />
+      <SlotProvider slots={slots}>
+        <TemplateLayout>
+          <Outlet />
+        </TemplateLayout>
+      </SlotProvider>
+      {import.meta.env.DEV && <TanStackRouterDevtools />}
+    </ThemeProvider>
   )
 }

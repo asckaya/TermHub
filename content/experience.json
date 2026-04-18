@@ -19,15 +19,18 @@
   "timeline": [
     {
       "title": "LLM Algorithm Intern",
-      "company": "DiDi LLM Lab",
+      "company": "DiDi L Lab",
       "companyUrl": "https://www.didiglobal.com",
       "location": "Beijing",
       "start": "2025-07",
       "category": "industry",
       "roleType": "mle",
       "isCurrent": true,
-      "summary": "LLM Algorithm Intern",
-      "highlights": []
+      "summary": "Algorithm & Agent Research",
+      "highlights": [
+        "Researching LLM algorithms and Agents",
+        "Focusing on infrastructure (Infra) optimization"
+      ]
     },
     {
       "title": "M.S. Student",

@@ -10,7 +10,6 @@
     "authorVariants": ["任笙"]
   },
 
-  "title": "你好，我是任笙",
   "tagline": "大模型与多智能体研究 | Linux 玩家",
   "avatar": "avatar.jpeg",
 
@@ -75,5 +74,15 @@
     }
   ],
 
-  "selectedPublicationIds": []
+  "selectedPublicationIds": [],
+  "sections": [
+    "hero",
+    "newsDisplay",
+    "selectedPublications",
+    "talks",
+    "teaching",
+    "accomplishments",
+    "contact",
+    "footer"
+  ]
 }

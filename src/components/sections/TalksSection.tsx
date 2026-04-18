@@ -1,119 +1,118 @@
-import { Box, Container, Flex, Heading, HStack, Link, Text, VStack } from '@chakra-ui/react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useColorModeValue } from '@/hooks/useColorMode'
+import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 
 import DynamicIcon from '../DynamicIcon'
 
 const typeLabels: Record<string, { color: string; icon: string }> = {
-  invited: { color: 'purple.400', icon: 'FaUserTie' },
-  keynote: { color: 'yellow.400', icon: 'FaStar' },
-  oral: { color: 'cyan.400', icon: 'FaMicrophone' },
-  other: { color: 'gray.400', icon: 'FaComments' },
-  panel: { color: 'pink.400', icon: 'FaUsers' },
-  poster: { color: 'green.400', icon: 'FaImage' },
-  tutorial: { color: 'orange.400', icon: 'FaChalkboardTeacher' },
-  workshop: { color: 'blue.400', icon: 'FaTools' },
+  invited: { color: 'rgb(192, 132, 252)', icon: 'FaUserTie' }, // purple-400
+  keynote: { color: 'rgb(250, 204, 21)', icon: 'FaStar' }, // yellow-400
+  oral: { color: 'rgb(34, 211, 238)', icon: 'FaMicrophone' }, // cyan-400
+  other: { color: 'rgb(156, 163, 175)', icon: 'FaComments' }, // gray-400
+  panel: { color: 'rgb(244, 114, 182)', icon: 'FaUsers' }, // pink-400
+  poster: { color: 'rgb(74, 222, 128)', icon: 'FaImage' }, // green-400
+  tutorial: { color: 'rgb(251, 146, 60)', icon: 'FaChalkboardTeacher' }, // orange-400
+  workshop: { color: 'rgb(96, 165, 250)', icon: 'FaTools' }, // blue-400
 }
 
 const TalksSection: React.FC = () => {
   const { t } = useTranslation()
   const { talks } = useLocalizedData()
-  const borderColor = useColorModeValue('gray.100', 'gray.800')
-  const textColor = useColorModeValue('gray.500', 'gray.400')
-  const titleColor = useColorModeValue('gray.800', 'gray.100')
-  const mutedColor = useColorModeValue('gray.400', 'gray.500')
+  const { colorMode } = useColorMode()
+  const isDark = colorMode === 'dark'
 
-  const lineBg = useColorModeValue('gray.200', 'gray.700')
+  const tc = {
+    border: isDark ? 'rgb(31, 41, 55)' : 'rgb(243, 244, 246)', // gray-800 : gray-100
+    line: isDark ? 'rgb(55, 65, 81)' : 'rgb(229, 231, 235)', // gray-700 : gray-200
+    muted: isDark ? 'rgb(107, 114, 128)' : 'rgb(156, 163, 175)', // gray-500 : gray-400
+    text: isDark ? 'rgb(156, 163, 175)' : 'rgb(107, 114, 128)', // gray-400 : gray-500
+    title: isDark ? 'rgb(243, 244, 246)' : 'rgb(31, 41, 55)', // gray-100 : gray-800
+  }
 
   if (talks.length === 0) return null
 
   return (
-    <Box w="full">
-      <Container maxW={['full', 'full', '7xl']} px={[2, 4, 8]}>
-        <Flex align="center" gap={3} mb={4}>
-          <Box bg="cyan.400" borderRadius="full" flexShrink={0} h="2px" w="20px" />
-          <Heading fontWeight="semibold" size="md">
+    <section className="w-full">
+      <div className="max-w-full lg:max-w-7xl px-2 md:px-4 lg:px-8 mx-auto">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="bg-cyan-400 rounded-full flex-shrink-0 h-0.5 w-5" />
+          <h3 className="text-lg font-semibold">
             {t('about.talks', 'Talks')}
-          </Heading>
-          <Box bg={lineBg} flex="1" h="1px" />
-        </Flex>
-        <VStack align="stretch" gap={0}>
+          </h3>
+          <div className="flex-1 h-px" style={{ backgroundColor: tc.line }} />
+        </div>
+        <div className="flex flex-col">
           {talks.map((talk, i) => {
             const meta = typeLabels[talk.type ?? 'other'] ?? typeLabels.other
             return (
-              <Flex
-                align="start"
-                borderBottom="1px solid"
-                borderColor={borderColor}
-                gap={3}
+              <div
+                className="flex items-start gap-3 border-b py-2.5"
                 key={i}
-                py={2.5}
+                style={{ borderColor: tc.border }}
               >
-                <Box flexShrink={0} mt="2px">
-                  <DynamicIcon boxSize={3.5} color={meta.color} name={meta.icon} />
-                </Box>
-                <Box flex={1} minW={0}>
-                  <Text color={titleColor} fontSize="xs" fontWeight="medium" lineHeight="short">
+                <div className="flex-shrink-0 mt-[2px]">
+                  <DynamicIcon
+                    className="h-3.5 w-3.5"
+                    name={meta.icon}
+                    style={{ color: meta.color }}
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4
+                    className="text-xs font-medium leading-short"
+                    style={{ color: tc.title }}
+                  >
                     {talk.title}
-                  </Text>
-                  <HStack flexWrap="wrap" gap={2} mt={0.5}>
-                    <Text color={textColor} fontSize="2xs">
+                  </h4>
+                  <div className="flex flex-wrap items-center gap-2 mt-0.5">
+                    <span className="text-[10px]" style={{ color: tc.text }}>
                       {talk.event}
-                    </Text>
+                    </span>
                     {talk.location && (
-                      <Text color={mutedColor} fontSize="2xs">
+                      <span className="text-[10px]" style={{ color: tc.muted }}>
                         · {talk.location}
-                      </Text>
+                      </span>
                     )}
-                  </HStack>
+                  </div>
                   {(talk.slidesUrl ?? talk.videoUrl) && (
-                    <HStack gap={2} mt={1}>
+                    <div className="flex items-center gap-2 mt-1">
                       {talk.slidesUrl && (
-                        <Link
-                          _hover={{ textDecoration: 'underline' }}
-                          color="cyan.400"
-                          fontFamily="mono"
-                          fontSize="2xs"
+                        <a
+                          className="font-mono text-[10px] text-cyan-400 underline hover:no-underline"
                           href={talk.slidesUrl}
                           rel="noopener noreferrer"
                           target="_blank"
                         >
                           slides
-                        </Link>
+                        </a>
                       )}
                       {talk.videoUrl && (
-                        <Link
-                          _hover={{ textDecoration: 'underline' }}
-                          color="cyan.400"
-                          fontFamily="mono"
-                          fontSize="2xs"
+                        <a
+                          className="font-mono text-[10px] text-cyan-400 underline hover:no-underline"
                           href={talk.videoUrl}
                           rel="noopener noreferrer"
                           target="_blank"
                         >
                           video
-                        </Link>
+                        </a>
                       )}
-                    </HStack>
+                    </div>
                   )}
-                </Box>
-                <Text
-                  color={mutedColor}
-                  flexShrink={0}
-                  fontFamily="mono"
-                  fontSize="2xs"
-                  whiteSpace="nowrap"
+                </div>
+                <span
+                  className="flex-shrink-0 font-mono text-[10px] whitespace-nowrap"
+                  style={{ color: tc.muted }}
                 >
                   {talk.date}
-                </Text>
-              </Flex>
+                </span>
+              </div>
             )
           })}
-        </VStack>
-      </Container>
-    </Box>
+        </div>
+      </div>
+    </section>
   )
 }
 

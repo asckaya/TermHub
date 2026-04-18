@@ -8,7 +8,6 @@
     "display": "Sheng Ren",
     "authorVariants": ["Sheng Ren"]
   },
-  "title": "Hi there, I'm Sheng Ren",
   "tagline": "LLM & Multi-Agent Research | Linux Enthusiast",
   "avatar": "avatar.jpeg",
   "terminal": {
@@ -81,5 +80,15 @@
       "color": "#4285F4"
     }
   ],
-  "selectedPublicationIds": []
+  "selectedPublicationIds": [],
+  "sections": [
+    "hero",
+    "newsDisplay",
+    "selectedPublications",
+    "talks",
+    "teaching",
+    "accomplishments",
+    "contact",
+    "footer"
+  ]
 }

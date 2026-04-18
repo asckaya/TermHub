@@ -1,31 +1,20 @@
-import {
-  Box,
-  Collapsible,
-  Flex,
-  HStack,
-  Icon,
-  Image,
-  Input,
-  Link,
-  Text,
-  VStack,
-} from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaChevronDown } from 'react-icons/fa'
 
+import {
+  Collapsible,
+  CollapsibleContent,
+} from '@/components/ui/collapsible'
 import { useThemeConfig } from '@/config/theme'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { cn } from '@/lib/utils'
 
 import type { RoleType } from '../types'
 
 import { highlightData } from '../utils/highlightData'
 import { MotionBox, MotionHover, MotionList } from './animations/MotionList'
-
-/* ── Keyframes ─────────────────────────────────────────────────── */
-const blink = keyframes`0%,100%{opacity:1}50%{opacity:0}`
 
 /* ── Types & config ────────────────────────────────────────────── */
 type FilterType = 'academic' | 'all' | 'industry'
@@ -62,7 +51,6 @@ const getIconUrl = (url?: string, company?: string, logos?: Record<string, strin
 }
 
 /* ── Helpers ────────────────────────────────────────────────────── */
-// fmtDate is called inside the component where t() is available
 const fmtDateFn = (v: string | undefined, presentLabel: string, lang: string) => {
   if (!v) return presentLabel
   if (v.toLowerCase() === 'present') return presentLabel
@@ -96,18 +84,7 @@ const Experience: React.FC = () => {
   /* Palette (centralized) */
   const { terminalPalette } = useThemeConfig()
   const tc = terminalPalette.colors(isDark)
-  const termBg = tc.bg
-  const termText = tc.text
-  const termHeader = tc.header
-  const termBorder = tc.border
-  const termPrompt = tc.prompt
-  const termCommand = tc.command
-  const termInfo = tc.info
-  const termHighlight = tc.highlight
-  const termSuccess = tc.success
-  const termSecondary = tc.secondary
-  const hlc = { kw: termCommand, num: termHighlight, str: termSuccess }
-  const hoverBg = isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)'
+  const hlc = { kw: tc.command, num: tc.highlight, str: tc.success }
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -218,222 +195,163 @@ const Experience: React.FC = () => {
     setCommand('')
   }
 
-  const termParam = tc.param
-  const termWarning = tc.warning
-
   return (
-    <Box py={8} w="full">
-      <VStack gap={6} maxW="1400px" mx="auto" px={[2, 4, 6]}>
-        <Box
-          bg={termBg}
-          borderRadius="md"
-          boxShadow={`0 0 0 1px ${termBorder}, 0 4px 16px ${isDark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.1)'}`}
-          fontFamily="mono"
-          overflow="hidden"
-          w="full"
+    <div className="py-8 w-full">
+      <div className="flex flex-col gap-6 max-w-[1400px] mx-auto px-2 md:px-4 lg:px-6">
+        <div
+          className="rounded-md font-mono overflow-hidden w-full transition-shadow duration-300"
+          style={{
+            backgroundColor: tc.bg,
+            boxShadow: `0 0 0 1px ${tc.border}, 0 4px 16px ${isDark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.1)'}`,
+          }}
         >
           {/* ═══ Pixel RGB light bar ═══ */}
-          <Flex borderTopRadius="md" h="3px" overflow="hidden" w="full">
-            {(() => {
-              const total = 28
-              return Array.from({ length: total }, (_, i) => {
-                const colorIdx = (i + tick) % terminalPalette.rainbow.length
-                const brightness = 0.6 + 0.4 * Math.abs(Math.sin((i + tick * 0.5) * 0.3))
-                return (
-                  <Box
-                    bg={terminalPalette.rainbow[colorIdx]}
-                    flex={1}
-                    h="full"
-                    key={i}
-                    opacity={brightness}
-                  />
-                )
-              })
-            })()}
-          </Flex>
+          <div className="flex rounded-t-md h-[3px] overflow-hidden w-full">
+            {Array.from({ length: 28 }, (_, i) => {
+              const colorIdx = (i + tick) % terminalPalette.rainbow.length
+              const brightness = 0.6 + 0.4 * Math.abs(Math.sin((i + tick * 0.5) * 0.3))
+              return (
+                <div
+                  key={i}
+                  className="flex-1 h-full"
+                  style={{
+                    backgroundColor: terminalPalette.rainbow[colorIdx],
+                    opacity: brightness,
+                  }}
+                />
+              )
+            })}
+          </div>
 
           {/* ═══ Title bar ═══ */}
-          <Flex
-            align="center"
-            bg={termHeader}
-            borderBottom={`1px solid ${termBorder}`}
-            fontSize="xs"
-            fontWeight="medium"
-            justify="space-between"
-            px={4}
-            py={2}
+          <div
+            className="flex items-center justify-between px-4 py-2 text-xs font-medium border-b"
+            style={{ backgroundColor: tc.header, borderColor: tc.border }}
           >
-            <HStack gap={3}>
-              <HStack gap={1.5}>
-                <Box bg="#bf616a" borderRadius="full" h="10px" w="10px" />
-                <Box bg="#ebcb8b" borderRadius="full" h="10px" w="10px" />
-                <Box bg="#a3be8c" borderRadius="full" h="10px" w="10px" />
-              </HStack>
-              <Text>
-                <Box as="span" color={termParam}>
-                  const{' '}
-                </Box>
-                <Box as="span" color={termPrompt} fontWeight="bold">
-                  career
-                </Box>
-                <Box as="span" color={termSecondary}>
-                  {' '}
-                  ={' '}
-                </Box>
-                <Box as="span" color={termParam}>
-                  new{' '}
-                </Box>
-                <Box as="span" color={termCommand} fontWeight="bold">
-                  Explorer
-                </Box>
-                <Box as="span" color={termSecondary}>
-                  (
-                </Box>
-                <Box as="span" color={termHighlight}>
-                  'experience'
-                </Box>
-                <Box as="span" color={termSecondary}>
-                  )
-                </Box>
-              </Text>
-            </HStack>
-            <Text color={termHighlight}>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5">
+                <div className="bg-[#bf616a] rounded-full h-[10px] w-[10px]" />
+                <div className="bg-[#ebcb8b] rounded-full h-[10px] w-[10px]" />
+                <div className="bg-[#a3be8c] rounded-full h-[10px] w-[10px]" />
+              </div>
+              <div className="flex items-center gap-1">
+                <span style={{ color: tc.param }}>const </span>
+                <span className="font-bold" style={{ color: tc.prompt }}>career</span>
+                <span style={{ color: tc.secondary }}> = </span>
+                <span style={{ color: tc.param }}>new </span>
+                <span className="font-bold" style={{ color: tc.command }}>Explorer</span>
+                <span style={{ color: tc.secondary }}>(</span>
+                <span style={{ color: tc.highlight }}>'experience'</span>
+                <span style={{ color: tc.secondary }}>)</span>
+              </div>
+            </div>
+            <div style={{ color: tc.highlight }}>
               {new Date().toLocaleTimeString('en-US', {
                 hour: '2-digit',
                 hour12: false,
                 minute: '2-digit',
                 second: '2-digit',
               })}
-            </Text>
-          </Flex>
+            </div>
+          </div>
 
           {/* ═══ Touch bar ═══ */}
-          <Flex
-            align="center"
-            bg={tc.touchBar}
-            borderBottom={`1px solid ${termBorder}`}
-            fontSize="2xs"
-            justify="space-between"
-            overflow="hidden"
-            px={4}
-            py={1}
+          <div
+            className="flex items-center justify-between px-4 py-1 text-[10px] border-b overflow-hidden"
+            style={{ backgroundColor: tc.touchBar, borderColor: tc.border }}
           >
-            <Text
-              color={termSecondary}
-              overflow="hidden"
-              textOverflow="ellipsis"
-              whiteSpace="nowrap"
+            <div
+              className="overflow-hidden text-ellipsis whitespace-nowrap"
+              style={{ color: tc.secondary }}
             >
-              <Text as="span" color={termPrompt} fontWeight="bold">
+              <span className="font-bold" style={{ color: tc.prompt }}>
                 {siteOwner.terminalUsername}
-              </Text>
-              <Text as="span" color={tc.border}>
-                {' '}
-                ·{' '}
-              </Text>
-              <Text as="span" color={termHighlight}>
-                {stats.total}
-              </Text>
-              <Text as="span"> {t('experience.rolesAcross')} </Text>
-              <Text as="span" color={termSuccess}>
+              </span>
+              <span className="mx-1" style={{ color: tc.border }}>·</span>
+              <span style={{ color: tc.highlight }}>{stats.total}</span>
+              <span> {t('experience.rolesAcross')} </span>
+              <span style={{ color: tc.success }}>
                 {stats.current} {t('experience.currentlyActive')}
-              </Text>
-              <Text as="span" color={tc.border}>
-                {' '}
-                ·{' '}
-              </Text>
-              <Text as="span" color={termParam}>
+              </span>
+              <span className="mx-1" style={{ color: tc.border }}>·</span>
+              <span style={{ color: tc.param }}>
                 {stats.academic} {t('experience.research')}
-              </Text>
-              <Text as="span">, </Text>
-              <Text as="span" color={termWarning}>
+              </span>
+              <span>, </span>
+              <span style={{ color: tc.warning }}>
                 {stats.industry} {t('experience.industry')}
-              </Text>
-            </Text>
-            <Text color={termCommand} flexShrink={0}>
+              </span>
+            </div>
+            <div className="flex-shrink-0" style={{ color: tc.command }}>
               ~/career
-            </Text>
-          </Flex>
+            </div>
+          </div>
 
           {/* Education */}
           <MotionBox delay={0.1}>
-            <Box bg={termBg} borderBottom={`1px solid ${termBorder}`} px={[3, 5]} py={3}>
-              <Flex align="center" gap={2} mb={2.5}>
-                <Box bg={termCommand} borderRadius="full" h="3px" w="14px" />
-                <Text color={termInfo} fontSize="xs" fontWeight="bold" letterSpacing="0.06em">
+            <div className="px-3 md:px-5 py-3 border-b" style={{ backgroundColor: tc.bg, borderColor: tc.border }}>
+              <div className="flex items-center gap-2 mb-2.5">
+                <div className="rounded-full h-[3px] w-[14px]" style={{ backgroundColor: tc.command }} />
+                <span className="text-xs font-bold tracking-widest uppercase" style={{ color: tc.info }}>
                   {t('experience.education')}
-                </Text>
-                <Box bg={termBorder} flex="1" h="1px" />
-              </Flex>
-              <VStack align="stretch" gap={1.5} pl={1}>
+                </span>
+                <div className="flex-1 h-px" style={{ backgroundColor: tc.border }} />
+              </div>
+              <div className="flex flex-col gap-1.5 pl-1">
                 {education.map((edu) => {
                   const logo = institutionLogos[edu.institution]
                   return (
-                    <HStack fontSize="xs" gap={2} key={edu.course}>
+                    <div className="flex items-center gap-2 text-xs" key={edu.course}>
                       {logo ? (
-                        <Image
+                        <img
                           alt=""
-                          borderRadius="sm"
-                          flexShrink={0}
-                          h="16px"
-                          objectFit="contain"
+                          className="flex-shrink-0 h-4 w-4 object-contain rounded-sm"
                           src={logo}
-                          w="16px"
                         />
                       ) : (
-                        <Box
-                          bg={`${termCommand}20`}
-                          borderRadius="sm"
-                          flexShrink={0}
-                          h="16px"
-                          w="16px"
+                        <div
+                          className="flex-shrink-0 h-4 w-4 rounded-sm"
+                          style={{ backgroundColor: `${tc.command}20` }}
                         />
                       )}
-                      <Text color={termText} fontWeight="medium">
+                      <span className="font-medium" style={{ color: tc.text }}>
                         {edu.course}
-                      </Text>
-                      <Text color={termSecondary}>·</Text>
-                      <Text color={termCommand}>{edu.institution}</Text>
-                      <Text color={termSecondary} flexShrink={0} ml="auto">
+                      </span>
+                      <span style={{ color: tc.secondary }}>·</span>
+                      <span style={{ color: tc.command }}>{edu.institution}</span>
+                      <span className="ml-auto flex-shrink-0" style={{ color: tc.secondary }}>
                         {edu.year}
-                      </Text>
-                    </HStack>
+                      </span>
+                    </div>
                   )
                 })}
-              </VStack>
-            </Box>
+              </div>
+            </div>
           </MotionBox>
 
           {/* Filter bar */}
-          <Flex
-            align="center"
-            bg={termBg}
-            borderBottom={`1px solid ${termBorder}`}
-            gap={1.5}
-            px={[3, 5]}
-            py={2}
+          <div
+            className="flex items-center gap-1.5 px-3 md:px-5 py-2 border-b"
+            style={{ backgroundColor: tc.bg, borderColor: tc.border }}
           >
             {(['all', 'academic', 'industry'] as FilterType[]).map((f) => {
               const active = filter === f
               const count =
                 f === 'all' ? stats.total : f === 'academic' ? stats.academic : stats.industry
               return (
-                <Text
-                  _hover={{ bg: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)' }}
-                  as="button"
-                  bg={
-                    active ? (isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.07)') : 'transparent'
-                  }
-                  borderRadius="full"
-                  color={active ? termText : termSecondary}
-                  cursor="pointer"
-                  fontSize="xs"
-                  fontWeight={active ? 'bold' : 'medium'}
+                <button
                   key={f}
+                  className={cn(
+                    "px-3 py-1 text-xs rounded-full transition-all duration-150 cursor-pointer",
+                    active ? "font-bold" : "font-medium"
+                  )}
+                  style={{
+                    backgroundColor: active 
+                      ? (isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.07)') 
+                      : 'transparent',
+                    color: active ? tc.text : tc.secondary,
+                  }}
                   onClick={() => setFilter(f)}
-                  px={3}
-                  py={1}
-                  transition="all 0.15s"
                 >
                   {f === 'all'
                     ? t('experience.filterAll')
@@ -441,50 +359,46 @@ const Experience: React.FC = () => {
                       ? t('experience.filterAcademic')
                       : t('experience.filterIndustry')}{' '}
                   ({count})
-                </Text>
+                </button>
               )
             })}
-          </Flex>
+          </div>
 
           {/* ── Experience list ───────────────────────────── */}
-          <Box bg={termBg} color={termText}>
+          <div style={{ backgroundColor: tc.bg, color: tc.text }}>
             <MotionList staggerDelay={0.1}>
               {grouped.map((group) => (
-                <Box key={group.year}>
+                <div key={group.year}>
                   {/* Year heading */}
-                  <Flex
-                    align="center"
-                    bg={isDark ? 'rgba(0,0,0,0.12)' : 'rgba(0,0,0,0.03)'}
-                    borderBottom={`1px solid ${termBorder}`}
-                    gap={2}
-                    px={[3, 5]}
-                    py={2}
+                  <div
+                    className="flex items-center gap-2 px-3 md:px-5 py-2 border-b"
+                    style={{ 
+                      backgroundColor: isDark ? 'rgba(0,0,0,0.12)' : 'rgba(0,0,0,0.03)',
+                      borderColor: tc.border 
+                    }}
                   >
-                    <Box
-                      bg={group.year === 'Present' ? termSuccess : 'transparent'}
-                      border="2px solid"
-                      borderColor={group.year === 'Present' ? termSuccess : termHighlight}
-                      borderRadius="full"
-                      h="8px"
-                      w="8px"
+                    <div
+                      className="h-2 w-2 rounded-full border-2"
+                      style={{
+                        backgroundColor: group.year === 'Present' ? tc.success : 'transparent',
+                        borderColor: group.year === 'Present' ? tc.success : tc.highlight,
+                      }}
                     />
-                    <Text
-                      color={group.year === 'Present' ? termSuccess : termHighlight}
-                      fontSize="xs"
-                      fontWeight="bold"
-                      letterSpacing="0.04em"
+                    <span
+                      className="text-xs font-bold tracking-wider uppercase"
+                      style={{ color: group.year === 'Present' ? tc.success : tc.highlight }}
                     >
                       {group.year === 'Present'
                         ? t('experience.present').toUpperCase()
                         : group.year}
-                    </Text>
-                    <Text color={termSecondary} fontSize="2xs">
+                    </span>
+                    <span className="text-[10px]" style={{ color: tc.secondary }}>
                       {group.year === 'Present'
                         ? `${group.items.length.toString()} ${t('experience.active')}`
                         : group.items.length.toString()}
-                    </Text>
-                    <Box bg={termBorder} flex="1" h="1px" />
-                  </Flex>
+                    </span>
+                    <div className="flex-1 h-px" style={{ backgroundColor: tc.border }} />
+                  </div>
 
                   {/* Entries */}
                   {group.items.map((exp) => {
@@ -499,286 +413,239 @@ const Experience: React.FC = () => {
 
                     return (
                       <MotionBox key={id}>
-                        <Box
-                          _hover={{ bg: hoverBg }}
-                          borderBottom={`1px solid ${isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)'}`}
-                          transition="background 0.15s"
+                        <div
+                          className="border-b transition-colors duration-150"
+                          style={{ 
+                            borderColor: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)' 
+                          }}
                         >
-                          <Flex
-                            align="start"
-                            cursor="pointer"
-                            gap={3}
+                          <div
+                            className="flex items-start gap-3 px-3 md:px-5 py-3 cursor-pointer group hover:bg-white/5 dark:hover:bg-white/[0.03]"
                             onClick={() => toggleExpanded(id)}
-                            px={[3, 5]}
-                            py={3}
                           >
                             {/* Logo */}
-                            <Box flexShrink={0} mt="2px">
+                            <div className="flex-shrink-0 mt-0.5">
                               <MotionHover>
                                 {icon ? (
-                                  <Image
+                                  <img
                                     alt=""
-                                    borderRadius="md"
-                                    h="32px"
-                                    objectFit="contain"
+                                    className="h-8 w-8 object-contain rounded-md"
                                     src={icon}
-                                    w="32px"
                                   />
                                 ) : (
-                                  <Flex
-                                    align="center"
-                                    bg={`${rtColor}18`}
-                                    borderRadius="md"
-                                    color={rtColor}
-                                    fontSize="sm"
-                                    fontWeight="bold"
-                                    h="32px"
-                                    justify="center"
-                                    w="32px"
+                                  <div
+                                    className="flex items-center justify-center h-8 w-8 rounded-md text-sm font-bold"
+                                    style={{ 
+                                      backgroundColor: `${rtColor}18`,
+                                      color: rtColor 
+                                    }}
                                   >
                                     {exp.company.charAt(0)}
-                                  </Flex>
+                                  </div>
                                 )}
                               </MotionHover>
-                            </Box>
+                            </div>
 
                             {/* Content */}
-                            <Box flex="1" minW={0}>
+                            <div className="flex-1 min-w-0">
                               {/* Title + role badge */}
-                              <Flex align="center" flexWrap="wrap" gap={2} mb={0.5}>
-                                <Text color={termText} fontSize="sm" fontWeight="semibold">
+                              <div className="flex items-center flex-wrap gap-2 mb-0.5">
+                                <span className="text-sm font-semibold" style={{ color: tc.text }}>
                                   {exp.title}
-                                </Text>
-                                <Text
-                                  bg={`${rtColor}15`}
-                                  borderRadius="sm"
-                                  color={rtColor}
-                                  fontSize="2xs"
-                                  fontWeight="bold"
-                                  letterSpacing="0.04em"
-                                  px={1.5}
-                                  py={0}
-                                  textTransform="uppercase"
+                                </span>
+                                <span
+                                  className="px-1.5 py-0 text-[10px] font-bold tracking-wider uppercase rounded-sm"
+                                  style={{ 
+                                    backgroundColor: `${rtColor}15`,
+                                    color: rtColor 
+                                  }}
                                 >
                                   {t(rtCfg.labelKey)}
-                                </Text>
+                                </span>
                                 {exp.isCurrent && (
-                                  <Box
-                                    bg={termSuccess}
-                                    borderRadius="full"
-                                    flexShrink={0}
-                                    h="6px"
-                                    w="6px"
+                                  <div
+                                    className="flex-shrink-0 h-1.5 w-1.5 rounded-full"
+                                    style={{ backgroundColor: tc.success }}
                                   />
                                 )}
-                              </Flex>
+                              </div>
 
                               {/* Company + location */}
-                              <Flex align="center" flexWrap="wrap" fontSize="xs" gap={1}>
+                              <div className="flex items-center flex-wrap gap-1 text-xs">
                                 {exp.companyUrl ? (
-                                  <Link
-                                    _hover={{ textDecoration: 'underline' }}
-                                    color={termCommand}
-                                    fontSize="xs"
+                                  <a
+                                    className="hover:underline transition-all"
                                     href={exp.companyUrl}
                                     onClick={(e) => e.stopPropagation()}
                                     rel="noopener noreferrer"
+                                    style={{ color: tc.command }}
                                     target="_blank"
                                   >
                                     {exp.company}
-                                  </Link>
+                                  </a>
                                 ) : (
-                                  <Text color={termCommand}>{exp.company}</Text>
+                                  <span style={{ color: tc.command }}>{exp.company}</span>
                                 )}
                                 {exp.location && (
-                                  <Text color={termSecondary}>· {exp.location}</Text>
+                                  <span style={{ color: tc.secondary }}>· {exp.location}</span>
                                 )}
-                              </Flex>
+                              </div>
 
                               {/* Date on mobile */}
-                              <Text
-                                color={termSecondary}
-                                display={{ base: 'block', md: 'none' }}
-                                fontSize="2xs"
-                                mt={0.5}
+                              <div
+                                className="md:hidden mt-0.5 text-[10px]"
+                                style={{ color: tc.secondary }}
                               >
                                 {fmtDate(exp.start)} – {fmtDate(exp.end)}
-                              </Text>
-                            </Box>
+                              </div>
+                            </div>
 
                             {/* Period (desktop) */}
-                            <Text
-                              color={termSecondary}
-                              display={{ base: 'none', md: 'block' }}
-                              flexShrink={0}
-                              fontSize="xs"
-                              pt="2px"
-                              textAlign="right"
-                              w="160px"
+                            <div
+                              className="hidden md:block flex-shrink-0 w-40 pt-0.5 text-right text-xs"
+                              style={{ color: tc.secondary }}
                             >
                               {fmtDate(exp.start)} – {fmtDate(exp.end)}
-                            </Text>
+                            </div>
 
                             {/* Chevron */}
-                            <Icon
-                              as={FaChevronDown}
-                              boxSize="10px"
-                              color={termSecondary}
-                              flexShrink={0}
-                              mt="6px"
-                              transform={isExpanded ? 'rotate(180deg)' : 'rotate(0)'}
-                              transition="transform 0.2s"
+                            <FaChevronDown
+                              className={cn(
+                                "flex-shrink-0 mt-1.5 w-2.5 h-2.5 transition-transform duration-200",
+                                isExpanded && "rotate-180"
+                              )}
+                              style={{ color: tc.secondary }}
                             />
-                          </Flex>
+                          </div>
 
-                          {/* Expanded */}
-                          <Collapsible.Root open={isExpanded}>
-                            <Collapsible.Content>
-                              <Box
-                                borderLeft={`2px solid ${rtColor}`}
-                                mb={3}
-                                ml={[3, '69px']}
-                                mx={[3, 5]}
-                                pl={3}
+                          {/* Expanded Content using Radix/Shadcn UI */}
+                          <Collapsible open={isExpanded}>
+                            <CollapsibleContent>
+                              <div
+                                className="mb-3 mx-3 md:mx-5 pl-3 border-l-2"
+                                style={{ 
+                                  borderColor: rtColor,
+                                  marginLeft: 'calc(var(--spacing) * 3 + 32px)' // align with content after logo
+                                }}
                               >
                                 {exp.summary && (
-                                  <Text color={termHighlight} fontSize="xs" lineHeight="1.6" mb={2}>
+                                  <div className="mb-2 text-xs leading-relaxed" style={{ color: tc.highlight }}>
                                     {highlightData(exp.summary, hlc)}
-                                  </Text>
+                                  </div>
                                 )}
-                                <VStack align="stretch" gap={1}>
+                                <div className="flex flex-col gap-1">
                                   {exp.highlights.map((line: string, i: number) => (
-                                    <HStack align="start" fontSize="xs" gap={2} key={i}>
-                                      <Text color={rtColor} flexShrink={0} mt="1px">
+                                    <div className="flex items-start gap-2 text-xs" key={i}>
+                                      <span className="flex-shrink-0 mt-0.5" style={{ color: rtColor }}>
                                         ·
-                                      </Text>
-                                      <Text color={termText} lineHeight="1.5">
+                                      </span>
+                                      <span className="leading-relaxed" style={{ color: tc.text }}>
                                         {highlightData(line, hlc)}
-                                      </Text>
-                                    </HStack>
+                                      </span>
+                                    </div>
                                   ))}
-                                </VStack>
-                              </Box>
-                            </Collapsible.Content>
-                          </Collapsible.Root>
-                        </Box>
+                                </div>
+                              </div>
+                            </CollapsibleContent>
+                          </Collapsible>
+                        </div>
                       </MotionBox>
                     )
                   })}
-                </Box>
+                </div>
               ))}
             </MotionList>
-          </Box>
+          </div>
 
           {/* Academic Reviewing */}
           {reviewingItems.length > 0 && (
             <MotionBox delay={0.2}>
-              <Box bg={termBg} borderTop={`1px solid ${termBorder}`} px={[3, 5]} py={4}>
-                <Flex align="center" gap={2} mb={3}>
-                  <Box bg={tc.param} borderRadius="full" h="3px" w="14px" />
-                  <Text color={termInfo} fontSize="xs" fontWeight="bold" letterSpacing="0.06em">
+              <div
+                className="px-3 md:px-5 py-4 border-t"
+                style={{ backgroundColor: tc.bg, borderColor: tc.border }}
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="rounded-full h-[3px] w-[14px]" style={{ backgroundColor: tc.param }} />
+                  <span className="text-xs font-bold tracking-widest uppercase" style={{ color: tc.info }}>
                     {t('experience.academicReviewing')}
-                  </Text>
-                  <Text color={termSecondary} fontSize="2xs">
+                  </span>
+                  <span className="text-[10px]" style={{ color: tc.secondary }}>
                     {reviewingItems.length}
-                  </Text>
-                  <Box bg={termBorder} flex="1" h="1px" />
-                </Flex>
-                <VStack align="stretch" gap={2}>
+                  </span>
+                  <div className="flex-1 h-px" style={{ backgroundColor: tc.border }} />
+                </div>
+                <div className="flex flex-col gap-2">
                   {reviewingByYear.map(([year, items]) => (
-                    <HStack align="start" flexWrap="wrap" gap={3} key={year}>
-                      <Text
-                        color={termHighlight}
-                        flexShrink={0}
-                        fontSize="xs"
-                        fontWeight="bold"
-                        w="35px"
+                    <div className="flex flex-wrap items-start gap-3" key={year}>
+                      <span
+                        className="flex-shrink-0 w-9 text-xs font-bold"
+                        style={{ color: tc.highlight }}
                       >
                         {year}
-                      </Text>
-                      <HStack flexWrap="wrap" gap={1.5}>
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
                         {items.map((item, idx) => (
                           <MotionHover key={`${item.venue}-${idx.toString()}`}>
-                            <Text
-                              border="1px solid"
-                              borderColor={isDark ? 'whiteAlpha.150' : 'blackAlpha.100'}
-                              borderRadius="full"
-                              color={termCommand}
-                              cursor="default"
-                              fontSize="xs"
-                              px={2}
-                              py={0.5}
+                            <span
+                              className="px-2 py-0.5 text-xs rounded-full border cursor-default transition-colors"
+                              style={{ 
+                                borderColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)',
+                                color: tc.command 
+                              }}
                             >
                               {item.venue.replace(/\s*\d{4}\s*/, ' ').trim()}
-                            </Text>
+                            </span>
                           </MotionHover>
                         ))}
-                      </HStack>
-                    </HStack>
+                      </div>
+                    </div>
                   ))}
-                </VStack>
-              </Box>
+                </div>
+              </div>
             </MotionBox>
           )}
 
           {/* Command output */}
           {cmdOutput.length > 0 && (
-            <Box
-              bg={isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.03)'}
-              borderTop={`1px solid ${termBorder}`}
-              px={[3, 5]}
-              py={2}
+            <div
+              className="px-3 md:px-5 py-2 border-t font-mono text-xs whitespace-pre-wrap"
+              style={{ 
+                backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.03)',
+                borderColor: tc.border,
+                color: tc.text
+              }}
             >
               {cmdOutput.map((line, i) => (
-                <Text
-                  color={termText}
-                  fontFamily="mono"
-                  fontSize="xs"
-                  key={i}
-                  whiteSpace="pre-wrap"
-                >
-                  {line}
-                </Text>
+                <div key={i}>{line}</div>
               ))}
-            </Box>
+            </div>
           )}
 
           {/* Command line */}
-          <Flex
-            align="center"
-            bg={termHeader}
-            borderTop={`1px solid ${termBorder}`}
-            fontSize="xs"
-            px={[3, 5]}
-            py={2}
+          <div
+            className="flex items-center px-3 md:px-5 py-2 border-t text-xs font-mono"
+            style={{ backgroundColor: tc.header, borderColor: tc.border }}
           >
-            <Text color={termPrompt} flexShrink={0} fontFamily="mono" mr={2}>
-              $
-            </Text>
-            <Input
-              color={termText}
-              flex="1"
-              fontFamily="mono"
+            <span className="flex-shrink-0 mr-2" style={{ color: tc.prompt }}>$</span>
+            <input
+              className="flex-1 bg-transparent border-none outline-none focus:ring-0 p-0 text-xs font-mono placeholder:opacity-50"
               onChange={(e) => setCommand(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') handleCommand(command)
               }}
               placeholder={t('experience.typeHelp')}
-              size="xs"
+              style={{ color: tc.text }}
+              type="text"
               value={command}
-              variant="flushed"
             />
-            <Box
-              bg={termPrompt}
-              css={{ animation: `${blink} 1s step-end infinite` }}
-              h="12px"
-              ml={1}
-              w="6px"
+            <div
+              className="ml-1 h-3 w-1.5 animate-pulse"
+              style={{ backgroundColor: tc.prompt }}
             />
-          </Flex>
-        </Box>
-      </VStack>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 

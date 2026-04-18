@@ -1,27 +1,25 @@
-import { Box, Collapsible, Flex, HStack, Icon, Input, Link, Text, VStack } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { type IconType } from 'react-icons'
 import { FaExternalLinkAlt, FaGithub, FaMedium, FaYoutube } from 'react-icons/fa'
 import { SiCsdn, SiZhihu } from 'react-icons/si'
 
+import {
+  Collapsible,
+  CollapsibleContent,
+} from '@/components/ui/collapsible'
 import { useThemeConfig } from '@/config/theme'
-import { useColorMode, useColorModeValue } from '@/hooks/useColorMode'
+import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { cn } from '@/lib/utils'
 
 import type { ProjectItem } from '../types'
 
 import { highlightData } from '../utils/highlightData'
 import { MotionBox, MotionHover, MotionList } from './animations/MotionList'
 
-/* ── Keyframes ─────────────────────────────────────────────────── */
-const blink = keyframes`0%,100%{opacity:1}50%{opacity:0}`
-
 /* ── Types ─────────────────────────────────────────────────────── */
 type CategoryFilter = 'all' | ProjectItem['category']
-
-/* ── Category config (from config/theme.ts) ──────────────────── */
 
 /* ── Helpers ───────────────────────────────────────────────────── */
 const linkIcon = (url: string): IconType => {
@@ -81,22 +79,7 @@ const Articles: React.FC = () => {
   /* Terminal palette (centralized) */
   const { articleCategoryColors: categoryColors, terminalPalette } = useThemeConfig()
   const tc = terminalPalette.colors(isDark)
-  const termBg = tc.bg
-  const termText = tc.text
-  const termHeader = tc.header
-  const termBorder = tc.border
-  const termPrompt = tc.prompt
-  const termCommand = tc.command
-  const termParam = tc.param
-  const termInfo = tc.info
-  const termHighlight = tc.highlight
-  const termSuccess = tc.success
-  const termSecondary = tc.secondary
-  const termMuted = tc.muted
-  const pageBg = useColorModeValue('gray.50', 'gray.900')
-  const articleHoverBg = isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)'
-  const expandedBg = isDark ? 'rgba(76,86,106,0.1)' : 'rgba(203,213,225,0.15)'
-  const tagBg = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)'
+  const hlc = { kw: tc.command, num: tc.highlight, str: tc.success }
 
   useEffect(() => {
     const interval = setInterval(() => setCurrentTime(new Date()), 1000)
@@ -158,18 +141,21 @@ const Articles: React.FC = () => {
   const promptPath = selectedCategory === 'all' ? '~' : `~/${selectedCategory}`
 
   return (
-    <Box bg={pageBg} minH="100vh" py={8} w="full">
-      <VStack gap={6} maxW="1400px" mx="auto" px={[2, 4, 6]}>
-        <Box
-          bg={termBg}
-          borderRadius="md"
-          boxShadow={`0 0 0 1px ${termBorder}, 0 4px 16px ${isDark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.1)'}`}
-          fontFamily="mono"
-          overflow="hidden"
-          w="full"
+    <div
+      className="min-h-screen py-8 w-full transition-colors duration-300"
+      style={{ backgroundColor: isDark ? '#111827' : '#f9fafb' }}
+    >
+      <div className="flex flex-col gap-6 max-w-[1400px] mx-auto px-2 md:px-4 lg:px-6">
+        <div
+          className="rounded-md font-mono overflow-hidden w-full border transition-shadow duration-300"
+          style={{
+            backgroundColor: tc.bg,
+            borderColor: tc.border,
+            boxShadow: `0 4px 16px ${isDark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.1)'}`,
+          }}
         >
-          {/* ═══ Pixel RGB light bar ═══ */}
-          <Flex borderTopRadius="md" h="3px" overflow="hidden" w="full">
+          {/* RGB light bar */}
+          <div className="flex h-[3px] overflow-hidden w-full">
             {(() => {
               const palette = [
                 '#bf616a',
@@ -185,182 +171,129 @@ const Articles: React.FC = () => {
               return Array.from({ length: total }, (_, i) => {
                 const colorIdx = (i + tick) % palette.length
                 const brightness = 0.6 + 0.4 * Math.abs(Math.sin((i + tick * 0.5) * 0.3))
-                return <Box bg={palette[colorIdx]} flex={1} h="full" key={i} opacity={brightness} />
+                return (
+                  <div
+                    key={i}
+                    className="flex-1 h-full"
+                    style={{ backgroundColor: palette[colorIdx], opacity: brightness }}
+                  />
+                )
               })
             })()}
-          </Flex>
+          </div>
 
-          {/* ═══ Title bar ═══ */}
-          <Flex
-            align="center"
-            bg={termHeader}
-            borderBottom={`1px solid ${termBorder}`}
-            color={termText}
-            fontSize="xs"
-            fontWeight="medium"
-            justify="space-between"
-            px={4}
-            py={2}
+          {/* Title bar */}
+          <div
+            className="flex items-center justify-between px-4 py-2 text-xs font-medium border-b"
+            style={{ backgroundColor: tc.header, borderColor: tc.border, color: tc.text }}
           >
-            <HStack gap={3}>
-              <HStack gap={1.5}>
-                <Box bg="#bf616a" borderRadius="full" h="10px" w="10px" />
-                <Box bg="#ebcb8b" borderRadius="full" h="10px" w="10px" />
-                <Box bg="#a3be8c" borderRadius="full" h="10px" w="10px" />
-              </HStack>
-              <Text>
-                <Box as="span" color={termParam}>
-                  const{' '}
-                </Box>
-                <Box as="span" color={termPrompt} fontWeight="bold">
-                  articles
-                </Box>
-                <Box as="span" color={termSecondary}>
-                  {' '}
-                  ={' '}
-                </Box>
-                <Box as="span" color={termParam}>
-                  new{' '}
-                </Box>
-                <Box as="span" color={termCommand} fontWeight="bold">
-                  Reader
-                </Box>
-                <Box as="span" color={termSecondary}>
-                  (
-                </Box>
-                <Box as="span" color={termHighlight}>
-                  'blog'
-                </Box>
-                <Box as="span" color={termSecondary}>
-                  )
-                </Box>
-              </Text>
-            </HStack>
-            <Text color={termHighlight}>{formattedTime}</Text>
-          </Flex>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5">
+                <div className="bg-[#bf616a] rounded-full h-[10px] w-[10px]" />
+                <div className="bg-[#ebcb8b] rounded-full h-[10px] w-[10px]" />
+                <div className="bg-[#a3be8c] rounded-full h-[10px] w-[10px]" />
+              </div>
+              <div className="flex items-center gap-1">
+                <span style={{ color: tc.param }}>const </span>
+                <span className="font-bold" style={{ color: tc.prompt }}>articles</span>
+                <span style={{ color: tc.secondary }}> = </span>
+                <span style={{ color: tc.param }}>new </span>
+                <span className="font-bold" style={{ color: tc.command }}>Reader</span>
+                <span style={{ color: tc.secondary }}>(</span>
+                <span style={{ color: tc.highlight }}>'blog'</span>
+                <span style={{ color: tc.secondary }}>)</span>
+              </div>
+            </div>
+            <div style={{ color: tc.highlight }}>{formattedTime}</div>
+          </div>
 
-          {/* ═══ Touch bar ═══ */}
-          <Flex
-            align="center"
-            bg={tc.touchBar}
-            borderBottom={`1px solid ${termBorder}`}
-            fontSize="2xs"
-            justify="space-between"
-            overflow="hidden"
-            px={4}
-            py={1}
+          {/* Touch bar */}
+          <div
+            className="flex items-center justify-between px-4 py-1 text-[10px] border-b overflow-hidden"
+            style={{ backgroundColor: tc.touchBar, borderColor: tc.border }}
           >
-            <Text
-              color={termSecondary}
-              overflow="hidden"
-              textOverflow="ellipsis"
-              whiteSpace="nowrap"
-            >
-              <Text as="span" color={termPrompt} fontWeight="bold">
+            <div className="truncate" style={{ color: tc.secondary }}>
+              <span className="font-bold" style={{ color: tc.prompt }}>
                 {siteOwner.terminalUsername}
-              </Text>
-              <Text as="span" color={tc.border}>
-                {' '}
-                ·{' '}
-              </Text>
-              <Text as="span" color={termHighlight}>
-                {articles.length}
-              </Text>
-              <Text as="span"> {t('articles.technicalArticles')} </Text>
-              <Text as="span" color={termCommand}>
+              </span>
+              <span className="mx-1" style={{ color: tc.border }}>·</span>
+              <span style={{ color: tc.highlight }}>{articles.length}</span>
+              <span> {t('articles.technicalArticles')} </span>
+              <span style={{ color: tc.command }}>
                 {availableCategories.length} {t('articles.domains')}
-              </Text>
-            </Text>
-            <Text color={termInfo} flexShrink={0}>
+              </span>
+            </div>
+            <div className="flex-shrink-0" style={{ color: tc.info }}>
               ~/blog
-            </Text>
-          </Flex>
+            </div>
+          </div>
 
-          {/* ═══ Toolbar ═══ */}
-          <Flex
-            align="center"
-            bg={termBg}
-            borderBottom={`1px solid ${termBorder}`}
-            fontSize="xs"
-            gap={2}
-            px={4}
-            py={2}
+          {/* Toolbar */}
+          <div
+            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 px-4 py-2 border-b"
+            style={{ backgroundColor: tc.bg, borderColor: tc.border }}
           >
-            <Text color={termPrompt} flexShrink={0}>
-              {siteOwner.terminalUsername}@blog:{promptPath}$
-            </Text>
-            <Input
-              _placeholder={{ color: termSecondary }}
-              color={termText}
-              flex="1"
-              fontFamily="mono"
-              minW="120px"
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="grep -i '...'"
-              size="xs"
-              value={searchQuery}
-              variant="flushed"
-            />
-            <select
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                setSelectedCategory(e.target.value as CategoryFilter)
-              }
-              style={{
-                background: isDark ? 'rgba(0,0,0,0.2)' : 'white',
-                border: `1px solid ${termBorder}`,
-                borderRadius: '4px',
-                color: termText,
-                fontFamily: 'monospace',
-                fontSize: '12px',
-                padding: '2px 6px',
-                width: '130px',
-              }}
-              value={selectedCategory}
-            >
-              <option value="all">{t('articles.allTopics')}</option>
-              {availableCategories.map((c) => (
-                <option key={c} value={c}>
-                  {t(`categoryLabel.${c}`)}
-                </option>
-              ))}
-            </select>
-          </Flex>
+            <div className="flex items-center gap-2 flex-1 text-xs font-mono">
+              <span className="flex-shrink-0" style={{ color: tc.prompt }}>
+                {siteOwner.terminalUsername}@blog:{promptPath}$
+              </span>
+              <input
+                className="flex-1 bg-transparent border-none outline-none focus:ring-0 p-0 text-xs font-mono placeholder:opacity-50"
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="grep -i '...'"
+                style={{ color: tc.text }}
+                type="text"
+                value={searchQuery}
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <select
+                className="px-2 py-1 text-[12px] font-mono rounded border outline-none cursor-pointer appearance-none pr-6"
+                onChange={(e) => setSelectedCategory(e.target.value as CategoryFilter)}
+                style={{
+                  backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : 'white',
+                  borderColor: tc.border,
+                  color: tc.text,
+                  backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${encodeURIComponent(tc.text)}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>')`,
+                  backgroundPosition: 'right 6px center',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: '10px',
+                }}
+                value={selectedCategory}
+              >
+                <option value="all">{t('articles.allTopics')}</option>
+                {availableCategories.map((c) => (
+                  <option key={c} value={c}>
+                    {t(`categoryLabel.${c}`)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-          {/* ═══ Content ═══ */}
-          <Box
-            bg={termBg}
-            color={termText}
-            css={{
-              '&::-webkit-scrollbar': { background: 'transparent', width: '6px' },
-              '&::-webkit-scrollbar-thumb': { background: tc.border, borderRadius: '3px' },
-            }}
-            maxH="70vh"
-            overflowY="auto"
+          {/* Content */}
+          <div
+            className="overflow-y-auto max-h-[70vh] scrollbar-thin scrollbar-thumb-gray-500/50"
+            style={{ backgroundColor: tc.bg, color: tc.text }}
           >
-            <Box px={[3, 4, 5]} py={4}>
+            <div className="px-3 md:px-4 lg:px-5 py-4">
               <MotionList staggerDelay={0.08}>
                 {yearGroups.map(([year, items], gi) => (
-                  <Box key={year} mb={gi < yearGroups.length - 1 ? 6 : 0}>
+                  <div key={year} className={cn(gi < yearGroups.length - 1 ? "mb-6" : "")}>
                     {/* Year heading */}
-                    <HStack gap={2} mb={2} pl="2px">
-                      <Text
-                        color={termHighlight}
-                        fontFamily="mono"
-                        fontSize="2xs"
-                        fontWeight="semibold"
-                        letterSpacing="wide"
-                      >
+                    <div className="flex items-center gap-2 mb-2 pl-0.5">
+                      <span className="font-mono text-[10px] font-semibold tracking-wide" style={{ color: tc.highlight }}>
                         {year}
-                      </Text>
-                      <Box bg={termBorder} flex="1" h="1px" opacity={0.3} />
-                      <Text color={termMuted} fontFamily="mono" fontSize="2xs">
+                      </span>
+                      <div className="flex-1 h-px opacity-30" style={{ backgroundColor: tc.border }} />
+                      <span className="font-mono text-[10px]" style={{ color: tc.muted }}>
                         {items.length}{' '}
                         {items.length === 1 ? t('articles.article') : t('articles.articles')}
-                      </Text>
-                    </HStack>
+                      </span>
+                    </div>
 
                     {/* Articles in year */}
-                    <VStack align="stretch" gap={0}>
+                    <div className="flex flex-col">
                       {items.map((item) => {
                         const ct = categoryColors[item.category]
                         const articleType = getArticleType(item.tags)
@@ -376,246 +309,183 @@ const Articles: React.FC = () => {
 
                         return (
                           <MotionBox key={item.id}>
-                            <Box
-                              _hover={{ bg: articleHoverBg }}
-                              borderBottom={`1px dotted ${termBorder}`}
+                            <div
+                              className="border-b border-dotted transition-colors duration-150 hover:bg-white/[0.03] dark:hover:bg-white/[0.02]"
+                              style={{ borderColor: tc.border }}
                             >
-                              <Flex
-                                align="center"
-                                cursor="pointer"
-                                fontSize="sm"
+                              <div
+                                className="flex items-center gap-2 px-0.5 py-3 cursor-pointer"
                                 onClick={() => toggleExpanded(item.id)}
-                                px={[0, 0.5]}
-                                py={3}
                               >
                                 {/* Date */}
-                                <Text
-                                  color={termHighlight}
-                                  flexShrink={0}
-                                  fontSize="xs"
-                                  w={['70px', '90px']}
+                                <span
+                                  className="flex-shrink-0 w-[70px] md:w-[90px] text-xs"
+                                  style={{ color: tc.highlight }}
                                 >
                                   {fmtDate(item.date)}
-                                </Text>
+                                </span>
 
                                 {/* Category badge */}
-                                <Flex
-                                  align="center"
-                                  bg={ct.bg(isDark)}
-                                  borderRadius="sm"
-                                  color={ct.fg(isDark)}
-                                  flexShrink={0}
-                                  fontSize="2xs"
-                                  fontWeight="bold"
-                                  gap={1}
-                                  justifyContent="center"
-                                  px={1.5}
-                                  py={0.5}
-                                  textTransform="uppercase"
-                                  w={['60px', '80px']}
+                                <div
+                                  className="flex-shrink-0 w-[60px] md:w-[80px] px-1.5 py-0.5 rounded-sm text-[10px] font-bold text-center uppercase"
+                                  style={{
+                                    backgroundColor: ct.bg(isDark),
+                                    color: ct.fg(isDark)
+                                  }}
                                 >
                                   {t(`categoryLabel.${item.category}`).split(' ')[0]}
-                                </Flex>
+                                </div>
 
                                 {/* Title + type */}
-                                <Box flex="1" minW={0} px={[2, 3]}>
-                                  <Text
-                                    color={termText}
-                                    fontWeight="medium"
-                                    overflow="hidden"
-                                    textOverflow="ellipsis"
-                                    whiteSpace="nowrap"
+                                <div className="flex-1 min-w-0 px-2 md:px-3">
+                                  <div
+                                    className="font-medium truncate"
+                                    style={{ color: tc.text }}
                                   >
                                     {item.title}
-                                  </Text>
+                                  </div>
                                   {articleType && (
-                                    <Text color={termSecondary} fontSize="2xs" mt={0.5}>
+                                    <div className="text-[10px] mt-0.5" style={{ color: tc.secondary }}>
                                       {articleType}
-                                    </Text>
+                                    </div>
                                   )}
-                                </Box>
+                                </div>
 
                                 {/* Links (desktop) */}
-                                <HStack display={['none', 'flex']} flexShrink={0} gap={1.5}>
+                                <div className="hidden md:flex flex-shrink-0 items-center gap-1.5">
                                   {resources.slice(0, 3).map((r) => (
                                     <MotionHover key={r.url}>
-                                      <Link
-                                        _hover={{ textDecoration: 'none' }}
+                                      <a
+                                        className="flex items-center gap-1 px-2 py-0.5 font-mono text-[10px] border rounded-sm transition-all duration-150 no-underline"
                                         href={r.url}
                                         onClick={(e) => e.stopPropagation()}
                                         rel="noopener noreferrer"
+                                        style={{ 
+                                          borderColor: tc.border,
+                                          color: tc.command
+                                        }}
                                         target="_blank"
                                       >
-                                        <Flex
-                                          _hover={{
-                                            borderColor: ct.fg(isDark),
-                                            color: ct.fg(isDark),
-                                          }}
-                                          align="center"
-                                          border="1px solid"
-                                          borderColor={termBorder}
-                                          borderRadius="sm"
-                                          color={termCommand}
-                                          fontFamily="mono"
-                                          fontSize="2xs"
-                                          gap={1}
-                                          px={2}
-                                          py={0.5}
-                                          transition="all 0.15s"
-                                          whiteSpace="nowrap"
-                                        >
-                                          <Icon as={linkIcon(r.url)} boxSize="10px" />
-                                          <Text>{r.label}</Text>
-                                        </Flex>
-                                      </Link>
+                                        {React.createElement(linkIcon(r.url), { className: "w-2.5 h-2.5" })}
+                                        <span>{r.label}</span>
+                                      </a>
                                     </MotionHover>
                                   ))}
-                                </HStack>
+                                </div>
 
                                 {/* Expand */}
-                                <Flex flexShrink={0} justify="center" w="40px">
-                                  <Box
-                                    color={isExpanded ? termInfo : termCommand}
-                                    fontSize="xs"
-                                    fontWeight="bold"
-                                  >
+                                <div className="flex-shrink-0 w-10 text-center font-bold text-xs">
+                                  <span style={{ color: isExpanded ? tc.info : tc.command }}>
                                     {isExpanded ? '[-]' : '[+]'}
-                                  </Box>
-                                </Flex>
-                              </Flex>
+                                  </span>
+                                </div>
+                              </div>
 
                               {/* Expanded details */}
-                              <Collapsible.Root open={isExpanded}>
-                                <Collapsible.Content>
-                                  <Box
-                                    bg={expandedBg}
-                                    borderLeft={`2px solid ${ct.fg(isDark)}`}
-                                    px={[3, 4, 8]}
-                                    py={3}
+                              <Collapsible open={isExpanded}>
+                                <CollapsibleContent>
+                                  <div
+                                    className="px-3 md:px-4 lg:px-8 py-3 border-l-2 mb-2"
+                                    style={{
+                                      backgroundColor: isDark ? 'rgba(76,86,106,0.1)' : 'rgba(203,213,225,0.15)',
+                                      borderColor: ct.fg(isDark)
+                                    }}
                                   >
                                     {/* Summary */}
-                                    <Text color={termText} fontSize="xs" lineHeight="1.7" mb={2}>
-                                      {highlightData(item.summary, {
-                                        kw: termCommand,
-                                        num: termHighlight,
-                                        str: termSuccess,
-                                      })}
-                                    </Text>
+                                    <p className="text-xs leading-relaxed mb-2" style={{ color: tc.text }}>
+                                      {highlightData(item.summary, hlc)}
+                                    </p>
 
                                     {/* Tags */}
                                     {item.tags.length > 0 && (
-                                      <HStack flexWrap="wrap" gap={1.5} mb={2}>
+                                      <div className="flex flex-wrap gap-1.5 mb-2">
                                         {item.tags.map((t) => (
-                                          <Text
-                                            bg={tagBg}
-                                            borderRadius="sm"
-                                            color={termMuted}
-                                            fontFamily="mono"
-                                            fontSize="2xs"
+                                          <span
                                             key={t}
-                                            px={1.5}
-                                            py={0.5}
+                                            className="px-1.5 py-0.5 font-mono text-[10px] rounded-sm"
+                                            style={{ 
+                                              backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
+                                              color: tc.muted 
+                                            }}
                                           >
                                             {t}
-                                          </Text>
+                                          </span>
                                         ))}
-                                      </HStack>
+                                      </div>
                                     )}
 
                                     {/* All links (visible on all screens when expanded) */}
                                     {resources.length > 0 && (
-                                      <Flex gap={2} wrap="wrap">
+                                      <div className="flex flex-wrap gap-2">
                                         {resources.map((r) => (
                                           <MotionHover key={r.url}>
-                                            <Link
-                                              _hover={{ textDecoration: 'none' }}
+                                            <a
+                                              className="flex items-center gap-1.5 px-2.5 py-1 font-mono text-xs rounded-sm border transition-all duration-150 no-underline"
                                               href={r.url}
-                                              key={r.url}
                                               onClick={(e) => e.stopPropagation()}
                                               rel="noopener noreferrer"
+                                              style={{ 
+                                                borderColor: tc.border,
+                                                color: tc.command
+                                              }}
                                               target="_blank"
                                             >
-                                              <HStack
-                                                _hover={{
-                                                  borderColor: ct.fg(isDark),
-                                                  color: ct.fg(isDark),
-                                                }}
-                                                border="1px solid"
-                                                borderColor={termBorder}
-                                                borderRadius="sm"
-                                                color={termCommand}
-                                                fontFamily="mono"
-                                                fontSize="xs"
-                                                gap={1.5}
-                                                px={2.5}
-                                                py={1}
-                                                transition="all 0.15s"
-                                              >
-                                                <Icon as={linkIcon(r.url)} boxSize="11px" />
-                                                <Text>{r.label}</Text>
-                                              </HStack>
-                                            </Link>
+                                              {React.createElement(linkIcon(r.url), { className: "w-[11px] h-[11px]" })}
+                                              <span>{r.label}</span>
+                                            </a>
                                           </MotionHover>
                                         ))}
-                                      </Flex>
+                                      </div>
                                     )}
-                                  </Box>
-                                </Collapsible.Content>
-                              </Collapsible.Root>
-                            </Box>
+                                  </div>
+                                </CollapsibleContent>
+                              </Collapsible>
+                            </div>
                           </MotionBox>
                         )
                       })}
-                    </VStack>
-                  </Box>
+                    </div>
+                  </div>
                 ))}
               </MotionList>
-            </Box>
+            </div>
 
             {/* Empty state */}
             {filteredArticles.length === 0 && (
-              <Box px={4} py={8} textAlign="center">
-                <Text color={termHighlight} fontSize="sm">
+              <div className="px-4 py-8 text-center">
+                <p className="text-sm" style={{ color: tc.highlight }}>
                   {t('articles.noMatches')}
-                </Text>
-                <Text color={termSecondary} fontSize="xs" mt={1}>
+                </p>
+                <p className="text-xs mt-1" style={{ color: tc.secondary }}>
                   {t('articles.tryAdjustingFilter')}
-                </Text>
-              </Box>
+                </p>
+              </div>
             )}
-          </Box>
+          </div>
 
-          {/* ═══ Status bar ═══ */}
-          <Flex
-            align="center"
-            bg={termHeader}
-            borderTop={`1px solid ${termBorder}`}
-            color={termMuted}
-            fontSize="2xs"
-            justify="space-between"
-            px={4}
-            py={1.5}
+          {/* Status bar */}
+          <div
+            className="flex items-center justify-between px-4 py-1.5 border-t text-[10px] font-mono"
+            style={{ backgroundColor: tc.header, borderColor: tc.border, color: tc.muted }}
           >
-            <Text>
+            <div>
               {filteredArticles.length}/{articles.length} {t('articles.shown')}
-            </Text>
+            </div>
             <MotionBox delay={0.6}>
-              <HStack gap={1}>
-                <Text color={termPrompt}>
+              <div className="flex items-center gap-1">
+                <span style={{ color: tc.prompt }}>
                   {siteOwner.terminalUsername}@blog:{promptPath}$
-                </Text>
-                <Box
-                  bg={termPrompt}
-                  css={{ animation: `${blink} 1s step-end infinite` }}
-                  h="11px"
-                  w="6px"
+                </span>
+                <div
+                  className="w-1.5 h-3 animate-pulse"
+                  style={{ backgroundColor: tc.prompt }}
                 />
-              </HStack>
+              </div>
             </MotionBox>
-          </Flex>
-        </Box>
-      </VStack>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 

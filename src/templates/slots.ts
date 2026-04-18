@@ -31,9 +31,10 @@ export interface HeroSlotProps {
   educationLogos?: Record<string, string>
   research?: { advisor?: string; emoji: string; focus: string; lab: string; link: string }[]
   researchLogos?: Record<string, string>
-  title: string
 }
-export interface JourneySlotProps {}
+export interface JourneySlotProps {
+  filterEducation?: boolean
+}
 export interface MentorshipSlotProps {}
 export interface NavbarSlotProps {
   children?: React.ReactNode
@@ -61,7 +62,6 @@ export const DEFAULT_SECTIONS: SlotName[] = [
   'newsDisplay',
   'selectedPublications',
   'journey',
-  'skills',
   'mentorship',
   'talks',
   'teaching',

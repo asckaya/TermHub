@@ -1,17 +1,3 @@
-import {
-  Box,
-  Collapsible,
-  Dialog,
-  Flex,
-  HStack,
-  Image,
-  Input,
-  Link,
-  Text,
-  VStack,
-} from '@chakra-ui/react'
-import { Icon } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { type IconType } from 'react-icons'
@@ -30,9 +16,20 @@ import {
 } from 'react-icons/fa'
 import { SiCsdn, SiZhihu } from 'react-icons/si'
 
+import {
+  Collapsible,
+  CollapsibleContent,
+} from '@/components/ui/collapsible'
+import {
+  Dialog,
+  DialogContent,
+  DialogOverlay,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { type CatTheme, useThemeConfig } from '@/config/theme'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { cn } from '@/lib/utils'
 import { withBase } from '@/utils/asset'
 import { highlightData } from '@/utils/highlightData'
 
@@ -40,31 +37,9 @@ import type { ProjectItem } from '../types'
 
 import { MotionHover, MotionList } from './animations/MotionList'
 
-const blink = keyframes`0%,100%{opacity:1}50%{opacity:0}`
-const bob = keyframes`0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}`
-
 type CatThemeWithAnim = CatTheme & { anim: string }
 type TabKey = 'all' | ProjectItem['category']
 type TP = ProjectItem & { id: string }
-
-const buildThemes = (
-  base: Record<ProjectItem['category'], CatTheme>,
-): Record<ProjectItem['category'], CatThemeWithAnim> => {
-  const b = bob
-  const durations: Record<ProjectItem['category'], number> = {
-    data: 2.4,
-    healthcare: 1.6,
-    nlp: 1.8,
-    robotics: 2.2,
-    tooling: 2.6,
-    'web-app': 2.0,
-  }
-  const result = {} as Record<ProjectItem['category'], CatThemeWithAnim>
-  for (const [k, v] of Object.entries(base) as [ProjectItem['category'], CatTheme][]) {
-    result[k] = { ...v, anim: `${b} ${durations[k].toString()}s ease-in-out infinite` }
-  }
-  return result
-}
 
 const roleConfig: Record<
   string,
@@ -117,11 +92,8 @@ const FlowNode: React.FC<{
   isLast: boolean
   item: TP
   onImageClick: (src: string, alt: string) => void
-  termBorder: string
-  termMuted: string
-  termSecondary: string
-  termText: string
-}> = ({ ct, hlc, isDark, item, onImageClick, termBorder, termMuted, termSecondary, termText }) => {
+  tc: any
+}> = ({ ct, hlc, isDark, item, onImageClick, tc }) => {
   const { t } = useTranslation()
   const [expanded, setExpanded] = useState(false)
   const role = roleConfig[item.role ?? 'independent']
@@ -132,245 +104,197 @@ const FlowNode: React.FC<{
     if (!res.some((r) => r.url === l.url)) res.push(l)
   })
   const hasExpandable =
-    (item.highlights !== undefined && item.highlights.length > 0) || item.story !== undefined
+    (item.highlights !== undefined && item.highlights.length > 0) || item.story !== undefined || item.Content !== undefined
 
   return (
-    <Flex align="start" gap={[3, 3, 4]} position="relative" py={3}>
-      <Box flexShrink={0} mt="6px">
-        <Box
-          bg={item.featured ? ct.color : 'transparent'}
-          border="2px solid"
-          borderColor={item.featured ? ct.color : termBorder}
-          borderRadius="full"
-          boxShadow={item.featured ? `0 0 8px ${ct.glow}` : undefined}
-          h="14px"
-          transition="all 0.2s"
-          w="14px"
+    <div className="flex items-start gap-3 md:gap-4 relative py-3">
+      {/* Connector line dot */}
+      <div className="flex-shrink-0 mt-[6px] z-10">
+        <div
+          className={cn(
+            "h-3.5 w-3.5 rounded-full border-2 transition-all duration-200",
+            item.featured ? "shadow-[0_0_8px]" : ""
+          )}
+          style={{
+            backgroundColor: item.featured ? ct.color : 'transparent',
+            borderColor: item.featured ? ct.color : tc.border,
+            boxShadow: item.featured ? `0 0 8px ${ct.color}80` : undefined
+          }}
         />
-      </Box>
+      </div>
 
-      <Box flex={1} minW={0}>
-        <HStack align="center" flexWrap="wrap" gap={2} mb={1}>
-          <Box bg={ct.color} borderRadius="full" h="2px" w="16px" />
-          <HStack color={ct.color} gap={1}>
-            <Icon as={ct.icon} boxSize="10px" />
-            <Text
-              fontFamily="mono"
-              fontSize="2xs"
-              fontWeight="semibold"
-              letterSpacing="wide"
-              textTransform="uppercase"
-            >
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center flex-wrap gap-2 mb-1">
+          <div className="h-0.5 w-4 rounded-full" style={{ backgroundColor: ct.color }} />
+          <div className="flex items-center gap-1" style={{ color: ct.color }}>
+            {React.createElement(ct.icon, { className: "w-2.5 h-2.5" })}
+            <span className="font-mono text-[10px] font-semibold tracking-wide uppercase">
               {ct.label}
-            </Text>
-          </HStack>
-          <Text color={termBorder} fontSize="2xs">
-            /
-          </Text>
-          <HStack gap={1}>
-            <Icon as={role.icon} boxSize="9px" color={role.color(isDark)} />
-            <Text color={role.color(isDark)} fontFamily="mono" fontSize="2xs" fontWeight="bold">
+            </span>
+          </div>
+          <span className="text-[10px]" style={{ color: tc.border }}>/</span>
+          <div className="flex items-center gap-1" style={{ color: role.color(isDark) }}>
+            {React.createElement(role.icon, { className: "w-[9px] h-[9px]" })}
+            <span className="font-mono text-[10px] font-bold">
               {t(role.textKey)}
-            </Text>
-          </HStack>
-          <Text color={termMuted} flexShrink={0} fontFamily="mono" fontSize="2xs" ml="auto">
+            </span>
+          </div>
+          <span className="ml-auto flex-shrink-0 font-mono text-[10px]" style={{ color: tc.muted }}>
             {fmtDate(item.date)}
-          </Text>
-        </HStack>
+          </span>
+        </div>
 
-        <Text
-          _hover={hasExpandable ? { color: ct.color } : undefined}
-          color={termText}
-          cursor={hasExpandable ? 'pointer' : undefined}
-          fontSize={['sm', 'md']}
-          fontWeight="semibold"
-          lineHeight="tall"
-          mb={1}
+        <h4
+          className={cn(
+            "text-sm md:text-base font-semibold leading-relaxed mb-1 transition-colors duration-150",
+            hasExpandable ? "cursor-pointer hover:opacity-80" : ""
+          )}
           onClick={hasExpandable ? () => setExpanded((p) => !p) : undefined}
-          transition="color 0.15s"
+          style={{ 
+            color: tc.text,
+            // hover color would be ct.color if I used classes, but I'll use inline styles for dynamic themes
+          }}
         >
           {item.title}
           {item.featured && (
-            <Text as="span" color={hlc.num} fontSize="xs" ml={2}>
-              ★
-            </Text>
+            <span className="ml-2 text-xs" style={{ color: hlc.num }}>★</span>
           )}
-        </Text>
+        </h4>
 
         {item.badge && (
-          <HStack flexWrap="wrap" gap={1.5} mb={2}>
-            <Text
-              bg={isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)'}
-              border={`1px solid ${ct.border}`}
-              borderRadius="sm"
-              color={ct.color}
-              fontFamily="mono"
-              fontSize="2xs"
-              px={2}
-              py={0.5}
+          <div className="flex flex-wrap gap-1.5 mb-2">
+            <span
+              className="px-2 py-0.5 font-mono text-[10px] rounded-sm border"
+              style={{ 
+                backgroundColor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)',
+                borderColor: ct.border,
+                color: ct.color 
+              }}
             >
               {item.badge}
-            </Text>
-          </HStack>
+            </span>
+          </div>
         )}
 
-        <Flex
-          align="stretch"
-          direction={['column', 'column', hasImg ? 'row' : 'column']}
-          gap={[3, 3, 4]}
-        >
+        <div className={cn("flex flex-col gap-3 md:gap-4", hasImg ? "lg:flex-row" : "")}>
           {hasImg && (
             <MotionHover>
-              <Box
-                borderRadius="sm"
-                cursor="zoom-in"
-                flexShrink={0}
-                minH={['180px', '200px', 'auto']}
+              <div
+                className="flex-shrink-0 w-full lg:w-[260px] rounded-sm overflow-hidden cursor-zoom-in group"
                 onClick={() => {
                   if (item.featuredImage)
                     onImageClick(withBase(item.featuredImage) ?? '', item.title)
                 }}
-                overflow="hidden"
-                w={['full', 'full', '260px']}
               >
-                <Image
-                  _hover={{ transform: 'scale(1.03)' }}
+                <img
                   alt={item.title}
-                  bg={isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.02)'}
-                  h="full"
-                  objectFit="contain"
-                  p={1}
+                  className="h-full w-full object-contain p-1 transition-transform duration-300 group-hover:scale-105"
                   src={withBase(item.featuredImage)}
-                  transition="transform 0.3s"
-                  w="full"
+                  style={{ backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.02)' }}
                 />
-              </Box>
+              </div>
             </MotionHover>
           )}
 
-          <VStack align="start" flex={1} gap={2.5} justify="center" minW={0}>
-            <Text color={termSecondary} fontSize="xs" lineHeight="tall">
+          <div className="flex-1 flex flex-col gap-2.5 justify-center min-w-0">
+            <p className="text-xs leading-relaxed" style={{ color: tc.secondary }}>
               {highlightData(item.summary, hlc)}
-            </Text>
-            <Box bg={termBorder} h="1px" opacity={0.4} w="full" />
+            </p>
+            <div className="h-px w-full opacity-40" style={{ backgroundColor: tc.border }} />
 
-            <HStack flexWrap="wrap" gap={1.5}>
+            <div className="flex flex-wrap gap-1.5">
               {res.map((r) => (
                 <MotionHover key={r.url}>
-                  <Link
-                    _hover={{ textDecoration: 'none' }}
+                  <a
+                    className="flex items-center gap-1.5 px-2.5 py-1 font-mono text-xs rounded-sm border transition-all duration-150 no-underline"
                     href={r.url}
                     onClick={(e) => e.stopPropagation()}
                     rel="noopener noreferrer"
+                    style={{ 
+                      borderColor: tc.border,
+                      color: tc.secondary
+                    }}
                     target="_blank"
                   >
-                    <HStack
-                      _hover={{ borderColor: ct.color, color: ct.color }}
-                      border="1px solid"
-                      borderColor={termBorder}
-                      borderRadius="sm"
-                      color={termSecondary}
-                      fontFamily="mono"
-                      fontSize="xs"
-                      gap={1.5}
-                      px={2.5}
-                      py={1}
-                      transition="all 0.15s"
-                    >
-                      <Icon as={linkIcon(r.url)} boxSize="11px" />
-                      <Text>{r.label}</Text>
-                    </HStack>
-                  </Link>
+                    {React.createElement(linkIcon(r.url), { className: "w-[11px] h-[11px]" })}
+                    <span>{r.label}</span>
+                  </a>
                 </MotionHover>
               ))}
               {hasExpandable && (
                 <MotionHover>
-                  <HStack
-                    _hover={{ borderColor: ct.color, color: ct.color }}
-                    as="button"
-                    border="1px solid"
-                    borderColor={expanded ? ct.color : termBorder}
-                    borderRadius="sm"
-                    color={expanded ? ct.color : termSecondary}
-                    fontFamily="mono"
-                    fontSize="xs"
-                    gap={1.5}
+                  <button
+                    className="flex items-center gap-1.5 px-2.5 py-1 font-mono text-xs rounded-sm border transition-all duration-150 cursor-pointer"
                     onClick={() => setExpanded((p) => !p)}
-                    px={2.5}
-                    py={1}
-                    transition="all 0.15s"
+                    style={{ 
+                      borderColor: expanded ? ct.color : tc.border,
+                      color: expanded ? ct.color : tc.secondary
+                    }}
                   >
-                    <Icon
-                      as={FaChevronDown}
-                      boxSize="8px"
-                      transform={expanded ? 'rotate(180deg)' : undefined}
-                      transition="transform 0.15s"
+                    <FaChevronDown
+                      className={cn("w-2 h-2 transition-transform duration-150", expanded && "rotate-180")}
                     />
-                    <Text>{expanded ? t('projects.less') : t('projects.details')}</Text>
-                  </HStack>
+                    <span>{expanded ? t('projects.less') : t('projects.details')}</span>
+                  </button>
                 </MotionHover>
               )}
-            </HStack>
+            </div>
 
             {item.tags.length > 0 && (
-              <HStack flexWrap="wrap" gap={1.5}>
+              <div className="flex flex-wrap gap-1.5">
                 {item.tags.map((t) => (
-                  <Text
-                    bg={isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)'}
-                    borderRadius="sm"
-                    color={termMuted}
-                    fontFamily="mono"
-                    fontSize="2xs"
+                  <span
                     key={t}
-                    px={1.5}
-                    py={0.5}
+                    className="px-1.5 py-0.5 font-mono text-[10px] rounded-sm"
+                    style={{ 
+                      backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
+                      color: tc.muted 
+                    }}
                   >
                     {t}
-                  </Text>
+                  </span>
                 ))}
-              </HStack>
+              </div>
             )}
-          </VStack>
-        </Flex>
+          </div>
+        </div>
 
-        <Collapsible.Root open={expanded}>
-          <Collapsible.Content>
-            <VStack align="stretch" gap={3} mt={3}>
+        <Collapsible open={expanded}>
+          <CollapsibleContent>
+            <div className="flex flex-col gap-3 mt-3">
               {item.Content && (
-                <Box color={termSecondary} fontSize="xs" lineHeight="tall">
+                <div className="text-xs leading-relaxed" style={{ color: tc.secondary }}>
                   <item.Content />
-                </Box>
+                </div>
               )}
               {item.highlights && item.highlights.length > 0 && (
-                <Box>
+                <div>
                   {item.highlights.map((h, i) => (
-                    <Text color={termSecondary} fontSize="xs" key={i} lineHeight="1.8">
-                      <Text as="span" color={ct.color} mr={1.5}>
-                        ▸
-                      </Text>
-                      {highlightData(h, hlc)}
-                    </Text>
+                    <div key={i} className="text-xs leading-loose flex items-start">
+                      <span className="mr-1.5 flex-shrink-0" style={{ color: ct.color }}>▸</span>
+                      <span style={{ color: tc.secondary }}>{highlightData(h, hlc)}</span>
+                    </div>
                   ))}
-                </Box>
+                </div>
               )}
               {item.story && (
-                <Box
-                  bg={isDark ? 'rgba(0,0,0,0.15)' : 'rgba(0,0,0,0.02)'}
-                  borderLeft="2px solid"
-                  borderLeftColor={ct.color}
-                  borderRadius="md"
-                  p={3}
+                <div
+                  className="p-3 border-l-2 rounded-md"
+                  style={{ 
+                    backgroundColor: isDark ? 'rgba(0,0,0,0.15)' : 'rgba(0,0,0,0.02)',
+                    borderColor: ct.color
+                  }}
                 >
-                  <Text color={termMuted} fontSize="xs" fontStyle="italic" lineHeight="tall">
+                  <p className="text-xs italic leading-relaxed" style={{ color: tc.muted }}>
                     "{highlightData(item.story, hlc)}"
-                  </Text>
-                </Box>
+                  </p>
+                </div>
               )}
-            </VStack>
-          </Collapsible.Content>
-        </Collapsible.Root>
-      </Box>
-    </Flex>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
+      </div>
+    </div>
   )
 }
 
@@ -388,19 +312,7 @@ const Projects: React.FC = () => {
 
   const { buildCategoryThemes, terminalPalette } = useThemeConfig()
   const tc = terminalPalette.colors(isDark)
-  const termBg = tc.bg
-  const termText = tc.text
-  const termHeader = tc.header
-  const termTabBar = tc.tabBar
-  const termBorder = tc.border
-  const termPrompt = tc.prompt
-  const termInfo = tc.info
-  const termHighlight = tc.highlight
-  const termSecondary = tc.secondary
-  const termMuted = tc.muted
-  const termCommand = tc.command
-  const termSuccess = tc.success
-  const hlc = { kw: termCommand, num: termHighlight, str: termSuccess }
+  const hlc = { kw: tc.command, num: tc.highlight, str: tc.success }
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -410,9 +322,25 @@ const Projects: React.FC = () => {
   }, [])
 
   const themes = useMemo(
-    () => buildThemes(buildCategoryThemes(isDark)),
+    () => {
+      const base = buildCategoryThemes(isDark)
+      const durations: Record<string, number> = {
+        data: 2.4,
+        healthcare: 1.6,
+        nlp: 1.8,
+        robotics: 2.2,
+        tooling: 2.6,
+        'web-app': 2.0,
+      }
+      const result = {} as Record<string, CatThemeWithAnim>
+      for (const [k, v] of Object.entries(base) as [string, CatTheme][]) {
+        result[k] = { ...v, anim: `bob ${durations[k] || 2}s ease-in-out infinite` }
+      }
+      return result
+    },
     [isDark, buildCategoryThemes],
   )
+
   const projects = useMemo<TP[]>(
     () => projectData.map((p, i) => ({ ...p, id: `p-${i.toString()}` })),
     [projectData],
@@ -433,7 +361,7 @@ const Projects: React.FC = () => {
     ]
     return [
       {
-        color: termInfo,
+        color: tc.info,
         count: cnt.all,
         icon: FaFolderOpen,
         key: 'all' as TabKey,
@@ -449,8 +377,7 @@ const Projects: React.FC = () => {
           label: t(`category.${k}`),
         })),
     ]
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [projects, themes, isDark, t])
+  }, [projects, themes, tc.info, t])
 
   const filtered = useMemo(() => {
     const q = searchQuery.trim().toLowerCase()
@@ -500,18 +427,18 @@ const Projects: React.FC = () => {
   const promptPath = activeTab === 'all' ? '~' : `~/${activeTab}`
 
   return (
-    <Box py={8} w="full">
-      <VStack gap={4} maxW="1400px" mx="auto" px={[2, 4, 8]}>
-        <Box
-          border="1px solid"
-          borderColor={termBorder}
-          borderRadius="md"
-          boxShadow="lg"
-          fontFamily="mono"
-          overflow="hidden"
-          w="full"
+    <div className="py-8 w-full">
+      <div className="flex flex-col gap-4 max-w-[1400px] mx-auto px-2 md:px-4 lg:px-8">
+        <div
+          className="rounded-md font-mono overflow-hidden w-full border transition-shadow duration-300"
+          style={{
+            backgroundColor: tc.bg,
+            borderColor: tc.border,
+            boxShadow: `0 4px 16px ${isDark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.1)'}`,
+          }}
         >
-          <Flex borderTopRadius="md" h="3px" overflow="hidden" w="full">
+          {/* RGB Light Bar */}
+          <div className="flex h-[3px] overflow-hidden w-full">
             {(() => {
               const palette = [
                 '#bf616a',
@@ -526,325 +453,235 @@ const Projects: React.FC = () => {
               return Array.from({ length: total }, (_, i) => {
                 const colorIdx = (i + tick) % palette.length
                 const brightness = 0.6 + 0.4 * Math.abs(Math.sin((i + tick * 0.5) * 0.3))
-                return <Box bg={palette[colorIdx]} flex={1} h="full" key={i} opacity={brightness} />
+                return (
+                  <div
+                    key={i}
+                    className="flex-1 h-full"
+                    style={{ backgroundColor: palette[colorIdx], opacity: brightness }}
+                  />
+                )
               })
             })()}
-          </Flex>
+          </div>
 
-          <Flex
-            align="center"
-            bg={termHeader}
-            color={termText}
-            fontSize="xs"
-            justify="space-between"
-            px={4}
-            py={2}
+          {/* Title Bar */}
+          <div
+            className="flex items-center justify-between px-4 py-2 text-xs font-medium border-b"
+            style={{ backgroundColor: tc.header, borderColor: tc.border, color: tc.text }}
           >
-            <HStack gap={3}>
-              <HStack gap={1.5}>
-                <Box bg="#bf616a" borderRadius="full" h="10px" w="10px" />
-                <Box bg="#ebcb8b" borderRadius="full" h="10px" w="10px" />
-                <Box bg="#a3be8c" borderRadius="full" h="10px" w="10px" />
-              </HStack>
-              <Text>
-                <Box as="span" color={tc.param}>
-                  const{' '}
-                </Box>
-                <Box as="span" color={termPrompt} fontWeight="bold">
-                  projects
-                </Box>
-                <Box as="span" color={termMuted}>
-                  {' '}
-                  ={' '}
-                </Box>
-                <Box as="span" color={tc.param}>
-                  new{' '}
-                </Box>
-                <Box as="span" color={termInfo} fontWeight="bold">
-                  Portfolio
-                </Box>
-                <Box as="span" color={termMuted}>
-                  (
-                </Box>
-                <Box as="span" color={termHighlight}>
-                  'showcase'
-                </Box>
-                <Box as="span" color={termMuted}>
-                  )
-                </Box>
-              </Text>
-            </HStack>
-            <Text color={termHighlight} fontSize="xs">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5">
+                <div className="bg-[#bf616a] rounded-full h-[10px] w-[10px]" />
+                <div className="bg-[#ebcb8b] rounded-full h-[10px] w-[10px]" />
+                <div className="bg-[#a3be8c] rounded-full h-[10px] w-[10px]" />
+              </div>
+              <div className="flex items-center gap-1">
+                <span style={{ color: tc.param }}>const </span>
+                <span className="font-bold" style={{ color: tc.prompt }}>projects</span>
+                <span style={{ color: tc.muted }}> = </span>
+                <span style={{ color: tc.param }}>new </span>
+                <span className="font-bold" style={{ color: tc.info }}>Portfolio</span>
+                <span style={{ color: tc.muted }}>(</span>
+                <span style={{ color: tc.highlight }}>'showcase'</span>
+                <span style={{ color: tc.muted }}>)</span>
+              </div>
+            </div>
+            <div style={{ color: tc.highlight }}>
               {new Date().toLocaleTimeString('en-US', {
                 hour: '2-digit',
                 hour12: false,
                 minute: '2-digit',
                 second: '2-digit',
               })}
-            </Text>
-          </Flex>
+            </div>
+          </div>
 
-          <Flex
-            align="center"
-            bg={tc.touchBar}
-            borderBottom={`1px solid ${termBorder}`}
-            fontSize="2xs"
-            justify="space-between"
-            overflow="hidden"
-            px={4}
-            py={1}
+          {/* Touch Bar */}
+          <div
+            className="flex items-center justify-between px-4 py-1 text-[10px] border-b overflow-hidden"
+            style={{ backgroundColor: tc.touchBar, borderColor: tc.border }}
           >
-            <Text color={termSecondary} truncate>
-              <Text as="span" color={termPrompt} fontWeight="bold">
+            <div className="truncate" style={{ color: tc.secondary }}>
+              <span className="font-bold" style={{ color: tc.prompt }}>
                 {siteOwner.terminalUsername}
-              </Text>
-              <Text as="span" color={tc.border}>
-                {' '}
-                ·{' '}
-              </Text>
-              <Text as="span" color={termHighlight}>
-                {projects.length}
-              </Text>
-              <Text as="span"> {t('projects.projectsAcross')} </Text>
-              <Text as="span" color={termPrompt}>
+              </span>
+              <span className="mx-1" style={{ color: tc.border }}>·</span>
+              <span style={{ color: tc.highlight }}>{projects.length}</span>
+              <span> {t('projects.projectsAcross')} </span>
+              <span style={{ color: tc.prompt }}>
                 {totalIndep} {t('projects.independentlyBuilt')}
-              </Text>
-            </Text>
-            <Text color={termInfo} flexShrink={0}>
-              ~/projects/{promptPath === '~' ? 'all' : activeTab}
-            </Text>
-          </Flex>
+              </span>
+            </div>
+            <div className="flex-shrink-0" style={{ color: tc.info }}>
+              ~/projects/{activeTab === 'all' ? 'all' : activeTab}
+            </div>
+          </div>
 
-          <Flex
-            bg={termTabBar}
-            borderBottom={`1px solid ${termBorder}`}
-            css={{ '&::-webkit-scrollbar': { height: '0' } }}
-            overflowX="auto"
+          {/* Tab Bar */}
+          <div
+            className="flex overflow-x-auto border-b scrollbar-none"
+            style={{ backgroundColor: tc.tabBar, borderColor: tc.border }}
           >
             {tabs.map((tab) => {
               const active = activeTab === tab.key
               return (
                 <MotionHover key={tab.key}>
-                  <Flex
-                    _hover={{
-                      bg: active ? termBg : isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)',
-                      color: tab.color,
-                    }}
-                    align="center"
-                    as="button"
-                    bg={active ? termBg : 'transparent'}
-                    borderBottom={active ? `2px solid ${tab.color}` : '2px solid transparent'}
-                    color={active ? tab.color : termMuted}
-                    flexShrink={0}
-                    fontFamily="mono"
-                    fontSize="xs"
-                    fontWeight={active ? 'bold' : 'normal'}
-                    gap={1.5}
+                  <button
+                    className={cn(
+                      "flex items-center gap-1.5 px-4 py-2 font-mono text-xs whitespace-nowrap border-b-2 transition-all duration-150 cursor-pointer",
+                      active ? "font-bold" : "font-normal hover:bg-white/[0.03]"
+                    )}
                     onClick={() => setActiveTab(tab.key)}
-                    px={4}
-                    py={2}
-                    transition="all 0.15s"
-                    whiteSpace="nowrap"
+                    style={{
+                      backgroundColor: active ? tc.bg : 'transparent',
+                      borderBottomColor: active ? tab.color : 'transparent',
+                      color: active ? tab.color : tc.muted,
+                    }}
                   >
-                    <Box
-                      css={
-                        active && tab.key !== 'all'
-                          ? { animation: themes[tab.key].anim }
-                          : undefined
-                      }
-                    >
-                      <Icon as={tab.icon} boxSize="12px" />
-                    </Box>
-                    {tab.label}
-                    <Text as="span" opacity={0.7}>
-                      ({tab.count})
-                    </Text>
-                  </Flex>
+                    <div style={active && tab.key !== 'all' ? { animation: themes[tab.key].anim } : undefined}>
+                      {React.createElement(tab.icon, { className: "w-3 h-3" })}
+                    </div>
+                    <span>{tab.label}</span>
+                    <span className="opacity-70">({tab.count})</span>
+                  </button>
                 </MotionHover>
               )
             })}
-          </Flex>
+          </div>
 
-          <Flex
-            align="center"
-            bg={termBg}
-            borderBottom={`1px solid ${termBorder}`}
-            fontSize="xs"
-            gap={2}
-            px={4}
-            py={2}
+          {/* Search Bar / Command Line */}
+          <div
+            className="flex items-center gap-2 px-4 py-2 border-b text-xs font-mono"
+            style={{ backgroundColor: tc.bg, borderColor: tc.border }}
           >
-            <Text color={termPrompt} flexShrink={0}>
+            <span className="flex-shrink-0" style={{ color: tc.prompt }}>
               {siteOwner.terminalUsername}@projects:{promptPath}$
-            </Text>
-            <Input
-              _focus={{ outline: 'none' }}
-              _placeholder={{ color: termSecondary }}
-              border="none"
-              color={termText}
-              flex="1"
-              fontFamily="mono"
-              minW="120px"
+            </span>
+            <input
+              className="flex-1 bg-transparent border-none outline-none focus:ring-0 p-0 text-xs font-mono placeholder:opacity-50"
               onChange={(e) => setSearchQuery(e.target.value)}
-              outline="none"
               placeholder="grep -i '...'"
-              size="xs"
+              style={{ color: tc.text }}
+              type="text"
               value={searchQuery}
             />
-          </Flex>
+          </div>
 
-          <Box
-            bg={termBg}
-            color={termText}
-            css={{
-              '&::-webkit-scrollbar': { background: 'transparent', width: '6px' },
-              '&::-webkit-scrollbar-thumb': { background: tc.border, borderRadius: '3px' },
-            }}
-            key={activeTab}
-            maxH="75vh"
-            overflowY="auto"
+          {/* Projects Content Area */}
+          <div
+            className="overflow-y-auto max-h-[75vh] scrollbar-thin scrollbar-thumb-gray-500/50"
+            style={{ backgroundColor: tc.bg, color: tc.text }}
           >
-            <Box px={[3, 4, 5]} py={4}>
+            <div className="px-3 md:px-4 lg:px-5 py-4">
               <MotionList staggerDelay={0.15}>
                 {yearGroups.map((group, gi) => (
-                  <Box key={group.year} mb={gi < yearGroups.length - 1 ? 6 : 0}>
-                    <HStack gap={2} mb={2} pl="2px">
-                      <Text
-                        color={termHighlight}
-                        fontFamily="mono"
-                        fontSize="2xs"
-                        fontWeight="semibold"
-                        letterSpacing="wide"
-                      >
+                  <div key={group.year} className={cn("relative", gi < yearGroups.length - 1 ? "mb-6" : "")}>
+                    {/* Year group header */}
+                    <div className="flex items-center gap-2 mb-2 pl-0.5">
+                      <span className="font-mono text-[10px] font-semibold tracking-wide" style={{ color: tc.highlight }}>
                         {group.year}
-                      </Text>
-                      <Box bg={termBorder} flex="1" h="1px" opacity={0.3} />
-                      <Text color={termMuted} fontFamily="mono" fontSize="2xs">
+                      </span>
+                      <div className="flex-1 h-px opacity-30" style={{ backgroundColor: tc.border }} />
+                      <span className="font-mono text-[10px]" style={{ color: tc.muted }}>
                         {group.items.length} {t('projects.projects')}
-                      </Text>
-                    </HStack>
-                    <Box position="relative">
-                      <Box
-                        bg={termBorder}
-                        bottom="12px"
-                        left="7px"
-                        opacity={0.3}
-                        position="absolute"
-                        top="12px"
-                        w="1px"
+                      </span>
+                    </div>
+
+                    {/* Node list with connector line */}
+                    <div className="relative">
+                      {/* Vertical connector line */}
+                      <div
+                        className="absolute left-[7px] top-3 bottom-3 w-px opacity-30 z-0"
+                        style={{ backgroundColor: tc.border }}
                       />
-                      <VStack align="stretch" gap={0}>
+                      
+                      <div className="flex flex-col gap-0">
                         {group.items.map((item, idx) => (
                           <FlowNode
+                            key={item.id}
                             ct={themes[item.category]}
                             hlc={hlc}
                             isDark={isDark}
                             isLast={idx === group.items.length - 1}
                             item={item}
-                            key={item.id}
                             onImageClick={onImgClick}
-                            termBorder={termBorder}
-                            termMuted={termMuted}
-                            termSecondary={termSecondary}
-                            termText={termText}
+                            tc={tc}
                           />
                         ))}
-                      </VStack>
-                    </Box>
-                  </Box>
+                      </div>
+                    </div>
+                  </div>
                 ))}
               </MotionList>
-            </Box>
+            </div>
+
             {filtered.length === 0 && (
-              <Box px={4} py={8} textAlign="center">
-                <Text color={termHighlight} fontSize="sm">
+              <div className="px-4 py-8 text-center">
+                <p className="text-sm" style={{ color: tc.highlight }}>
                   {t('projects.noMatches')}
-                </Text>
-                <Text color={termSecondary} fontSize="xs" mt={1}>
+                </p>
+                <p className="text-xs mt-1" style={{ color: tc.secondary }}>
                   {t('projects.tryAdjustingSearch')}
-                </Text>
-              </Box>
+                </p>
+              </div>
             )}
-          </Box>
+          </div>
 
-          <Flex
-            align="center"
-            bg={termHeader}
-            borderTop={`1px solid ${termBorder}`}
-            color={termMuted}
-            flexWrap="wrap"
-            fontSize="2xs"
-            gap={2}
-            justify="space-between"
-            px={4}
-            py={1.5}
+          {/* Footer Status Bar */}
+          <div
+            className="flex flex-wrap items-center justify-between gap-2 px-4 py-1.5 border-t text-[10px] font-mono"
+            style={{ backgroundColor: tc.header, borderColor: tc.border, color: tc.muted }}
           >
-            <HStack gap={3}>
-              <Text>
-                {filtered.length}/{projects.length} {t('projects.shown')}
-              </Text>
-              <HStack color={termHighlight} gap={1}>
-                <Icon as={FaUser} boxSize="9px" />
-                <Text fontWeight="bold">
-                  {filteredIndep} {t('projects.independent')}
-                </Text>
-              </HStack>
-            </HStack>
-            <HStack gap={1}>
-              <Text color={termPrompt}>
+            <div className="flex items-center gap-3">
+              <span>{filtered.length}/{projects.length} {t('projects.shown')}</span>
+              <div className="flex items-center gap-1 font-bold" style={{ color: tc.success }}>
+                <FaUser className="w-[9px] h-[9px]" />
+                <span>{filteredIndep} {t('projects.independent')}</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-1">
+              <span style={{ color: tc.prompt }}>
                 {siteOwner.terminalUsername}@projects:{promptPath}$
-              </Text>
-              <Box
-                bg={termPrompt}
-                css={{ animation: `${blink} 1s step-end infinite` }}
-                h="11px"
-                w="6px"
+              </span>
+              <div
+                className="w-1.5 h-3 animate-pulse"
+                style={{ backgroundColor: tc.prompt }}
               />
-            </HStack>
-          </Flex>
-        </Box>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        {imgPreview && (
-          <Dialog.Root
-            onOpenChange={(e) => {
-              if (!e.open) setImgOpen(false)
-            }}
-            open={isImgOpen}
-          >
-            <Dialog.Backdrop bg="rgba(0,0,0,0.8)" />
-            <Dialog.Positioner
-              alignItems="center"
-              display="flex"
-              inset={0}
-              justifyContent="center"
-              position="fixed"
-              zIndex={1400}
+      {/* Image Preview Dialog */}
+      <Dialog onOpenChange={setImgOpen} open={isImgOpen}>
+        <DialogOverlay className="bg-black/80 backdrop-blur-sm z-[100]" />
+        <DialogContent className="max-w-4xl p-0 overflow-hidden bg-transparent border-none z-[101]">
+          <DialogTitle className="sr-only">Project Preview</DialogTitle>
+          <div className="relative">
+            {imgPreview && (
+              <img
+                alt={imgPreview.alt}
+                className="max-h-[85vh] w-auto mx-auto rounded-lg shadow-2xl"
+                src={imgPreview.src}
+              />
+            )}
+            <button
+              className="absolute top-4 right-4 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors cursor-pointer"
+              onClick={() => setImgOpen(false)}
             >
-              <Dialog.Content bg="transparent" boxShadow="none" p={0}>
-                <Flex justify="flex-end" mb={2} w="full">
-                  <Box as="button" color="white" onClick={() => setImgOpen(false)}>
-                    <Icon as={FaTimes} boxSize={6} />
-                  </Box>
-                </Flex>
-                <Dialog.Body alignItems="center" display="flex" justifyContent="center" p={0}>
-                  <Image
-                    alt={imgPreview.alt}
-                    bg={isDark ? 'rgba(0,0,0,0.85)' : 'white'}
-                    border={`1px solid ${termBorder}`}
-                    borderRadius="md"
-                    maxH="80vh"
-                    maxW="90vw"
-                    objectFit="contain"
-                    p={4}
-                    src={imgPreview.src}
-                  />
-                </Dialog.Body>
-              </Dialog.Content>
-            </Dialog.Positioner>
-          </Dialog.Root>
-        )}
-      </VStack>
-    </Box>
+              <FaTimes />
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes bob {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-2px); }
+        }
+      `}} />
+    </div>
   )
 }
 

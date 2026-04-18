@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react'
+import React from 'react'
 
 import { useColorMode } from '@/hooks/useColorMode'
 import { useSlot } from '@/templates/hooks'
@@ -9,20 +9,17 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { colorMode } = useColorMode()
-  const Navbar = useSlot('navbar')
+  const NavbarSlot = useSlot('navbar')
 
   return (
-    <Box
-      className={colorMode === 'dark' ? 'dark-theme' : ''}
-      minH="100vh"
-      overflowX="hidden"
-      w="full"
+    <div
+      className={colorMode === 'dark' ? 'dark-theme min-h-screen w-full overflow-x-hidden' : 'min-h-screen w-full overflow-x-hidden'}
     >
-      <Box as={Navbar} />
-      <Box px={[3, 4, 6]} w="full">
+      {React.createElement(NavbarSlot)}
+      <main className="w-full px-3 md:px-4 lg:px-6">
         {children}
-      </Box>
-    </Box>
+      </main>
+    </div>
   )
 }
 

@@ -1,37 +1,13 @@
-import { Box, Center, Flex, HStack, Text, VStack } from '@chakra-ui/react'
-import { keyframes } from '@emotion/react'
 import { Link, useRouter } from '@tanstack/react-router'
-import { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useThemeConfig } from '@/config/theme'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { cn } from '@/lib/utils'
 
 import { MotionHover } from './animations/MotionList'
-
-const termFadeIn = keyframes`
-  from { opacity: 0; transform: translateY(5px); }
-  to   { opacity: 1; transform: translateY(0); }
-`
-
-const scanlineAnim = keyframes`
-  0% { transform: translateY(0); }
-  100% { transform: translateY(100vh); }
-`
-
-const flickerAnim = keyframes`
-  0% { opacity: 0.97; }
-  5% { opacity: 0.95; }
-  10% { opacity: 0.9; }
-  15% { opacity: 0.95; }
-  30% { opacity: 0.98; }
-  45% { opacity: 0.93; }
-  50% { opacity: 0.97; }
-  65% { opacity: 0.94; }
-  80% { opacity: 0.98; }
-  100% { opacity: 0.99; }
-`
 
 const TYPING_SPEED = 20
 const LOG_SPEED = 15
@@ -116,230 +92,204 @@ const NotFound: React.FC = () => {
 
   const currentDate = useMemo(() => new Date().toUTCString(), [])
 
-  const fadeIn = (delay: number) => ({
-    animation: `${termFadeIn} 0.3s ease ${delay.toString()}s forwards`,
-    opacity: 0,
-  })
-
   return (
-    <Center minH="calc(100vh - 160px)" p={4} position="relative">
+    <div className="flex items-center justify-center min-h-[calc(100vh-160px)] p-4 relative">
       {/* Background Glow */}
-      <Box
-        bg={tc.highlight}
-        borderRadius="full"
-        filter="blur(120px)"
-        h="300px"
-        left="50%"
-        opacity={isDark ? 0.15 : 0.05}
-        pointerEvents="none"
-        position="absolute"
-        top="45%"
-        transform="translate(-50%, -50%)"
-        w="400px"
-        z-index={-1}
+      <div
+        className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] rounded-full blur-[120px] pointer-events-none -z-10"
+        style={{
+          backgroundColor: tc.highlight,
+          opacity: isDark ? 0.15 : 0.05
+        }}
       />
 
-      <VStack gap={10} maxW="640px" w="full">
-        <Box
-          animation={`${flickerAnim} 0.15s infinite alternate`}
-          bg={tc.bg}
-          border={`1px solid ${tc.border}`}
-          borderRadius="xl"
-          boxShadow={isDark ? '0 20px 50px rgba(0,0,0,0.6)' : '0 10px 30px rgba(0,0,0,0.1)'}
-          fontFamily="mono"
-          fontSize={['xs', 'sm']}
-          overflow="hidden"
-          position="relative"
-          w="full"
+      <div className="flex flex-col gap-10 max-w-[640px] w-full items-center">
+        <div
+          className="w-full rounded-xl border font-mono text-xs md:text-sm overflow-hidden relative transition-shadow duration-300"
+          style={{
+            backgroundColor: tc.bg,
+            borderColor: tc.border,
+            boxShadow: isDark ? '0 20px 50px rgba(0,0,0,0.6)' : '0 10px 30px rgba(0,0,0,0.1)',
+            animation: 'flicker 0.15s infinite alternate'
+          }}
         >
           {/* CRT Overlay */}
-          <Box
-            background="linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02))"
-            backgroundSize="100% 3px, 2px 100%"
-            inset={0}
-            pointerEvents="none"
-            position="absolute"
-            z-index={10}
+          <div
+            className="absolute inset-0 pointer-events-none z-10"
+            style={{
+              background: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02))',
+              backgroundSize: '100% 3px, 2px 100%'
+            }}
           />
-          <Box
-            animation={`${scanlineAnim} 8s linear infinite`}
-            background="linear-gradient(to bottom, transparent 0%, rgba(32, 255, 32, 0.02) 50%, transparent 100%)"
-            h="100px"
-            left={0}
-            pointerEvents="none"
-            position="absolute"
-            top={-100}
-            w="full"
-            z-index={11}
+          <div
+            className="absolute left-0 -top-[100px] w-full h-[100px] pointer-events-none z-[11]"
+            style={{
+              background: 'linear-gradient(to bottom, transparent 0%, rgba(32, 255, 32, 0.02) 50%, transparent 100%)',
+              animation: 'scanline 8s linear infinite'
+            }}
           />
 
           {/* macOS-style title bar */}
-          <Flex
-            align="center"
-            bg={tc.header}
-            borderBottom={`1px solid ${tc.border}`}
-            position="relative"
-            px={4}
-            py={2.5}
+          <div
+            className="flex items-center px-4 py-2.5 border-b relative"
+            style={{ backgroundColor: tc.header, borderColor: tc.border }}
           >
-            <HStack gap={1.5}>
-              <Box bg="#ff5f57" borderRadius="full" flexShrink={0} h="11px" w="11px" />
-              <Box bg="#febc2e" borderRadius="full" flexShrink={0} h="11px" w="11px" />
-              <Box bg="#28c840" borderRadius="full" flexShrink={0} h="11px" w="11px" />
-            </HStack>
-            <Text
-              color={tc.secondary}
-              fontSize="xs"
-              left="50%"
-              letterSpacing="wide"
-              pointerEvents="none"
-              position="absolute"
-              transform="translateX(-50%)"
+            <div className="flex items-center gap-1.5">
+              <div className="w-[11px] h-[11px] rounded-full bg-[#ff5f57] flex-shrink-0" />
+              <div className="w-[11px] h-[11px] rounded-full bg-[#febc2e] flex-shrink-0" />
+              <div className="w-[11px] h-[11px] rounded-full bg-[#28c840] flex-shrink-0" />
+            </div>
+            <div
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xs tracking-wide pointer-events-none whitespace-nowrap"
+              style={{ color: tc.secondary }}
             >
               {username} — 404.sh
-            </Text>
-          </Flex>
+            </div>
+          </div>
 
           {/* Terminal body */}
-          <Box lineHeight="tall" px={[4, 5, 6]} py={[4, 5]}>
-            <HStack align="center" flexWrap="wrap" gap={2} mb={showLogs ? 2 : 0}>
-              <Text color={tc.prompt} flexShrink={0}>
-                {prompt}
-              </Text>
-              <Text color={tc.text} whiteSpace="pre">
-                {commandText}
-              </Text>
+          <div className="px-4 md:px-6 py-4 md:py-5 leading-relaxed">
+            <div className={cn("flex flex-wrap items-center gap-2", showLogs ? "mb-2" : "mb-0")}>
+              <span style={{ color: tc.prompt }}>{prompt}</span>
+              <span className="whitespace-pre" style={{ color: tc.text }}>{commandText}</span>
               {!showLogs && (
-                <Box
-                  bg={tc.text}
-                  borderRadius="1px"
-                  display="inline-block"
-                  h="1.15em"
-                  ml="1px"
-                  opacity={cursorOn ? 0.85 : 0}
-                  transition="opacity 0.08s"
-                  w="0.58em"
+                <div
+                  className="inline-block w-[0.58em] h-[1.15em] ml-0.5 rounded-[1px] transition-opacity duration-75"
+                  style={{ 
+                    backgroundColor: tc.text,
+                    opacity: cursorOn ? 0.85 : 0
+                  }}
                 />
               )}
-            </HStack>
+            </div>
 
             {showLogs && (
-              <Box mb={4}>
+              <div className="mb-4">
                 {logs.map((log, i) => (
-                  <Text color={tc.muted} fontSize="xs" key={i}>
+                  <div key={i} className="text-xs" style={{ color: tc.muted }}>
                     {log}
-                  </Text>
+                  </div>
                 ))}
-              </Box>
+              </div>
             )}
 
             {showFinalResponse && (
-              <Box fontSize="xs">
-                <Text color={tc.secondary} css={fadeIn(0.05)}>
+              <div className="text-xs">
+                <div className="animate-fade-in" style={{ color: tc.secondary, animationDelay: '0.05s' }}>
                   HTTP/1.1 404 Not Found
-                </Text>
-                <Text color={tc.secondary} css={fadeIn(0.1)}>
+                </div>
+                <div className="animate-fade-in" style={{ color: tc.secondary, animationDelay: '0.1s' }}>
                   {t('notFound.date', 'Date:')} {currentDate}
-                </Text>
-                <Text color={tc.secondary} css={fadeIn(0.15)}>
+                </div>
+                <div className="animate-fade-in" style={{ color: tc.secondary, animationDelay: '0.15s' }}>
                   {t('notFound.contentType', 'Content-Type: text/plain')}
-                </Text>
-                <Box h={4} />
+                </div>
+                <div className="h-4" />
 
                 {/* ASCII Art 404 */}
-                <Box color={tc.error} css={fadeIn(0.3)} fontFamily="monospace" whiteSpace="pre">
+                <div
+                  className="whitespace-pre font-mono animate-fade-in"
+                  style={{ color: tc.error, animationDelay: '0.3s' }}
+                >
                   {ASCII_404}
-                </Box>
+                </div>
 
-                <Box h={4} />
-                <Text color={tc.error} css={fadeIn(0.5)} fontWeight="bold">
+                <div className="h-4" />
+                <div
+                  className="font-bold animate-fade-in"
+                  style={{ color: tc.error, animationDelay: '0.5s' }}
+                >
                   {t('notFound.errorMessage', 'Error: 404 Page Not Found')}
-                </Text>
-                <Text color={tc.muted} css={fadeIn(0.7)} mt={2}>
+                </div>
+                <div
+                  className="mt-2 animate-fade-in"
+                  style={{ color: tc.muted, animationDelay: '0.7s' }}
+                >
                   {t('notFound.description', 'The requested URL was not found on this server.')}
-                </Text>
+                </div>
 
-                <HStack mt={6} gap={4}>
-                  <Text color={tc.prompt} flexShrink={0}>
-                    {prompt}
-                  </Text>
-                  <Box
-                    bg={tc.text}
-                    borderRadius="1px"
-                    display="inline-block"
-                    h="1.15em"
-                    ml="1px"
-                    opacity={cursorOn ? 0.85 : 0}
-                    transition="opacity 0.08s"
-                    w="0.58em"
+                <div className="flex items-center gap-4 mt-6">
+                  <span style={{ color: tc.prompt }}>{prompt}</span>
+                  <div
+                    className="inline-block w-[0.58em] h-[1.15em] ml-0.5 rounded-[1px] transition-opacity duration-75"
+                    style={{ 
+                      backgroundColor: tc.text,
+                      opacity: cursorOn ? 0.85 : 0
+                    }}
                   />
-                </HStack>
-              </Box>
+                </div>
+              </div>
             )}
-          </Box>
-        </Box>
+          </div>
+        </div>
 
-        {/* Improved Buttons */}
-        <HStack gap={6} opacity={showFinalResponse ? 1 : 0} transition="opacity 0.5s ease 0.6s">
+        {/* Buttons */}
+        <div
+          className={cn(
+            "flex items-center gap-6 transition-opacity duration-500",
+            showFinalResponse ? "opacity-100" : "opacity-0"
+          )}
+          style={{ transitionDelay: '0.6s' }}
+        >
           <MotionHover>
-            <Link style={{ textDecoration: 'none' }} to="/">
-              <HStack
-                _hover={{
-                  borderColor: tc.highlight,
-                  color: tc.highlight,
-                  transform: 'translateY(-2px)',
-                }}
-                bg={tc.bg}
-                border="1px solid"
-                borderColor={tc.border}
-                borderRadius="md"
-                color={tc.secondary}
-                fontFamily="mono"
-                fontSize="sm"
-                gap={2}
-                px={4}
-                py={2}
-                transition="all 0.2s"
-              >
-                <Text color={tc.prompt} fontWeight="bold">
-                  ~
-                </Text>
-                <Text>{t('notFound.returnHome', 'cd ~')}</Text>
-              </HStack>
+            <Link
+              className="flex items-center gap-2 px-4 py-2 bg-transparent border rounded-md font-mono text-sm transition-all duration-200 hover:-translate-y-0.5 no-underline"
+              style={{
+                backgroundColor: tc.bg,
+                borderColor: tc.border,
+                color: tc.secondary,
+              }}
+              to="/"
+            >
+              <span className="font-bold" style={{ color: tc.prompt }}>~</span>
+              <span>{t('notFound.returnHome', 'cd ~')}</span>
             </Link>
           </MotionHover>
 
           <MotionHover>
-            <Box
-              _hover={{
-                borderColor: tc.highlight,
-                color: tc.highlight,
-                cursor: 'pointer',
-                transform: 'translateY(-2px)',
-              }}
-              bg={tc.bg}
-              border="1px solid"
-              borderColor={tc.border}
-              borderRadius="md"
-              color={tc.secondary}
-              fontFamily="mono"
-              fontSize="sm"
+            <button
+              className="flex items-center gap-2 px-4 py-2 bg-transparent border rounded-md font-mono text-sm transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
               onClick={() => router.history.back()}
-              px={4}
-              py={2}
-              transition="all 0.2s"
+              style={{
+                backgroundColor: tc.bg,
+                borderColor: tc.border,
+                color: tc.secondary,
+              }}
             >
-              <HStack gap={2}>
-                <Text color={tc.muted} fontWeight="bold">
-                  ←
-                </Text>
-                <Text>{t('notFound.goBack', 'history -1')}</Text>
-              </HStack>
-            </Box>
+              <span className="font-bold" style={{ color: tc.muted }}>←</span>
+              <span>{t('notFound.goBack', 'history -1')}</span>
+            </button>
           </MotionHover>
-        </HStack>
-      </VStack>
-    </Center>
+        </div>
+      </div>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes flicker {
+          0% { opacity: 0.97; }
+          5% { opacity: 0.95; }
+          10% { opacity: 0.9; }
+          15% { opacity: 0.95; }
+          30% { opacity: 0.98; }
+          45% { opacity: 0.93; }
+          50% { opacity: 0.97; }
+          65% { opacity: 0.94; }
+          80% { opacity: 0.98; }
+          100% { opacity: 0.99; }
+        }
+        @keyframes scanline {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(100vh); }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.3s ease forwards;
+          opacity: 0;
+        }
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(5px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}} />
+    </div>
   )
 }
 

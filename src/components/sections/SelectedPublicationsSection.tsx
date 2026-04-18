@@ -1,21 +1,15 @@
-import {
-  Box,
-  Collapsible,
-  Container,
-  Dialog,
-  Flex,
-  Heading,
-  HStack,
-  Image,
-  Link,
-  Text,
-  VStack,
-} from '@chakra-ui/react'
-import { Icon } from '@chakra-ui/react'
-import { useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaTimes } from 'react-icons/fa'
 
+import {
+  Collapsible,
+  CollapsibleContent,
+} from '@/components/ui/collapsible'
+import {
+  Dialog,
+  DialogContent,
+} from '@/components/ui/dialog'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import { selectedPublicationIds } from '@/site.config'
@@ -25,33 +19,29 @@ import DynamicIcon from '../DynamicIcon'
 const PubLink = ({ href, icon, label }: { href: string; icon: string; label: string }) => {
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
-  const hoverBg = isDark ? 'whiteAlpha.50' : 'gray.50'
-  const borderColor = isDark ? 'gray.600' : 'gray.200'
-  const textColor = isDark ? 'gray.400' : 'gray.600'
+  
+  const tc = {
+    border: isDark ? 'rgb(75, 85, 99)' : 'rgb(229, 231, 235)', // gray-600 : gray-200
+    hoverBg: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgb(249, 250, 251)', // whiteAlpha.50 : gray-50
+    text: isDark ? 'rgb(156, 163, 175)' : 'rgb(75, 85, 99)', // gray-400 : gray-600
+  }
 
   return (
-    <Link _hover={{ textDecoration: 'none' }} href={href} rel="noopener noreferrer" target="_blank">
-      <HStack
-        _hover={{
-          bg: hoverBg,
-          borderColor: 'cyan.400',
-          color: 'cyan.400',
+    <a className="no-underline" href={href} rel="noopener noreferrer" target="_blank">
+      <div
+        className="flex items-center gap-1.5 px-2.5 py-1 rounded-sm border font-mono text-xs transition-all duration-150 hover:border-cyan-400 hover:text-cyan-400"
+        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = tc.hoverBg)}
+        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+        style={{
+          backgroundColor: 'transparent',
+          borderColor: tc.border,
+          color: tc.text,
         }}
-        border="1px solid"
-        borderColor={borderColor}
-        borderRadius="sm"
-        color={textColor}
-        fontFamily="mono"
-        fontSize="xs"
-        gap={1.5}
-        px={2.5}
-        py={1}
-        transition="all 0.15s"
       >
-        <DynamicIcon boxSize={3} name={icon} />
-        <Text>{label}</Text>
-      </HStack>
-    </Link>
+        <DynamicIcon className="h-3 w-3" name={icon} />
+        <span>{label}</span>
+      </div>
+    </a>
   )
 }
 
@@ -86,37 +76,36 @@ const PublicationCard = ({ pub }: { pub: Publication }) => {
   const [isAbstractOpen, setAbstractOpen] = useState(false)
   const [isImageOpen, setImageOpen] = useState(false)
 
-  const borderColor = isDark ? 'gray.700' : 'gray.200'
-  const cardBg = isDark ? 'gray.800' : 'white'
-  const hoverBorderColor = isDark ? 'cyan.600' : 'cyan.300'
-  const imageBg = isDark ? 'gray.900' : 'gray.50'
-  const metaColor = isDark ? 'gray.500' : 'gray.400'
-  const titleColor = isDark ? 'gray.100' : 'gray.800'
-  const authorColor = isDark ? 'gray.400' : 'gray.500'
-  const highlightAuthorColor = isDark ? 'gray.200' : 'gray.700'
-  const separatorColor = isDark ? 'gray.700' : 'gray.100'
-  const abstractBg = isDark ? 'gray.900' : 'gray.50'
-  const abstractBorderColor = isDark ? 'cyan.600' : 'cyan.300'
-  const abstractTextColor = isDark ? 'gray.400' : 'gray.600'
-  const imagePreviewBg = isDark ? 'gray.900' : 'white'
+  const tc = {
+    abstractBg: isDark ? 'rgb(17, 24, 39)' : 'rgb(249, 250, 251)', // gray-900 : gray-50
+    abstractBorder: isDark ? 'rgb(8, 145, 178)' : 'rgb(103, 232, 249)', // cyan-600 : cyan-300
+    abstractText: isDark ? 'rgb(156, 163, 175)' : 'rgb(75, 85, 99)', // gray-400 : gray-600
+    author: isDark ? 'rgb(156, 163, 175)' : 'rgb(107, 114, 128)', // gray-400 : gray-500
+    bg: isDark ? 'rgb(31, 41, 55)' : 'white', // gray-800 : white
+    border: isDark ? 'rgb(55, 65, 81)' : 'rgb(229, 231, 235)', // gray-700 : gray-200
+    highlightAuthor: isDark ? 'rgb(229, 231, 235)' : 'rgb(55, 65, 81)', // gray-200 : gray-700
+    hoverBorder: isDark ? 'rgb(8, 145, 178)' : 'rgb(103, 232, 249)', // cyan-600 : cyan-300
+    imageBg: isDark ? 'rgb(17, 24, 39)' : 'rgb(249, 250, 251)', // gray-900 : gray-50
+    imagePreviewBg: isDark ? 'rgb(17, 24, 39)' : 'white', // gray-900 : white
+    meta: isDark ? 'rgb(107, 114, 128)' : 'rgb(156, 163, 175)', // gray-500 : gray-400
+    separator: isDark ? 'rgb(55, 65, 81)' : 'rgb(243, 244, 246)', // gray-700 : gray-100
+    title: isDark ? 'rgb(243, 244, 246)' : 'rgb(31, 41, 55)', // gray-100 : gray-800
+  }
 
   return (
-    <Box
-      _hover={{ borderColor: hoverBorderColor }}
-      bg={cardBg}
-      border="1px solid"
-      borderColor={borderColor}
-      borderRadius="md"
-      p={[4, 5, 6]}
-      transition="all 0.2s"
+    <div
+      className="group rounded-md border p-4 md:p-5 lg:p-6 transition-all duration-200"
+      onMouseEnter={(e) => (e.currentTarget.style.borderColor = tc.hoverBorder)}
+      onMouseLeave={(e) => (e.currentTarget.style.borderColor = tc.border)}
+      style={{
+        backgroundColor: tc.bg,
+        borderColor: tc.border,
+      }}
     >
-      <Flex align="stretch" direction={['column', 'column', 'row']} gap={[4, 4, 6]}>
+      <div className="flex flex-col lg:flex-row items-stretch gap-4 lg:gap-6">
         {pub.featuredImage && (
-          <Box
-            borderRadius="sm"
-            cursor="zoom-in"
-            flexShrink={0}
-            minH={['200px', '220px', 'auto']}
+          <div
+            className="rounded-sm flex-shrink-0 min-h-[200px] md:min-h-[220px] lg:min-h-0 overflow-hidden cursor-zoom-in w-full lg:w-[300px]"
             onClick={() => setImageOpen(true)}
             onKeyDown={(e: React.KeyboardEvent) => {
               if (e.key === 'Enter' || e.key === ' ') {
@@ -124,118 +113,98 @@ const PublicationCard = ({ pub }: { pub: Publication }) => {
                 setImageOpen(true)
               }
             }}
-            overflow="hidden"
             role="button"
+            style={{ backgroundColor: tc.imageBg }}
             tabIndex={0}
-            w={['full', 'full', '300px']}
           >
-            <Image
-              _hover={{ transform: 'scale(1.03)' }}
+            <img
               alt={pub.title}
-              bg={imageBg}
-              h="full"
-              objectFit="contain"
-              p={1}
+              className="h-full w-full object-contain p-1 transition-transform duration-300 hover:scale-[1.03]"
               src={pub.featuredImage}
-              transition="transform 0.3s"
-              w="full"
             />
-          </Box>
+          </div>
         )}
-        <VStack align="start" flex={1} gap={2.5} justify="center">
-          <HStack align="center" flexWrap="wrap" gap={2}>
-            <Box bg="cyan.400" borderRadius="full" h="2px" w="16px" />
-            <Text
-              color="cyan.400"
-              fontFamily="mono"
-              fontSize="xs"
-              fontWeight="semibold"
-              letterSpacing="wide"
-              textTransform="uppercase"
-            >
+        <div className="flex flex-col flex-1 gap-2.5 justify-center">
+          <div className="flex items-center flex-wrap gap-2">
+            <div className="bg-cyan-400 rounded-full h-0.5 w-4" />
+            <p className="text-cyan-400 font-mono text-xs font-semibold tracking-wide uppercase">
               {pub.venue?.includes(pub.year.toString())
                 ? pub.venue
                 : `${pub.venue ?? ''} ${pub.year.toString()}`}
-            </Text>
+            </p>
             {pub.venueType && (
-              <Text color={metaColor} fontFamily="mono" fontSize="2xs">
+              <p className="font-mono text-[10px]" style={{ color: tc.meta }}>
                 / {pub.venueType}
-              </Text>
+              </p>
             )}
-          </HStack>
-          <Heading color={titleColor} fontWeight="semibold" lineHeight="tall" size="sm">
+          </div>
+          <h3 className="text-sm font-semibold leading-relaxed" style={{ color: tc.title }}>
             {pub.title}
-          </Heading>
-          <VStack align="start" gap={1.5} w="full">
-            <Text color={authorColor} fontSize="xs" lineClamp={2} lineHeight="base">
+          </h3>
+          <div className="flex flex-col gap-1.5 w-full">
+            <p className="text-xs leading-normal line-clamp-2" style={{ color: tc.author }}>
               {pub.authors.map((author: string, idx: number) => {
                 const isHighlighted = pub.isCoFirst && pub.coFirstAuthors?.includes(author)
                 return (
-                  <Text
-                    as="span"
-                    color={isHighlighted ? highlightAuthorColor : undefined}
-                    fontWeight={isHighlighted ? 'semibold' : 'normal'}
+                  <span
+                    className={isHighlighted ? 'font-semibold' : ''}
                     key={idx}
+                    style={{ color: isHighlighted ? tc.highlightAuthor : undefined }}
                   >
                     {author}
                     {isHighlighted && (
-                      <Text as="sup" color="cyan.400" fontSize="2xs">
-                        *
-                      </Text>
+                      <sup className="text-cyan-400 text-[10px] ml-0.5">*</sup>
                     )}
                     {idx < pub.authors.length - 1 && ', '}
-                  </Text>
+                  </span>
                 )
               })}
-            </Text>
+            </p>
             {pub.specialBadges && pub.specialBadges.length > 0 && (
-              <HStack flexWrap="wrap" gap={1.5}>
+              <div className="flex flex-wrap gap-1.5 items-center">
                 {pub.specialBadges.map((badge: string) => {
                   const isPrimary = badge === 'First Author' || badge === 'Co-First'
                   const isHighlight =
                     badge === 'Oral' || badge === 'Spotlight' || badge === 'Best Paper'
 
                   let badgeBg = 'transparent'
-                  let badgeBorder = isDark ? 'gray.600' : 'gray.200'
-                  let badgeText = isDark ? 'gray.400' : 'gray.500'
+                  let badgeBorder = isDark ? 'rgb(75, 85, 99)' : 'rgb(229, 231, 235)' // gray-600 : gray-200
+                  let badgeText = isDark ? 'rgb(156, 163, 175)' : 'rgb(107, 114, 128)' // gray-400 : gray-500
 
                   if (isPrimary) {
-                    badgeBg = isDark ? 'whiteAlpha.50' : 'cyan.50'
-                    badgeBorder = isDark ? 'cyan.700' : 'cyan.200'
-                    badgeText = isDark ? 'cyan.300' : 'cyan.600'
+                    badgeBg = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgb(236, 254, 255)' // whiteAlpha.50 : cyan-50
+                    badgeBorder = isDark ? 'rgb(14, 116, 144)' : 'rgb(165, 243, 252)' // cyan-700 : cyan-200
+                    badgeText = isDark ? 'rgb(103, 232, 249)' : 'rgb(8, 145, 178)' // cyan-300 : cyan-600
                   } else if (isHighlight) {
-                    badgeBg = isDark ? 'whiteAlpha.50' : 'orange.50'
-                    badgeBorder = isDark ? 'orange.700' : 'orange.200'
-                    badgeText = isDark ? 'orange.300' : 'orange.600'
+                    badgeBg = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgb(255, 247, 237)' // whiteAlpha.50 : orange-50
+                    badgeBorder = isDark ? 'rgb(194, 65, 12)' : 'rgb(254, 215, 170)' // orange-700 : orange-200
+                    badgeText = isDark ? 'rgb(253, 186, 116)' : 'rgb(194, 65, 12)' // orange-300 : orange-600
                   }
 
                   return (
-                    <Text
-                      bg={badgeBg}
-                      border="1px solid"
-                      borderColor={badgeBorder}
-                      borderRadius="sm"
-                      color={badgeText}
-                      fontFamily="mono"
-                      fontSize="2xs"
+                    <span
+                      className="rounded-sm border font-mono text-[10px] px-2 py-0.5"
                       key={badge}
-                      px={2}
-                      py={0.5}
+                      style={{
+                        backgroundColor: badgeBg,
+                        borderColor: badgeBorder,
+                        color: badgeText,
+                      }}
                     >
                       {badge}
-                    </Text>
+                    </span>
                   )
                 })}
                 {pub.isCoFirst && (
-                  <Text color={metaColor} fontSize="2xs" fontStyle="italic">
+                  <p className="text-[10px] italic" style={{ color: tc.meta }}>
                     {t('about.equalContribution')}
-                  </Text>
+                  </p>
                 )}
-              </HStack>
+              </div>
             )}
-          </VStack>
-          <Box bg={separatorColor} h="1px" w="full" />
-          <HStack flexWrap="wrap" gap={1.5}>
+          </div>
+          <div className="h-px w-full" style={{ backgroundColor: tc.separator }} />
+          <div className="flex flex-wrap gap-1.5 items-center">
             {pub.links.paper && (
               <PubLink href={pub.links.paper} icon="FaFileAlt" label={t('about.paper')} />
             )}
@@ -255,111 +224,73 @@ const PublicationCard = ({ pub }: { pub: Publication }) => {
               <PubLink href={pub.links.dataset} icon="FaDatabase" label={t('about.dataset')} />
             )}
             {pub.abstract && (
-              <HStack
-                _hover={{ borderColor: 'cyan.400', color: 'cyan.400' }}
-                as="button"
-                border="1px solid"
-                borderColor={isAbstractOpen ? abstractBorderColor : borderColor}
-                borderRadius="sm"
-                color={isAbstractOpen ? 'cyan.400' : abstractTextColor}
-                fontFamily="mono"
-                fontSize="xs"
-                gap={1.5}
+              <button
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-sm border font-mono text-xs transition-all duration-150 hover:border-cyan-400 hover:text-cyan-400"
                 onClick={() => setAbstractOpen(!isAbstractOpen)}
-                px={2.5}
-                py={1}
-                transition="all 0.15s"
+                style={{
+                  borderColor: isAbstractOpen ? tc.abstractBorder : tc.border,
+                  color: isAbstractOpen ? 'rgb(34, 211, 238)' : tc.abstractText, // cyan-400
+                }}
               >
                 <DynamicIcon
-                  boxSize={2.5}
+                  className={`h-2.5 w-2.5 transition-transform duration-150 ${isAbstractOpen ? 'rotate-90' : ''}`}
                   name="FaChevronRight"
-                  style={{
-                    transform: isAbstractOpen ? 'rotate(90deg)' : 'none',
-                    transition: 'transform 0.15s',
-                  }}
                 />
-                <Text>{t('about.abstract')}</Text>
-              </HStack>
+                <span>{t('about.abstract')}</span>
+              </button>
             )}
-          </HStack>
-        </VStack>
-      </Flex>
+          </div>
+        </div>
+      </div>
       {pub.abstract && (
-        <Collapsible.Root open={isAbstractOpen}>
-          <Collapsible.Content>
-            <Box
-              bg={abstractBg}
-              borderLeft="2px solid"
-              borderLeftColor="cyan.400"
-              borderRadius="md"
-              mt={4}
-              p={4}
+        <Collapsible open={isAbstractOpen}>
+          <CollapsibleContent>
+            <div
+              className="mt-4 p-4 rounded-md border-l-2 border-cyan-400"
+              style={{ backgroundColor: tc.abstractBg }}
             >
-              <Text color={authorColor} fontSize={['xs', 'sm']} lineHeight="tall">
+              <p className="text-xs md:text-sm leading-relaxed" style={{ color: tc.author }}>
                 {pub.abstract}
-              </Text>
+              </p>
               {pub.keywords && (
-                <HStack flexWrap="wrap" gap={1.5} mt={3}>
+                <div className="flex flex-wrap gap-1.5 mt-3">
                   {pub.keywords.map((keyword: string) => (
-                    <Text
-                      bg={separatorColor}
-                      borderRadius="sm"
-                      color={metaColor}
-                      fontFamily="mono"
-                      fontSize="2xs"
+                    <span
+                      className="rounded-sm font-mono text-[10px] px-1.5 py-0.5"
                       key={keyword}
-                      px={1.5}
-                      py={0.5}
+                      style={{ backgroundColor: tc.separator, color: tc.meta }}
                     >
                       {keyword}
-                    </Text>
+                    </span>
                   ))}
-                </HStack>
+                </div>
               )}
-            </Box>
-          </Collapsible.Content>
-        </Collapsible.Root>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
       )}
 
       {pub.featuredImage && (
-        <Dialog.Root
-          onOpenChange={(e) => {
-            if (!e.open) setImageOpen(false)
-          }}
-          open={isImageOpen}
-        >
-          <Dialog.Backdrop bg="rgba(0,0,0,0.8)" />
-          <Dialog.Positioner
-            alignItems="center"
-            display="flex"
-            inset={0}
-            justifyContent="center"
-            position="fixed"
-            zIndex={1400}
-          >
-            <Dialog.Content bg="transparent" boxShadow="none" p={0}>
-              <Flex justify="flex-end" mb={2} w="full">
-                <Box as="button" color="white" onClick={() => setImageOpen(false)}>
-                  <Icon as={FaTimes} boxSize={6} />
-                </Box>
-              </Flex>
-              <Dialog.Body alignItems="center" display="flex" justifyContent="center" p={0}>
-                <Image
-                  alt={`${pub.title} large preview`}
-                  bg={imagePreviewBg}
-                  borderRadius="lg"
-                  maxH="80vh"
-                  maxW="90vw"
-                  objectFit="contain"
-                  p={4}
-                  src={pub.featuredImage}
-                />
-              </Dialog.Body>
-            </Dialog.Content>
-          </Dialog.Positioner>
-        </Dialog.Root>
+        <Dialog onOpenChange={setImageOpen} open={isImageOpen}>
+          <DialogContent className="max-w-[90vw] max-h-[90vh] p-0 bg-transparent border-none shadow-none flex flex-col items-center justify-center">
+            <div className="flex justify-end w-full mb-2">
+              <button
+                className="text-white hover:text-cyan-400 transition-colors"
+                onClick={() => setImageOpen(false)}
+              >
+                <FaTimes className="h-6 w-6" />
+              </button>
+            </div>
+            <img
+              alt={`${pub.title} large preview`}
+              className="rounded-lg max-h-[80vh] max-w-full object-contain p-4"
+              src={pub.featuredImage}
+              style={{ backgroundColor: tc.imagePreviewBg }}
+            />
+          </DialogContent>
+        </Dialog>
       )}
-    </Box>
+    </div>
   )
 }
 
@@ -369,8 +300,10 @@ const SelectedPublicationsSection: React.FC = () => {
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
 
-  const lineBg = isDark ? 'gray.700' : 'gray.200'
-  const viewAllColor = isDark ? 'gray.400' : 'gray.500'
+  const tc = {
+    line: isDark ? 'rgb(55, 65, 81)' : 'rgb(229, 231, 235)', // gray-700 : gray-200
+    viewAll: isDark ? 'rgb(107, 114, 128)' : 'rgb(156, 163, 175)', // gray-500 : gray-400
+  }
 
   const selectedPubs = useMemo(
     () => publications.filter((pub) => selectedPublicationIds.has(pub.id)),
@@ -380,38 +313,33 @@ const SelectedPublicationsSection: React.FC = () => {
   if (selectedPubs.length === 0) return null
 
   return (
-    <Box py={6} w="full">
-      <Container maxW={['full', 'full', '7xl']} px={[2, 4, 8]}>
-        <Flex align="center" gap={3} mb={[3, 4]}>
-          <Box bg="cyan.400" borderRadius="full" flexShrink={0} h="2px" w="20px" />
-          <Heading fontWeight="semibold" size="md">
+    <section className="py-6 w-full">
+      <div className="max-w-full lg:max-w-7xl px-2 md:px-4 lg:px-8 mx-auto">
+        <div className="flex items-center gap-3 mb-3 md:mb-4">
+          <div className="bg-cyan-400 rounded-full flex-shrink-0 h-0.5 w-5" />
+          <h3 className="text-base md:text-lg font-semibold">
             {t('about.selectedPublications')}
-          </Heading>
-          <Box bg={lineBg} flex="1" h="1px" />
-        </Flex>
-        <VStack align="stretch" gap={[4, 5, 6]}>
+          </h3>
+          <div className="flex-1 h-px" style={{ backgroundColor: tc.line }} />
+        </div>
+        <div className="flex flex-col gap-4 md:gap-5 lg:gap-6">
           {selectedPubs.map((pub) => (
             <PublicationCard key={pub.id} pub={pub as unknown as Publication} />
           ))}
-          <Box pt={2} textAlign="center">
-            <Link _hover={{ textDecoration: 'none' }} href="/publications">
-              <HStack
-                _hover={{ color: 'cyan.400' }}
-                color={viewAllColor}
-                fontFamily="mono"
-                fontSize="sm"
-                gap={2}
-                justify="center"
-                transition="all 0.15s"
+          <div className="pt-2 text-center">
+            <a className="no-underline group" href="/publications">
+              <div
+                className="flex items-center justify-center gap-2 font-mono text-sm transition-all duration-150 group-hover:text-cyan-400"
+                style={{ color: tc.viewAll }}
               >
-                <Text>{t('about.viewAllPublications')}</Text>
-                <Text>→</Text>
-              </HStack>
-            </Link>
-          </Box>
-        </VStack>
-      </Container>
-    </Box>
+                <span>{t('about.viewAllPublications')}</span>
+                <span className="transition-transform duration-150 group-hover:translate-x-1">→</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
 

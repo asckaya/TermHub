@@ -1,4 +1,3 @@
-import { Icon } from '@chakra-ui/react'
 import { type IconType } from 'react-icons'
 import {
   FaArrowRight,
@@ -94,17 +93,20 @@ const icons: Record<string, IconType> = {
   SiZhihu,
 }
 
-interface DynamicIconProps {
-  [key: string]: unknown
-  boxSize?: number | number[] | string | string[]
-  color?: string
+interface DynamicIconProps extends React.SVGAttributes<SVGElement> {
+  // For backward compatibility with Chakra props
+  boxSize?: (number | string)[] | number | string
   name?: string
 }
 
-const DynamicIcon: React.FC<DynamicIconProps> = ({ name, ...props }) => {
+const DynamicIcon: React.FC<DynamicIconProps> = ({ boxSize, name, ...props }) => {
   if (!name) return null
-  const IconComponent = (icons as Record<string, React.ComponentType | undefined>)[name] ?? FaCode
-  return <Icon as={IconComponent} {...props} />
+  const IconComponent = (icons as Record<string, IconType | undefined>)[name] ?? FaCode
+  
+  // Map boxSize to width/height if it's a number/string
+  const size = typeof boxSize === 'number' ? `${String(boxSize * 4)}px` : (typeof boxSize === 'string' ? boxSize : undefined)
+  
+  return <IconComponent {...props} style={{ height: size, width: size, ...props.style }} />
 }
 
 export default DynamicIcon

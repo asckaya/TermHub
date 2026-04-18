@@ -1,155 +1,169 @@
-import { Box, Container, Flex, Heading, HStack, Link, Text, VStack } from '@chakra-ui/react'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useColorModeValue } from '@/hooks/useColorMode'
+import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 
 /** Parse **bold** markers in text */
 const renderBoldText = (text: string, color: string, boldColor: string) => {
+  if (!text) return null
   const parts = text.split(/(\*\*.*?\*\*)/g)
   return parts.map((part, i) => {
     if (part.startsWith('**') && part.endsWith('**')) {
       return (
-        <Text as="span" color={boldColor} fontWeight="semibold" key={i}>
+        <span key={i} style={{ color: boldColor, fontWeight: 600 }}>
           {part.slice(2, -2)}
-        </Text>
+        </span>
       )
     }
     return (
-      <Text as="span" color={color} key={i}>
+      <span key={i} style={{ color: color }}>
         {part}
-      </Text>
+      </span>
     )
   })
 }
 
-const JourneySection: React.FC = () => {
-  const { t } = useTranslation()
-  const { about } = useLocalizedData()
-  const textColor = useColorModeValue('gray.500', 'gray.400')
-  const boldColor = useColorModeValue('gray.700', 'gray.200')
-  const headingColor = useColorModeValue('gray.800', 'gray.100')
-  const lineColor = useColorModeValue('gray.200', 'gray.700')
-  const dotBg = useColorModeValue('white', 'gray.800')
-  const tagBg = useColorModeValue('gray.100', 'gray.800')
-  const slashColor = useColorModeValue('gray.400', 'gray.600')
-  const orgColor = useColorModeValue('gray.400', 'gray.500')
-  const dotBorderColor = useColorModeValue('gray.300', 'gray.600')
+interface JourneySectionProps {
+  filterEducation?: boolean
+}
 
-  if (!about.journeyPhases || about.journeyPhases.length === 0) return null
+interface JourneyPhase {
+  description: string
+  kind: 'education' | 'work'
+  org: string
+  period: string
+  tags: string[]
+  title: string
+}
+
+const JourneySection: React.FC<JourneySectionProps> = ({ filterEducation = false }) => {
+  const { t } = useTranslation()
+  const { experienceTimeline } = useLocalizedData()
+  const { colorMode } = useColorMode()
+  const isDark = colorMode === 'dark'
+
+  const phases = useMemo<JourneyPhase[]>(() => {
+    if (!experienceTimeline) return []
+    
+    // Map experience timeline to journey phases structure
+    const mapped: JourneyPhase[] = experienceTimeline.map((entry: any) => ({
+      description: entry.summary || entry.highlights?.join(' · ') || '',
+      kind: entry.category === 'academic' ? 'education' : 'work',
+      org: entry.company,
+      period: `${entry.start} - ${entry.isCurrent ? t('experience.present') : entry.end || ''}`,
+      tags: entry.highlights || [],
+      title: entry.title,
+    }))
+
+    if (filterEducation) {
+      return mapped.filter((p) => p.kind !== 'education')
+    }
+    return mapped
+  }, [experienceTimeline, filterEducation, t])
+
+  const tc = {
+    bold: isDark ? 'rgb(229, 231, 235)' : 'rgb(55, 65, 81)', // gray-200 : gray-700
+    border: isDark ? 'rgb(75, 85, 99)' : 'rgb(209, 213, 219)', // gray-600 : gray-300
+    dotBg: isDark ? 'rgb(31, 41, 55)' : 'rgb(255, 255, 255)', // gray-800 : white
+    heading: isDark ? 'rgb(243, 244, 246)' : 'rgb(31, 41, 55)', // gray-100 : gray-800
+    line: isDark ? 'rgb(55, 65, 81)' : 'rgb(229, 231, 235)', // gray-700 : gray-200
+    org: isDark ? 'rgb(107, 114, 128)' : 'rgb(156, 163, 175)', // gray-500 : gray-400
+    slash: isDark ? 'rgb(75, 85, 99)' : 'rgb(156, 163, 175)', // gray-600 : gray-400
+    tagBg: isDark ? 'rgb(31, 41, 55)' : 'rgb(243, 244, 246)', // gray-800 : gray-100
+    text: isDark ? 'rgb(156, 163, 175)' : 'rgb(107, 114, 128)', // gray-400 : gray-500
+  }
+
+  if (!phases || phases.length === 0) return null
 
   return (
-    <Box w="full">
-      <Container maxW={['full', 'full', '7xl']} px={[2, 4, 8]}>
-        <Flex align="center" gap={3} mb={4} w="full">
-          <Box bg="cyan.400" borderRadius="full" flexShrink={0} h="2px" w="20px" />
-          <Heading fontWeight="semibold" size={['sm', 'md']}>
+    <section className="w-full">
+      <div className="max-w-full lg:max-w-7xl px-2 md:px-4 lg:px-8 mx-auto">
+        <div className="flex items-center gap-3 mb-4 w-full">
+          <div className="bg-cyan-400 rounded-full flex-shrink-0 h-0.5 w-5" />
+          <h3 className="text-base md:text-lg font-semibold">
             {t('about.myJourney')}
-          </Heading>
-          <Box bg={lineColor} flex="1" h="1px" />
-        </Flex>
+          </h3>
+          <div className="flex-1 h-px" style={{ backgroundColor: tc.line }} />
+        </div>
 
-        <Box position="relative" w="full">
-          <Box
-            bg={lineColor}
-            bottom="12px"
-            left={['7px', '7px', '7px']}
-            position="absolute"
-            top="12px"
-            w="1px"
+        <div className="relative w-full">
+          {/* Vertical Timeline Line */}
+          <div
+            className="absolute left-[7px] top-[12px] bottom-[12px] w-px"
+            style={{ backgroundColor: tc.line }}
           />
 
-          <VStack align="stretch" gap={0}>
-            {(about.journeyPhases ?? []).map((phase, index) => (
-              <Flex align="start" gap={[3, 4]} key={index} position="relative" py={3}>
-                <Box flexShrink={0} mt="6px">
-                  <Box
-                    bg={index === (about.journeyPhases ?? []).length - 1 ? 'cyan.400' : dotBg}
-                    border="2px solid"
-                    borderColor={
-                      index === (about.journeyPhases ?? []).length - 1 ? 'cyan.400' : dotBorderColor
-                    }
-                    borderRadius="full"
-                    h="14px"
-                    w="14px"
+          <div className="flex flex-col gap-0">
+            {phases.map((phase: JourneyPhase, index: number) => (
+              <div className="relative flex items-start gap-3 md:gap-4 py-3" key={index}>
+                <div className="flex-shrink-0 mt-[6px]">
+                  <div
+                    className="h-3.5 w-3.5 rounded-full border-2"
+                    style={{
+                      backgroundColor:
+                        index === 0 ? 'rgb(34, 211, 238)' : tc.dotBg, // Top item (latest) is highlighted
+                      borderColor:
+                        index === 0 ? 'rgb(34, 211, 238)' : tc.border,
+                    }}
                   />
-                </Box>
-                <Box flex={1} pb={2}>
-                  <HStack flexWrap="wrap" gap={2} mb={1}>
-                    <Text
-                      color="cyan.400"
-                      fontFamily="mono"
-                      fontSize="2xs"
-                      fontWeight="semibold"
-                      letterSpacing="wide"
-                      textTransform="uppercase"
-                    >
+                </div>
+                <div className="flex-1 pb-2">
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <span className="font-mono text-[10px] font-semibold tracking-wide uppercase text-cyan-400">
                       {phase.period}
-                    </Text>
-                    <Text color={slashColor} fontSize="2xs">
+                    </span>
+                    <span className="text-[10px]" style={{ color: tc.slash }}>
                       /
-                    </Text>
-                    <Text color={orgColor} fontFamily="mono" fontSize="2xs">
+                    </span>
+                    <span className="font-mono text-[10px]" style={{ color: tc.org }}>
                       {phase.org}
-                    </Text>
-                  </HStack>
-                  <Text color={headingColor} fontSize="sm" fontWeight="semibold" mb={1}>
+                    </span>
+                  </div>
+                  <h4 className="text-sm font-semibold mb-1" style={{ color: tc.heading }}>
                     {phase.title}
-                  </Text>
-                  <Text fontSize="xs" lineHeight="tall" mb={2}>
-                    {renderBoldText(phase.description, textColor, boldColor)}
-                  </Text>
-                  {phase.tags && (
-                    <HStack flexWrap="wrap" gap={1.5}>
-                      {phase.tags.map((tag) => (
-                        <Text
-                          bg={tagBg}
-                          borderRadius="sm"
-                          color={textColor}
-                          fontFamily="mono"
-                          fontSize="2xs"
+                  </h4>
+                  <div className="text-xs leading-relaxed mb-2">
+                    {renderBoldText(phase.description, tc.text, tc.bold)}
+                  </div>
+                  {phase.tags && phase.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5">
+                      {phase.tags.map((tag: string) => (
+                        <span
+                          className="rounded-sm font-mono text-[10px] px-1.5 py-0.5"
                           key={tag}
-                          px={1.5}
-                          py={0.5}
+                          style={{ backgroundColor: tc.tagBg, color: tc.text }}
                         >
                           {tag}
-                        </Text>
+                        </span>
                       ))}
-                    </HStack>
+                    </div>
                   )}
-                </Box>
-              </Flex>
+                </div>
+              </div>
             ))}
             {/* View all link */}
-            <Flex align="start" gap={[3, 4]} position="relative" py={3}>
-              <Box flexShrink={0} mt="6px">
-                <Box
-                  border="2px dashed"
-                  borderColor={dotBorderColor}
-                  borderRadius="full"
-                  h="14px"
-                  w="14px"
+            <div className="relative flex items-start gap-3 md:gap-4 py-3">
+              <div className="flex-shrink-0 mt-[6px]">
+                <div
+                  className="h-3.5 w-3.5 rounded-full border-2 border-dashed"
+                  style={{ borderColor: tc.border }}
                 />
-              </Box>
-              <Link _hover={{ textDecoration: 'none' }} href="/experience">
-                <HStack
-                  _hover={{ color: 'cyan.400' }}
-                  color={textColor}
-                  fontFamily="mono"
-                  fontSize="xs"
-                  gap={2}
-                  mt="3px"
-                  transition="all 0.15s"
+              </div>
+              <a className="no-underline hover:no-underline group" href="/experience">
+                <div
+                  className="flex items-center gap-2 mt-[3px] font-mono text-xs transition-colors group-hover:text-cyan-400"
+                  style={{ color: tc.text }}
                 >
-                  <Text>{t('about.viewAllExperience')}</Text>
-                  <Text>→</Text>
-                </HStack>
-              </Link>
-            </Flex>
-          </VStack>
-        </Box>
-      </Container>
-    </Box>
+                  <span>{t('about.viewAllExperience')}</span>
+                  <span>→</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
 

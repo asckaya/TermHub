@@ -5,17 +5,16 @@ import { useColorMode } from '@/hooks/useColorMode'
 import { useThemeContext } from './hooks'
 
 /**
- * Renderless component — mounts once inside <ChakraProvider> and keeps the
- * CSS custom properties on `document.documentElement` in sync with the active
- * Chakra colour mode.
+ * Renderless component — mounts once inside ThemeProvider and keeps the
+ * document element's class list and style variables in sync with the active theme.
  *
- * Place it as a direct child of <ChakraProvider> so it always has access to
- * the colour-mode context:
+ * Place it as a direct child of ThemeProvider.
  *
- *   <ChakraProvider theme={theme}>
+ * Example:
+ *   <ThemeProvider>
  *     <ThemeInjector />
- *     ...
- *   </ChakraProvider>
+ *     <App />
+ *   </ThemeProvider>
  *
  * Switching colour schemes is done in `src/themes/index.ts` — no changes are
  * needed here.

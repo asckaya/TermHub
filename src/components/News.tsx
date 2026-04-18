@@ -1,23 +1,11 @@
-import {
-  Badge,
-  Box,
-  Link as ChakraLink,
-  Code,
-  Container,
-  Heading,
-  HStack,
-  Text,
-  VStack,
-} from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { Badge } from '@/components/ui/badge'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 
 import type { NewsItem } from '../types'
-
-const MotionBox = motion(Box)
 
 const sortNews = (arr: NewsItem[]) =>
   [...arr].sort((a, b) => {
@@ -34,89 +22,92 @@ const News = () => {
   const lastUpdated = news.length > 0 ? (news[0].date ?? 'N/A') : 'N/A'
 
   return (
-    <Container maxW="7xl" px={4}>
-      <VStack align="stretch" gap={8}>
-        <MotionBox
+    <div className="max-w-7xl mx-auto px-4">
+      <div className="flex flex-col gap-8 items-stretch">
+        <motion.div
           animate={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
         >
-          <Heading as="h1" mb={6} size="xl">
+          <h1 className="text-3xl font-bold mb-6">
             {t('news.title')}
-          </Heading>
-          <Box className="meta">
-            <Box className="meta-item">
+          </h1>
+          <div className="flex items-center gap-4 mb-6 text-sm opacity-70">
+            <div className="flex items-center gap-2">
               <i className="fa-solid fa-clock-rotate-left"></i>
-              {t('news.lastUpdated')} {lastUpdated}
-            </Box>
-            <Box className="meta-item">
+              <span>{t('news.lastUpdated')} {lastUpdated}</span>
+            </div>
+            <div className="flex items-center gap-2">
               <i className="fa-solid fa-sort"></i>
-              {t('news.sortedByDate')}
-            </Box>
-          </Box>
+              <span>{t('news.sortedByDate')}</span>
+            </div>
+          </div>
 
-          <VStack align="stretch" gap={6}>
+          <div className="flex flex-col gap-6">
             {news.map((item, index) => (
-              <MotionBox
-                animate={{ opacity: 1, y: 0 }}
-                borderRadius="md"
-                borderWidth="1px"
-                className="card"
-                initial={{ opacity: 0, y: 20 }}
+              <motion.div
                 key={item.title}
-                p={5}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-5 rounded-md border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow"
+                initial={{ opacity: 0, y: 20 }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
               >
-                <Box mb={2}>
-                  <Code>{item.date}</Code>{' '}
+                <div className="flex items-center flex-wrap gap-2 mb-2">
+                  <code className="px-1.5 py-0.5 rounded bg-muted font-mono text-sm">
+                    {item.date}
+                  </code>
                   {item.badge !== '' && (
-                    <Badge colorPalette={item.iconColor.split('.')[0]} ml={2}>
+                    <Badge variant="secondary" className="font-bold">
                       {item.badge}
                     </Badge>
-                  )}{' '}
-                  <Text as="span" fontWeight="bold">
+                  )}
+                  <span className="font-bold ml-1">
                     {item.title}
-                  </Text>
-                </Box>
-                <Text>{item.description}</Text>
+                  </span>
+                </div>
+                <p className="text-sm leading-relaxed opacity-90">{item.description}</p>
                 {item.links.length > 0 && (
-                  <HStack gap={3} mt={3} wrap="wrap">
+                  <div className="flex flex-wrap gap-3 mt-3">
                     {item.links.map((l) => (
-                      <ChakraLink
-                        color="var(--accent-color)"
-                        href={l.url}
+                      <a
                         key={l.url}
+                        className="text-primary hover:underline font-medium text-sm"
+                        href={l.url}
                         rel="noopener noreferrer"
                         target="_blank"
+                        style={{ color: 'var(--accent-color)' }}
                       >
                         {l.text} →
-                      </ChakraLink>
+                      </a>
                     ))}
-                  </HStack>
+                  </div>
                 )}
-              </MotionBox>
+              </motion.div>
             ))}
-          </VStack>
-        </MotionBox>
+          </div>
+        </motion.div>
 
-        <MotionBox
+        <motion.div
           animate={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 20 }}
           transition={{ delay: 0.3, duration: 0.5 }}
         >
-          <Heading as="h2" mb={4} size="lg">
+          <h2 className="text-2xl font-bold mb-4">
             {t('news.currentFocus')}
-          </Heading>
-          <Box as="pre" bg="var(--header-bg)" borderRadius="md" fontFamily="mono" p={4}>
+          </h2>
+          <pre
+            className="p-4 rounded-md font-mono text-sm overflow-x-auto"
+            style={{ backgroundColor: 'var(--header-bg)', color: 'var(--text-color)' }}
+          >
             {`# Active Projects (2024-Q4)
 - ThinkGrasp extensions    // Working on improved vision-language integration
 - Equivariant Models       // Refining SE(2) models for grasping
 - Technical blog series    // Writing about LLMs and robotics
 - PyTorch upgrades         // Maintaining open source contributions`}
-          </Box>
-        </MotionBox>
-      </VStack>
-    </Container>
+          </pre>
+        </motion.div>
+      </div>
+    </div>
   )
 }
 

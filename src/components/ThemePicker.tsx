@@ -1,14 +1,18 @@
-import { Box, Flex, IconButton, Text, VStack } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { FaCheck, FaPalette } from 'react-icons/fa'
 
-import { useColorMode, useColorModeValue } from '@/hooks/useColorMode'
+import { Button } from '@/components/ui/button'
+import { useColorMode } from '@/hooks/useColorMode'
 import { type ThemeKey, themes, useThemeContext } from '@/themes/hooks'
+import { MotionHover } from './animations/MotionList'
 
 export const ThemePicker: React.FC = () => {
   const { activeTheme, currentThemeKey, setTheme } = useThemeContext()
-  const iconColor = useColorModeValue('gray.600', 'gray.400')
-  const iconHoverColor = useColorModeValue('gray.800', 'white')
+  const { colorMode } = useColorMode()
+  const isDark = colorMode === 'dark'
+
+  const iconColor = isDark ? 'rgb(156, 163, 175)' : 'rgb(75, 85, 99)' // gray-400 : gray-600
+  const iconHoverColor = isDark ? 'white' : 'rgb(31, 41, 55)' // white : gray-800
 
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -26,8 +30,6 @@ export const ThemePicker: React.FC = () => {
   }, [isOpen])
 
   // Terminal aesthetic colors for the dropdown
-  const { colorMode } = useColorMode()
-  const isDark = colorMode === 'dark'
   const tc = activeTheme.terminal.colors(isDark)
   const menuBg = tc.bg
   const menuText = tc.text
@@ -35,64 +37,57 @@ export const ThemePicker: React.FC = () => {
   const menuHoverBg = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
 
   return (
-    <Box display="inline-flex" position="relative" ref={menuRef}>
-      <IconButton
-        _hover={{ bg: 'transparent', color: iconHoverColor }}
+    <div className="inline-flex relative" ref={menuRef}>
+      <Button
         aria-label="Select Theme"
-        color={iconColor}
+        className="transition-colors duration-200 hover:text-[var(--accent-color)] hover:bg-transparent"
         onClick={() => setIsOpen(!isOpen)}
-        size="sm"
+        onMouseEnter={(e) => (e.currentTarget.style.color = iconHoverColor)}
+        onMouseLeave={(e) => (e.currentTarget.style.color = iconColor)}
+        size="icon"
+        style={{ color: iconColor }}
         variant="ghost"
       >
-        <FaPalette />
-      </IconButton>
+        <MotionHover>
+          <FaPalette className="h-4 w-4" />
+        </MotionHover>
+      </Button>
 
       {isOpen && (
-        <Box
-          bg={menuBg}
-          border={`1px solid ${menuBorder}`}
-          borderRadius="md"
-          boxShadow="0 4px 12px rgba(0, 0, 0, 0.15)"
-          minW="180px"
-          mt={2}
-          overflow="hidden"
-          position="absolute"
-          py={1}
-          right={0}
-          top="100%"
-          zIndex={1000}
+        <div
+          className="absolute right-0 top-full mt-2 min-w-[180px] rounded-md shadow-lg py-1 z-[1000] overflow-hidden"
+          style={{
+            backgroundColor: menuBg,
+            border: `1px solid ${menuBorder}`,
+          }}
         >
-          <VStack align="stretch" gap={0} w="full">
+          <div className="flex flex-col w-full">
             {(Object.keys(themes) as ThemeKey[]).map((key) => (
-              <Flex
-                _hover={{ bg: menuHoverBg }}
-                align="center"
-                cursor="pointer"
-                justify="space-between"
+              <div
+                className="flex items-center justify-between px-3 py-2 cursor-pointer transition-colors duration-200"
                 key={key}
                 onClick={() => {
                   setTheme(key)
                   setIsOpen(false)
                 }}
-                px={3}
-                py={2}
-                transition="background 0.2s"
-                w="full"
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = menuHoverBg)}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
               >
-                <Text
-                  color={menuText}
-                  fontFamily="mono"
-                  fontSize="xs"
-                  fontWeight={currentThemeKey === key ? 'bold' : 'normal'}
+                <span
+                  className="font-mono text-xs"
+                  style={{
+                    color: menuText,
+                    fontWeight: currentThemeKey === key ? 'bold' : 'normal',
+                  }}
                 >
                   {themes[key].name}
-                </Text>
-                {currentThemeKey === key && <FaCheck color={tc.success} size={10} />}
-              </Flex>
+                </span>
+                {currentThemeKey === key && <FaCheck className="h-2.5 w-2.5" style={{ color: tc.success }} />}
+              </div>
             ))}
-          </VStack>
-        </Box>
+          </div>
+        </div>
       )}
-    </Box>
+    </div>
   )
 }

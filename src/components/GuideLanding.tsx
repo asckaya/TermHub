@@ -1,56 +1,44 @@
-import { Box, Container, Heading, HStack, Link, Text, VStack } from '@chakra-ui/react'
-
-import { useColorModeValue } from '@/hooks/useColorMode'
-
 const GuideLanding = () => {
-  const border = useColorModeValue('gray.200', 'gray.700')
-  const muted = useColorModeValue('gray.600', 'gray.400')
-
   return (
-    <Box py={10} w="full">
-      <Container maxW="7xl">
-        <VStack align="stretch" gap={6}>
-          <Heading size="lg">Guide</Heading>
-          <Text color={muted}>
+    <div className="py-10 w-full">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex flex-col gap-6 items-stretch">
+          <h2 className="text-2xl font-bold">Guide</h2>
+          <p className="opacity-70 text-sm md:text-base">
             The guide content is now on the docs page. Use the links below for documentation and
             repository resources.
-          </Text>
+          </p>
 
-          <VStack align="stretch" gap={3} maxW="3xl">
-            <HStack
-              border="1px solid"
-              borderColor={border}
-              borderRadius="md"
-              justify="space-between"
-              p={4}
+          <div className="flex flex-col gap-3 max-w-3xl">
+            <div
+              className="flex items-center justify-between p-4 rounded-md border bg-card text-card-foreground shadow-sm"
             >
-              <Text>Open documentation</Text>
-              <Link color="cyan.400" href="/docs">
+              <span className="text-sm md:text-base">Open documentation</span>
+              <a 
+                href="/docs" 
+                className="text-cyan-500 hover:underline font-mono text-sm"
+              >
                 /docs
-              </Link>
-            </HStack>
+              </a>
+            </div>
 
-            <HStack
-              border="1px solid"
-              borderColor={border}
-              borderRadius="md"
-              justify="space-between"
-              p={4}
+            <div
+              className="flex items-center justify-between p-4 rounded-md border bg-card text-card-foreground shadow-sm"
             >
-              <Text>Project repository</Text>
-              <Link
-                color="cyan.400"
+              <span className="text-sm md:text-base">Project repository</span>
+              <a
                 href="https://github.com/asckaya/TermHub"
                 rel="noopener noreferrer"
                 target="_blank"
+                className="text-cyan-500 hover:underline font-mono text-sm"
               >
                 GitHub
-              </Link>
-            </HStack>
-          </VStack>
-        </VStack>
-      </Container>
-    </Box>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 

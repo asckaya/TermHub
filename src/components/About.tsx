@@ -1,10 +1,10 @@
-import { Badge, Box, Container, Flex, Heading, VStack } from '@chakra-ui/react'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import type { SlotName } from '@/templates/slots'
 
-import { useColorModeValue } from '@/hooks/useColorMode'
+import { Badge } from '@/components/ui/badge'
+import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import { useSlot } from '@/templates/hooks'
 import { DEFAULT_SECTIONS } from '@/templates/slots'
@@ -12,11 +12,17 @@ import { DEFAULT_SECTIONS } from '@/templates/slots'
 function About() {
   const { t } = useTranslation()
   const { experience, institutionLogos, news, research, siteConfig } = useLocalizedData()
+  const { colorMode } = useColorMode()
+  const isDark = colorMode === 'dark'
+
   const researchLogos = institutionLogos
   const universityLogos = institutionLogos
-  const lineColor = useColorModeValue('gray.200', 'gray.700')
-  const newsBadgeBg = useColorModeValue('green.100', 'rgba(154,230,180,0.16)')
-  const newsBadgeColor = useColorModeValue('green.800', 'green.200')
+
+  const tc = {
+    line: isDark ? 'rgb(55, 65, 81)' : 'rgb(229, 231, 235)', // gray-700 : gray-200
+    newsBadgeBg: isDark ? 'rgba(154, 230, 180, 0.16)' : 'rgb(220, 252, 231)', // green-900/16 : green-100
+    newsBadgeColor: isDark ? 'rgb(187, 247, 208)' : 'rgb(22, 101, 52)', // green-200 : green-800
+  }
 
   const cfg = siteConfig as Record<string, unknown>
   const sectionOrder = (cfg.sections as string[] | undefined) ?? DEFAULT_SECTIONS
@@ -63,30 +69,32 @@ function About() {
             key={key}
             research={research.currentResearch}
             researchLogos={researchLogos}
-            title={siteConfig.title}
           />
         )
       case 'journey':
-        return <Journey key={key} />
+        return <Journey filterEducation key={key} />
       case 'mentorship':
         return <Mentorship key={key} />
       case 'newsDisplay':
         return (
-          <Box key={key} w="full">
-            <Container maxW={['full', 'full', '7xl']} px={[2, 4, 8]}>
-              <Flex align="center" gap={3} mb={4}>
-                <Box bg="cyan.400" borderRadius="full" flexShrink={0} h="2px" w="20px" />
-                <Heading fontWeight="semibold" size="md">
+          <div className="w-full" key={key}>
+            <div className="max-w-full lg:max-w-7xl px-2 md:px-4 lg:px-8 mx-auto">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-cyan-400 rounded-full flex-shrink-0 h-0.5 w-5" />
+                <h3 className="text-base md:text-lg font-semibold">
                   {t('about.recentUpdates')}
-                </Heading>
-                <Badge bg={newsBadgeBg} color={newsBadgeColor} fontFamily="mono" fontSize="2xs">
+                </h3>
+                <Badge
+                  className="font-mono text-[10px] border-none"
+                  style={{ backgroundColor: tc.newsBadgeBg, color: tc.newsBadgeColor }}
+                >
                   {t('about.news')}
                 </Badge>
-                <Box bg={lineColor} flex="1" h="1px" />
-              </Flex>
+                <div className="flex-1 h-px" style={{ backgroundColor: tc.line }} />
+              </div>
               <NewsDisplay news={sortedNews} />
-            </Container>
-          </Box>
+            </div>
+          </div>
         )
       case 'selectedPublications':
         return <SelectedPublications key={key} />
@@ -102,11 +110,11 @@ function About() {
   }
 
   return (
-    <Box w="full">
-      <VStack align="stretch" gap={[4, 6, 8]} w="full">
+    <div className="w-full">
+      <div className="flex flex-col gap-4 md:gap-6 lg:gap-8 w-full">
         {sectionOrder.map((sectionId, index) => renderSection(sectionId, index))}
-      </VStack>
-    </Box>
+      </div>
+    </div>
   )
 }
 

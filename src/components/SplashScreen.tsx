@@ -1,13 +1,15 @@
-import { Box, Center, Text, VStack } from '@chakra-ui/react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+
+import { useThemeConfig } from '@/config/theme'
+import { useColorMode } from '@/hooks/useColorMode'
 
 const BOOT_LOGS = [
   '[  0.000000] Initializing Ascka Kernel...',
   '[  0.082431] Checking Hardware: CPU @ 5.0GHz... [ OK ]',
   '[  0.151923] Detecting Memory... 16GB Found [ OK ]',
   '[  0.212891] Loading Ascka Core Subsystems...',
-  '[  0.282182] Initializing React-Chakra-UI layer... [ OK ]',
+  '[  0.282182] Initializing React-Terminal layer... [ OK ]',
   '[  0.352318] Checking I18n Locales... [ zh, en ]',
   '[  0.422932] Mounting Virtual File System... [ OK ]',
   '[  0.498124] Starting Network Stack... [ OK ]',
@@ -17,10 +19,11 @@ const BOOT_LOGS = [
 ]
 
 const ASCII_LOGO = `
-   _   ___  ____ _  __ _   
-  / _\\ / __|/ ___| |/ // _\\ 
- / _ \\\\__ \\ |   | ' // _ \\
-/_/ \\_\\___/\\____|_|\\_\\/_/ \\_\\
+   _      ____     ____   _  __     _    
+  / \\    / ___|   / ___| | |/ /    / \   
+ / _ \\   \\___ \\  | |     | ' /    / _ \\  
+/ ___ \\   ___) | | |___  | . \\   / ___ \\ 
+/_/   \\_\\ |____/   \\____| |_|\\_\\ /_/   \\_\\
 `
 
 interface SplashScreenProps {
@@ -31,6 +34,11 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
   const [currentLogIndex, setCurrentLogIndex] = useState(0)
   const [showLogo, setShowLogo] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
+
+  const { colorMode } = useColorMode()
+  const isDark = colorMode === 'dark'
+  const { terminalPalette } = useThemeConfig()
+  const tc = terminalPalette.colors(isDark)
 
   // Rapid log printing
   useEffect(() => {
@@ -67,33 +75,24 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
           animate={{ opacity: 1 }}
           exit={{ filter: 'blur(20px)', opacity: 0, scale: 1.1 }}
           initial={{ opacity: 1 }}
-          style={{
-            background: '#000',
-            bottom: 0,
-            left: 0,
-            position: 'fixed',
-            right: 0,
-            top: 0,
-            zIndex: 9999,
-          }}
+          className="fixed inset-0 z-[9999] overflow-hidden"
+          style={{ backgroundColor: 'var(--bg-color)', transition: 'background-color 0.3s ease' }}
           transition={{ duration: 0.6, ease: 'easeInOut' }}
         >
-          <Center h="full" p={6}>
-            <VStack align="start" gap={0} maxW="800px" w="full">
+          <div className="flex items-center justify-center h-full p-6">
+            <div className="flex flex-col items-start gap-0 max-w-[800px] w-full">
               {/* Boot Logs */}
-              <VStack align="start" gap={1} mb={6} w="full">
+              <div className="flex flex-col items-start gap-1 mb-6 w-full">
                 {visibleLogs.map((log, i) => (
-                  <Text
-                    color="#00FF00"
-                    fontFamily="mono"
-                    fontSize={['2xs', 'xs', 'sm']}
+                  <div
                     key={i}
-                    opacity={0.9}
+                    className="font-mono text-[10px] md:text-xs lg:text-sm opacity-90"
+                    style={{ color: tc.prompt }}
                   >
                     {log}
-                  </Text>
+                  </div>
                 ))}
-              </VStack>
+              </div>
 
               {/* Logo Reveal */}
               <AnimatePresence>
@@ -103,32 +102,30 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
                     initial={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.5 }}
                   >
-                    <Box
-                      color="cyan.400"
-                      fontFamily="mono"
-                      fontSize={['2xs', 'xs', 'sm']}
-                      lineHeight="1.1"
-                      whiteSpace="pre"
+                    <pre
+                      className="font-mono text-[10px] md:text-xs lg:text-sm leading-[1.1] bg-transparent"
+                      style={{ color: tc.highlight }}
                     >
                       {ASCII_LOGO}
-                    </Box>
-                    <Text color="cyan.200" fontFamily="mono" fontSize="xs" mt={4} opacity={0.8}>
+                    </pre>
+                    <p className="font-mono text-xs mt-4 opacity-80" style={{ color: tc.secondary }}>
                       Welcome to Ascka Personal System v1.0
-                    </Text>
+                    </p>
                   </motion.div>
                 )}
               </AnimatePresence>
-            </VStack>
-          </Center>
+            </div>
+          </div>
 
           {/* CRT Scanline Effect for Splash */}
-          <Box
-            background="linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%)"
-            backgroundSize="100% 4px"
-            inset={0}
-            pointerEvents="none"
-            position="absolute"
-            zIndex={10000}
+          <div
+            className="absolute inset-0 pointer-events-none z-[10000]"
+            style={{
+              background: isDark 
+                ? 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%)'
+                : 'linear-gradient(rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.03) 50%)',
+              backgroundSize: '100% 4px',
+            }}
           />
         </motion.div>
       )}

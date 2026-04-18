@@ -4,7 +4,7 @@ import { ThemeProvider } from 'next-themes'
 
 export function ColorModeProvider({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false}>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
       {children}
     </ThemeProvider>
   )

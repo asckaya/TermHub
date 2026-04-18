@@ -85,6 +85,7 @@ export const NewsItemSchema = z.object({
 
 export const JourneyPhaseSchema = z.object({
   description: z.string(),
+  kind: z.enum(['education', 'work', 'other']).optional(),
   org: z.string(),
   period: z.string(),
   tags: z.array(z.string()).optional(),
@@ -193,7 +194,6 @@ export const PublicationFrontmatterSchema = z.object({
 export const AboutFrontmatterSchema = z.object({
   bio: z.string().default(''),
   journey: z.string().default(''),
-  journeyPhases: z.array(JourneyPhaseSchema).optional(),
   mentorship: z
     .object({
       description: z.string().optional(),
@@ -305,7 +305,6 @@ export const SiteConfigSchema = z.object({
       username: z.string().optional(),
     })
     .optional(),
-  title: z.string().optional(),
 })
 
 export const TalksJsonSchema = z.array(TalkSchema)

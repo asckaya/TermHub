@@ -1,8 +1,7 @@
-import { Box, Container, Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useColorModeValue } from '@/hooks/useColorMode'
+import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 
 import type { Award } from '../types'
@@ -30,77 +29,74 @@ const iconFor = (a: Award): string => {
 }
 
 const kindMeta: Record<string, { color: [string, string]; labelKey: string }> = {
-  competition: { color: ['orange.400', 'orange.300'], labelKey: 'awards.competition' },
-  employment: { color: ['blue.500', 'blue.300'], labelKey: 'awards.employment' },
-  grant: { color: ['yellow.500', 'yellow.300'], labelKey: 'awards.grant' },
-  hackathon: { color: ['purple.500', 'purple.300'], labelKey: 'awards.hackathon' },
-  honor: { color: ['green.500', 'green.300'], labelKey: 'awards.honor' },
-  innovation: { color: ['cyan.500', 'cyan.300'], labelKey: 'awards.innovation' },
-  other: { color: ['gray.400', 'gray.500'], labelKey: 'awards.other' },
-  scholarship: { color: ['purple.500', 'purple.300'], labelKey: 'awards.scholarship' },
-  travel: { color: ['blue.400', 'blue.300'], labelKey: 'awards.travel' },
+  competition: { color: ['rgb(251, 146, 60)', 'rgb(253, 186, 116)'], labelKey: 'awards.competition' }, // orange-400 : orange-300
+  employment: { color: ['rgb(59, 130, 246)', 'rgb(147, 197, 253)'], labelKey: 'awards.employment' }, // blue-500 : blue-300
+  grant: { color: ['rgb(234, 179, 8)', 'rgb(253, 224, 71)'], labelKey: 'awards.grant' }, // yellow-500 : yellow-300
+  hackathon: { color: ['rgb(168, 85, 247)', 'rgb(216, 180, 254)'], labelKey: 'awards.hackathon' }, // purple-500 : purple-300
+  honor: { color: ['rgb(34, 197, 94)', 'rgb(134, 239, 172)'], labelKey: 'awards.honor' }, // green-500 : green-300
+  innovation: { color: ['rgb(6, 182, 212)', 'rgb(103, 232, 249)'], labelKey: 'awards.innovation' }, // cyan-500 : cyan-300
+  other: { color: ['rgb(156, 163, 175)', 'rgb(107, 114, 128)'], labelKey: 'awards.other' }, // gray-400 : gray-500
+  scholarship: { color: ['rgb(168, 85, 247)', 'rgb(216, 180, 254)'], labelKey: 'awards.scholarship' }, // purple-500 : purple-300
+  travel: { color: ['rgb(96, 165, 250)', 'rgb(147, 197, 253)'], labelKey: 'awards.travel' }, // blue-400 : blue-300
 }
 
 const AwardRow = ({ award }: { award: Award }) => {
   const { t } = useTranslation()
-  const borderColor = useColorModeValue('gray.100', 'gray.800')
-  const titleColor = useColorModeValue('gray.800', 'gray.100')
-  const mutedColor = useColorModeValue('gray.400', 'gray.500')
-  const eggTextColor = useColorModeValue('gray.600', 'gray.300')
+  const { colorMode } = useColorMode()
+  const isDark = colorMode === 'dark'
+
+  const tc = {
+    border: isDark ? 'rgb(31, 41, 55)' : 'rgb(243, 244, 246)', // gray-800 : gray-100
+    egg: isDark ? 'rgb(209, 213, 219)' : 'rgb(75, 85, 99)', // gray-300 : gray-600
+    muted: isDark ? 'rgb(107, 114, 128)' : 'rgb(156, 163, 175)', // gray-500 : gray-400
+    title: isDark ? 'rgb(243, 244, 246)' : 'rgb(31, 41, 55)', // gray-100 : gray-800
+  }
+
   const meta = kindMeta[award.kind ?? 'other']
-  const kindColor = useColorModeValue(meta.color[0], meta.color[1])
+  const kindColor = isDark ? meta.color[1] : meta.color[0]
 
   const content = (
-    <Flex
-      _hover={award.egg ? { pl: 1 } : undefined}
-      align="start"
-      borderBottom="1px solid"
-      borderColor={borderColor}
-      cursor={award.egg ? 'pointer' : 'default'}
-      gap={3}
-      py={2.5}
-      transition="all 0.15s"
+    <div
+      className={`flex items-start gap-3 py-2.5 transition-all duration-150 border-b ${award.egg ? 'hover:pl-1 cursor-pointer' : 'cursor-default'}`}
+      style={{ borderColor: tc.border }}
     >
-      <Box flexShrink={0} mt="2px">
-        <DynamicIcon boxSize={3.5} color={kindColor} name={iconFor(award)} />
-      </Box>
-      <Box flex={1} minW={0}>
-        <Text color={titleColor} fontSize="xs" fontWeight="medium" lineHeight="short">
+      <div className="flex-shrink-0 mt-0.5">
+        <DynamicIcon className="h-3.5 w-3.5" name={iconFor(award)} style={{ color: kindColor }} />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-xs font-medium leading-tight" style={{ color: tc.title }}>
           {award.title}
-        </Text>
-        <HStack flexWrap="wrap" gap={2} mt={0.5}>
+        </p>
+        <div className="flex flex-wrap gap-2 mt-0.5">
           {award.org && (
-            <Text color={mutedColor} fontSize="2xs">
+            <p className="text-[10px]" style={{ color: tc.muted }}>
               {award.org}
-            </Text>
+            </p>
           )}
-        </HStack>
-      </Box>
-      <VStack align="end" flexShrink={0} gap={0.5}>
-        <Text color={mutedColor} fontFamily="mono" fontSize="2xs" whiteSpace="nowrap">
+        </div>
+      </div>
+      <div className="flex flex-col items-end flex-shrink-0 gap-0.5">
+        <p className="font-mono text-[10px] whitespace-nowrap" style={{ color: tc.muted }}>
           {award.date}
-        </Text>
-        <Text
-          color={kindColor}
-          fontFamily="mono"
-          fontSize="2xs"
-          letterSpacing="wide"
-          textTransform="uppercase"
+        </p>
+        <p
+          className="font-mono text-[10px] tracking-wide uppercase"
+          style={{ color: kindColor }}
         >
           {t(meta.labelKey)}
-        </Text>
-      </VStack>
-    </Flex>
+        </p>
+      </div>
+    </div>
   )
 
   if (award.egg) {
     return (
-      <VStack align="stretch" gap={1} title={award.egg}>
+      <div className="flex flex-col items-stretch gap-1" title={award.egg}>
         {content}
-        <Text color={eggTextColor} fontSize="xs" pl={8}>
+        <p className="text-xs pl-8" style={{ color: tc.egg }}>
           {award.egg}
-        </Text>
-      </VStack>
+        </p>
+      </div>
     )
   }
 
@@ -110,22 +106,35 @@ const AwardRow = ({ award }: { award: Award }) => {
 const AccomplishmentsTerminal: React.FC = () => {
   const { t } = useTranslation()
   const { awards } = useLocalizedData()
-  const mutedColor = useColorModeValue('gray.500', 'gray.400')
+  const { colorMode } = useColorMode()
+  const isDark = colorMode === 'dark'
+
+  const tc = {
+    line: isDark ? 'rgb(55, 65, 81)' : 'rgb(229, 231, 235)', // gray-700 : gray-200
+    muted: isDark ? 'rgb(156, 163, 175)' : 'rgb(107, 114, 128)', // gray-400 : gray-500
+  }
+
   return (
-    <Container maxW={['full', 'full', '7xl']} px={[2, 4, 8]}>
-      <Heading mb={3} size={['sm', 'md']}>
-        {t('about.awardsAndHonors')}
-      </Heading>
-      <Text color={mutedColor} fontSize="xs" mb={4}>
-        {awards.length} {t('about.awardsSpanning')} {new Set(awards.map((a) => a.kind)).size}{' '}
-        {t('about.categories')}
-      </Text>
-      <VStack align="stretch" gap={0}>
-        {awards.map((a, i) => (
-          <AwardRow award={a} key={i} />
-        ))}
-      </VStack>
-    </Container>
+    <section className="w-full">
+      <div className="max-w-full lg:max-w-7xl px-2 md:px-4 lg:px-8 mx-auto">
+        <div className="flex items-center gap-3 mb-4 w-full">
+          <div className="bg-cyan-400 rounded-full flex-shrink-0 h-0.5 w-5" />
+          <h3 className="text-base md:text-lg font-semibold">
+            {t('about.awardsAndHonors')}
+          </h3>
+          <p className="text-[10px] ml-auto hidden sm:block" style={{ color: tc.muted }}>
+            {awards.length} {t('about.awardsSpanning')} {new Set(awards.map((a) => a.kind)).size}{' '}
+            {t('about.categories')}
+          </p>
+          <div className="flex-1 h-px" style={{ backgroundColor: tc.line }} />
+        </div>
+        <div className="flex flex-col items-stretch">
+          {awards.map((a, i) => (
+            <AwardRow award={a} key={i} />
+          ))}
+        </div>
+      </div>
+    </section>
   )
 }
 

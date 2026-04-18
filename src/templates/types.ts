@@ -1,5 +1,3 @@
-import type { SystemContext } from '@chakra-ui/react/styled-system'
-
 import type { ComponentSlots } from './slots'
 
 /** Props passed to the template's root layout component */
@@ -34,8 +32,6 @@ export interface TemplateConfig {
   pages: TemplatePages
   /** Component slot implementations (navbar, hero, footer, etc.) */
   slots: ComponentSlots
-  /** Chakra UI theme override for this template */
-  theme: SystemContext
 }
 
 /**

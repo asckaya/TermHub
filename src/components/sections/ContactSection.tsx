@@ -1,7 +1,7 @@
-import { Box, Container, Flex, Heading, HStack, Link, Text, VStack } from '@chakra-ui/react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useColorModeValue } from '@/hooks/useColorMode'
+import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 
 import DynamicIcon from '../DynamicIcon'
@@ -9,8 +9,14 @@ import DynamicIcon from '../DynamicIcon'
 const ContactSection: React.FC = () => {
   const { t } = useTranslation()
   const { siteOwner } = useLocalizedData()
-  const textColor = useColorModeValue('gray.600', 'gray.400')
-  const linkColor = useColorModeValue('gray.700', 'gray.200')
+  const { colorMode } = useColorMode()
+  const isDark = colorMode === 'dark'
+
+  const tc = {
+    line: isDark ? 'rgb(55, 65, 81)' : 'rgb(229, 231, 235)', // gray-700 : gray-200
+    link: isDark ? 'rgb(229, 231, 235)' : 'rgb(55, 65, 81)', // gray-200 : gray-700
+    text: isDark ? 'rgb(156, 163, 175)' : 'rgb(75, 85, 99)', // gray-400 : gray-600
+  }
 
   const items = [
     siteOwner.contact.email && {
@@ -50,48 +56,49 @@ const ContactSection: React.FC = () => {
     },
   ].filter(Boolean) as { href?: string; icon: string; label: string; value: string }[]
 
-  const lineBg = useColorModeValue('gray.200', 'gray.700')
   if (items.length === 0) return null
 
   return (
-    <Box w="full">
-      <Container maxW={['full', 'full', '7xl']} px={[2, 4, 8]}>
-        <Flex align="center" gap={3} mb={4}>
-          <Box bg="cyan.400" borderRadius="full" flexShrink={0} h="2px" w="20px" />
-          <Heading fontWeight="semibold" size="md">
+    <section className="w-full">
+      <div className="max-w-full lg:max-w-7xl px-2 md:px-4 lg:px-8 mx-auto">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="bg-cyan-400 rounded-full flex-shrink-0 h-0.5 w-5" />
+          <h3 className="text-base md:text-lg font-semibold">
             {t('about.contact', 'Contact')}
-          </Heading>
-          <Box bg={lineBg} flex="1" h="1px" />
-        </Flex>
-        <VStack align="stretch" gap={2}>
+          </h3>
+          <div className="flex-1 h-px" style={{ backgroundColor: tc.line }} />
+        </div>
+        <div className="flex flex-col gap-2">
           {items.map((item) => (
-            <HStack gap={3} key={item.label}>
-              <DynamicIcon boxSize={3.5} color="cyan.400" name={item.icon} />
-              <Text color={textColor} fontSize="xs" minW="60px">
+            <div className="flex items-center gap-3" key={item.label}>
+              <DynamicIcon
+                className="h-3.5 w-3.5"
+                name={item.icon}
+                style={{ color: 'rgb(34, 211, 238)' }} // cyan-400
+              />
+              <span className="text-xs min-w-[60px]" style={{ color: tc.text }}>
                 {item.label}
-              </Text>
+              </span>
               {item.href ? (
-                <Link
-                  _hover={{ color: 'cyan.400' }}
-                  color={linkColor}
-                  fontFamily="mono"
-                  fontSize="xs"
+                <a
+                  className="font-mono text-xs no-underline transition-colors hover:text-cyan-400"
                   href={item.href}
                   rel="noopener noreferrer"
                   target="_blank"
+                  style={{ color: tc.link }}
                 >
                   {item.value}
-                </Link>
+                </a>
               ) : (
-                <Text color={linkColor} fontFamily="mono" fontSize="xs">
+                <span className="font-mono text-xs" style={{ color: tc.link }}>
                   {item.value}
-                </Text>
+                </span>
               )}
-            </HStack>
+            </div>
           ))}
-        </VStack>
-      </Container>
-    </Box>
+        </div>
+      </div>
+    </section>
   )
 }
 

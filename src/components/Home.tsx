@@ -1,12 +1,10 @@
-import { Box } from '@chakra-ui/react'
-
 import About from './About'
 
 const Home = () => {
   return (
-    <Box>
+    <div className="w-full">
       <About />
-    </Box>
+    </div>
   )
 }
 

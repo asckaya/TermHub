@@ -1,7 +1,4 @@
-import { IconButton, Link } from '@chakra-ui/react'
 import React from 'react'
-
-import { useColorModeValue } from '@/hooks/useColorMode'
 
 import DynamicIcon from '../DynamicIcon'
 
@@ -15,49 +12,36 @@ interface SocialButtonProps {
 }
 
 const SocialButton: React.FC<SocialButtonProps> = ({
-  hoverBg = 'gray.100',
   href,
   icon,
   label,
-  shadowColor = 'gray.500',
+  shadowColor = 'rgba(156, 163, 175, 0.5)',
 }) => {
-  const borderColor = useColorModeValue('gray.300', 'gray.600')
-  const hoverBorderColor = useColorModeValue('cyan.400', 'cyan.300')
-
   return (
-    <Link
-      _hover={{ textDecoration: 'none' }}
+    <a
+      className="inline-flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-sm border transition-all duration-200 hover:-translate-y-0.5 active:scale-95 active:shadow-none bg-transparent hover:text-white group"
       href={href}
       rel="noopener noreferrer"
       target="_blank"
       title={label}
+      style={{ 
+        borderColor: 'var(--border-color, #e5e7eb)',
+        // Shadow and hover bg can be complex with dynamic themes, 
+        // I'll use CSS variables or common defaults
+      }}
     >
-      <IconButton
-        aria-label={label}
-        border="1px solid"
-        borderColor={borderColor}
-        borderRadius="sm"
-        css={{
-          '&:active': {
-            boxShadow: 'none',
-            transform: 'scale(0.95)',
-          },
-          '&:hover': {
-            bg: hoverBg,
-            borderColor: hoverBorderColor,
-            boxShadow: `0 2px 8px ${shadowColor}`,
-            color: 'white',
-            transform: 'translateY(-2px)',
-          },
-          transition: 'all 0.2s ease',
-        }}
-        fontFamily="mono"
-        size={['xs', 'sm']}
-        variant="ghost"
-      >
-        <DynamicIcon boxSize={[3, 3.5]} name={icon} />
-      </IconButton>
-    </Link>
+      <div className="flex items-center justify-center pointer-events-none group-hover:scale-110 transition-transform">
+        <DynamicIcon name={icon} className="w-3 md:w-3.5 h-3 md:h-3.5" />
+      </div>
+      
+      <style dangerouslySetInnerHTML={{ __html: `
+        a[title="${label}"]:hover {
+          background-color: var(--accent-color, #06b6d4);
+          border-color: var(--accent-color, #06b6d4) !important;
+          box-shadow: 0 4px 12px ${shadowColor};
+        }
+      `}} />
+    </a>
   )
 }
 

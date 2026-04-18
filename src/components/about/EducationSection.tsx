@@ -1,7 +1,4 @@
-import { Box, Heading, HStack, Image, SimpleGrid, Text, VStack } from '@chakra-ui/react'
-import React from 'react'
 
-import { useColorModeValue } from '@/hooks/useColorMode'
 
 interface Course {
   course: string
@@ -15,69 +12,47 @@ interface EducationSectionProps {
 }
 
 const EducationSection: React.FC<EducationSectionProps> = ({ courses, logos = {} }) => {
-  const textColor = useColorModeValue('gray.600', 'gray.400')
-  const bg = useColorModeValue('white', 'gray.800')
-  const accentBg = useColorModeValue('blue.50', 'blue.900')
-
   return (
-    <SimpleGrid columns={[1, 1, 2]} gap={[3, 3, 4]} w="full">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 w-full">
       {courses.map((course, index) => {
         const logo = logos[course.institution]
         return (
-          <Box
-            _hover={{ shadow: 'md', transform: 'translateY(-2px)' }}
-            bg={bg}
-            borderRadius="lg"
+          <div
             key={index}
-            p={[3, 4]}
-            shadow="sm"
-            transition="all 0.2s"
+            className="p-3 md:p-4 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 border bg-card text-card-foreground"
           >
-            <HStack align="start" gap={3}>
+            <div className="flex items-start gap-3">
               {logo ? (
-                <Image
+                <img
                   alt={course.institution}
-                  borderRadius="md"
-                  flexShrink={0}
-                  h={['36px', '44px']}
-                  mt={0.5}
-                  objectFit="contain"
+                  className="w-9 md:w-11 h-9 md:h-11 rounded-md flex-shrink-0 mt-0.5 object-contain"
                   src={logo}
-                  w={['36px', '44px']}
                 />
               ) : (
-                <Box
-                  alignItems="center"
-                  bg={accentBg}
-                  borderRadius="md"
-                  display="flex"
-                  flexShrink={0}
-                  h={['36px', '44px']}
-                  justifyContent="center"
-                  mt={0.5}
-                  w={['36px', '44px']}
+                <div
+                  className="w-9 md:w-11 h-9 md:h-11 rounded-md flex-shrink-0 mt-0.5 flex items-center justify-center bg-blue-50 dark:bg-blue-900/30"
                 >
-                  <Text color="blue.500" fontSize={['md', 'lg']} fontWeight="bold">
+                  <span className="text-blue-500 text-lg md:text-xl font-bold">
                     {course.institution.charAt(0)}
-                  </Text>
-                </Box>
+                  </span>
+                </div>
               )}
-              <VStack align="start" flex={1} gap={1}>
-                <Text color="blue.500" fontSize={['2xs', 'xs', 'sm']} fontWeight="medium">
+              <div className="flex flex-col gap-1 flex-1 min-w-0">
+                <span className="text-blue-500 text-[10px] md:text-xs font-medium">
                   {course.year}
-                </Text>
-                <Heading lineHeight="short" size={['xs', 'sm']}>
+                </span>
+                <h4 className="text-xs md:text-sm font-bold leading-short">
                   {course.course}
-                </Heading>
-                <Text color={textColor} fontSize={['2xs', 'xs', 'sm']}>
+                </h4>
+                <p className="text-[10px] md:text-xs opacity-70">
                   {course.institution}
-                </Text>
-              </VStack>
-            </HStack>
-          </Box>
+                </p>
+              </div>
+            </div>
+          </div>
         )
       })}
-    </SimpleGrid>
+    </div>
   )
 }
 

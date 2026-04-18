@@ -17,7 +17,6 @@ import SelectedPublicationsSection from '../../components/sections/SelectedPubli
 import SkillsSection from '../../components/sections/SkillsSection'
 import TalksSection from '../../components/sections/TalksSection'
 import TeachingSection from '../../components/sections/TeachingSection'
-import theme from '../../theme'
 
 // ── Pages — lazily loaded, each becomes its own JS chunk ────────────────────
 // Vite splits these at the dynamic import() boundary, so the visitor only
@@ -57,7 +56,6 @@ const terminalTemplate: TemplateConfig = {
     talks: TalksSection,
     teaching: TeachingSection,
   },
-  theme,
 }
 
 export default terminalTemplate

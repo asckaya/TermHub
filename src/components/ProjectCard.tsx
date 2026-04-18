@@ -1,50 +1,19 @@
-import {
-  Badge,
-  Box,
-  Button,
-  Collapsible,
-  Heading,
-  HStack,
-  Link,
-  Text,
-  useDisclosure,
-  VStack,
-} from '@chakra-ui/react'
+import React, { useState } from 'react'
 
-import { useColorModeValue } from '@/hooks/useColorMode'
+import { Badge } from '@/components/ui/badge'
+import {
+  Collapsible,
+  CollapsibleContent,
+} from '@/components/ui/collapsible'
 
 import type { ProjectItem } from '../types'
-
-const categoryColors: Record<ProjectItem['category'], string> = {
-  data: 'green',
-  healthcare: 'red',
-  nlp: 'pink',
-  robotics: 'purple',
-  tooling: 'cyan',
-  'web-app': 'orange',
-}
-
-const linkColor = (label: string) => {
-  const lower = label.toLowerCase()
-  if (lower.includes('code') || lower.includes('github')) return 'green'
-  if (lower.includes('project')) return 'cyan'
-  if (lower.includes('demo')) return 'orange'
-  if (lower.includes('article') || lower.includes('tutorial') || lower.includes('write'))
-    return 'purple'
-  if (lower.includes('dataset')) return 'teal'
-  return 'blue'
-}
 
 interface ProjectCardProps {
   project: ProjectItem
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
-  const { onToggle, open: isOpen } = useDisclosure()
-  const cardBg = useColorModeValue('white', 'gray.800')
-  const chipBg = useColorModeValue('gray.50', 'gray.900')
-  const textColor = useColorModeValue('gray.600', 'gray.400')
-  const highlightBorderColor = useColorModeValue('blue.400', 'blue.600')
+  const [isOpen, setIsOpen] = useState(false)
 
   const { category, date, extraLinks, highlights, link, summary, tags, title } = project
 
@@ -59,86 +28,81 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   }
 
   return (
-    <Box
-      _hover={{ shadow: 'lg' }}
-      bg={cardBg}
-      borderRadius="lg"
-      p={[4, 5, 6]}
-      shadow="md"
-      transition="box-shadow 0.2s ease"
-    >
-      <VStack align="start" gap={[3, 4]} w="full">
-        <HStack flexWrap="wrap" gap={2}>
-          <Badge colorPalette={categoryColors[category]} fontSize="xs">
-            {category.replace('_', ' ').toUpperCase()}
+    <div className="p-4 md:p-5 lg:p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 border bg-card text-card-foreground">
+      <div className="flex flex-col gap-3 md:gap-4 items-start w-full">
+        <div className="flex flex-wrap gap-2">
+          <Badge variant="outline" className="text-[10px] uppercase font-bold tracking-wider">
+            {category.replace('_', ' ')}
           </Badge>
           {date && (
-            <Badge colorPalette="gray" fontSize="xs">
+            <Badge variant="secondary" className="text-[10px]">
               {date}
             </Badge>
           )}
-        </HStack>
+        </div>
 
-        <Heading lineHeight="tall" size={['sm', 'md']}>
+        <h3 className="text-lg md:text-xl font-bold leading-tight">
           {title}
-        </Heading>
+        </h3>
 
-        <Text color={textColor} fontSize={['sm', 'md']}>
+        <p className="text-sm md:text-base opacity-70 leading-relaxed">
           {summary}
-        </Text>
+        </p>
 
         {tags.length > 0 && (
-          <HStack flexWrap="wrap" gap={2}>
+          <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
-              <Badge colorPalette="blue" fontSize="xs" key={tag} variant="subtle">
+              <Badge key={tag} variant="secondary" className="text-[10px] opacity-80">
                 {tag}
               </Badge>
             ))}
-          </HStack>
+          </div>
         )}
 
         {primaryLinks.length > 0 && (
-          <HStack flexWrap="wrap" gap={2}>
+          <div className="flex flex-wrap gap-2">
             {primaryLinks.map(({ label, url }) => (
-              <Link href={url} key={`${label}-${url}`} rel="noopener noreferrer" target="_blank">
-                <Button colorPalette={linkColor(label)} size="xs" variant="solid">
-                  {label} →
-                </Button>
-              </Link>
+              <a
+                key={`${label}-${url}`}
+                href={url}
+                rel="noopener noreferrer"
+                target="_blank"
+                className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-primary text-primary-foreground hover:opacity-90 transition-opacity no-underline"
+              >
+                {label} →
+              </a>
             ))}
-          </HStack>
+          </div>
         )}
 
         {highlights && highlights.length > 0 && (
           <>
-            <Button colorPalette="gray" onClick={onToggle} size="xs" variant="outline">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-xs font-bold px-2.5 py-1 rounded-md border bg-muted hover:bg-muted/80 transition-colors cursor-pointer"
+            >
               {isOpen ? 'Hide Highlights' : 'Show Highlights'}
-            </Button>
-            <Collapsible.Root open={isOpen}>
-              <Collapsible.Content>
-                <Box
-                  bg={chipBg}
-                  borderLeft="4px solid"
-                  borderLeftColor={highlightBorderColor}
-                  borderRadius="md"
-                  mt={2}
-                  p={4}
-                  w="full"
+            </button>
+            <Collapsible open={isOpen}>
+              <CollapsibleContent>
+                <div
+                  className="mt-2 p-4 rounded-md border-l-4 bg-muted/50 w-full"
+                  style={{ borderLeftColor: 'var(--accent-color, #3b82f6)' }}
                 >
-                  <VStack align="start" as="ul" color={textColor} fontSize="sm" gap={2} pl={2}>
+                  <ul className="text-sm space-y-2 pl-2 opacity-80 list-disc list-inside">
                     {highlights.map((item, idx) => (
-                      <Box as="li" key={idx}>
+                      <li key={idx} className="leading-relaxed">
                         {item}
-                      </Box>
+                      </li>
                     ))}
-                  </VStack>
-                </Box>
-              </Collapsible.Content>
-            </Collapsible.Root>
+                  </ul>
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
           </>
         )}
-      </VStack>
-    </Box>
+      </div>
+    </div>
   )
 }
 
