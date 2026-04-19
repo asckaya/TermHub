@@ -55,8 +55,15 @@ export function getLocalizedSiteOwner(lang: string) {
   const contact = cfg.contact ?? {}
   const social = cfg.social ?? {}
   const terminal = cfg.terminal ?? {}
+  const branding = cfg.branding ?? {}
 
   return {
+    branding: {
+      authorLink: branding.authorLink ?? 'https://github.com/asckaya',
+      authorName: branding.authorName ?? 'Ascka',
+      repoUrl: branding.repoUrl ?? 'https://github.com/asckaya/Echo',
+      siteName: branding.siteName ?? 'Echo',
+    },
     contact: {
       academicEmail: contact.academicEmail,
       email: contact.email,
@@ -75,6 +82,8 @@ export function getLocalizedSiteOwner(lang: string) {
     rotatingSubtitles: terminal.rotatingSubtitles ?? [],
     skills: terminal.skills ?? [],
     social: social,
+    terminalHostname: terminal.hostname ?? 'hello',
+    terminalPrompt: terminal.prompt ?? '$',
     terminalUsername: terminal.username ?? 'guest',
     timezone: terminal.timezone ?? 'UTC',
   }

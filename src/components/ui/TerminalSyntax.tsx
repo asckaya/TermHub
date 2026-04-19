@@ -2,6 +2,7 @@ import React, { memo } from 'react'
 
 import { useThemeConfig } from '@/config/theme'
 import { useColorMode } from '@/hooks/useColorMode'
+import { useLocalizedData } from '@/hooks/useLocalizedData'
 import { cn } from '@/lib/utils'
 
 /**
@@ -176,10 +177,13 @@ export interface TerminalInputProps extends React.InputHTMLAttributes<HTMLInputE
 }
 
 export const TerminalInput = memo<TerminalInputProps>(
-  ({ className, prompt = '$', promptClassName, ...props }) => {
+  ({ className, prompt, promptClassName, ...props }) => {
+    const { siteOwner } = useLocalizedData()
+    const activePrompt = prompt ?? siteOwner.terminalPrompt
+
     return (
       <div className={cn('flex items-center w-full font-mono text-xs', className)}>
-        <span className={cn('mr-2 flex-shrink-0 opacity-70', promptClassName)}>{prompt}</span>
+        <span className={cn('mr-2 flex-shrink-0 opacity-70', promptClassName)}>{activePrompt}</span>
         <input
           className="flex-1 bg-transparent border-none outline-none focus:ring-0 p-0 text-xs font-mono placeholder:opacity-40"
           {...props}

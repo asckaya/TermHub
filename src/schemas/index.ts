@@ -269,6 +269,14 @@ export const ResearchSchema = z.object({
 
 export const SiteConfigSchema = z.object({
   avatar: z.string().optional(),
+  branding: z
+    .object({
+      authorLink: z.string().optional(),
+      authorName: z.string().optional(),
+      repoUrl: z.string().optional(),
+      siteName: z.string().optional(),
+    })
+    .optional(),
   contact: z
     .object({
       academicEmail: z.email().optional(),
@@ -312,6 +320,8 @@ export const SiteConfigSchema = z.object({
   tagline: z.string().optional(),
   terminal: z
     .object({
+      hostname: z.string().optional(),
+      prompt: z.string().optional(),
       rotatingSubtitles: z.array(z.string()).optional(),
       skills: z.array(z.string()).optional(),
       timezone: z.string().optional(),

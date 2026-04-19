@@ -368,7 +368,6 @@ function makeCatppuccinoTheme(
     },
   }
 
-
   return {
     articleCategoryColors,
     categoryThemes,

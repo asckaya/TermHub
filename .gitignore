@@ -27,7 +27,20 @@ dist-ssr
 
 
 # cf
-.wrangler/
+.wrangler
+.claude
+.agents
+.tanstack
 
 # Local MCP configs (contains private absolute paths)
 mcp-server/mcp-config.json
+
+# Temporary files
+scratch/
+dist/
+
+# lock files
+*.lock
+*-lock.yaml
+*-lock.json
+!package-lock.json

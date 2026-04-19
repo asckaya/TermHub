@@ -1,12 +1,12 @@
 {
-  "name": "termhub-mcp-server",
+  "name": "echo-mcp-server",
   "version": "1.0.0",
   "packageManager": "pnpm@10.33.0",
-  "description": "MCP server for TermHub - AI-powered academic portfolio management",
+  "description": "MCP server for Echo - The shell's reflection (Academic Portfolio)",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "termhub-mcp": "dist/index.js"
+    "echo-mcp": "dist/index.js"
   },
   "scripts": {
     "build": "tsc",

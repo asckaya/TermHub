@@ -53,20 +53,20 @@ const Footer: React.FC = () => {
           </div>
 
           <div
-            className="flex flex-wrap items-center justify-center gap-1 text-xs md:text-sm"
+            className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs md:text-sm"
             style={{ color: tc.text }}
           >
-            <p>{t('footer.poweredBy')}</p>
+            <span>{t('footer.poweredBy')}</span>
             <a
               className="font-medium text-cyan-500 hover:underline no-underline"
-              href="https://github.com/H-Freax/TermHub"
+              href={siteOwner.branding.repoUrl}
               rel="noopener noreferrer"
               target="_blank"
             >
-              TermHub
+              {siteOwner.branding.siteName}
             </a>
-            <p>{t('footer.forkedBy', 'forked by')}</p>
-            <p className="font-bold">Ascka</p>
+            <span>{t('footer.by', 'by')}</span>
+            <span className="font-bold">{siteOwner.branding.authorName}</span>
           </div>
 
           <p className="text-[10px] md:text-xs" style={{ color: tc.text }}>

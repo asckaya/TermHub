@@ -675,7 +675,15 @@ Public License instead of this License.  But first, please read
 
 ---
 
+Echo - A Terminal-Aesthetic Portfolio System
+Copyright (C) 2026 Ascka <rensheng0410@outlook.com>
+
+This project is a derivative work based on the original "TermHub" project.
+It is licensed under the GNU General Public License v3.0.
+
 Modernized Maintenance & Refactoring (2026):
-Maintained and upgraded by asckaya <rensheng0410@outlook.com>
-Framework modernization to React 19, Vite 8, TS 6, and Chakra UI v3.
-Responsive and Localization architecture overhaul.
+- Maintained and upgraded by asckaya <rensheng0410@outlook.com>
+- Framework: React 19, Vite 8, TypeScript 6
+- UI: Shadcn UI (Radix-based) + Tailwind CSS v4
+- Features: Full Responsive Layout, Paraglide-based Localization
+

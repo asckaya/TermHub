@@ -66,8 +66,8 @@ const Navbar: React.FC = () => {
             <MotionHover>
               <Link className="flex items-center" onClick={onClose} to="/">
                 <img
-                  alt="TermHub"
-                  className="h-6 w-6 md:h-7 md:w-7 transition-opacity hover:opacity-80"
+                  alt={siteOwner.branding.siteName}
+                  className="h-8 w-8 md:h-10 md:w-10 transition-opacity hover:opacity-80"
                   src={`${import.meta.env.BASE_URL}logo-icon.svg`}
                 />
               </Link>

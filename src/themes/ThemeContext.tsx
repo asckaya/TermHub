@@ -10,7 +10,7 @@ export { ThemeContext }
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [themeKey, setThemeKey] = useState<ThemeKey>(() => {
     if (typeof window === 'undefined') return 'catppuccin-mocha'
-    const saved = localStorage.getItem('termhub-theme')
+    const saved = localStorage.getItem('echo-theme')
     if (saved && saved in themes) return saved as ThemeKey
     return 'catppuccin-mocha'
   })
@@ -18,13 +18,13 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const handleSetTheme = (key: ThemeKey) => {
     if (!('startViewTransition' in document)) {
       setThemeKey(key)
-      localStorage.setItem('termhub-theme', key)
+      localStorage.setItem('echo-theme', key)
       return
     }
 
     document.startViewTransition(() => {
       setThemeKey(key)
-      localStorage.setItem('termhub-theme', key)
+      localStorage.setItem('echo-theme', key)
     })
   }
 

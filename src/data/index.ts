@@ -60,7 +60,7 @@ function parseContent<T>(schema: z.ZodType<T>, data: unknown, label: string): T 
   const result = schema.safeParse(data)
   if (!result.success) {
     throw new Error(
-      `[TermHub] Content validation failed — ${label}:\n${JSON.stringify(result.error.issues, null, 2)}`,
+      `[Echo] Content validation failed — ${label}:\n${JSON.stringify(result.error.issues, null, 2)}`,
     )
   }
   return result.data

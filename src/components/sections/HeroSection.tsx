@@ -101,7 +101,7 @@ const HeroSection = memo(
                 </StatusGroup>
               </>
             }
-            title={`${siteOwner.terminalUsername} — zsh — 80x24`}
+            title={`${siteOwner.terminalUsername}@${siteOwner.terminalHostname} — zsh — 80x24`}
           >
             <div className="flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12">
               <div className="flex flex-col items-center lg:items-start flex-1 gap-4 w-full">

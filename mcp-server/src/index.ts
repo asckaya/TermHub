@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// TermHub MCP Server
+// Echo MCP Server
 // AI-powered academic portfolio management via Model Context Protocol
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
@@ -13,7 +13,7 @@ import yaml from 'js-yaml'
 
 // ── Config ──────────────────────────────────────────────────────────
 
-const PROJECT_ROOT = process.env.TERMHUB_ROOT || path.resolve(process.cwd(), '..')
+const PROJECT_ROOT = process.env.ECHO_ROOT || path.resolve(process.cwd(), '..')
 const CONTENT_DIR = path.join(PROJECT_ROOT, 'content')
 const PUBLIC_DIR = path.join(PROJECT_ROOT, 'public')
 const TYPES_FILE = path.join(PROJECT_ROOT, 'src', 'types', 'index.ts')
@@ -138,7 +138,7 @@ const PublicationStatusEnum = z.enum(['accepted', 'published', 'preprint'])
 // ── MCP Server ──────────────────────────────────────────────────────
 
 const server = new McpServer({
-  name: 'termhub',
+  name: 'echo',
   version: '1.1.0',
 })
 
@@ -146,9 +146,9 @@ const server = new McpServer({
 
 server.tool(
   'get_schema',
-  'Get TermHub TypeScript type definitions and content file schemas. ' +
+  'Get Echo TypeScript type definitions and content file schemas. ' +
     'Call this first to understand the data structures before creating content. ' +
-    'TermHub supports bilingual content (en/zh). English goes to content/, Chinese goes to content/zh/.',
+    'Echo supports bilingual content (en/zh). English goes to content/, Chinese goes to content/zh/.',
   {},
   async () => {
     let typesContent = ''
@@ -164,10 +164,10 @@ server.tool(
       content: [
         {
           type: 'text' as const,
-          text: `# TermHub Data Schema
+          text: `# Echo Data Schema
 
 ## Bilingual Support (i18n)
-TermHub supports English and Chinese content side by side:
+Echo supports English and Chinese content side by side:
 - **English (default):** \`content/\` — site.json, about.md, publications/, projects/, etc.
 - **Chinese:** \`content/zh/\` — zh/site.json, zh/about.md, zh/publications/, zh/projects/, etc.
 
@@ -213,7 +213,7 @@ content/
 \`\`\`
 
 ## Template System
-TermHub supports multiple visual templates. Set \`"template"\` in site.json to switch.
+Echo supports multiple visual templates. Set \`"template"\` in site.json to switch.
 Available templates: "terminal" (default — Nord-inspired terminal aesthetic).
 New templates can be added in \`src/templates/<name>/index.ts\`.
 
@@ -277,7 +277,7 @@ Project description paragraph.
 
 server.tool(
   'list_content',
-  'List all content files in the TermHub content directory. ' +
+  'List all content files in the Echo content directory. ' +
     'Use language parameter to list English or Chinese content files.',
   {
     language: LanguageEnum,
@@ -300,7 +300,7 @@ server.tool(
 
 server.tool(
   'read_content',
-  'Read a content file from TermHub. For JSON files, returns parsed JSON. ' +
+  'Read a content file from Echo. For JSON files, returns parsed JSON. ' +
     'For Markdown files, returns frontmatter + body separately. ' +
     'Use language parameter to read English or Chinese content.',
   {
@@ -451,7 +451,7 @@ server.tool(
 
 server.tool(
   'delete_content',
-  "Delete a content file from TermHub. Use language='zh' for Chinese content.",
+  "Delete a content file from Echo. Use language='zh' for Chinese content.",
   {
     file_path: z
       .string()
@@ -1025,8 +1025,8 @@ server.tool(
 server.tool(
   'generate_from_resume',
   'All-in-one tool: Takes resume/CV text content and generates a structured extraction ' +
-    'with instructions for populating all TermHub content files. Returns a JSON blueprint ' +
-    'that maps resume sections to TermHub tools. The AI should then call individual tools ' +
+    'with instructions for populating all Echo content files. Returns a JSON blueprint ' +
+    'that maps resume sections to Echo tools. The AI should then call individual tools ' +
     'to actually write the files. Supports generating both English and Chinese content.',
   {
     resume_text: z.string().describe('Plain text content of the resume/CV'),
@@ -1057,7 +1057,7 @@ server.tool(
     const blueprint = {
       instructions:
         'Below is a structured blueprint extracted from the resume. ' +
-        'Use the individual TermHub MCP tools (update_site_config, add_publication, ' +
+        'Use the individual Echo MCP tools (update_site_config, add_publication, ' +
         'add_project, add_experience, add_education, write_markdown_content, etc.) ' +
         "to populate each section. All tools accept a 'language' parameter. " +
         (params.languages.includes('zh')
@@ -1281,7 +1281,7 @@ server.tool(
 
 server.tool(
   'preview_site',
-  'Build or start the TermHub dev server for preview',
+  'Build or start the Echo dev server for preview',
   {
     action: z
       .enum(['dev', 'build', 'stop'])
@@ -1375,7 +1375,7 @@ server.tool(
 
 server.tool(
   'list_templates',
-  'List all available TermHub visual templates and component slot variants. ' +
+  'List all available Echo visual templates and component slot variants. ' +
     'Each template provides a different layout and theme. ' +
     "Individual sections (navbar, hero, footer, etc.) can be overridden via the 'components' field in site.json.",
   {},
@@ -1456,7 +1456,7 @@ server.tool(
 
 server.tool(
   'get_site_status',
-  "Get an overview of the current TermHub portfolio content — what's configured, " +
+  "Get an overview of the current Echo portfolio content — what's configured, " +
     "how many publications/projects/etc exist, and what's missing. " +
     'Shows counts for both English and Chinese content.',
   {},
@@ -1680,17 +1680,17 @@ server.tool(
 
 // ── Resources ───────────────────────────────────────────────────────
 
-server.resource('site-config', 'termhub://config/site', async () => {
+server.resource('site-config', 'echo://config/site', async () => {
   const siteJsonPath = path.join(CONTENT_DIR, 'site.json')
   if (!fs.existsSync(siteJsonPath)) {
     return {
-      contents: [{ uri: 'termhub://config/site', text: '{}', mimeType: 'application/json' }],
+      contents: [{ uri: 'echo://config/site', text: '{}', mimeType: 'application/json' }],
     }
   }
   return {
     contents: [
       {
-        uri: 'termhub://config/site',
+        uri: 'echo://config/site',
         text: fs.readFileSync(siteJsonPath, 'utf-8'),
         mimeType: 'application/json',
       },
@@ -1698,12 +1698,12 @@ server.resource('site-config', 'termhub://config/site', async () => {
   }
 })
 
-server.resource('schema', 'termhub://schema/types', async () => {
+server.resource('schema', 'echo://schema/types', async () => {
   const content = fs.existsSync(TYPES_FILE) ? fs.readFileSync(TYPES_FILE, 'utf-8') : ''
   return {
     contents: [
       {
-        uri: 'termhub://schema/types',
+        uri: 'echo://schema/types',
         text: content,
         mimeType: 'text/typescript',
       },
@@ -1716,7 +1716,7 @@ server.resource('schema', 'termhub://schema/types', async () => {
 async function main() {
   const transport = new StdioServerTransport()
   await server.connect(transport)
-  console.error('TermHub MCP Server running on stdio')
+  console.error('Echo MCP Server running on stdio')
 }
 
 main().catch((error) => {

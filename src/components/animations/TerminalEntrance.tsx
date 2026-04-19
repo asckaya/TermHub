@@ -1,6 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
 
+import { useLocalizedData } from '@/hooks/useLocalizedData'
+
 interface TerminalEntranceProps {
   children: React.ReactNode
   delay?: number
@@ -8,6 +10,7 @@ interface TerminalEntranceProps {
 }
 
 export const TerminalEntrance: React.FC<TerminalEntranceProps> = ({ children, path = '~' }) => {
+  const { siteOwner } = useLocalizedData()
   const [phase, setPhase] = useState<'command' | 'content' | 'loading'>('command')
   const [commandText, setCommandText] = useState('')
   const fullCommand = `cat ${path}/index.md`
@@ -43,10 +46,14 @@ export const TerminalEntrance: React.FC<TerminalEntranceProps> = ({ children, pa
             initial={{ opacity: 0 }}
             key="command"
           >
-            <span className="text-[var(--prompt-color)] font-bold">ascka@hello</span>
+            <span className="text-[var(--prompt-color)] font-bold">
+              {siteOwner.terminalUsername}@{siteOwner.terminalHostname}
+            </span>
             <span className="text-[var(--border-color)] mx-1">:</span>
             <span className="text-[var(--accent-color)]">{path}</span>
-            <span className="text-[var(--text-color)] ml-1">$ {commandText}</span>
+            <span className="text-[var(--text-color)] ml-1">
+              {siteOwner.terminalPrompt} {commandText}
+            </span>
             <motion.span
               animate={{ opacity: [0, 1] }}
               className="inline-block w-2 h-4 bg-[var(--text-color)] ml-1 align-middle"

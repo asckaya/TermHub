@@ -3,6 +3,7 @@ import React from 'react'
 import { MotionHover } from '@/components/animations/MotionList'
 import DynamicIcon from '@/components/ui/DynamicIcon'
 import { TerminalShell } from '@/components/ui/TerminalShell'
+import { TerminalStatusBar } from '@/components/ui/TerminalStatusBar'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import { useT } from '@/hooks/useT'
@@ -33,7 +34,11 @@ export const ProfileSidebar: React.FC = () => {
   const getIcon = (s: SkillItem) => (typeof s === 'string' ? undefined : s.icon)
 
   return (
-    <TerminalShell bodyClassName="flex flex-col p-0" title="whoami">
+    <TerminalShell
+      bodyClassName="flex flex-col p-0"
+      statusBar={<TerminalStatusBar compact />}
+      title="whoami"
+    >
       <div className="flex flex-col">
         {/* Avatar + Name */}
         <div className="flex flex-col items-center gap-3 pb-4 pt-6 px-5">

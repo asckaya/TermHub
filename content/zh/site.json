@@ -1,5 +1,11 @@
 {
   "_comment": "中文版站点配置",
+  "branding": {
+    "siteName": "Echo",
+    "repoUrl": "https://github.com/asckaya/Echo",
+    "authorName": "Ascka",
+    "authorLink": "https://github.com/asckaya"
+  },
 
   "name": {
     "full": "任笙",
@@ -14,7 +20,9 @@
   "avatar": "avatar.jpeg",
 
   "terminal": {
-    "username": "Ascka",
+    "username": "ascka",
+    "hostname": "hello",
+    "prompt": "$",
     "rotatingSubtitles": ["想做Linux极客", "和LLM玩耍", "学习新东西", "努力成为更好的自己"],
     "skills": ["Python", "Transformers", "VeRL", "Agent", "Rust", "Linux", "Flutter"],
     "timezone": "Asia/Shanghai"

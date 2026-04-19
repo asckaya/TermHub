@@ -9,7 +9,7 @@ import {
   User,
   X,
 } from 'lucide-react'
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { FaGithub, FaYoutube } from 'react-icons/fa'
 import { SiCsdn, SiMedium, SiZhihu } from 'react-icons/si'
 
@@ -320,7 +320,6 @@ const FlowNode: React.FC<{
 }
 
 const Projects: React.FC = () => {
-  'use no memo'
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
   const { t } = useT()
@@ -334,7 +333,7 @@ const Projects: React.FC = () => {
   const tc = terminalPalette.colors(isDark)
   const hlc = { kw: tc.command, num: tc.highlight, str: tc.success }
 
-  const parentRef = useRef<HTMLDivElement>(null)
+  const [scrollElement, setScrollElement] = useState<HTMLDivElement | null>(null)
 
   const themes = useMemo(() => {
     const base = buildCategoryThemes(isDark)
@@ -456,7 +455,7 @@ const Projects: React.FC = () => {
   const virtualizer = useVirtualizer({
     count: virtualItems.length,
     estimateSize: (index) => (virtualItems[index].type === 'header' ? 32 : 220),
-    getScrollElement: () => parentRef.current,
+    getScrollElement: () => scrollElement,
     overscan: 5,
     useFlushSync: false,
   })
@@ -592,13 +591,15 @@ const Projects: React.FC = () => {
             {/* Projects Content Area */}
             <div
               className="overflow-y-auto max-h-[75vh] scrollbar-thin scrollbar-thumb-gray-500/50"
-              ref={parentRef}
+              ref={setScrollElement}
               style={{ backgroundColor: tc.bg, color: tc.text }}
             >
               <div className="px-3 md:px-4 lg:px-5 py-4">
                 <div
+                  key={`${activeTab}-${filtered.length.toString()}`}
                   style={{
                     height: `${virtualizer.getTotalSize().toString()}px`,
+                    minHeight: filtered.length > 0 ? '400px' : '0px',
                     position: 'relative',
                     width: '100%',
                   }}

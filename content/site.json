@@ -1,5 +1,11 @@
 {
   "_comment": "Your basic info. Edit the values below, then run: pnpm dev",
+  "branding": {
+    "siteName": "Echo",
+    "repoUrl": "https://github.com/asckaya/Echo",
+    "authorName": "Ascka",
+    "authorLink": "https://github.com/asckaya"
+  },
   "name": {
     "full": "Sheng Ren",
     "first": "Sheng",
@@ -11,7 +17,9 @@
   "tagline": "LLM & Multi-Agent Research | Linux Enthusiast",
   "avatar": "avatar.jpeg",
   "terminal": {
-    "username": "Ascka",
+    "username": "ascka",
+    "hostname": "hello",
+    "prompt": "$",
     "rotatingSubtitles": [
       "want to be a Linux Geeker",
       "play with LLMs",
