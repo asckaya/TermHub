@@ -1,10 +1,9 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
+import DynamicIcon from '@/components/ui/DynamicIcon'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
-
-import DynamicIcon from '../DynamicIcon'
 
 const typeLabels: Record<string, { color: string; icon: string }> = {
   invited: { color: 'rgb(192, 132, 252)', icon: 'FaUserTie' }, // purple-400

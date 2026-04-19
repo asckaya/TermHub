@@ -36,6 +36,12 @@
     "awardsSpanning": "awards spanning",
     "categories": "categories"
   },
+  "home": {
+    "recentUpdates": "Recent Updates",
+    "news": "News",
+    "awardsAndHonors": "Awards & Honors",
+    "awards": "log"
+  },
   "hero": {
     "greeting": "Hi there, I'm ",
     "sometimesI": "Sometimes I"

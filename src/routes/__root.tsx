@@ -1,7 +1,7 @@
 import { createRootRoute } from '@tanstack/react-router'
 
-import { RootLayout } from '../components/RootLayout'
-import '../styles/globals.css'
+import { RootLayout } from '@/components/layout/RootLayout'
+
 import '../i18n'
 
 export const Route = createRootRoute({

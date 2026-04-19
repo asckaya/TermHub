@@ -1,4 +1,4 @@
-import { resolve, relative, dirname } from 'path'
+import { resolve, dirname } from 'path'
 import { existsSync, readdirSync, statSync, copyFileSync, mkdirSync } from 'fs'
 import type { Plugin } from 'vite'
 

@@ -20,7 +20,7 @@ import type {
   TalkSchema,
   TeachingEntrySchema,
   VenueTypeSchema,
-} from '../schemas'
+} from '@/schemas'
 
 /** Frontmatter fields + the MDX component tree rendered from the markdown body. */
 export type About = z.infer<typeof AboutFrontmatterSchema> & {
@@ -30,29 +30,6 @@ export type About = z.infer<typeof AboutFrontmatterSchema> & {
 export type Award = z.infer<typeof AwardSchema>
 
 export type AwardKind = z.infer<typeof AwardKindSchema>
-
-/**
- * Legacy composite shape assembled in data/index.ts for backwards compat.
- * New code should prefer `ExperienceJson` or `ExperienceEntry[]` directly.
- */
-export interface Experience {
-  academic: {
-    description?: string
-    isCurrent?: boolean
-    organization: string
-    period?: string
-    title: string
-  }[]
-  education: ExperienceJson['education']
-  professional: {
-    company: string
-    description?: string
-    isCurrent?: boolean
-    period: string
-    title: string
-  }[]
-  reviewing?: { role: string; venue: string }[]
-}
 
 export type ExperienceCategory = z.infer<typeof ExperienceCategorySchema>
 

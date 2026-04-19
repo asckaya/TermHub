@@ -4,11 +4,11 @@ import { FaTimes } from 'react-icons/fa'
 
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
+import DynamicIcon from '@/components/ui/DynamicIcon'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import { selectedPublicationIds } from '@/site.config'
-
-import DynamicIcon from '../DynamicIcon'
+import { withBase } from '@/utils/asset'
 
 const PubLink = ({ href, icon, label }: { href: string; icon: string; label: string }) => {
   const { colorMode } = useColorMode()
@@ -114,7 +114,7 @@ const PublicationCard = ({ pub }: { pub: Publication }) => {
             <img
               alt={pub.title}
               className="h-full w-full object-contain p-1 transition-transform duration-300 hover:scale-[1.03]"
-              src={pub.featuredImage}
+              src={withBase(pub.featuredImage)}
             />
           </div>
         )}
@@ -276,7 +276,7 @@ const PublicationCard = ({ pub }: { pub: Publication }) => {
             <img
               alt={`${pub.title} large preview`}
               className="rounded-lg max-h-[80vh] max-w-full object-contain p-4"
-              src={pub.featuredImage}
+              src={withBase(pub.featuredImage)}
               style={{ backgroundColor: tc.imagePreviewBg }}
             />
           </DialogContent>

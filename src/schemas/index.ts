@@ -65,7 +65,7 @@ export const AwardSchema = z.object({
 export const NewsLinkSchema = z.object({
   icon: z.string().optional(),
   text: z.string(),
-  url: z.string(),
+  url: z.url(),
 })
 
 export const NewsItemSchema = z.object({
@@ -93,7 +93,7 @@ export const JourneyPhaseSchema = z.object({
 export const ExperienceEntrySchema = z.object({
   category: ExperienceCategorySchema,
   company: z.string(),
-  companyUrl: z.string().optional(),
+  companyUrl: z.url().optional(),
   end: z.string().optional(),
   highlights: z.array(z.string()),
   isCurrent: z.boolean().optional(),
@@ -106,16 +106,16 @@ export const ExperienceEntrySchema = z.object({
 
 export const ProjectLinkSchema = z.object({
   label: z.string(),
-  url: z.string(),
+  url: z.url(),
 })
 
 export const PublicationLinksSchema = z.object({
-  arxiv: z.string().optional(),
-  code: z.string().optional(),
-  dataset: z.string().optional(),
-  demo: z.string().optional(),
-  paper: z.string().optional(),
-  projectPage: z.string().optional(),
+  arxiv: z.url().optional(),
+  code: z.url().optional(),
+  dataset: z.url().optional(),
+  demo: z.url().optional(),
+  paper: z.url().optional(),
+  projectPage: z.url().optional(),
 })
 
 export const SkillSchema = z.object({
@@ -146,51 +146,69 @@ export const TeachingEntrySchema = z.object({
 })
 
 /** Frontmatter-only shape (no Content component) */
-export const ProjectFrontmatterSchema = z.object({
-  badge: z.string().optional(),
-  category: ProjectCategorySchema,
-  date: z.string().optional(),
-  extraLinks: z.array(ProjectLinkSchema).optional(),
-  featured: z.boolean().optional(),
-  featuredImage: z.string().optional(),
-  highlights: z.array(z.string()).optional(),
-  isOpenSource: z.boolean().optional(),
-  link: z.string().optional(),
-  role: ProjectRoleSchema.optional(),
-  status: ProjectStatusSchema.optional(),
-  story: z.string().optional(),
-  summary: z.string(),
-  tags: z.array(z.string()),
-  title: z.string(),
-})
+export const ProjectFrontmatterSchema = z
+  .object({
+    badge: z.string().optional(),
+    bodyText: z.string().optional(),
+    category: ProjectCategorySchema,
+    date: z.string().optional(),
+    extraLinks: z.array(ProjectLinkSchema).optional(),
+    featured: z.boolean().optional(),
+    featuredImage: z.string().optional(),
+    highlights: z.array(z.string()).optional(),
+    isOpenSource: z.boolean().optional(),
+    link: z.string().optional(),
+    role: ProjectRoleSchema.optional(),
+    status: ProjectStatusSchema.optional(),
+    story: z.string().optional(),
+    summary: z.string().optional(),
+    tags: z.array(z.string()),
+    title: z.string(),
+  })
+  .transform((data) => {
+    const summary = data.summary ?? data.bodyText
+    if (!summary) {
+      throw new Error(`Project "${data.title}" is missing both 'summary' and body content.`)
+    }
+    return { ...data, summary }
+  })
 
 /** Frontmatter-only shape (no Content component) */
-export const PublicationFrontmatterSchema = z.object({
-  abstract: z.string().optional(),
-  authors: z.array(z.string()),
-  citations: z.number().optional(),
-  coFirstAuthors: z.array(z.string()).optional(),
-  emoji: z.string().optional(),
-  featuredImage: z.string().optional(),
-  id: z.string(),
-  isCoFirst: z.boolean().optional(),
-  isCorrespondingAuthor: z.boolean().optional(),
-  isFirstAuthor: z.boolean().optional(),
-  keywords: z.array(z.string()).optional(),
-  links: PublicationLinksSchema.default({}),
-  month: z.string().optional(),
-  specialBadges: z.array(z.string()).optional(),
-  status: PublicationStatusSchema,
-  title: z.string(),
-  venue: z.string(),
-  venueType: VenueTypeSchema,
-  year: z.number(),
-})
+export const PublicationFrontmatterSchema = z
+  .object({
+    abstract: z.string().optional(),
+    authors: z.array(z.string()),
+    bodyText: z.string().optional(),
+    citations: z.number().optional(),
+    coFirstAuthors: z.array(z.string()).optional(),
+    emoji: z.string().optional(),
+    featuredImage: z.string().optional(),
+    id: z.string(),
+    isCoFirst: z.boolean().optional(),
+    isCorrespondingAuthor: z.boolean().optional(),
+    isFirstAuthor: z.boolean().optional(),
+    keywords: z.array(z.string()).optional(),
+    links: PublicationLinksSchema.default({}),
+    month: z.string().optional(),
+    specialBadges: z.array(z.string()).optional(),
+    status: PublicationStatusSchema,
+    title: z.string(),
+    venue: z.string(),
+    venueType: VenueTypeSchema,
+    year: z.number(),
+  })
+  .transform((data) => {
+    const abstract = data.abstract ?? data.bodyText
+    if (!abstract) {
+      throw new Error(`Publication "${data.title}" is missing both 'abstract' and body content.`)
+    }
+    return { ...data, abstract }
+  })
 
 /** Frontmatter-only shape (no Content component) */
 export const AboutFrontmatterSchema = z.object({
-  bio: z.string().default(''),
-  journey: z.string().default(''),
+  bio: z.string(),
+  journey: z.string(),
   mentorship: z
     .object({
       description: z.string().optional(),
@@ -253,9 +271,9 @@ export const SiteConfigSchema = z.object({
   avatar: z.string().optional(),
   contact: z
     .object({
-      academicEmail: z.string().optional(),
-      email: z.string().optional(),
-      hiringEmail: z.string().optional(),
+      academicEmail: z.email().optional(),
+      email: z.email().optional(),
+      hiringEmail: z.email().optional(),
       location: z.string().optional(),
     })
     .optional(),

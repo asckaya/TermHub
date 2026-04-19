@@ -1,4 +1,4 @@
-import type { NewsItem } from '../types'
+import type { NewsItem } from '@/types'
 
 /* ── Slot prop interfaces ──────────────────────────────────── */
 
@@ -59,22 +59,6 @@ export interface TeachingSlotProps {}
 export const DEFAULT_SECTIONS: SlotName[] = [
   'hero',
   'bio',
-  'newsDisplay',
-  'selectedPublications',
-  'journey',
-  'mentorship',
-  'talks',
-  'teaching',
-  'accomplishments',
-  'contact',
-  'footer',
-]
-
-/** Sections that are rendered as home page sections (not layout-level) */
-export const SECTION_SLOTS: SlotName[] = [
-  'hero',
-  'bio',
-  'skills',
   'newsDisplay',
   'selectedPublications',
   'journey',

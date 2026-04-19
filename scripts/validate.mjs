@@ -105,6 +105,11 @@ if (site) {
   } else {
     pass('content/site.json has been personalized')
   }
+
+  // Check required fields for new structure
+  if (!site.tagline) fail('Missing "tagline" in content/site.json')
+  if (!site.terminal?.username) fail('Missing "terminal.username" in content/site.json')
+  if (!site.sections) fail('Missing "sections" array in content/site.json')
 }
 
 // ---------------------------------------------------------------------------
@@ -119,16 +124,16 @@ for (const file of jsonFiles) {
   if (data !== null) validCount++
 }
 
-// Check that Markdown directories have content
-const mdDirs = ['publications', 'projects', 'articles']
+// Check that Markdown and Assets directories have content
+const mdDirs = ['publications', 'projects', 'articles', 'images']
 let mdCount = 0
 for (const dir of mdDirs) {
   const dirPath = resolve(ROOT, 'content', dir)
   if (existsSync(dirPath)) mdCount++
 }
 
-const aboutMd = existsSync(resolve(ROOT, 'content', 'about.md'))
-if (aboutMd) mdCount++
+const aboutMdx = existsSync(resolve(ROOT, 'content', 'about.mdx'))
+if (aboutMdx) mdCount++
 
 const totalExpected = jsonFiles.length + mdDirs.length + 1
 const totalFound = validCount + mdCount

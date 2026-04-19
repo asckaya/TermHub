@@ -1,6 +1,6 @@
 import type { z } from 'zod'
 
-import type { About, Experience, ProjectItem, Publication } from '../types'
+import type { About, ProjectItem, Publication } from '@/types'
 
 import {
   AboutFrontmatterSchema,
@@ -14,16 +14,17 @@ import {
   SiteConfigSchema,
   TalksJsonSchema,
   TeachingJsonSchema,
-} from '../schemas'
+} from '@/schemas'
 
-const globsEn = {
+// --- Content Globbing (Must use static string literals for Vite) ---
+const enGlobs = {
   about: import.meta.glob('@content/about.mdx', { eager: true }),
   articles: import.meta.glob('@content/articles/*.mdx', { eager: true }),
   projects: import.meta.glob('@content/projects/*.mdx', { eager: true }),
   pubs: import.meta.glob('@content/publications/*.mdx', { eager: true }),
 }
 
-const globsZh = {
+const zhGlobs = {
   about: import.meta.glob('@content/zh/about.mdx', { eager: true }),
   articles: import.meta.glob('@content/zh/articles/*.mdx', { eager: true }),
   projects: import.meta.glob('@content/zh/projects/*.mdx', { eager: true }),
@@ -43,14 +44,11 @@ function collectMd<T extends Record<string, unknown>>(
   return Object.entries(modules).map(([path, m]) => {
     const mod = m as MdxModule
     const raw = mod.frontmatter ?? {}
-    const enriched = {
-      ...raw,
-      abstract: (raw.abstract as string | undefined) ?? (raw.bodyText as string | undefined) ?? '',
-      journey: (raw.journey as string | undefined) ?? (raw.bodyText as string | undefined) ?? '',
-      summary: (raw.summary as string | undefined) ?? (raw.bodyText as string | undefined) ?? '',
-    }
     const fileLabel = `${label} (${path.split('/').pop() ?? path})`
-    return { ...parseContent(schema, enriched, fileLabel), Content: mod.default }
+
+    // Strict validation via Zod
+    const parsed = parseContent(schema, raw, fileLabel)
+    return { ...parsed, Content: mod.default }
   })
 }
 
@@ -68,6 +66,7 @@ function parseContent<T>(schema: z.ZodType<T>, data: unknown, label: string): T 
   return result.data
 }
 
+// --- JSON Static Imports ---
 import awardsEn from '@content/awards.json'
 import expEn from '@content/experience.json'
 import logosEn from '@content/logos.json'
@@ -86,79 +85,79 @@ import talksZh from '@content/zh/talks.json'
 import teachZh from '@content/zh/teaching.json'
 
 const build = (lang: 'en' | 'zh') => {
-  const g = lang === 'en' ? globsEn : globsZh
-  const raw =
-    lang === 'en'
-      ? {
-          awards: awardsEn,
-          exp: expEn,
-          logos: logosEn,
-          news: newsEn,
-          res: resEn,
-          site: siteEn,
-          talks: talksEn,
-          teach: teachEn,
-        }
-      : {
-          awards: awardsZh,
-          exp: expZh,
-          logos: logosZh,
-          news: newsZh,
-          res: resZh,
-          site: siteZh,
-          talks: talksZh,
-          teach: teachZh,
-        }
+  const globs = lang === 'en' ? enGlobs : zhGlobs
+  const isZh = lang === 'zh'
 
-  const L = lang.toUpperCase()
-  const expParsed = parseContent(ExperienceJsonSchema, raw.exp, `experience.json [${L}]`)
+  const raw = {
+    awards: isZh ? awardsZh : awardsEn,
+    exp: isZh ? expZh : expEn,
+    logos: isZh ? logosZh : logosEn,
+    news: isZh ? newsZh : newsEn,
+    res: isZh ? resZh : resEn,
+    site: isZh ? siteZh : siteEn,
+    talks: isZh ? talksZh : talksEn,
+    teach: isZh ? teachZh : teachEn,
+  }
+
+  const label = lang.toUpperCase()
+  const expParsed = parseContent(ExperienceJsonSchema, raw.exp, `experience.json [${label}]`)
 
   return {
-    about: (collectMd(g.about, AboutFrontmatterSchema, `about.mdx [${L}]`)[0] ?? {}) as About,
-    articles: collectMd(g.articles, ProjectFrontmatterSchema, `articles [${L}]`) as ProjectItem[],
-    awards: parseContent(AwardsJsonSchema, raw.awards, `awards.json [${L}]`),
+    about: collectMd(globs.about, AboutFrontmatterSchema, `about.mdx [${label}]`)[0] as About,
+    articles: collectMd(
+      globs.articles,
+      ProjectFrontmatterSchema,
+      `articles [${label}]`,
+    ) as ProjectItem[],
+    awards: parseContent(AwardsJsonSchema, raw.awards, `awards.json [${label}]`),
     experience: {
-      academic: [] as Experience['academic'],
       education: expParsed.education,
-      professional: [] as Experience['professional'],
       reviewing: expParsed.reviewing,
     },
     experienceTimeline: expParsed.timeline,
-    institutionLogos: parseContent(LogosJsonSchema, raw.logos, `logos.json [${L}]`),
-    news: parseContent(NewsJsonSchema, raw.news, `news.json [${L}]`),
-    projects: collectMd(g.projects, ProjectFrontmatterSchema, `projects [${L}]`) as ProjectItem[],
+    institutionLogos: parseContent(LogosJsonSchema, raw.logos, `logos.json [${label}]`),
+    news: parseContent(NewsJsonSchema, raw.news, `news.json [${label}]`),
+    projects: collectMd(
+      globs.projects,
+      ProjectFrontmatterSchema,
+      `projects [${label}]`,
+    ) as ProjectItem[],
     publications: collectMd(
-      g.pubs,
+      globs.pubs,
       PublicationFrontmatterSchema,
-      `publications [${L}]`,
+      `publications [${label}]`,
     ) as Publication[],
-    research: parseContent(ResearchSchema, raw.res, `research.json [${L}]`),
-    siteConfig: parseContent(SiteConfigSchema, raw.site, `site.json [${L}]`),
-    talks: parseContent(TalksJsonSchema, raw.talks, `talks.json [${L}]`),
-    teaching: parseContent(TeachingJsonSchema, raw.teach, `teaching.json [${L}]`),
+    research: parseContent(ResearchSchema, raw.res, `research.json [${label}]`),
+    siteConfig: parseContent(SiteConfigSchema, raw.site, `site.json [${label}]`),
+    talks: parseContent(TalksJsonSchema, raw.talks, `talks.json [${label}]`),
+    teaching: parseContent(TeachingJsonSchema, raw.teach, `teaching.json [${label}]`),
   }
 }
 
 const cache = { en: build('en'), zh: build('zh') }
 export const getLocalizedData = (l: string) => (l === 'zh' ? cache.zh : cache.en)
 
-export const projects = cache.en.projects
-export const publications = cache.en.publications
-export const about = cache.en.about
+export interface PublicationStats {
+  byVenue: Record<string, number>
+  byYear: Record<number | string, number>
+  firstAuthor: number
+  total: number
+  withCode: number
+}
 
-export const getPublicationStats = (p: Publication[]) => {
-  const s = {
-    byVenue: {} as Record<string, number>,
-    byYear: {} as Record<number | string, number>,
+export const getPublicationStats = (p: Publication[]): PublicationStats => {
+  const stats: PublicationStats = {
+    byVenue: {},
+    byYear: {},
     firstAuthor: 0,
     total: p.length,
     withCode: 0,
   }
   p.forEach((x) => {
-    s.byYear[x.year] = (s.byYear[x.year] ?? 0) + 1
-    s.byVenue[x.venueType] = (s.byVenue[x.venueType] ?? 0) + 1
-    if (x.isFirstAuthor) s.firstAuthor++
-    if (x.links.code) s.withCode++
+    stats.byYear[x.year] = (stats.byYear[x.year] ?? 0) + 1
+    stats.byVenue[x.venueType] = (stats.byVenue[x.venueType] ?? 0) + 1
+    if (x.isFirstAuthor) stats.firstAuthor++
+    if (x.links.code) stats.withCode++
   })
-  return s
+  return stats
 }

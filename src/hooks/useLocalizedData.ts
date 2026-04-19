@@ -1,14 +1,14 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { getLocalizedData } from '../data'
+import { getLocalizedData } from '@/data'
 import {
   getLocalizedGithubUsername,
   getLocalizedHeroSocialIcons,
   getLocalizedNavItems,
   getLocalizedSiteConfig,
   getLocalizedSiteOwner,
-} from '../site.config'
+} from '@/site.config'
 
 /**
  * Returns content data + site config for the current language.

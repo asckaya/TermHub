@@ -2,9 +2,9 @@ import { createRouter, RouterProvider } from '@tanstack/react-router'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-import { ColorModeProvider } from './color-mode'
-import NotFound from './components/NotFound'
-import './index.css'
+import NotFound from './components/pages/NotFound'
+import { ColorModeProvider } from './providers/ColorModeProvider'
+import './styles/index.css'
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
 

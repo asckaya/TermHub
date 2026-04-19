@@ -1,0 +1,231 @@
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@5.1.0/index.css');
+@import url('https://cdn.jsdelivr.net/npm/@chinese-fonts/maple-mono-cn/dist/MapleMono-CN-Regular/result.css');
+@import url('https://cdn.jsdelivr.net/npm/@chinese-fonts/maple-mono-cn/dist/MapleMono-CN-Bold/result.css');
+@import 'tailwindcss';
+
+@source "../**/*.{ts,tsx}";
+
+@variant dark (&:where(.dark, .dark *));
+
+/* -------------------------------------------------------------------------- */
+/* 1. THEME DEFINITIONS                                                       */
+/* -------------------------------------------------------------------------- */
+@theme {
+  --font-sans: 'Maple Mono CN', 'Maple Mono', monospace;
+  --font-mono: 'Maple Mono CN', 'Maple Mono', monospace;
+
+  /* Color mapping from CSS Variables (ThemeInjector) */
+  --color-background: var(--bg-color);
+  --color-foreground: var(--text-color);
+  --color-primary: var(--accent-color);
+  --color-primary-foreground: var(--bg-color);
+  --color-secondary: var(--hover-color);
+  --color-secondary-foreground: var(--text-color);
+  --color-muted: var(--hover-color);
+  --color-muted-foreground: var(--secondary-text);
+  --color-accent: var(--accent-light);
+  --color-accent-foreground: var(--accent-color);
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: var(--border-color);
+  --color-input: var(--border-color);
+  --color-ring: var(--accent-color);
+  --color-popover: var(--card-bg);
+  --color-popover-foreground: var(--text-color);
+  --color-card: var(--card-bg);
+  --color-card-foreground: var(--text-color);
+
+  /* Radius tokens */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  /* Animations */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-blink: blink 1s step-end infinite;
+  --animate-pulse: pulse 2s infinite ease-in-out;
+  --animate-rainbow: rainbow 3s linear infinite;
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes rainbow {
+  0% {
+    color: #bf616a;
+  }
+  17% {
+    color: #d08770;
+  }
+  33% {
+    color: #ebcb8b;
+  }
+  50% {
+    color: #a3be8c;
+  }
+  67% {
+    color: #88c0d0;
+  }
+  83% {
+    color: #b48ead;
+  }
+  100% {
+    color: #bf616a;
+  }
+}
+
+@plugin "tailwindcss-animate";
+
+/* -------------------------------------------------------------------------- */
+/* 2. BASE STYLES (Global Typography & Reset)                                 */
+/* -------------------------------------------------------------------------- */
+@layer base {
+  :root {
+    --radius: 0.5rem;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Retro CRT/Scanline Overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+      linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.03) 50%),
+      linear-gradient(90deg, rgba(255, 0, 0, 0.01), rgba(0, 255, 0, 0.005), rgba(0, 0, 255, 0.01));
+    background-size:
+      100% 3px,
+      3px 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.5;
+  }
+
+  /* View Transitions API */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  ::view-transition-new(root) {
+    z-index: 999;
+  }
+
+  ::view-transition-old(root) {
+    z-index: 1;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 3. COMMON COMPONENTS                                                       */
+/* -------------------------------------------------------------------------- */
+@layer components {
+  /* Project MDX Content Styling */
+  .project-mdx-content h2,
+  .project-mdx-content h3 {
+    font-weight: bold;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent-color);
+  }
+
+  .project-mdx-content p {
+    margin-bottom: 0.75rem;
+  }
+
+  .project-mdx-content ul {
+    list-style-type: disc;
+    padding-left: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-mdx-content li {
+    margin-bottom: 0.25rem;
+  }
+
+  .project-mdx-content strong {
+    color: var(--highlight-color, inherit);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 4. UTILITIES                                                               */
+/* -------------------------------------------------------------------------- */
+@layer utilities {
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-blink {
+    animation: blink 1s step-end infinite;
+  }
+}

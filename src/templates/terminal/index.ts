@@ -1,32 +1,30 @@
 import { lazy } from 'react'
 
-import type { TemplateConfig } from '../types'
+import type { TemplateConfig } from '@/templates/types'
 
-import Footer from '../../components/about/Footer'
-import HeroSection from '../../components/about/HeroSection'
-import NewsTimeline from '../../components/about/NewsTimeline'
-import AccomplishmentsTerminal from '../../components/AccomplishmentsTerminal'
 // ── Layout & slots — eagerly loaded (always visible on every route) ──────────
-import Layout from '../../components/Layout'
-import Navbar from '../../components/Navbar'
-import BioSection from '../../components/sections/BioSection'
-import ContactSection from '../../components/sections/ContactSection'
-import JourneySection from '../../components/sections/JourneySection'
-import MentorshipSection from '../../components/sections/MentorshipSection'
-import SelectedPublicationsSection from '../../components/sections/SelectedPublicationsSection'
-import SkillsSection from '../../components/sections/SkillsSection'
-import TalksSection from '../../components/sections/TalksSection'
-import TeachingSection from '../../components/sections/TeachingSection'
+import Layout from '@/components/layout/Layout'
+import Navbar from '@/components/layout/Navbar'
+import Footer from '@/components/pages/about/Footer'
+import BioSection from '@/components/sections/BioSection'
+import ContactSection from '@/components/sections/ContactSection'
+import HeroSection from '@/components/sections/HeroSection'
+import JourneySection from '@/components/sections/JourneySection'
+import MentorshipSection from '@/components/sections/MentorshipSection'
+import NewsTimeline from '@/components/sections/NewsTimeline'
+import SelectedPublicationsSection from '@/components/sections/SelectedPublicationsSection'
+import SkillsSection from '@/components/sections/SkillsSection'
+import TalksSection from '@/components/sections/TalksSection'
+import TeachingSection from '@/components/sections/TeachingSection'
+import AccomplishmentsTerminal from '@/components/ui/AccomplishmentsTerminal'
 
 // ── Pages — lazily loaded, each becomes its own JS chunk ────────────────────
-// Vite splits these at the dynamic import() boundary, so the visitor only
-// downloads code for the page they actually navigate to.
-const Home = lazy(() => import('../../components/Home'))
-const Publications = lazy(() => import('../../components/Publications'))
-const Projects = lazy(() => import('../../components/Projects'))
-const Articles = lazy(() => import('../../components/Articles'))
-const Experience = lazy(() => import('../../components/Experience'))
-const AboutPage = lazy(() => import('../../components/AboutPage'))
+const Home = lazy(() => import('@/components/pages/Home'))
+const Publications = lazy(() => import('@/components/pages/Publications'))
+const Projects = lazy(() => import('@/components/pages/Projects'))
+const Articles = lazy(() => import('@/components/pages/Articles'))
+const Experience = lazy(() => import('@/components/pages/Experience'))
+const AboutPage = lazy(() => import('@/components/pages/AboutPage'))
 
 const terminalTemplate: TemplateConfig = {
   description: 'Nord-inspired terminal aesthetic with monospace typography',

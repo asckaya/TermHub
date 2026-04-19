@@ -53,7 +53,8 @@ function buildSiteJson(a) {
       location: a.location,
     },
     features: {
-      articles: true,
+      about: true,
+      articles: false,
       experience: true,
       guide: false,
       news: true,
@@ -63,8 +64,18 @@ function buildSiteJson(a) {
     },
 
     heroSocialIcons: [
-      { color: '#333', icon: 'FaGithub', label: 'GitHub', platform: 'github' },
-      { color: '#0A66C2', icon: 'FaLinkedin', label: 'LinkedIn', platform: 'linkedin' },
+      {
+        color: '#000',
+        icon: 'FaGithub',
+        label: 'GitHub',
+        platform: 'github',
+      },
+      {
+        color: '#0A66C2',
+        icon: 'FaLinkedin',
+        label: 'LinkedIn',
+        platform: 'linkedin',
+      },
     ],
 
     name: {
@@ -76,7 +87,16 @@ function buildSiteJson(a) {
       nickname: a.nickname,
     },
 
-    pets: [],
+    sections: [
+      'hero',
+      'newsDisplay',
+      'selectedPublications',
+      'talks',
+      'teaching',
+      'accomplishments',
+      'contact',
+      'footer',
+    ],
 
     selectedPublicationIds: [],
 
@@ -93,6 +113,8 @@ function buildSiteJson(a) {
       zhihu: '',
     },
 
+    tagline: 'Full-stack Developer | Open Source Enthusiast',
+
     terminal: {
       rotatingSubtitles: [
         'build cool projects',
@@ -102,11 +124,9 @@ function buildSiteJson(a) {
         'learn new things',
       ],
       skills: ['Python', 'TypeScript', 'Go', 'PyTorch', 'React', 'ROS2', 'Docker', 'Kubernetes'],
-      timezone: 'America/Los_Angeles',
+      timezone: 'Asia/Shanghai',
       username: a.terminalUser,
     },
-
-    title: `Hi there, I'm ${a.fullName}`,
   }
 }
 

@@ -1,4 +1,5 @@
 import mdx from '@mdx-js/rollup'
+import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-vite-plugin'
 import react from '@vitejs/plugin-react'
 import { copyFileSync, mkdirSync, writeFileSync } from 'fs'
@@ -37,8 +38,6 @@ export default defineConfig({
           )
             return 'react-core'
 
-          if (id.includes('@chakra-ui/') || id.includes('@emotion/')) return 'chakra'
-
           if (id.includes('framer-motion')) return 'motion'
 
           if (id.includes('react-icons')) return 'icons'
@@ -64,6 +63,7 @@ export default defineConfig({
     },
   },
   plugins: [
+    tailwindcss(),
     mdx({
       rehypePlugins: [rehypeKatex],
       remarkPlugins: [

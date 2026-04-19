@@ -43,11 +43,6 @@ export function getResolvedSlots(
   return resolveSlots(template.slots, variantRegistry, userOverrides)
 }
 
-/** List all variant ids available for a given slot */
-export function getSlotVariants(slotName: string): string[] {
-  return Object.keys(variantRegistry[slotName] ?? {})
-}
-
 /**
  * Resolve a template by id.
  * Falls back to the default template if the id is unknown.
@@ -59,19 +54,8 @@ export function getTemplate(id?: string): TemplateConfig {
   return templates[DEFAULT_TEMPLATE]
 }
 
-/** List all available template ids */
-export function getTemplateIds(): string[] {
-  return Object.keys(templates)
-}
-
-/** List all available templates */
-export function getTemplates(): TemplateConfig[] {
-  return Object.values(templates)
-}
-
 export { SlotProvider } from './context'
 export { useSlot } from './hooks'
 export type { ComponentSlots, SlotName } from './slots'
-export { DEFAULT_SECTIONS, SECTION_SLOTS } from './slots'
+export { DEFAULT_SECTIONS } from './slots'
 export type { LayoutProps, TemplateConfig, TemplatePages } from './types'
-export default templates

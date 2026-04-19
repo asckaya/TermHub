@@ -1,88 +1,81 @@
+import type { z } from 'zod'
+
 import siteJson from '@content/site.json'
 import siteJsonZh from '@content/zh/site.json'
 
-export const siteConfig = siteJson
-export const siteConfigZh = siteJsonZh
+import type { SiteConfigSchema } from './schemas'
 
 /** Get GitHub username for a specific language */
 export function getLocalizedGithubUsername(lang: string) {
   const cfg = getLocalizedSiteConfig(lang)
-  return cfg.social.github.split('/').pop() ?? ''
+  return cfg.social?.github.split('/').pop() ?? ''
 }
 
 /** Get site config for a given language */
 export function getLocalizedSiteConfig(lang: string) {
-  return lang === 'zh' ? siteConfigZh : siteJson
+  const raw = lang === 'zh' ? siteJsonZh : siteJson
+  return raw as z.infer<typeof SiteConfigSchema>
 }
-
-/** GitHub username extracted from URL (static English default) */
-export const githubUsername = getLocalizedGithubUsername('en')
 
 /** Selected publication IDs as a Set for fast lookup */
-export const selectedPublicationIds = new Set<string>(siteConfig.selectedPublicationIds)
-
-/** Get navigation items for a specific language */
-export function getLocalizedNavItems(lang: string) {
-  const cfg = getLocalizedSiteConfig(lang)
-  return [
-    { labelKey: 'nav.home', path: '/' },
-    ...(cfg.features.publications ? [{ labelKey: 'nav.publications', path: '/publications' }] : []),
-    ...(cfg.features.experience ? [{ labelKey: 'nav.experience', path: '/experience' }] : []),
-    ...(cfg.features.projects ? [{ labelKey: 'nav.projects', path: '/projects' }] : []),
-    ...(cfg.features.articles ? [{ labelKey: 'nav.articles', path: '/articles' }] : []),
-    ...(cfg.features.guide ? [{ labelKey: 'nav.guide', path: '/guide' }] : []),
-    ...((cfg.features as Record<string, boolean>).about
-      ? [{ labelKey: 'nav.about', path: '/about' }]
-      : []),
-  ] as const
-}
-
-/** Auto-generated navigation from enabled features (static English default) */
-export const navItems = getLocalizedNavItems('en')
+export const selectedPublicationIds = new Set<string>(siteJson.selectedPublicationIds)
 
 /** Get hero social icons for a specific language */
 export function getLocalizedHeroSocialIcons(lang: string) {
   const cfg = getLocalizedSiteConfig(lang)
-  return cfg.heroSocialIcons.map((item) => ({
+  const social = (cfg.social ?? {}) as Record<string, string | undefined>
+
+  return (cfg.heroSocialIcons ?? []).map((item) => ({
     color: item.color,
-    href: (cfg.social as Record<string, string>)[item.platform] ?? '',
+    href: social[item.platform] ?? '',
     icon: item.icon,
     label: item.label,
   }))
 }
 
-/** Hero social icons with resolved URLs (static English default) */
-export const heroSocialIcons = getLocalizedHeroSocialIcons('en')
+/** Get navigation items for a specific language */
+export function getLocalizedNavItems(lang: string) {
+  const cfg = getLocalizedSiteConfig(lang)
+  const f = cfg.features ?? {}
+
+  return [
+    { labelKey: 'nav.home', path: '/' },
+    ...(f.publications ? [{ labelKey: 'nav.publications', path: '/publications' }] : []),
+    ...(f.experience ? [{ labelKey: 'nav.experience', path: '/experience' }] : []),
+    ...(f.projects ? [{ labelKey: 'nav.projects', path: '/projects' }] : []),
+    ...(f.articles ? [{ labelKey: 'nav.articles', path: '/articles' }] : []),
+    ...(f.guide ? [{ labelKey: 'nav.guide', path: '/guide' }] : []),
+    ...(f.about ? [{ labelKey: 'nav.about', path: '/about' }] : []),
+  ] as const
+}
 
 /** Build a siteOwner-like object for a given language */
 export function getLocalizedSiteOwner(lang: string) {
   const cfg = getLocalizedSiteConfig(lang)
+  const contact = cfg.contact ?? {}
+  const social = cfg.social ?? {}
+  const terminal = cfg.terminal ?? {}
+
   return {
     contact: {
-      academicEmail: cfg.contact.academicEmail,
-      email: cfg.contact.email,
-      hiringEmail: cfg.contact.hiringEmail,
-      linkedin: cfg.social.linkedin,
-      location: cfg.contact.location,
+      academicEmail: contact.academicEmail,
+      email: contact.email,
+      hiringEmail: contact.hiringEmail,
+      linkedin: social.linkedin,
+      location: contact.location,
     },
     name: cfg.name,
-    pets: cfg.pets as {
-      description: string
-      emoji: string
-      image: string
-      name: string
-      title: string
-    }[],
-    rotatingSubtitles: cfg.terminal.rotatingSubtitles,
-    skills: cfg.terminal.skills,
-    social: cfg.social,
-    terminalUsername: cfg.terminal.username,
-    timezone: cfg.terminal.timezone,
+    pets: (cfg.pets ?? []).map((p) => ({
+      description: p.description ?? '',
+      emoji: p.emoji ?? '',
+      image: p.image ?? '',
+      name: p.name,
+      title: p.title ?? '',
+    })),
+    rotatingSubtitles: terminal.rotatingSubtitles ?? [],
+    skills: terminal.skills ?? [],
+    social: social,
+    terminalUsername: terminal.username ?? 'guest',
+    timezone: terminal.timezone ?? 'UTC',
   }
 }
-
-/**
- * Backward-compatible `siteOwner` (static English default).
- * Components should prefer using getLocalizedSiteOwner(lang).
- */
-export const siteOwner = getLocalizedSiteOwner('en')
