@@ -1,12 +1,12 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 
 import DynamicIcon from '@/components/ui/DynamicIcon'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { useT } from '@/hooks/useT'
 
 const ContactSection: React.FC = () => {
-  const { t } = useTranslation()
+  const { t } = useT()
   const { siteOwner } = useLocalizedData()
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
@@ -21,18 +21,18 @@ const ContactSection: React.FC = () => {
     siteOwner.contact.email && {
       href: `mailto:${siteOwner.contact.email}`,
       icon: 'FaEnvelope',
-      label: t('contact.email', 'Email'),
+      label: t('contact.email'),
       value: siteOwner.contact.email,
     },
     siteOwner.contact.academicEmail && {
       href: `mailto:${siteOwner.contact.academicEmail}`,
       icon: 'FaGraduationCap',
-      label: t('contact.academicEmail', 'Academic'),
+      label: t('contact.academicEmail'),
       value: siteOwner.contact.academicEmail,
     },
     siteOwner.contact.location && {
       icon: 'FaMapMarkerAlt',
-      label: t('contact.location', 'Location'),
+      label: t('contact.location'),
       value: siteOwner.contact.location,
     },
     siteOwner.social.github && {
@@ -62,7 +62,7 @@ const ContactSection: React.FC = () => {
       <div className="max-w-full lg:max-w-7xl px-2 md:px-4 lg:px-8 mx-auto">
         <div className="flex items-center gap-3 mb-4">
           <div className="bg-cyan-400 rounded-full flex-shrink-0 h-0.5 w-5" />
-          <h3 className="text-base md:text-lg font-semibold">{t('about.contact', 'Contact')}</h3>
+          <h3 className="text-base md:text-lg font-semibold">{t('about.contact')}</h3>
           <div className="flex-1 h-px" style={{ backgroundColor: tc.line }} />
         </div>
         <div className="flex flex-col gap-2">

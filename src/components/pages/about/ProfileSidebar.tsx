@@ -1,16 +1,16 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { MotionHover } from '@/components/animations/MotionList'
 import DynamicIcon from '@/components/ui/DynamicIcon'
 import { TerminalShell } from '@/components/ui/TerminalShell'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { useT } from '@/hooks/useT'
 import { withBase } from '@/utils/asset'
 
 export const ProfileSidebar: React.FC = () => {
   const { heroSocialIcons, siteConfig, siteOwner } = useLocalizedData()
-  const { t } = useTranslation()
+  const { t } = useT()
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
 
@@ -142,7 +142,7 @@ export const ProfileSidebar: React.FC = () => {
                 className="font-mono text-xs font-semibold tracking-wider uppercase"
                 style={{ color: tc.heading }}
               >
-                {t('about.skills', 'Skills')}
+                {t('about.skills')}
               </p>
             </div>
             <div className="flex flex-wrap gap-1.5">
@@ -155,13 +155,17 @@ export const ProfileSidebar: React.FC = () => {
                     color: tc.tagColor,
                   }}
                 >
-                  {getIcon(skill) && (
-                    <DynamicIcon
-                      className="h-2.5 w-2.5"
-                      name={getIcon(skill)}
-                      style={{ color: tc.skillIcon }}
-                    />
-                  )}
+                  {(() => {
+                    const iconName = getIcon(skill)
+                    if (!iconName) return null
+                    return (
+                      <DynamicIcon
+                        className="h-2.5 w-2.5"
+                        name={iconName}
+                        style={{ color: tc.skillIcon }}
+                      />
+                    )
+                  })()}
                   <p>{getName(skill)}</p>
                 </div>
               ))}

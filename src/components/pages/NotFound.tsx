@@ -1,11 +1,11 @@
 import { Link, useRouter } from '@tanstack/react-router'
 import React, { useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { MotionHover } from '@/components/animations/MotionList'
 import { useThemeConfig } from '@/config/theme'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { useT } from '@/hooks/useT'
 import { cn } from '@/lib/utils'
 
 const TYPING_SPEED = 20
@@ -20,13 +20,13 @@ const ASCII_404 = `
 `
 
 const NotFound: React.FC = () => {
-  const { t } = useTranslation()
+  const { t } = useT()
+  const router = useRouter()
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
   const { terminalPalette } = useThemeConfig()
   const tc = terminalPalette.colors(isDark)
   const { siteOwner } = useLocalizedData()
-  const router = useRouter()
 
   const username = siteOwner.terminalUsername
   const prompt = `[${username}@portfolio ~]$`

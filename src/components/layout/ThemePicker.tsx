@@ -1,5 +1,5 @@
+import { Check, Palette } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
-import { FaCheck, FaPalette } from 'react-icons/fa'
 
 import { MotionHover } from '@/components/animations/MotionList'
 import { Button } from '@/components/ui/button'
@@ -49,7 +49,7 @@ export const ThemePicker: React.FC = () => {
         variant="ghost"
       >
         <MotionHover>
-          <FaPalette className="h-4 w-4" />
+          <Palette className="h-4 w-4" />
         </MotionHover>
       </Button>
 
@@ -83,7 +83,7 @@ export const ThemePicker: React.FC = () => {
                   {themes[key].name}
                 </span>
                 {currentThemeKey === key && (
-                  <FaCheck className="h-2.5 w-2.5" style={{ color: tc.success }} />
+                  <Check className="h-2.5 w-2.5" style={{ color: tc.success }} />
                 )}
               </div>
             ))}

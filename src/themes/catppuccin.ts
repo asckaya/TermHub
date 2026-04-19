@@ -1,4 +1,4 @@
-import { FaBrain, FaChartBar, FaGlobe, FaHeartbeat, FaRobot, FaWrench } from 'react-icons/fa'
+import { Activity, BarChart3, Bot, Brain, Globe, Wrench } from 'lucide-react'
 
 import type { ThemeDefinition } from './types'
 
@@ -272,37 +272,37 @@ function makeCatppuccinoTheme(
       data: {
         ...catColors(p.green, isDark),
         cmd: '$ jupyter execute',
-        icon: FaChartBar,
+        icon: BarChart3,
         label: 'DATA / ML',
       },
       healthcare: {
         ...catColors(p.red, isDark),
         cmd: '$ python recommend.py',
-        icon: FaHeartbeat,
+        icon: Activity,
         label: 'HEALTHCARE',
       },
       nlp: {
         ...catColors(p.pink, isDark),
         cmd: '$ python train.py',
-        icon: FaBrain,
+        icon: Brain,
         label: 'NLP / AI',
       },
       robotics: {
         ...catColors(p.mauve, isDark),
         cmd: '$ ros2 launch planner',
-        icon: FaRobot,
+        icon: Bot,
         label: 'ROBOTICS',
       },
       tooling: {
         ...catColors(p.teal, isDark),
         cmd: '$ make install',
-        icon: FaWrench,
+        icon: Wrench,
         label: 'TOOLING',
       },
       'web-app': {
         ...catColors(p.peach, isDark),
         cmd: '$ npm run dev',
-        icon: FaGlobe,
+        icon: Globe,
         label: 'WEB / APP',
       },
     }

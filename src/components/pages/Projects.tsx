@@ -1,24 +1,21 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { type IconType } from 'react-icons'
+import { useVirtualizer } from '@tanstack/react-virtual'
 import {
-  FaChevronDown,
-  FaCog,
-  FaCrown,
-  FaExternalLinkAlt,
-  FaFolderOpen,
-  FaGithub,
-  FaMedium,
-  FaSync,
-  FaTimes,
-  FaUser,
-  FaYoutube,
-} from 'react-icons/fa'
-import { SiCsdn, SiZhihu } from 'react-icons/si'
+  ChevronDown,
+  Crown,
+  ExternalLink,
+  FolderOpen,
+  RefreshCw,
+  Settings,
+  User,
+  X,
+} from 'lucide-react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { FaGithub, FaYoutube } from 'react-icons/fa'
+import { SiCsdn, SiMedium, SiZhihu } from 'react-icons/si'
 
 import type { ProjectItem } from '@/types'
 
-import { MotionHover, MotionList } from '@/components/animations/MotionList'
+import { MotionHover } from '@/components/animations/MotionList'
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import { Dialog, DialogContent, DialogOverlay, DialogTitle } from '@/components/ui/dialog'
 import { TerminalShell } from '@/components/ui/TerminalShell'
@@ -26,7 +23,9 @@ import { SyntaxText } from '@/components/ui/TerminalSyntax'
 import { PINNED_STATUSES, STATUS_LABELS } from '@/config/project-status'
 import { type CatTheme, type TerminalColors, useThemeConfig } from '@/config/theme'
 import { useColorMode } from '@/hooks/useColorMode'
+import { useLanguage } from '@/hooks/useLanguage'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { useT } from '@/hooks/useT'
 import { cn } from '@/lib/utils'
 import { withBase } from '@/utils/asset'
 import { highlightData } from '@/utils/highlightData'
@@ -37,33 +36,33 @@ type TP = ProjectItem & { id: string }
 
 const roleConfig: Record<
   string,
-  { color: (d: boolean) => string; icon: IconType; textKey: string }
+  { color: (d: boolean) => string; icon: React.ElementType; textKey: string }
 > = {
   independent: {
     color: (d) => (d ? '#ebcb8b' : '#c47d46'),
-    icon: FaUser,
+    icon: User,
     textKey: 'projects.independent',
   },
-  lead: { color: (d) => (d ? '#d08770' : '#b35a2e'), icon: FaCrown, textKey: 'projects.lead' },
+  lead: { color: (d) => (d ? '#d08770' : '#b35a2e'), icon: Crown, textKey: 'projects.lead' },
   maintainer: {
     color: (d) => (d ? '#a3be8c' : '#36805a'),
-    icon: FaSync,
+    icon: RefreshCw,
     textKey: 'projects.maintainer',
   },
   'tech-lead': {
     color: (d) => (d ? '#88c0d0' : '#2a769c'),
-    icon: FaCog,
+    icon: Settings,
     textKey: 'projects.techLead',
   },
 }
 
-const linkIcon = (url: string): IconType => {
+const linkIcon = (url: string): React.ElementType => {
   if (url.includes('github.com')) return FaGithub
-  if (url.includes('medium.com')) return FaMedium
+  if (url.includes('medium.com')) return SiMedium
   if (url.includes('youtu.be') || url.includes('youtube.com')) return FaYoutube
   if (url.includes('zhihu.com')) return SiZhihu
   if (url.includes('csdn.net')) return SiCsdn
-  return FaExternalLinkAlt
+  return ExternalLink
 }
 
 const fmtDate = (v?: string) => {
@@ -88,7 +87,8 @@ const FlowNode: React.FC<{
   onImageClick: (src: string, alt: string) => void
   tc: TerminalColors
 }> = ({ ct, hlc, isDark, item, onImageClick, tc }) => {
-  const { i18n, t } = useTranslation()
+  const { locale } = useLanguage()
+  const { t } = useT()
   const [expanded, setExpanded] = useState(false)
   const role = roleConfig[item.role ?? 'independent']
   const hasImg = item.featuredImage !== undefined && item.featuredImage !== ''
@@ -123,7 +123,7 @@ const FlowNode: React.FC<{
         <div className="flex items-center flex-wrap gap-2 mb-1">
           <div className="h-0.5 w-4 rounded-full" style={{ backgroundColor: ct.color }} />
           <div className="flex items-center gap-1" style={{ color: ct.color }}>
-            {React.createElement(ct.icon, { className: 'w-2.5 h-2.5' })}
+            {React.createElement(ct.icon as React.ElementType, { className: 'w-2.5 h-2.5' })}
             <span className="font-mono text-[10px] font-semibold tracking-wide uppercase">
               {ct.label}
             </span>
@@ -170,7 +170,7 @@ const FlowNode: React.FC<{
                   color: ct.color,
                 }}
               >
-                {STATUS_LABELS[item.status][i18n.language.startsWith('zh') ? 'zh' : 'en']}
+                {STATUS_LABELS[item.status][locale === 'zh' ? 'zh' : 'en']}
               </span>
             )}
             {item.badge && (
@@ -201,7 +201,7 @@ const FlowNode: React.FC<{
                 <img
                   alt={item.title}
                   className="h-full w-full object-contain p-1 transition-transform duration-300 group-hover:scale-105"
-                  src={withBase(item.featuredImage)}
+                  src={withBase(item.featuredImage ?? '')}
                   style={{ backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.02)' }}
                 />
               </div>
@@ -243,7 +243,7 @@ const FlowNode: React.FC<{
                       color: expanded ? ct.color : tc.secondary,
                     }}
                   >
-                    <FaChevronDown
+                    <ChevronDown
                       className={cn(
                         'w-2 h-2 transition-transform duration-150',
                         expanded && 'rotate-180',
@@ -319,9 +319,10 @@ const FlowNode: React.FC<{
 }
 
 const Projects: React.FC = () => {
+  "use no memo"
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
-  const { t } = useTranslation()
+  const { t } = useT()
   const { projects: projectData, siteOwner } = useLocalizedData()
 
   const [activeTab, setActiveTab] = useState<TabKey>('all')
@@ -331,6 +332,8 @@ const Projects: React.FC = () => {
   const { buildCategoryThemes, terminalPalette } = useThemeConfig()
   const tc = terminalPalette.colors(isDark)
   const hlc = { kw: tc.command, num: tc.highlight, str: tc.success }
+
+  const parentRef = useRef<HTMLDivElement>(null)
 
   const themes = useMemo(() => {
     const base = buildCategoryThemes(isDark)
@@ -371,7 +374,7 @@ const Projects: React.FC = () => {
       {
         color: tc.info,
         count: cnt.all,
-        icon: FaFolderOpen,
+        icon: FolderOpen,
         key: 'all' as TabKey,
         label: t('projects.all'),
       },
@@ -435,6 +438,28 @@ const Projects: React.FC = () => {
       .map(([year, items]) => ({ items, year }))
   }, [filtered])
 
+  const virtualItems = useMemo(() => {
+    const items: (
+      | { count: number; type: 'header'; year: string }
+      | { data: TP; type: 'project' }
+    )[] = []
+    yearGroups.forEach((group) => {
+      items.push({ count: group.items.length, type: 'header', year: group.year })
+      group.items.forEach((item) => {
+        items.push({ data: item, type: 'project' })
+      })
+    })
+    return items
+  }, [yearGroups])
+
+  const virtualizer = useVirtualizer({
+    count: virtualItems.length,
+    estimateSize: (index) => (virtualItems[index].type === 'header' ? 32 : 220),
+    getScrollElement: () => parentRef.current,
+    overscan: 5,
+    useFlushSync: false,
+  })
+
   const totalIndep = useMemo(
     () => projects.filter((p) => !p.role || p.role === 'independent').length,
     [projects],
@@ -492,10 +517,10 @@ const Projects: React.FC = () => {
                 <span className="mx-1" style={{ color: tc.border }}>
                   ·
                 </span>
-                <span style={{ color: tc.highlight }}>{projects.length}</span>
+                <span style={{ color: tc.highlight }}>{projects.length.toString()}</span>
                 <span> {t('projects.projectsAcross')} </span>
                 <span style={{ color: tc.prompt }}>
-                  {totalIndep} {t('projects.independentlyBuilt')}
+                  {totalIndep.toString()} {t('projects.independentlyBuilt')}
                 </span>
               </div>
               <div className="flex-shrink-0" style={{ color: tc.info }}>
@@ -532,10 +557,10 @@ const Projects: React.FC = () => {
                           : undefined
                       }
                     >
-                      {React.createElement(tab.icon, { className: 'w-3 h-3' })}
+                      {React.createElement(tab.icon as React.ElementType, { className: 'w-3 h-3' })}
                     </div>
                     <span>{tab.label}</span>
-                    <span className="opacity-70">({tab.count})</span>
+                    <span className="opacity-70">({tab.count.toString()})</span>
                   </button>
                 </MotionHover>
               )
@@ -563,58 +588,77 @@ const Projects: React.FC = () => {
           {/* Projects Content Area */}
           <div
             className="overflow-y-auto max-h-[75vh] scrollbar-thin scrollbar-thumb-gray-500/50"
+            ref={parentRef}
             style={{ backgroundColor: tc.bg, color: tc.text }}
           >
             <div className="px-3 md:px-4 lg:px-5 py-4">
-              <MotionList staggerDelay={0.15}>
-                {yearGroups.map((group, gi) => (
-                  <div
-                    className={cn('relative', gi < yearGroups.length - 1 ? 'mb-6' : '')}
-                    key={group.year}
-                  >
-                    {/* Year group header */}
-                    <div className="flex items-center gap-2 mb-2 pl-0.5">
-                      <span
-                        className="font-mono text-[10px] font-semibold tracking-wide"
-                        style={{ color: tc.highlight }}
-                      >
-                        {group.year}
-                      </span>
-                      <div
-                        className="flex-1 h-px opacity-30"
-                        style={{ backgroundColor: tc.border }}
-                      />
-                      <span className="font-mono text-[10px]" style={{ color: tc.muted }}>
-                        {group.items.length} {t('projects.projects')}
-                      </span>
-                    </div>
-
-                    {/* Node list with connector line */}
-                    <div className="relative">
-                      {/* Vertical connector line */}
-                      <div
-                        className="absolute left-[7px] top-3 bottom-3 w-px opacity-30 z-0"
-                        style={{ backgroundColor: tc.border }}
-                      />
-
-                      <div className="flex flex-col gap-0">
-                        {group.items.map((item, idx) => (
+              <div
+                style={{
+                  height: `${virtualizer.getTotalSize().toString()}px`,
+                  position: 'relative',
+                  width: '100%',
+                }}
+              >
+                {virtualizer.getVirtualItems().map((vItem) => {
+                  const item = virtualItems[vItem.index]
+                  return (
+                    <div
+                      data-index={vItem.index}
+                      key={vItem.key}
+                      ref={virtualizer.measureElement}
+                      style={{
+                        left: 0,
+                        position: 'absolute',
+                        top: 0,
+                        transform: `translateY(${vItem.start.toString()}px)`,
+                        width: '100%',
+                      }}
+                    >
+                      {item.type === 'header' ? (
+                        <div className="relative mb-2">
+                          <div className="flex items-center gap-2 pl-0.5">
+                            <span
+                              className="font-mono text-[10px] font-semibold tracking-wide"
+                              style={{ color: tc.highlight }}
+                            >
+                              {item.year}
+                            </span>
+                            <div
+                              className="flex-1 h-px opacity-30"
+                              style={{ backgroundColor: tc.border }}
+                            />
+                            <span className="font-mono text-[10px]" style={{ color: tc.muted }}>
+                              {item.count.toString()} {t('projects.projects')}
+                            </span>
+                          </div>
+                          {/* Vertical connector line (top part) */}
+                          <div
+                            className="absolute left-[7px] top-6 h-4 w-px opacity-30 z-0"
+                            style={{ backgroundColor: tc.border }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="relative">
+                          {/* Vertical connector line */}
+                          <div
+                            className="absolute left-[7px] top-0 bottom-0 w-px opacity-30 z-0"
+                            style={{ backgroundColor: tc.border }}
+                          />
                           <FlowNode
-                            ct={themes[item.category]}
+                            ct={themes[item.data.category]}
                             hlc={hlc}
                             isDark={isDark}
-                            isLast={idx === group.items.length - 1}
-                            item={item}
-                            key={item.id}
+                            isLast={false} // idx === group.items.length - 1
+                            item={item.data}
                             onImageClick={onImgClick}
                             tc={tc}
                           />
-                        ))}
-                      </div>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                ))}
-              </MotionList>
+                  )
+                })}
+              </div>
             </div>
 
             {filtered.length === 0 && (
@@ -636,12 +680,12 @@ const Projects: React.FC = () => {
           >
             <div className="flex items-center gap-3">
               <span>
-                {filtered.length}/{projects.length} {t('projects.shown')}
+                {filtered.length.toString()}/{projects.length.toString()} {t('projects.shown')}
               </span>
               <div className="flex items-center gap-1 font-bold" style={{ color: tc.success }}>
-                <FaUser className="w-[9px] h-[9px]" />
+                <User className="w-[9px] h-[9px]" />
                 <span>
-                  {filteredIndep} {t('projects.independent')}
+                  {filteredIndep.toString()} {t('projects.independent')}
                 </span>
               </div>
             </div>
@@ -672,7 +716,7 @@ const Projects: React.FC = () => {
               className="absolute top-4 right-4 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors cursor-pointer"
               onClick={() => setImgOpen(false)}
             >
-              <FaTimes />
+              <X />
             </button>
           </div>
         </DialogContent>

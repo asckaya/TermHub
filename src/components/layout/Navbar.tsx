@@ -1,24 +1,32 @@
 import { Link } from '@tanstack/react-router'
+import { Menu, Moon, Sun, X } from 'lucide-react'
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FaEnvelope, FaGithub, FaLinkedin, FaMedium } from 'react-icons/fa'
-import { FiMenu, FiMoon, FiSun, FiX } from 'react-icons/fi'
-import { SiGooglescholar } from 'react-icons/si'
+import { FaGithub, FaLinkedin, FaMailBulk } from 'react-icons/fa'
+import { SiGooglescholar, SiMedium } from 'react-icons/si'
 
 import { MotionHover } from '@/components/animations/MotionList'
 import { ThemePicker } from '@/components/layout/ThemePicker'
 import { Button } from '@/components/ui/button'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { useT } from '@/hooks/useT'
+import { getLocale, setLocale } from '@/paraglide/runtime'
 
 const Navbar: React.FC = () => {
   const { colorMode, toggleColorMode } = useColorMode()
   const [isOpen, setIsOpen] = useState(false)
-  const { i18n, t } = useTranslation()
   const { navItems, siteOwner } = useLocalizedData()
+  const currentLang = getLocale()
+  const { t } = useT()
 
   const toggleLanguage = () => {
-    void i18n.changeLanguage(i18n.language === 'zh' ? 'en' : 'zh')
+    const nextLang = currentLang === 'zh' ? 'en' : 'zh'
+    const result = setLocale(nextLang)
+    if (result instanceof Promise) {
+      result.catch(() => {
+        /* Handle error */
+      })
+    }
   }
 
   const onClose = () => setIsOpen(false)
@@ -27,12 +35,12 @@ const Navbar: React.FC = () => {
   const socialLinks = [
     {
       href: siteOwner.contact.email ? `mailto:${siteOwner.contact.email}` : undefined,
-      icon: FaEnvelope,
+      icon: FaMailBulk,
       label: 'Email',
     },
     { href: siteOwner.social.github, icon: FaGithub, label: 'GitHub' },
     { href: siteOwner.social.linkedin, icon: FaLinkedin, label: 'LinkedIn' },
-    { href: siteOwner.social.medium, icon: FaMedium, label: 'Medium' },
+    { href: siteOwner.social.medium, icon: SiMedium, label: 'Medium' },
     { href: siteOwner.social.googleScholar, icon: SiGooglescholar, label: 'Google Scholar' },
   ].filter((link) => link.href)
 
@@ -51,7 +59,7 @@ const Navbar: React.FC = () => {
                   size="icon"
                   variant="ghost"
                 >
-                  {isOpen ? <FiX className="h-5 w-5" /> : <FiMenu className="h-5 w-5" />}
+                  {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
                 </Button>
               </MotionHover>
             </div>
@@ -114,7 +122,7 @@ const Navbar: React.FC = () => {
                 size="sm"
                 variant="ghost"
               >
-                <MotionHover>{i18n.language === 'zh' ? 'EN' : '中'}</MotionHover>
+                <MotionHover>{currentLang === 'zh' ? 'EN' : '中'}</MotionHover>
               </Button>
 
               <ThemePicker />
@@ -128,9 +136,9 @@ const Navbar: React.FC = () => {
               >
                 <MotionHover>
                   {colorMode === 'dark' ? (
-                    <FiSun className="h-5 w-5" />
+                    <Sun className="h-5 w-5" />
                   ) : (
-                    <FiMoon className="h-5 w-5" />
+                    <Moon className="h-5 w-5" />
                   )}
                 </MotionHover>
               </Button>
@@ -183,7 +191,7 @@ const Navbar: React.FC = () => {
                 size="sm"
                 variant="outline"
               >
-                {i18n.language === 'zh' ? 'English' : '中文'}
+                {currentLang === 'zh' ? 'English' : '中文'}
               </Button>
               <div className="flex-1 flex justify-center border border-[var(--border-color)] rounded-md py-1">
                 <ThemePicker />

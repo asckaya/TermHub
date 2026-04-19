@@ -1,10 +1,10 @@
-import { useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
+import React, { useMemo } from 'react'
 
 import type { ExperienceEntry, JourneyPhase } from '@/types'
 
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { useT } from '@/hooks/useT'
 
 const renderBoldText = (text: string, color: string, boldColor: string) => {
   if (!text) return null
@@ -30,7 +30,7 @@ interface JourneySectionProps {
 }
 
 const JourneySection: React.FC<JourneySectionProps> = ({ filterEducation = false }) => {
-  const { t } = useTranslation()
+  const { t } = useT()
   const { experienceTimeline } = useLocalizedData()
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'

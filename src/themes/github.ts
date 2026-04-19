@@ -1,4 +1,4 @@
-import { FaBrain, FaChartBar, FaGlobe, FaHeartbeat, FaRobot, FaWrench } from 'react-icons/fa'
+import { Activity, BarChart3, Bot, Brain, Globe, Wrench } from 'lucide-react'
 
 import type { CSSVarTokens, TerminalColors, ThemeDefinition } from './types'
 
@@ -146,7 +146,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ jupyter execute',
     color: dk ? githubDarkColors.success.fg : githubLightColors.success.fg,
     glow: `rgba(63, 185, 80, ${dk ? '0.2' : '0.1'})`,
-    icon: FaChartBar,
+    icon: BarChart3,
     label: 'DATA / ML',
     stripe: `linear-gradient(180deg, ${dk ? githubDarkColors.success.fg : githubLightColors.success.fg}, transparent)`,
   },
@@ -156,7 +156,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ python recommend.py',
     color: dk ? githubDarkColors.danger.fg : githubLightColors.danger.fg,
     glow: `rgba(248, 81, 73, ${dk ? '0.2' : '0.1'})`,
-    icon: FaHeartbeat,
+    icon: Activity,
     label: 'HEALTHCARE',
     stripe: `linear-gradient(180deg, ${dk ? githubDarkColors.danger.fg : githubLightColors.danger.fg}, transparent)`,
   },
@@ -166,7 +166,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ python train.py',
     color: dk ? githubDarkColors.sponsors.fg : '#bf4b8a',
     glow: `rgba(219, 97, 162, ${dk ? '0.2' : '0.1'})`,
-    icon: FaBrain,
+    icon: Brain,
     label: 'NLP / AI',
     stripe: `linear-gradient(180deg, ${dk ? githubDarkColors.sponsors.fg : '#bf4b8a'}, transparent)`,
   },
@@ -176,7 +176,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ ros2 launch planner',
     color: dk ? githubDarkColors.done.fg : githubLightColors.done.fg,
     glow: `rgba(163, 113, 247, ${dk ? '0.2' : '0.1'})`,
-    icon: FaRobot,
+    icon: Bot,
     label: 'ROBOTICS',
     stripe: `linear-gradient(180deg, ${dk ? githubDarkColors.done.fg : githubLightColors.done.fg}, transparent)`,
   },
@@ -186,7 +186,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ make install',
     color: dk ? githubDarkColors.attention.fg : githubLightColors.attention.fg,
     glow: `rgba(210, 153, 34, ${dk ? '0.2' : '0.1'})`,
-    icon: FaWrench,
+    icon: Wrench,
     label: 'TOOLING',
     stripe: `linear-gradient(180deg, ${dk ? githubDarkColors.attention.fg : githubLightColors.attention.fg}, transparent)`,
   },
@@ -196,7 +196,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ npm run dev',
     color: dk ? githubDarkColors.accent.fg : githubLightColors.accent.fg,
     glow: `rgba(88, 166, 255, ${dk ? '0.2' : '0.1'})`,
-    icon: FaGlobe,
+    icon: Globe,
     label: 'WEB / APP',
     stripe: `linear-gradient(180deg, ${dk ? githubDarkColors.accent.fg : githubLightColors.accent.fg}, transparent)`,
   },

@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import DynamicIcon from '@/components/ui/DynamicIcon'
@@ -14,6 +13,7 @@ import {
 import { useThemeConfig } from '@/config/theme'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { useT } from '@/hooks/useT'
 import { cn } from '@/lib/utils'
 import { type NewsItem } from '@/types'
 import { highlightData } from '@/utils/highlightData'
@@ -83,7 +83,7 @@ const researchStatuses = [
 const NewsTimeline: React.FC<NewsTimelineProps> = ({ news }) => {
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
-  const { t } = useTranslation()
+  const { t } = useT()
   const { siteOwner } = useLocalizedData()
   const [currentTime, setCurrentTime] = useState(new Date())
   const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({})

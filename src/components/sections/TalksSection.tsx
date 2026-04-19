@@ -1,9 +1,9 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 
 import DynamicIcon from '@/components/ui/DynamicIcon'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { useT } from '@/hooks/useT'
 
 const typeLabels: Record<string, { color: string; icon: string }> = {
   invited: { color: 'rgb(192, 132, 252)', icon: 'FaUserTie' }, // purple-400
@@ -17,7 +17,7 @@ const typeLabels: Record<string, { color: string; icon: string }> = {
 }
 
 const TalksSection: React.FC = () => {
-  const { t } = useTranslation()
+  const { t } = useT()
   const { talks } = useLocalizedData()
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
@@ -37,7 +37,7 @@ const TalksSection: React.FC = () => {
       <div className="max-w-full lg:max-w-7xl px-2 md:px-4 lg:px-8 mx-auto">
         <div className="flex items-center gap-3 mb-4">
           <div className="bg-cyan-400 rounded-full flex-shrink-0 h-0.5 w-5" />
-          <h3 className="text-lg font-semibold">{t('about.talks', 'Talks')}</h3>
+          <h3 className="text-lg font-semibold">{t('about.talks')}</h3>
           <div className="flex-1 h-px" style={{ backgroundColor: tc.line }} />
         </div>
         <div className="flex flex-col">

@@ -9,7 +9,6 @@
     "src/components/ui/*.tsx": ["exports", "types"],
     "src/types/index.ts": ["exports", "types"],
     "src/themes/*.ts": ["exports", "types"],
-    "src/config/theme.ts": ["exports"],
-    "src/i18n.ts": ["exports"]
+    "src/config/theme.ts": ["exports"]
   }
 }

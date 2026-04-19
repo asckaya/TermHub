@@ -1,117 +1,74 @@
-import { type IconType } from 'react-icons'
+import React from 'react'
 import {
-  FaArrowRight,
-  FaAward,
-  FaBolt,
   FaBrain,
-  FaBriefcase,
-  FaChalkboardTeacher,
-  FaChartBar,
   FaChevronRight,
   FaClock,
   FaCode,
   FaCodeBranch,
   FaCoffee,
-  FaCoins,
-  FaDatabase,
   FaEnvelope,
   FaExternalLinkAlt,
   FaFileAlt,
   FaFolder,
   FaGithub,
-  FaGlobe,
-  FaGraduationCap,
-  FaHeart,
-  FaLightbulb,
   FaLinkedin,
-  FaMedal,
-  FaMedium,
-  FaPlane,
-  FaPlay,
-  FaProjectDiagram,
-  FaRobot,
-  FaRocket,
-  FaStar,
-  FaTerminal,
-  FaTrophy,
+  FaMapMarkerAlt,
+  FaSync,
   FaUser,
-  FaYoutube,
 } from 'react-icons/fa'
-import {
-  SiArxiv,
-  SiBilibili,
-  SiCsdn,
-  SiGooglescholar,
-  SiNotion,
-  SiX,
-  SiZhihu,
-} from 'react-icons/si'
+import { SiGooglescholar } from 'react-icons/si'
 
-const icons: Record<string, IconType> = {
-  FaArrowRight,
-  FaAward,
-  FaBolt,
+import { cn } from '@/lib/utils'
+
+/**
+ * A curated map of icons used across the project.
+ * This approach ensures that ONLY the icons we actually use are included
+ * in the final bundle, dropping the size from ~18MB to a few KB.
+ */
+const iconMap: Record<string, React.ElementType | undefined> = {
   FaBrain,
-  FaBriefcase,
-  FaChalkboardTeacher,
-  FaChartBar,
   FaChevronRight,
   FaClock,
   FaCode,
   FaCodeBranch,
   FaCoffee,
-  FaCoins,
-  FaDatabase,
   FaEnvelope,
   FaExternalLinkAlt,
   FaFileAlt,
   FaFolder,
   FaGithub,
-  FaGlobe,
-  FaGraduationCap,
-  FaHeart,
-  FaLightbulb,
   FaLinkedin,
-  FaMedal,
-  FaMedium,
-  FaPlane,
-  FaPlay,
-  FaProjectDiagram,
-  FaRobot,
-  FaRocket,
-  FaStar,
-  FaTerminal,
-  FaTrophy,
+  FaMapMarkerAlt,
+  FaSync,
   FaUser,
-  FaYoutube,
-  SiArxiv,
-  SiBilibili,
-  SiCsdn,
   SiGooglescholar,
-  SiNotion,
-  SiX,
-  SiZhihu,
 }
 
-interface DynamicIconProps extends React.SVGAttributes<SVGElement> {
-  // For backward compatibility with Chakra props
-  boxSize?: (number | string)[] | number | string
-  name?: string
+interface DynamicIconProps extends React.SVGProps<SVGSVGElement> {
+  className?: string
+  name: string
 }
 
-const DynamicIcon: React.FC<DynamicIconProps> = ({ boxSize, name, ...props }) => {
-  if (!name) return null
-  const IconComponent = (icons as Record<string, IconType | undefined>)[name] ?? FaCode
+/**
+ * A flexible icon component that resolves icons from a curated map.
+ * To add new icons, simply import them from react-icons and add to iconMap.
+ */
+const DynamicIcon: React.FC<DynamicIconProps> = ({ className, name, ...props }) => {
+  const IconComponent = iconMap[name]
 
-  // Map boxSize to width/height if it's a number/string
-  const size =
-    typeof boxSize === 'number'
-      ? `${String(boxSize * 4)}px`
-      : typeof boxSize === 'string'
-        ? boxSize
-        : undefined
+  if (!IconComponent) {
+    // If not found in the map, we show a small placeholder
+    return (
+      <div
+        className={cn('h-4 w-4 bg-muted/20 rounded-sm animate-pulse inline-block', className)}
+        title={`Icon "${name}" not found in curated list`}
+      />
+    )
+  }
 
-  return <IconComponent {...props} style={{ height: size, width: size, ...props.style }} />
+  const ResolvedIcon = IconComponent
+
+  return <ResolvedIcon className={cn('h-4 w-4 flex-shrink-0', className)} {...props} />
 }
 
 export default DynamicIcon

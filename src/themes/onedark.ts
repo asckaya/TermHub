@@ -1,4 +1,4 @@
-import { FaBrain, FaChartBar, FaGlobe, FaHeartbeat, FaRobot, FaWrench } from 'react-icons/fa'
+import { Activity, BarChart3, Bot, Brain, Globe, Wrench } from 'lucide-react'
 
 import type { CSSVarTokens, TerminalColors, ThemeDefinition } from './types'
 
@@ -88,7 +88,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ jupyter execute',
     color: dk ? oneDarkColors.green : oneLightColors.green,
     glow: `rgba(152, 195, 121, ${dk ? '0.2' : '0.1'})`,
-    icon: FaChartBar,
+    icon: BarChart3,
     label: 'DATA / ML',
     stripe: `linear-gradient(180deg, ${dk ? oneDarkColors.green : oneLightColors.green}, transparent)`,
   },
@@ -98,7 +98,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ python recommend.py',
     color: dk ? oneDarkColors.cyan : oneLightColors.cyan,
     glow: `rgba(86, 182, 194, ${dk ? '0.2' : '0.1'})`,
-    icon: FaHeartbeat,
+    icon: Activity,
     label: 'HEALTHCARE',
     stripe: `linear-gradient(180deg, ${dk ? oneDarkColors.cyan : oneLightColors.cyan}, transparent)`,
   },
@@ -108,7 +108,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ python train.py',
     color: dk ? oneDarkColors.red : oneLightColors.red,
     glow: `rgba(224, 108, 117, ${dk ? '0.2' : '0.1'})`,
-    icon: FaBrain,
+    icon: Brain,
     label: 'NLP / AI',
     stripe: `linear-gradient(180deg, ${dk ? oneDarkColors.red : oneLightColors.red}, transparent)`,
   },
@@ -118,7 +118,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ ros2 launch planner',
     color: dk ? oneDarkColors.purple : oneLightColors.purple,
     glow: `rgba(198, 120, 221, ${dk ? '0.2' : '0.1'})`,
-    icon: FaRobot,
+    icon: Bot,
     label: 'ROBOTICS',
     stripe: `linear-gradient(180deg, ${dk ? oneDarkColors.purple : oneLightColors.purple}, transparent)`,
   },
@@ -128,7 +128,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ make install',
     color: dk ? oneDarkColors.orange : oneLightColors.orange,
     glow: `rgba(209, 154, 102, ${dk ? '0.2' : '0.1'})`,
-    icon: FaWrench,
+    icon: Wrench,
     label: 'TOOLING',
     stripe: `linear-gradient(180deg, ${dk ? oneDarkColors.orange : oneLightColors.orange}, transparent)`,
   },
@@ -138,7 +138,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ npm run dev',
     color: dk ? oneDarkColors.blue : oneLightColors.blue,
     glow: `rgba(97, 175, 239, ${dk ? '0.2' : '0.1'})`,
-    icon: FaGlobe,
+    icon: Globe,
     label: 'WEB / APP',
     stripe: `linear-gradient(180deg, ${dk ? oneDarkColors.blue : oneLightColors.blue}, transparent)`,
   },

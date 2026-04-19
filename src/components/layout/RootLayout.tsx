@@ -1,5 +1,6 @@
 import { Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+import { domAnimation, LazyMotion } from 'framer-motion'
 import React from 'react'
 import { Toaster } from 'sonner'
 
@@ -33,15 +34,17 @@ export function RootLayout() {
 
   return (
     <ThemeProvider>
-      {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
-      <ThemeInjector />
-      <Toaster position="top-right" theme={colorMode === 'dark' ? 'dark' : 'light'} />
-      <SlotProvider slots={slots}>
-        <TemplateLayout>
-          <Outlet />
-        </TemplateLayout>
-      </SlotProvider>
-      {import.meta.env.DEV && <TanStackRouterDevtools />}
+      <LazyMotion features={domAnimation} strict>
+        {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
+        <ThemeInjector />
+        <Toaster position="top-right" theme={colorMode === 'dark' ? 'dark' : 'light'} />
+        <SlotProvider slots={slots}>
+          <TemplateLayout>
+            <Outlet />
+          </TemplateLayout>
+        </SlotProvider>
+        {import.meta.env.DEV && <TanStackRouterDevtools />}
+      </LazyMotion>
     </ThemeProvider>
   )
 }

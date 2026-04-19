@@ -1,8 +1,7 @@
+import { ExternalLink } from 'lucide-react'
 import React, { useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { type IconType } from 'react-icons'
-import { FaExternalLinkAlt, FaGithub, FaMedium, FaYoutube } from 'react-icons/fa'
-import { SiCsdn, SiZhihu } from 'react-icons/si'
+import { FaGithub, FaYoutube } from 'react-icons/fa'
+import { SiCsdn, SiMedium, SiZhihu } from 'react-icons/si'
 
 import type { ProjectItem } from '@/types'
 
@@ -12,6 +11,7 @@ import { TerminalShell } from '@/components/ui/TerminalShell'
 import { useThemeConfig } from '@/config/theme'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { useT } from '@/hooks/useT'
 import { cn } from '@/lib/utils'
 import { highlightData } from '@/utils/highlightData'
 
@@ -19,14 +19,14 @@ import { highlightData } from '@/utils/highlightData'
 type CategoryFilter = 'all' | ProjectItem['category']
 
 /* ── Helpers ───────────────────────────────────────────────────── */
-const linkIcon = (url: string): IconType => {
-  if (!url) return FaExternalLinkAlt
+const linkIcon = (url: string): React.ElementType => {
+  if (!url) return ExternalLink
   if (url.includes('github.com')) return FaGithub
-  if (url.includes('medium.com')) return FaMedium
+  if (url.includes('medium.com')) return SiMedium
   if (url.includes('youtu.be') || url.includes('youtube.com')) return FaYoutube
   if (url.includes('zhihu.com')) return SiZhihu
   if (url.includes('csdn.net')) return SiCsdn
-  return FaExternalLinkAlt
+  return ExternalLink
 }
 
 const fmtDate = (v?: string) => {
@@ -65,7 +65,7 @@ const getArticleType = (tags?: string[]): null | string => {
 const Articles: React.FC = () => {
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
-  const { t } = useTranslation()
+  const { t } = useT()
   const { articles: articleData, siteOwner } = useLocalizedData()
   const [currentTime, setCurrentTime] = useState(new Date())
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({})
@@ -149,7 +149,8 @@ const Articles: React.FC = () => {
           statusBar={
             <>
               <div>
-                {filteredArticles.length}/{articles.length} {t('articles.shown')}
+                {filteredArticles.length.toString()}/{articles.length.toString()}{' '}
+                {t('articles.shown')}
               </div>
               <MotionBox delay={0.6}>
                 <div className="flex items-center gap-1">
@@ -186,10 +187,10 @@ const Articles: React.FC = () => {
                 <span className="mx-1" style={{ color: tc.border }}>
                   ·
                 </span>
-                <span style={{ color: tc.highlight }}>{articles.length}</span>
+                <span style={{ color: tc.highlight }}>{articles.length.toString()}</span>
                 <span> {t('articles.technicalArticles')} </span>
                 <span style={{ color: tc.command }}>
-                  {availableCategories.length} {t('articles.domains')}
+                  {availableCategories.length.toString()} {t('articles.domains')}
                 </span>
               </div>
               <div className="flex-shrink-0" style={{ color: tc.info }}>
@@ -263,7 +264,7 @@ const Articles: React.FC = () => {
                         style={{ backgroundColor: tc.border }}
                       />
                       <span className="font-mono text-[10px]" style={{ color: tc.muted }}>
-                        {items.length}{' '}
+                        {items.length.toString()}{' '}
                         {items.length === 1 ? t('articles.article') : t('articles.articles')}
                       </span>
                     </div>

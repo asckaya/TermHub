@@ -1,5 +1,4 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 
 import type { Award } from '@/types'
 
@@ -8,6 +7,7 @@ import { TerminalShell } from '@/components/ui/TerminalShell'
 import { SyntaxText } from '@/components/ui/TerminalSyntax'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { useT } from '@/hooks/useT'
 
 const iconFor = (a: Award): string => {
   if (a.kind === 'grant') return 'FaCoins'
@@ -48,7 +48,7 @@ const kindMeta: Record<string, { color: [string, string]; labelKey: string }> = 
 }
 
 const AwardRow = React.memo(function AwardRow({ award }: { award: Award }) {
-  const { t } = useTranslation()
+  const { t } = useT()
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
 

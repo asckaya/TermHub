@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { getLocalizedData } from '@/data'
+import { getLocale } from '@/paraglide/runtime'
 import {
   getLocalizedGithubUsername,
   getLocalizedHeroSocialIcons,
@@ -15,8 +15,7 @@ import {
  * Re-renders automatically when the user switches language.
  */
 export function useLocalizedData() {
-  const { i18n } = useTranslation()
-  const lang = i18n.language
+  const lang = getLocale()
 
   return useMemo(() => {
     const data = getLocalizedData(lang)

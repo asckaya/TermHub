@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, m } from 'framer-motion'
 import React, { useEffect, useMemo, useState } from 'react'
 
 import { useThemeConfig } from '@/config/theme'
@@ -71,7 +71,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
   return (
     <AnimatePresence>
       {!isExiting && (
-        <motion.div
+        <m.div
           animate={{ opacity: 1 }}
           className="fixed inset-0 z-[9999] overflow-hidden"
           exit={{ filter: 'blur(20px)', opacity: 0, scale: 1.1 }}
@@ -97,7 +97,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
               {/* Logo Reveal */}
               <AnimatePresence>
                 {showLogo && (
-                  <motion.div
+                  <m.div
                     animate={{ opacity: 1, y: 0 }}
                     initial={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.5 }}
@@ -114,7 +114,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
                     >
                       Welcome to Ascka Personal System v1.0
                     </p>
-                  </motion.div>
+                  </m.div>
                 )}
               </AnimatePresence>
             </div>
@@ -130,7 +130,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
               backgroundSize: '100% 4px',
             }}
           />
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   )

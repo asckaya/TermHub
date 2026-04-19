@@ -1,4 +1,4 @@
-import { FaBrain, FaChartBar, FaGlobe, FaHeartbeat, FaRobot, FaWrench } from 'react-icons/fa'
+import { Activity, BarChart3, Bot, Brain, Globe, Wrench } from 'lucide-react'
 
 import type { CSSVarTokens, TerminalColors, ThemeDefinition } from './types'
 
@@ -81,7 +81,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ jupyter execute',
     color: draculaColors.green,
     glow: `rgba(80, 250, 123, ${dk ? '0.25' : '0.12'})`,
-    icon: FaChartBar,
+    icon: BarChart3,
     label: 'DATA / ML',
     stripe: `linear-gradient(180deg, ${draculaColors.green}, transparent)`,
   },
@@ -91,7 +91,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ python recommend.py',
     color: draculaColors.red,
     glow: `rgba(255, 85, 85, ${dk ? '0.25' : '0.12'})`,
-    icon: FaHeartbeat,
+    icon: Activity,
     label: 'HEALTHCARE',
     stripe: `linear-gradient(180deg, ${draculaColors.red}, transparent)`,
   },
@@ -101,7 +101,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ python train.py',
     color: draculaColors.pink,
     glow: `rgba(255, 121, 198, ${dk ? '0.25' : '0.12'})`,
-    icon: FaBrain,
+    icon: Brain,
     label: 'NLP / AI',
     stripe: `linear-gradient(180deg, ${draculaColors.pink}, transparent)`,
   },
@@ -111,7 +111,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ ros2 launch planner',
     color: draculaColors.purple,
     glow: `rgba(189, 147, 249, ${dk ? '0.25' : '0.12'})`,
-    icon: FaRobot,
+    icon: Bot,
     label: 'ROBOTICS',
     stripe: `linear-gradient(180deg, ${draculaColors.purple}, transparent)`,
   },
@@ -121,7 +121,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ make install',
     color: draculaColors.orange,
     glow: `rgba(255, 184, 108, ${dk ? '0.25' : '0.12'})`,
-    icon: FaWrench,
+    icon: Wrench,
     label: 'TOOLING',
     stripe: `linear-gradient(180deg, ${draculaColors.orange}, transparent)`,
   },
@@ -131,7 +131,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ npm run dev',
     color: draculaColors.cyan,
     glow: `rgba(139, 233, 253, ${dk ? '0.25' : '0.12'})`,
-    icon: FaGlobe,
+    icon: Globe,
     label: 'WEB / APP',
     stripe: `linear-gradient(180deg, ${draculaColors.cyan}, transparent)`,
   },

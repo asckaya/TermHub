@@ -1,12 +1,12 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { Badge } from '@/components/ui/badge'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { useT } from '@/hooks/useT'
 
 export const AboutPageHeader: React.FC = () => {
-  const { t } = useTranslation()
+  const { t } = useT()
   const { siteOwner } = useLocalizedData()
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
@@ -27,7 +27,7 @@ export const AboutPageHeader: React.FC = () => {
       </div>
       <div className="flex items-center gap-3 mt-3">
         <div className="bg-cyan-400 rounded-full h-0.5 w-8" />
-        <h2 className="text-xl md:text-2xl font-bold">{t('nav.about', 'About')}</h2>
+        <h2 className="text-xl md:text-2xl font-bold">{t('nav.about')}</h2>
         <Badge
           className="font-mono text-[10px] px-2 bg-cyan-400/10 text-cyan-400 border-none"
           variant="secondary"
@@ -36,7 +36,7 @@ export const AboutPageHeader: React.FC = () => {
         </Badge>
       </div>
       <p className="font-mono text-xs mt-1" style={{ color: tc.text }}>
-        # {t('about.aboutDescription', 'Personal background, experience & skills')}
+        # {t('about.aboutDescription')}
       </p>
     </div>
   )

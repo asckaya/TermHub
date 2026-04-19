@@ -1,12 +1,12 @@
+import { X } from 'lucide-react'
 import React, { useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FaTimes } from 'react-icons/fa'
 
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import DynamicIcon from '@/components/ui/DynamicIcon'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { useT } from '@/hooks/useT'
 import { selectedPublicationIds } from '@/site.config'
 import { withBase } from '@/utils/asset'
 
@@ -63,7 +63,7 @@ interface Publication {
 }
 
 const PublicationCard = ({ pub }: { pub: Publication }) => {
-  const { t } = useTranslation()
+  const { t } = useT()
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
 
@@ -114,6 +114,7 @@ const PublicationCard = ({ pub }: { pub: Publication }) => {
             <img
               alt={pub.title}
               className="h-full w-full object-contain p-1 transition-transform duration-300 hover:scale-[1.03]"
+              loading="lazy"
               src={withBase(pub.featuredImage)}
             />
           </div>
@@ -270,7 +271,7 @@ const PublicationCard = ({ pub }: { pub: Publication }) => {
                 className="text-white hover:text-cyan-400 transition-colors"
                 onClick={() => setImageOpen(false)}
               >
-                <FaTimes className="h-6 w-6" />
+                <X className="h-6 w-6" />
               </button>
             </div>
             <img
@@ -287,7 +288,7 @@ const PublicationCard = ({ pub }: { pub: Publication }) => {
 }
 
 const SelectedPublicationsSection: React.FC = () => {
-  const { t } = useTranslation()
+  const { t } = useT()
   const { publications } = useLocalizedData()
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'

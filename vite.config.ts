@@ -1,3 +1,4 @@
+import { paraglideVitePlugin } from '@inlang/paraglide-js'
 import mdx from '@mdx-js/rollup'
 import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-vite-plugin'
@@ -41,13 +42,6 @@ export default defineConfig({
           if (id.includes('framer-motion')) return 'motion'
 
           if (id.includes('react-icons')) return 'icons'
-
-          if (
-            id.includes('i18next') ||
-            id.includes('react-i18next') ||
-            id.includes('i18next-browser-languagedetector')
-          )
-            return 'i18n'
 
           if (
             id.includes('/@mdx-js/') ||
@@ -102,6 +96,10 @@ export default defineConfig({
       ],
     }),
     react(),
+    paraglideVitePlugin({
+      outdir: './src/paraglide',
+      project: './project.inlang',
+    }),
     tanstackRouter({
       generatedRouteTree: './src/routeTree.gen.ts',
       routesDirectory: './src/routes',

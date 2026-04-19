@@ -1,4 +1,4 @@
-import { motion, type Variants } from 'framer-motion'
+import { m, type Variants } from 'framer-motion'
 import React, { type ReactNode, useMemo } from 'react'
 
 interface MotionListProps {
@@ -39,7 +39,7 @@ export const MotionList: React.FC<MotionListProps> = ({
   const items = React.Children.toArray(children)
 
   return (
-    <motion.div
+    <m.div
       custom={initialDelay}
       initial="hidden"
       style={{ width: '100%' }}
@@ -50,12 +50,12 @@ export const MotionList: React.FC<MotionListProps> = ({
       {items.map((child, index) => {
         const key = React.isValidElement(child) && child.key != null ? child.key : index
         return (
-          <motion.div custom={index * staggerDelay} key={key} variants={itemVariants}>
+          <m.div custom={index * staggerDelay} key={key} variants={itemVariants}>
             {child}
-          </motion.div>
+          </m.div>
         )
       })}
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -74,14 +74,14 @@ export const MotionBox: React.FC<{ children: ReactNode; delay?: number }> = ({
   )
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       transition={transition}
       viewport={BOX_VIEWPORT}
       whileInView={{ opacity: 1, y: 0 }}
     >
       {children}
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -95,13 +95,13 @@ const HOVER_STYLE = { display: 'inline-block' } as const
 
 export const MotionHover: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
-    <motion.div
+    <m.div
       style={HOVER_STYLE}
       transition={HOVER_TRANSITION}
       whileHover={HOVER_SCALE}
       whileTap={TAP_SCALE}
     >
       {children}
-    </motion.div>
+    </m.div>
   )
 }

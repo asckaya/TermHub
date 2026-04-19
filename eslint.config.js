@@ -8,7 +8,17 @@ import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
   {
-    ignores: ['dist', 'node_modules', 'mcp-server', 'plugins', 'public', '.wrangler'],
+    ignores: [
+      'dist',
+      'node_modules',
+      'mcp-server',
+      'plugins',
+      'public',
+      '.wrangler',
+      'scratch',
+      'src/paraglide/*.js',
+      'src/paraglide/messages/*.js',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.strict, // Use base strict for all files
@@ -52,6 +62,7 @@ export default tseslint.config(
       'prefer-const': 'error',
 
       'react-hooks/exhaustive-deps': 'error',
+      'react-hooks/incompatible-library': 'off',
       'react-hooks/rules-of-hooks': 'error',
       'react-refresh/only-export-components': ['error', { allowConstantExport: true }],
     },

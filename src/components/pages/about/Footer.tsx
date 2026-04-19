@@ -1,12 +1,13 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { SiCloudflare, SiGithub } from 'react-icons/si'
+import { FaGithub } from 'react-icons/fa'
+import { SiCloudflare } from 'react-icons/si'
 
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { useT } from '@/hooks/useT'
 
 const Footer: React.FC = () => {
-  const { t } = useTranslation()
+  const { t } = useT()
   const { siteOwner } = useLocalizedData()
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
@@ -38,7 +39,7 @@ const Footer: React.FC = () => {
               style={{ color: tc.text }}
               target="_blank"
             >
-              <SiGithub className="h-5 w-5" />
+              <FaGithub className="h-5 w-5" />
             </a>
             <a
               className="transition-all duration-200 hover:text-orange-500 hover:-translate-y-0.5 no-underline"

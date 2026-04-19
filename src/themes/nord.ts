@@ -1,4 +1,4 @@
-import { FaBrain, FaChartBar, FaGlobe, FaHeartbeat, FaRobot, FaWrench } from 'react-icons/fa'
+import { Activity, BarChart3, Bot, Brain, Globe, Wrench } from 'lucide-react'
 
 import type { ThemeDefinition } from './types'
 
@@ -37,7 +37,7 @@ export const nordTheme: ThemeDefinition = {
       cmd: '$ jupyter execute',
       color: dk ? '#7ce3b6' : '#2f9e6a',
       glow: dk ? 'rgba(107,213,156,0.25)' : 'rgba(47,158,106,0.12)',
-      icon: FaChartBar,
+      icon: BarChart3,
       label: 'DATA / ML',
       stripe: 'linear-gradient(180deg,#6bd59c,transparent)',
     },
@@ -47,7 +47,7 @@ export const nordTheme: ThemeDefinition = {
       cmd: '$ python recommend.py',
       color: dk ? '#f09090' : '#c04040',
       glow: dk ? 'rgba(255,128,128,0.25)' : 'rgba(192,64,64,0.12)',
-      icon: FaHeartbeat,
+      icon: Activity,
       label: 'HEALTHCARE',
       stripe: 'linear-gradient(180deg,#ff8080,transparent)',
     },
@@ -57,7 +57,7 @@ export const nordTheme: ThemeDefinition = {
       cmd: '$ python train.py',
       color: dk ? '#f0a0c8' : '#b0447a',
       glow: dk ? 'rgba(255,128,191,0.25)' : 'rgba(176,68,122,0.12)',
-      icon: FaBrain,
+      icon: Brain,
       label: 'NLP / AI',
       stripe: 'linear-gradient(180deg,#ff80bf,transparent)',
     },
@@ -67,7 +67,7 @@ export const nordTheme: ThemeDefinition = {
       cmd: '$ ros2 launch planner',
       color: dk ? '#c89cff' : '#7a44c0',
       glow: dk ? 'rgba(179,128,255,0.25)' : 'rgba(122,68,192,0.12)',
-      icon: FaRobot,
+      icon: Bot,
       label: 'ROBOTICS',
       stripe: 'linear-gradient(180deg,#b380ff,transparent)',
     },
@@ -77,7 +77,7 @@ export const nordTheme: ThemeDefinition = {
       cmd: '$ make install',
       color: dk ? '#7feeee' : '#2aa9a9',
       glow: dk ? 'rgba(127,238,238,0.25)' : 'rgba(42,169,169,0.12)',
-      icon: FaWrench,
+      icon: Wrench,
       label: 'TOOLING',
       stripe: 'linear-gradient(180deg,#7feeee,transparent)',
     },
@@ -87,7 +87,7 @@ export const nordTheme: ThemeDefinition = {
       cmd: '$ npm run dev',
       color: dk ? '#ffbe8d' : '#c27435',
       glow: dk ? 'rgba(255,182,128,0.25)' : 'rgba(194,116,53,0.12)',
-      icon: FaGlobe,
+      icon: Globe,
       label: 'WEB / APP',
       stripe: 'linear-gradient(180deg,#ffb680,transparent)',
     },

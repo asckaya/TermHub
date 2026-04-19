@@ -1,16 +1,16 @@
 import { useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import type { SlotName } from '@/templates/slots'
 
 import { Badge } from '@/components/ui/badge'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { useT } from '@/hooks/useT'
 import { useSlot } from '@/templates/hooks'
 import { DEFAULT_SECTIONS } from '@/templates/slots'
 
 const Home = () => {
-  const { t } = useTranslation()
+  const { t } = useT()
   const { experience, institutionLogos, news, research, siteConfig } = useLocalizedData()
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'

@@ -1,13 +1,14 @@
-import { useTranslation } from 'react-i18next'
+import React from 'react'
 
 import DynamicIcon from '@/components/ui/DynamicIcon'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { useT } from '@/hooks/useT'
 
 type SkillItem = string | { category?: string; icon?: string; name: string }
 
 const SkillsSection: React.FC = () => {
-  const { t } = useTranslation()
+  const { t } = useT()
   const { siteOwner } = useLocalizedData()
   const skills = siteOwner.skills as SkillItem[]
   const { colorMode } = useColorMode()
@@ -30,7 +31,7 @@ const SkillsSection: React.FC = () => {
       <div className="max-w-full lg:max-w-7xl px-2 md:px-4 lg:px-8 mx-auto">
         <div className="flex items-center gap-3 mb-4">
           <div className="bg-cyan-400 rounded-full flex-shrink-0 h-0.5 w-5" />
-          <h3 className="text-base md:text-lg font-semibold">{t('about.skills', 'Skills')}</h3>
+          <h3 className="text-base md:text-lg font-semibold">{t('about.skills')}</h3>
           <div className="flex-1 h-px" style={{ backgroundColor: tc.line }} />
         </div>
         <div className="flex flex-wrap gap-2">
@@ -40,9 +41,13 @@ const SkillsSection: React.FC = () => {
               key={getName(skill)}
               style={{ backgroundColor: tc.tagBg, color: tc.tagColor }}
             >
-              {getIcon(skill) && (
-                <DynamicIcon boxSize={3} name={getIcon(skill)} style={{ color: tc.icon }} />
-              )}
+              {(() => {
+                const iconName = getIcon(skill)
+                if (!iconName) return null
+                return (
+                  <DynamicIcon className="h-3 w-3" name={iconName} style={{ color: tc.icon }} />
+                )
+              })()}
               <span>{getName(skill)}</span>
             </div>
           ))}

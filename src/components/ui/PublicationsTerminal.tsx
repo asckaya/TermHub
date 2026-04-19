@@ -1,22 +1,22 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { type IconType } from 'react-icons'
+import { useVirtualizer } from '@tanstack/react-virtual'
 import {
-  FaAtom,
-  FaChartBar,
-  FaChevronRight,
-  FaCloudSun,
-  FaFileAlt,
-  FaFutbol,
-  FaGlobe,
-  FaHandRock,
-  FaProjectDiagram,
-  FaRobot,
-  FaStar,
-  FaTimes,
-  FaVideo,
-} from 'react-icons/fa'
+  Atom,
+  BarChart3,
+  Bot,
+  ChevronRight,
+  CloudSun,
+  FileText,
+  Globe,
+  Hand,
+  Network,
+  Star,
+  Trophy,
+  Video,
+  X,
+} from 'lucide-react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { MotionBox, MotionHover, MotionList } from '@/components/animations/MotionList'
+import { MotionBox, MotionHover } from '@/components/animations/MotionList'
 import { Badge } from '@/components/ui/badge'
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import { Dialog, DialogContent, DialogOverlay, DialogTitle } from '@/components/ui/dialog'
@@ -31,20 +31,21 @@ import { withBase } from '@/utils/asset'
 import { highlightData } from '@/utils/highlightData'
 
 /* ── Emoji → Icon mapping ─────────────────────────────────────── */
-const emojiIconMap: Record<string, IconType | undefined> = {
-  '⚽': FaFutbol,
-  '🌀': FaAtom,
-  '🌐': FaGlobe,
-  '🌟': FaStar,
-  '🎬': FaVideo,
-  '💭': FaCloudSun,
-  '📝': FaFileAlt,
-  '🕸️': FaProjectDiagram,
-  '🤖': FaRobot,
-  '🦾': FaHandRock,
+const emojiIconMap: Record<string, React.ElementType | undefined> = {
+  '⚽': Trophy,
+  '🌀': Atom,
+  '🌐': Globe,
+  '🌟': Star,
+  '🎬': Video,
+  '💭': CloudSun,
+  '📝': FileText,
+  '🕸️': Network,
+  '🤖': Bot,
+  '🦾': Hand,
 }
 
 const PublicationsTerminal: React.FC = () => {
+  "use no memo"
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
   const { publications, siteOwner } = useLocalizedData()
@@ -62,6 +63,8 @@ const PublicationsTerminal: React.FC = () => {
   const { publicationVenueColors, terminalPalette } = useThemeConfig()
   const tc = terminalPalette.colors(isDark)
   const hlc = { kw: tc.command, num: tc.highlight, str: tc.success }
+
+  const parentRef = useRef<HTMLDivElement>(null)
 
   const venueColors = useMemo(
     () =>
@@ -107,6 +110,16 @@ const PublicationsTerminal: React.FC = () => {
     })
     return filtered
   }, [publications, searchQuery, selectedYear, selectedVenue])
+
+  const estimateSize = useCallback(() => 220, [])
+
+  const virtualizer = useVirtualizer({
+    count: filteredPublications.length,
+    estimateSize,
+    getScrollElement: () => parentRef.current,
+    overscan: 5,
+    useFlushSync: false,
+  })
 
   const availableYears = useMemo(() => {
     const years = [...new Set(publications.map((p) => p.year))].sort((a, b) => b - a)
@@ -197,17 +210,19 @@ const PublicationsTerminal: React.FC = () => {
                 <span className="mx-1" style={{ color: tc.border }}>
                   ·
                 </span>
-                <span style={{ color: tc.highlight }}>{stats.total}</span>
+                <span style={{ color: tc.highlight }}>{stats.total.toString()}</span>
                 <span> papers, </span>
-                <span style={{ color: tc.success }}>{stats.firstAuthor} first-authored</span>
+                <span style={{ color: tc.success }}>
+                  {stats.firstAuthor.toString()} first-authored
+                </span>
                 <span> across </span>
                 <span style={{ color: tc.command }}>
-                  {Object.keys(stats.byVenue).length} venue types
+                  {Object.keys(stats.byVenue).length.toString()} venue types
                 </span>
                 <span className="mx-1" style={{ color: tc.border }}>
                   ·
                 </span>
-                <span style={{ color: tc.param }}>{stats.withCode} open-source</span>
+                <span style={{ color: tc.param }}>{stats.withCode.toString()} open-source</span>
               </div>
               <div className="flex-shrink-0" style={{ color: tc.command }}>
                 ~/papers
@@ -229,7 +244,7 @@ const PublicationsTerminal: React.FC = () => {
                 )}
                 style={{ borderColor: tc.border }}
               >
-                <FaChevronRight className="text-[10px] mr-2" style={{ color: tc.prompt }} />
+                <ChevronRight className="text-[10px] mr-2" style={{ color: tc.prompt }} />
                 <span className="text-xs font-bold mr-2" style={{ color: tc.command }}>
                   grep
                 </span>
@@ -266,7 +281,7 @@ const PublicationsTerminal: React.FC = () => {
                   >
                     <option value="all">--year=ALL</option>
                     {availableYears.map((year) => (
-                      <option key={year} value={year}>
+                      <option key={year} value={year.toString()}>
                         --year={year}
                       </option>
                     ))}
@@ -310,7 +325,7 @@ const PublicationsTerminal: React.FC = () => {
                     color: showStats ? tc.bg : tc.info,
                   }}
                 >
-                  <FaChartBar className="mr-2" />
+                  <BarChart3 className="mr-2" />
                   <span>--stats</span>
                   {showStats && <span className="ml-1">:ON</span>}
                 </button>
@@ -336,7 +351,7 @@ const PublicationsTerminal: React.FC = () => {
                       Total
                     </div>
                     <div className="text-xl font-bold" style={{ color: tc.highlight }}>
-                      {stats.total}
+                      {stats.total.toString()}
                     </div>
                   </div>
                   <div>
@@ -347,7 +362,7 @@ const PublicationsTerminal: React.FC = () => {
                       First Author
                     </div>
                     <div className="text-xl font-bold" style={{ color: tc.success }}>
-                      {stats.firstAuthor}
+                      {stats.firstAuthor.toString()}
                     </div>
                   </div>
                   <div>
@@ -358,7 +373,7 @@ const PublicationsTerminal: React.FC = () => {
                       With Code
                     </div>
                     <div className="text-xl font-bold" style={{ color: tc.command }}>
-                      {stats.withCode}
+                      {stats.withCode.toString()}
                     </div>
                   </div>
                   <div>
@@ -369,7 +384,7 @@ const PublicationsTerminal: React.FC = () => {
                       Conferences
                     </div>
                     <div className="text-xl font-bold" style={{ color: tc.param }}>
-                      {stats.byVenue.conference || 0}
+                      {(stats.byVenue.conference || 0).toString()}
                     </div>
                   </div>
                   <div>
@@ -380,7 +395,7 @@ const PublicationsTerminal: React.FC = () => {
                       Workshops
                     </div>
                     <div className="text-xl font-bold" style={{ color: tc.warning }}>
-                      {stats.byVenue.workshop || 0}
+                      {(stats.byVenue.workshop || 0).toString()}
                     </div>
                   </div>
                 </div>
@@ -391,10 +406,11 @@ const PublicationsTerminal: React.FC = () => {
           {/* List */}
           <div
             className="overflow-y-auto max-h-[70vh] scrollbar-thin scrollbar-thumb-gray-500/50"
+            ref={parentRef}
             style={{ backgroundColor: tc.bg, color: tc.text }}
           >
             <div
-              className="flex px-4 py-2 text-[10px] font-bold border-b sticky top-0 z-10"
+              className="flex px-4 py-2 text-[10px] font-bold border-b sticky top-0 z-20"
               style={{ backgroundColor: tc.bg, borderColor: tc.border, color: tc.info }}
             >
               <div className="hidden md:block w-[320px] mr-6">PREVIEW</div>
@@ -403,254 +419,278 @@ const PublicationsTerminal: React.FC = () => {
               <div className="w-[50px] text-center">MORE</div>
             </div>
 
-            <MotionList staggerDelay={0.08}>
-              {filteredPublications.map((pub) => {
+            <div
+              style={{
+                height: `${virtualizer.getTotalSize().toString()}px`,
+                position: 'relative',
+                width: '100%',
+              }}
+            >
+              {virtualizer.getVirtualItems().map((virtualItem) => {
+                const pub = filteredPublications[virtualItem.index]
                 const vc = venueColors[pub.venueType]
                 return (
-                  <MotionBox key={pub.id}>
-                    <div
-                      className="border-b border-dotted transition-colors duration-150 hover:bg-white/[0.03] dark:hover:bg-white/[0.02]"
-                      style={{ borderColor: tc.border }}
-                    >
+                  <div
+                    data-index={virtualItem.index}
+                    key={virtualItem.key}
+                    ref={virtualizer.measureElement}
+                    style={{
+                      left: 0,
+                      position: 'absolute',
+                      top: 0,
+                      transform: `translateY(${virtualItem.start.toString()}px)`,
+                      width: '100%',
+                    }}
+                  >
+                    <MotionBox>
                       <div
-                        className="flex items-center gap-4 px-4 py-6 min-h-[200px] cursor-pointer"
-                        onClick={() => toggleExpanded(pub.id)}
+                        className="border-b border-dotted transition-colors duration-150 hover:bg-white/[0.03] dark:hover:bg-white/[0.02]"
+                        style={{ borderColor: tc.border }}
                       >
-                        {pub.featuredImage && (
-                          <MotionHover>
-                            <div
-                              className="hidden md:flex items-center justify-center flex-shrink-0 w-[320px] h-[180px] mr-6 rounded-lg border overflow-hidden cursor-zoom-in group"
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                showImagePreview(pub.featuredImage, `${pub.title} thumbnail`)
-                              }}
-                              style={{
-                                backgroundColor: isDark
-                                  ? 'rgba(0,0,0,0.05)'
-                                  : 'rgba(255,255,255,0.8)',
-                                borderColor: tc.border,
-                              }}
-                            >
-                              <img
-                                alt={pub.title}
-                                className="h-full w-full object-contain p-3 transition-transform duration-200 group-hover:scale-105"
-                                src={withBase(pub.featuredImage)}
-                              />
-                            </div>
-                          </MotionHover>
-                        )}
-                        <div className="flex-1 min-w-0 pr-2">
-                          <div className="flex items-start gap-1 mb-1.5">
-                            {(() => {
-                              const Icon = pub.emoji ? emojiIconMap[pub.emoji] : null
-                              if (!Icon) return null
-                              return (
-                                <Icon
-                                  className="flex-shrink-0 mt-1 mr-1"
-                                  style={{ color: vc.fg }}
-                                />
-                              )
-                            })()}
-                            <h3
-                              className="text-sm md:text-base font-semibold leading-relaxed"
-                              style={{ color: tc.text }}
-                            >
-                              {highlightData(pub.title, hlc)}
-                            </h3>
-                          </div>
-                          <div className="flex items-center flex-wrap gap-2 mb-2">
-                            <span
-                              className="px-1.5 py-0 text-[10px] font-mono border rounded-sm whitespace-normal text-left"
-                              style={{
-                                backgroundColor: `${vc.bg}20`,
-                                borderColor: vc.fg,
-                                color: vc.fg,
-                              }}
-                            >
-                              {pub.venue.includes(pub.year.toString())
-                                ? pub.venue
-                                : `${pub.venue} ${pub.year.toString()}`}
-                            </span>
-                            <Badge
-                              className="text-[10px] border-none"
-                              style={{
-                                backgroundColor: `${vc.fg}20`,
-                                color: vc.fg,
-                              }}
-                            >
-                              {vc.label}
-                            </Badge>
-                            {pub.specialBadges?.map((badge) => (
-                              <Badge
-                                className="text-[10px] border-none"
-                                key={badge}
+                        <div
+                          className="flex items-center gap-4 px-4 py-6 min-h-[200px] cursor-pointer"
+                          onClick={() => toggleExpanded(pub.id)}
+                        >
+                          {pub.featuredImage && (
+                            <MotionHover>
+                              <div
+                                className="hidden md:flex items-center justify-center flex-shrink-0 w-[320px] h-[180px] mr-6 rounded-lg border overflow-hidden cursor-zoom-in group"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  showImagePreview(pub.featuredImage, `${pub.title} thumbnail`)
+                                }}
                                 style={{
-                                  backgroundColor:
-                                    badge === 'Best Paper'
-                                      ? 'rgba(239, 68, 68, 0.2)'
-                                      : 'rgba(107, 114, 128, 0.2)',
-                                  color: badge === 'Best Paper' ? '#ef4444' : tc.secondary,
+                                  backgroundColor: isDark
+                                    ? 'rgba(0,0,0,0.05)'
+                                    : 'rgba(255,255,255,0.8)',
+                                  borderColor: tc.border,
                                 }}
                               >
-                                {badge}
-                              </Badge>
-                            ))}
-                          </div>
-                          <div className="text-xs leading-relaxed" style={{ color: tc.secondary }}>
-                            {pub.authors.map((author, i) => {
-                              const cleanAuthor = author.replace('*', '')
-                              const hasAsterisk = author.includes('*')
-                              const isOwner = (
-                                siteOwner.name.authorVariants as readonly string[]
-                              ).includes(cleanAuthor)
-                              return (
-                                <span key={i}>
-                                  {isOwner ? (
-                                    <span className="font-bold" style={{ color: tc.success }}>
-                                      {cleanAuthor}
-                                      {hasAsterisk && (
-                                        <span
-                                          className="relative -top-0.5"
-                                          style={{ color: tc.warning }}
-                                        >
-                                          *
-                                        </span>
-                                      )}
-                                      {pub.isFirstAuthor && i === 0 && !hasAsterisk && ' (1st)'}
-                                      {pub.isCorrespondingAuthor && ' (†)'}
-                                    </span>
-                                  ) : (
-                                    <span>
-                                      {cleanAuthor}
-                                      {hasAsterisk && (
-                                        <span
-                                          className="relative -top-0.5"
-                                          style={{ color: tc.warning }}
-                                        >
-                                          *
-                                        </span>
-                                      )}
-                                    </span>
-                                  )}
-                                  {i < pub.authors.length - 1 ? ', ' : ''}
-                                </span>
-                              )
-                            })}
-                            {pub.coFirstAuthors && pub.coFirstAuthors.length > 0 && (
-                              <span className="ml-2 text-[10px]" style={{ color: tc.info }}>
-                                (* co-first)
+                                <img
+                                  alt={pub.title}
+                                  className="h-full w-full object-contain p-3 transition-transform duration-200 group-hover:scale-105"
+                                  loading="lazy"
+                                  src={withBase(pub.featuredImage)}
+                                />
+                              </div>
+                            </MotionHover>
+                          )}
+                          <div className="flex-1 min-w-0 pr-2">
+                            <div className="flex items-start gap-1 mb-1.5">
+                              {(() => {
+                                const Icon = pub.emoji ? emojiIconMap[pub.emoji] : null
+                                if (!Icon) return null
+                                return (
+                                  <Icon
+                                    className="flex-shrink-0 mt-1 mr-1"
+                                    style={{ color: vc.fg }}
+                                  />
+                                )
+                              })()}
+                              <h3
+                                className="text-sm md:text-base font-semibold leading-relaxed"
+                                style={{ color: tc.text }}
+                              >
+                                {highlightData(pub.title, hlc)}
+                              </h3>
+                            </div>
+                            <div className="flex items-center flex-wrap gap-2 mb-2">
+                              <span
+                                className="px-1.5 py-0 text-[10px] font-mono border rounded-sm whitespace-normal text-left"
+                                style={{
+                                  backgroundColor: `${vc.bg}20`,
+                                  borderColor: vc.fg,
+                                  color: vc.fg,
+                                }}
+                              >
+                                {pub.venue.includes(pub.year.toString())
+                                  ? pub.venue
+                                  : `${pub.venue} ${pub.year.toString()}`}
                               </span>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="hidden md:block w-[150px]">
-                          <div className="flex flex-wrap gap-1">
-                            {pub.links.paper && (
-                              <MotionHover>
-                                <a
-                                  className="no-underline"
-                                  href={pub.links.paper}
-                                  onClick={(e) => e.stopPropagation()}
-                                  target="_blank"
+                              <Badge
+                                className="text-[10px] border-none"
+                                style={{
+                                  backgroundColor: `${vc.fg}20`,
+                                  color: vc.fg,
+                                }}
+                              >
+                                {vc.label}
+                              </Badge>
+                              {pub.specialBadges?.map((badge) => (
+                                <Badge
+                                  className="text-[10px] border-none"
+                                  key={badge}
+                                  style={{
+                                    backgroundColor:
+                                      badge === 'Best Paper'
+                                        ? 'rgba(239, 68, 68, 0.2)'
+                                        : 'rgba(107, 114, 128, 0.2)',
+                                    color: badge === 'Best Paper' ? '#ef4444' : tc.secondary,
+                                  }}
                                 >
-                                  <Badge className="bg-blue-500/20 text-blue-400 border-none text-[10px]">
-                                    PDF
-                                  </Badge>
-                                </a>
-                              </MotionHover>
-                            )}
-                            {pub.links.code && (
-                              <MotionHover>
-                                <a
-                                  className="no-underline"
-                                  href={pub.links.code}
-                                  onClick={(e) => e.stopPropagation()}
-                                  target="_blank"
-                                >
-                                  <Badge className="bg-green-500/20 text-green-400 border-none text-[10px]">
-                                    CODE
-                                  </Badge>
-                                </a>
-                              </MotionHover>
-                            )}
-                            {pub.links.projectPage && (
-                              <MotionHover>
-                                <a
-                                  className="no-underline"
-                                  href={pub.links.projectPage}
-                                  onClick={(e) => e.stopPropagation()}
-                                  target="_blank"
-                                >
-                                  <Badge className="bg-purple-500/20 text-purple-400 border-none text-[10px]">
-                                    PROJ
-                                  </Badge>
-                                </a>
-                              </MotionHover>
-                            )}
-                          </div>
-                        </div>
-                        <div
-                          className="w-[50px] text-center font-bold"
-                          style={{ color: expandedItems[pub.id] ? tc.info : tc.command }}
-                        >
-                          {expandedItems[pub.id] ? '-' : '+'}
-                        </div>
-                      </div>
-
-                      <Collapsible open={expandedItems[pub.id]}>
-                        <CollapsibleContent>
-                          <div
-                            className="px-6 py-4 border-l-2 mb-4 mx-4"
-                            style={{
-                              borderColor: vc.fg,
-                              marginLeft: pub.featuredImage
-                                ? 'calc(320px + var(--spacing) * 6 + 1rem)'
-                                : '1rem',
-                            }}
-                          >
-                            {pub.abstract && (!pub.Content || pub.abstract !== pub.bodyText) && (
-                              <div className="mb-4">
-                                <div
-                                  className="text-[10px] font-bold uppercase tracking-widest mb-1"
-                                  style={{ color: tc.info }}
-                                >
-                                  // Abstract
-                                </div>
-                                <p
-                                  className="text-xs leading-relaxed italic"
-                                  style={{ color: tc.secondary }}
-                                >
-                                  {pub.abstract}
-                                </p>
-                              </div>
-                            )}
-                            {pub.keywords && (
-                              <div className="flex flex-wrap gap-2">
-                                {pub.keywords.map((kw) => (
-                                  <span
-                                    className="text-[10px] font-mono"
-                                    key={kw}
-                                    style={{ color: tc.highlight }}
-                                  >
-                                    #{kw}
+                                  {badge}
+                                </Badge>
+                              ))}
+                            </div>
+                            <div
+                              className="text-xs leading-relaxed"
+                              style={{ color: tc.secondary }}
+                            >
+                              {pub.authors.map((author, i) => {
+                                const cleanAuthor = author.replace('*', '')
+                                const hasAsterisk = author.includes('*')
+                                const isOwner = (
+                                  siteOwner.name.authorVariants as readonly string[]
+                                ).includes(cleanAuthor)
+                                return (
+                                  <span key={i}>
+                                    {isOwner ? (
+                                      <span className="font-bold" style={{ color: tc.success }}>
+                                        {cleanAuthor}
+                                        {hasAsterisk && (
+                                          <span
+                                            className="relative -top-0.5"
+                                            style={{ color: tc.warning }}
+                                          >
+                                            *
+                                          </span>
+                                        )}
+                                        {pub.isFirstAuthor && i === 0 && !hasAsterisk && ' (1st)'}
+                                        {pub.isCorrespondingAuthor && ' (†)'}
+                                      </span>
+                                    ) : (
+                                      <span>
+                                        {cleanAuthor}
+                                        {hasAsterisk && (
+                                          <span
+                                            className="relative -top-0.5"
+                                            style={{ color: tc.warning }}
+                                          >
+                                            *
+                                          </span>
+                                        )}
+                                      </span>
+                                    )}
+                                    {i < pub.authors.length - 1 ? ', ' : ''}
                                   </span>
-                                ))}
-                              </div>
-                            )}
-                            {pub.Content && (
-                              <div className="mt-4">
-                                <pub.Content />
-                              </div>
-                            )}
+                                )
+                              })}
+                              {pub.coFirstAuthors && pub.coFirstAuthors.length > 0 && (
+                                <span className="ml-2 text-[10px]" style={{ color: tc.info }}>
+                                  (* co-first)
+                                </span>
+                              )}
+                            </div>
                           </div>
-                        </CollapsibleContent>
-                      </Collapsible>
-                    </div>
-                  </MotionBox>
+
+                          <div className="hidden md:block w-[150px]">
+                            <div className="flex flex-wrap gap-1">
+                              {pub.links.paper && (
+                                <MotionHover>
+                                  <a
+                                    className="no-underline"
+                                    href={pub.links.paper}
+                                    onClick={(e) => e.stopPropagation()}
+                                    target="_blank"
+                                  >
+                                    <Badge className="bg-blue-500/20 text-blue-400 border-none text-[10px]">
+                                      PDF
+                                    </Badge>
+                                  </a>
+                                </MotionHover>
+                              )}
+                              {pub.links.code && (
+                                <MotionHover>
+                                  <a
+                                    className="no-underline"
+                                    href={pub.links.code}
+                                    onClick={(e) => e.stopPropagation()}
+                                    target="_blank"
+                                  >
+                                    <Badge className="bg-green-500/20 text-green-400 border-none text-[10px]">
+                                      CODE
+                                    </Badge>
+                                  </a>
+                                </MotionHover>
+                              )}
+                              {pub.links.projectPage && (
+                                <MotionHover>
+                                  <a
+                                    className="no-underline"
+                                    href={pub.links.projectPage}
+                                    onClick={(e) => e.stopPropagation()}
+                                    target="_blank"
+                                  >
+                                    <Badge className="bg-purple-500/20 text-purple-400 border-none text-[10px]">
+                                      PROJ
+                                    </Badge>
+                                  </a>
+                                </MotionHover>
+                              )}
+                            </div>
+                          </div>
+                          <div
+                            className="w-[50px] text-center font-bold"
+                            style={{ color: expandedItems[pub.id] ? tc.info : tc.command }}
+                          >
+                            {expandedItems[pub.id] ? '-' : '+'}
+                          </div>
+                        </div>
+
+                        <Collapsible open={expandedItems[pub.id]}>
+                          <CollapsibleContent>
+                            <div
+                              className="px-6 py-4 border-l-2 mb-4 mx-4"
+                              style={{
+                                borderColor: vc.fg,
+                                marginLeft: pub.featuredImage
+                                  ? 'calc(320px + var(--spacing) * 6 + 1rem)'
+                                  : '1rem',
+                              }}
+                            >
+                              {pub.abstract && (!pub.Content || pub.abstract !== pub.bodyText) && (
+                                <div className="mb-4">
+                                  <div
+                                    className="text-[10px] font-bold uppercase tracking-widest mb-1"
+                                    style={{ color: tc.info }}
+                                  >
+                                    // Abstract
+                                  </div>
+                                  <p
+                                    className="text-xs leading-relaxed italic"
+                                    style={{ color: tc.secondary }}
+                                  >
+                                    {pub.abstract}
+                                  </p>
+                                </div>
+                              )}
+                              {pub.keywords && (
+                                <div className="flex flex-wrap gap-2">
+                                  {pub.keywords.map((kw) => (
+                                    <span
+                                      className="text-[10px] font-mono"
+                                      key={kw}
+                                      style={{ color: tc.highlight }}
+                                    >
+                                      #{kw}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                              {pub.Content && (
+                                <div className="mt-4">
+                                  <pub.Content />
+                                </div>
+                              )}
+                            </div>
+                          </CollapsibleContent>
+                        </Collapsible>
+                      </div>
+                    </MotionBox>
+                  </div>
                 )
               })}
-            </MotionList>
+            </div>
           </div>
 
           {/* Command line */}
@@ -689,7 +729,7 @@ const PublicationsTerminal: React.FC = () => {
               className="absolute top-4 right-4 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
               onClick={closeImageModal}
             >
-              <FaTimes />
+              <X />
             </button>
           </div>
         </DialogContent>

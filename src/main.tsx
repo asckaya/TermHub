@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
@@ -23,13 +24,17 @@ declare module '@tanstack/react-router' {
   }
 }
 
+const queryClient = new QueryClient()
+
 const rootElement = document.getElementById('root')
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-      <ColorModeProvider>
-        <RouterProvider router={router} />
-      </ColorModeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ColorModeProvider>
+          <RouterProvider router={router} />
+        </ColorModeProvider>
+      </QueryClientProvider>
     </React.StrictMode>,
   )
 }

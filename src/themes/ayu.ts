@@ -1,4 +1,4 @@
-import { FaBrain, FaChartBar, FaGlobe, FaHeartbeat, FaRobot, FaWrench } from 'react-icons/fa'
+import { Activity, BarChart3, Bot, Brain, Globe, Wrench } from 'lucide-react'
 
 import type { CSSVarTokens, TerminalColors, ThemeDefinition } from './types'
 
@@ -103,7 +103,7 @@ const createCategoryThemes = (colors: typeof ayuDark, dk: boolean) => ({
     cmd: '$ jupyter execute',
     color: colors.string,
     glow: `rgba(186,230,126, ${dk ? '0.15' : '0.08'})`,
-    icon: FaChartBar,
+    icon: BarChart3,
     label: 'DATA / ML',
     stripe: `linear-gradient(180deg, ${colors.string}, transparent)`,
   },
@@ -113,7 +113,7 @@ const createCategoryThemes = (colors: typeof ayuDark, dk: boolean) => ({
     cmd: '$ python recommend.py',
     color: colors.markup,
     glow: `rgba(242,135,121, ${dk ? '0.15' : '0.08'})`,
-    icon: FaHeartbeat,
+    icon: Activity,
     label: 'HEALTHCARE',
     stripe: `linear-gradient(180deg, ${colors.markup}, transparent)`,
   },
@@ -123,7 +123,7 @@ const createCategoryThemes = (colors: typeof ayuDark, dk: boolean) => ({
     cmd: '$ python train.py',
     color: colors.keyword,
     glow: `rgba(255,167,89, ${dk ? '0.15' : '0.08'})`,
-    icon: FaBrain,
+    icon: Brain,
     label: 'NLP / AI',
     stripe: `linear-gradient(180deg, ${colors.keyword}, transparent)`,
   },
@@ -133,7 +133,7 @@ const createCategoryThemes = (colors: typeof ayuDark, dk: boolean) => ({
     cmd: '$ ros2 launch planner',
     color: colors.entity,
     glow: `rgba(115,208,255, ${dk ? '0.15' : '0.08'})`,
-    icon: FaRobot,
+    icon: Bot,
     label: 'ROBOTICS',
     stripe: `linear-gradient(180deg, ${colors.entity}, transparent)`,
   },
@@ -143,7 +143,7 @@ const createCategoryThemes = (colors: typeof ayuDark, dk: boolean) => ({
     cmd: '$ make install',
     color: colors.regexp,
     glow: `rgba(149,230,203, ${dk ? '0.15' : '0.08'})`,
-    icon: FaWrench,
+    icon: Wrench,
     label: 'TOOLING',
     stripe: `linear-gradient(180deg, ${colors.regexp}, transparent)`,
   },
@@ -153,7 +153,7 @@ const createCategoryThemes = (colors: typeof ayuDark, dk: boolean) => ({
     cmd: '$ npm run dev',
     color: colors.accent,
     glow: `rgba(255,204,102, ${dk ? '0.15' : '0.08'})`,
-    icon: FaGlobe,
+    icon: Globe,
     label: 'WEB / APP',
     stripe: `linear-gradient(180deg, ${colors.accent}, transparent)`,
   },

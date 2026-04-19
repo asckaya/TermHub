@@ -1,6 +1,5 @@
+import { ChevronDown } from 'lucide-react'
 import React, { useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FaChevronDown } from 'react-icons/fa'
 
 import type { RoleType } from '@/types'
 
@@ -10,7 +9,9 @@ import { TerminalShell } from '@/components/ui/TerminalShell'
 import { SyntaxText } from '@/components/ui/TerminalSyntax'
 import { useThemeConfig } from '@/config/theme'
 import { useColorMode } from '@/hooks/useColorMode'
+import { useLanguage } from '@/hooks/useLanguage'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { useT } from '@/hooks/useT'
 import { cn } from '@/lib/utils'
 import { highlightData } from '@/utils/highlightData'
 
@@ -26,13 +27,19 @@ const categoryFilter: Record<string, FilterType> = {
 
 const roleTypeConfig: Record<RoleType, { color: (dk: boolean) => string; labelKey: string }> = {
   leadership: {
-    color: (dk) => (dk ? '#ebcb8b' : '#c47d46'),
+    color: (dk: boolean) => (dk ? '#ebcb8b' : '#c47d46'),
     labelKey: 'experience.roleLeadership',
   },
-  mle: { color: (dk) => (dk ? '#88c0d0' : '#2a769c'), labelKey: 'experience.roleMLE' },
-  research: { color: (dk) => (dk ? '#b48ead' : '#9a56a2'), labelKey: 'experience.roleResearch' },
-  sde: { color: (dk) => (dk ? '#d08770' : '#b35a2e'), labelKey: 'experience.roleSDE' },
-  teaching: { color: (dk) => (dk ? '#a3be8c' : '#34744e'), labelKey: 'experience.roleTeaching' },
+  mle: { color: (dk: boolean) => (dk ? '#88c0d0' : '#2a769c'), labelKey: 'experience.roleMLE' },
+  research: {
+    color: (dk: boolean) => (dk ? '#b48ead' : '#9a56a2'),
+    labelKey: 'experience.roleResearch',
+  },
+  sde: { color: (dk: boolean) => (dk ? '#d08770' : '#b35a2e'), labelKey: 'experience.roleSDE' },
+  teaching: {
+    color: (dk: boolean) => (dk ? '#a3be8c' : '#34744e'),
+    labelKey: 'experience.roleTeaching',
+  },
 }
 
 /* ── Logos helper ────────────────────────────────────────────── */
@@ -64,14 +71,15 @@ const fmtDateFn = (v: string | undefined, presentLabel: string, lang: string) =>
 const Experience: React.FC = () => {
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
-  const { i18n, t } = useTranslation()
+  const { locale } = useLanguage()
+  const { t } = useT()
   const {
     experience: experienceData,
     experienceTimeline,
     institutionLogos,
     siteOwner,
   } = useLocalizedData()
-  const fmtDate = (v?: string) => fmtDateFn(v, t('experience.present'), i18n.language)
+  const fmtDate = (v?: string) => fmtDateFn(v, t('experience.present'), locale)
 
   const [filter, setFilter] = useState<FilterType>('all')
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({})
@@ -228,20 +236,20 @@ const Experience: React.FC = () => {
                 <span className="mx-1" style={{ color: tc.border }}>
                   ·
                 </span>
-                <span style={{ color: tc.highlight }}>{stats.total}</span>
+                <span style={{ color: tc.highlight }}>{stats.total.toString()}</span>
                 <span> {t('experience.rolesAcross')} </span>
                 <span style={{ color: tc.success }}>
-                  {stats.current} {t('experience.currentlyActive')}
+                  {stats.current.toString()} {t('experience.currentlyActive')}
                 </span>
                 <span className="mx-1" style={{ color: tc.border }}>
                   ·
                 </span>
                 <span style={{ color: tc.param }}>
-                  {stats.academic} {t('experience.research')}
+                  {stats.academic.toString()} {t('experience.research')}
                 </span>
                 <span>, </span>
                 <span style={{ color: tc.warning }}>
-                  {stats.industry} {t('experience.industry')}
+                  {stats.industry.toString()} {t('experience.industry')}
                 </span>
               </div>
               <div className="flex-shrink-0" style={{ color: tc.command }}>
@@ -332,7 +340,7 @@ const Experience: React.FC = () => {
                     : f === 'academic'
                       ? t('experience.filterAcademic')
                       : t('experience.filterIndustry')}{' '}
-                  ({count})
+                  ({count.toString()})
                 </button>
               )
             })}
@@ -479,7 +487,7 @@ const Experience: React.FC = () => {
                               {fmtDate(exp.start)} – {fmtDate(exp.end)}
                             </div>
 
-                            <FaChevronDown
+                            <ChevronDown
                               className={cn(
                                 'flex-shrink-0 mt-1.5 w-2.5 h-2.5 transition-transform duration-200',
                                 isExpanded && 'rotate-180',
@@ -551,7 +559,7 @@ const Experience: React.FC = () => {
                     {t('experience.academicReviewing')}
                   </span>
                   <span className="text-[10px]" style={{ color: tc.secondary }}>
-                    {reviewingItems.length}
+                    {reviewingItems.length.toString()}
                   </span>
                   <div className="flex-1 h-px" style={{ backgroundColor: tc.border }} />
                 </div>

@@ -1,4 +1,4 @@
-import { FaBrain, FaChartBar, FaGlobe, FaHeartbeat, FaRobot, FaWrench } from 'react-icons/fa'
+import { Activity, BarChart3, Bot, Brain, Globe, Wrench } from 'lucide-react'
 
 import type { CSSVarTokens, TerminalColors, ThemeDefinition } from './types'
 
@@ -98,7 +98,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ jupyter execute',
     color: dk ? everforestDarkColors.green : everforestLightColors.green,
     glow: `rgba(167, 192, 128, ${dk ? '0.2' : '0.1'})`,
-    icon: FaChartBar,
+    icon: BarChart3,
     label: 'DATA / ML',
     stripe: `linear-gradient(180deg, ${dk ? everforestDarkColors.green : everforestLightColors.green}, transparent)`,
   },
@@ -108,7 +108,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ python recommend.py',
     color: dk ? everforestDarkColors.aqua : everforestLightColors.aqua,
     glow: `rgba(131, 192, 146, ${dk ? '0.2' : '0.1'})`,
-    icon: FaHeartbeat,
+    icon: Activity,
     label: 'HEALTHCARE',
     stripe: `linear-gradient(180deg, ${dk ? everforestDarkColors.aqua : everforestLightColors.aqua}, transparent)`,
   },
@@ -118,7 +118,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ python train.py',
     color: dk ? everforestDarkColors.red : everforestLightColors.red,
     glow: `rgba(230, 126, 128, ${dk ? '0.2' : '0.1'})`,
-    icon: FaBrain,
+    icon: Brain,
     label: 'NLP / AI',
     stripe: `linear-gradient(180deg, ${dk ? everforestDarkColors.red : everforestLightColors.red}, transparent)`,
   },
@@ -128,7 +128,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ ros2 launch planner',
     color: dk ? everforestDarkColors.purple : everforestLightColors.purple,
     glow: `rgba(214, 153, 182, ${dk ? '0.2' : '0.1'})`,
-    icon: FaRobot,
+    icon: Bot,
     label: 'ROBOTICS',
     stripe: `linear-gradient(180deg, ${dk ? everforestDarkColors.purple : everforestLightColors.purple}, transparent)`,
   },
@@ -138,7 +138,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ make install',
     color: dk ? everforestDarkColors.orange : everforestLightColors.orange,
     glow: `rgba(230, 152, 117, ${dk ? '0.2' : '0.1'})`,
-    icon: FaWrench,
+    icon: Wrench,
     label: 'TOOLING',
     stripe: `linear-gradient(180deg, ${dk ? everforestDarkColors.orange : everforestLightColors.orange}, transparent)`,
   },
@@ -148,7 +148,7 @@ const createCategoryThemes = (dk: boolean) => ({
     cmd: '$ npm run dev',
     color: dk ? everforestDarkColors.blue : everforestLightColors.blue,
     glow: `rgba(127, 187, 179, ${dk ? '0.2' : '0.1'})`,
-    icon: FaGlobe,
+    icon: Globe,
     label: 'WEB / APP',
     stripe: `linear-gradient(180deg, ${dk ? everforestDarkColors.blue : everforestLightColors.blue}, transparent)`,
   },
