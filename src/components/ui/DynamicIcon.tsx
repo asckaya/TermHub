@@ -1,9 +1,9 @@
-import { Icon } from '@iconify/react'
+import { Icon, type IconProps } from '@iconify/react'
 import React from 'react'
 
 import { cn } from '@/lib/utils'
 
-interface DynamicIconProps extends React.SVGProps<SVGSVGElement> {
+interface DynamicIconProps extends Omit<IconProps, 'icon'> {
   className?: string
   name: string
 }
@@ -65,7 +65,7 @@ const DynamicIcon: React.FC<DynamicIconProps> = ({ className, name, ...props }) 
     <Icon
       className={cn('h-4 w-4 flex-shrink-0 inline-block', className)}
       icon={iconName}
-      {...(props as any)}
+      {...props}
     />
   )
 }
