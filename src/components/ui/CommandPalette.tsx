@@ -117,7 +117,9 @@ export const CommandPalette: React.FC = () => {
               className="flex-1 bg-transparent border-none outline-none text-sm text-[var(--text-color)] placeholder:text-[var(--secondary-text)] font-mono"
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  const cmd = search.trim().toLowerCase()
+                  e.preventDefault()
+                  e.stopPropagation()
+                  const cmd = search.trim()
                   handleShellCommand(cmd)
                 }
               }}
