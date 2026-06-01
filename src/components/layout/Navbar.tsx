@@ -1,12 +1,11 @@
 import { Link } from '@tanstack/react-router'
 import { BookOpen, Briefcase, Code, Compass, FileText, Languages, Menu, Monitor, Moon, Sun, Terminal, User, X } from 'lucide-react'
 import React, { useState } from 'react'
-import { FaGithub, FaLinkedin, FaMailBulk } from 'react-icons/fa'
-import { SiGooglescholar, SiMedium } from 'react-icons/si'
 
 import { MotionHover } from '@/components/animations/MotionList'
 import { ThemePicker } from '@/components/layout/ThemePicker'
 import { Button } from '@/components/ui/button'
+import DynamicIcon from '@/components/ui/DynamicIcon'
 import { useUiStore } from '@/hooks/uiStore'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
@@ -58,13 +57,13 @@ const Navbar: React.FC = () => {
   const socialLinks = [
     {
       href: siteOwner.contact.email ? `mailto:${siteOwner.contact.email}` : undefined,
-      icon: FaMailBulk,
+      icon: 'FaMailBulk',
       label: 'Email',
     },
-    { href: siteOwner.social.github, icon: FaGithub, label: 'GitHub' },
-    { href: siteOwner.social.linkedin, icon: FaLinkedin, label: 'LinkedIn' },
-    { href: siteOwner.social.medium, icon: SiMedium, label: 'Medium' },
-    { href: siteOwner.social.googleScholar, icon: SiGooglescholar, label: 'Google Scholar' },
+    { href: siteOwner.social.github, icon: 'FaGithub', label: 'GitHub' },
+    { href: siteOwner.social.linkedin, icon: 'FaLinkedin', label: 'LinkedIn' },
+    { href: siteOwner.social.medium, icon: 'SiMedium', label: 'Medium' },
+    { href: siteOwner.social.googleScholar, icon: 'SiGooglescholar', label: 'Google Scholar' },
   ].filter((link) => link.href)
 
   return (
@@ -138,7 +137,7 @@ const Navbar: React.FC = () => {
                   target="_blank"
                 >
                   <MotionHover>
-                    <link.icon className="text-lg" />
+                    <DynamicIcon className="text-lg" name={link.icon} />
                   </MotionHover>
                 </a>
               ))}
@@ -227,7 +226,7 @@ const Navbar: React.FC = () => {
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  <link.icon className="text-xl" />
+                  <DynamicIcon className="text-xl" name={link.icon} />
                 </a>
               ))}
             </div>

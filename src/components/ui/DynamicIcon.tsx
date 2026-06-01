@@ -1,50 +1,7 @@
+import { Icon } from '@iconify/react'
 import React from 'react'
-import {
-  FaBrain,
-  FaChevronRight,
-  FaClock,
-  FaCode,
-  FaCodeBranch,
-  FaCoffee,
-  FaEnvelope,
-  FaExternalLinkAlt,
-  FaFileAlt,
-  FaFolder,
-  FaGithub,
-  FaGraduationCap,
-  FaLinkedin,
-  FaMapMarkerAlt,
-  FaSync,
-  FaUser,
-} from 'react-icons/fa'
-import { SiGooglescholar } from 'react-icons/si'
 
 import { cn } from '@/lib/utils'
-
-/**
- * A curated map of icons used across the project.
- * This approach ensures that ONLY the icons we actually use are included
- * in the final bundle, dropping the size from ~18MB to a few KB.
- */
-const iconMap: Record<string, React.ElementType | undefined> = {
-  FaBrain,
-  FaChevronRight,
-  FaClock,
-  FaCode,
-  FaCodeBranch,
-  FaCoffee,
-  FaEnvelope,
-  FaExternalLinkAlt,
-  FaFileAlt,
-  FaFolder,
-  FaGithub,
-  FaGraduationCap,
-  FaLinkedin,
-  FaMapMarkerAlt,
-  FaSync,
-  FaUser,
-  SiGooglescholar,
-}
 
 interface DynamicIconProps extends React.SVGProps<SVGSVGElement> {
   className?: string
@@ -52,25 +9,65 @@ interface DynamicIconProps extends React.SVGProps<SVGSVGElement> {
 }
 
 /**
- * A flexible icon component that resolves icons from a curated map.
- * To add new icons, simply import them from react-icons and add to iconMap.
+ * Maps legacy react-icons naming conventions (like FaGithub, SiGooglescholar)
+ * dynamically to their modern Iconify equivalent.
  */
-const DynamicIcon: React.FC<DynamicIconProps> = ({ className, name, ...props }) => {
-  const IconComponent = iconMap[name]
+const mapIconName = (name: string): string => {
+  if (name.includes(':')) return name
 
-  if (!IconComponent) {
-    // If not found in the map, we show a small placeholder
-    return (
-      <div
-        className={cn('h-4 w-4 bg-muted/20 rounded-sm animate-pulse inline-block', className)}
-        title={`Icon "${name}" not found in curated list`}
-      />
-    )
+  const lowerName = name.toLowerCase()
+
+  // Specific simple-icons mapping
+  if (lowerName === 'sigooglescholar') return 'simple-icons:googlescholar'
+  if (lowerName === 'simedium') return 'simple-icons:medium'
+  if (lowerName === 'sizhihu') return 'simple-icons:zhihu'
+  if (lowerName === 'sicsdn') return 'simple-icons:csdn'
+
+  if (name.startsWith('Fa')) {
+    // Convert FaExternalLinkAlt -> external-link-alt
+    const kebabName = name
+      .slice(2)
+      .replace(/([A-Z])/g, '-$1')
+      .toLowerCase()
+      .replace(/^-/, '')
+
+    // Brand lists mapping
+    const brands = ['github', 'linkedin', 'youtube', 'medium', 'zhihu', 'csdn', 'google-scholar']
+    const cleanBrandCheck = kebabName.replace(/-alt$/, '').replace(/-branch$/, '')
+
+    if (brands.includes(cleanBrandCheck)) {
+      return `fa6-brands:${cleanBrandCheck}`
+    }
+
+    // FontAwesome 6 name remappings
+    let finalName = kebabName
+    if (kebabName === 'external-link-alt') finalName = 'arrow-up-right-from-square'
+    if (kebabName === 'file-alt') finalName = 'file-lines'
+    if (kebabName === 'code-branch') finalName = 'code-fork'
+    if (kebabName === 'map-marker-alt') finalName = 'location-dot'
+    if (kebabName === 'graduation-cap') finalName = 'user-graduate'
+    if (kebabName === 'sync') finalName = 'rotate'
+
+    return `fa6-solid:${finalName}`
   }
 
-  const ResolvedIcon = IconComponent
+  // Fallback icon
+  return 'fa6-solid:circle-question'
+}
 
-  return <ResolvedIcon className={cn('h-4 w-4 flex-shrink-0', className)} {...props} />
+/**
+ * A flexible, tree-shakeable icon component resolving icons from Iconify datasets.
+ */
+const DynamicIcon: React.FC<DynamicIconProps> = ({ className, name, ...props }) => {
+  const iconName = mapIconName(name)
+
+  return (
+    <Icon
+      className={cn('h-4 w-4 flex-shrink-0 inline-block', className)}
+      icon={iconName}
+      {...(props as any)}
+    />
+  )
 }
 
 export default DynamicIcon
