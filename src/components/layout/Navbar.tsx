@@ -57,13 +57,13 @@ const Navbar: React.FC = () => {
   const socialLinks = [
     {
       href: siteOwner.contact.email ? `mailto:${siteOwner.contact.email}` : undefined,
-      icon: 'FaMailBulk',
+      icon: 'fa6-solid:envelope',
       label: 'Email',
     },
-    { href: siteOwner.social.github, icon: 'FaGithub', label: 'GitHub' },
-    { href: siteOwner.social.linkedin, icon: 'FaLinkedin', label: 'LinkedIn' },
-    { href: siteOwner.social.medium, icon: 'SiMedium', label: 'Medium' },
-    { href: siteOwner.social.googleScholar, icon: 'SiGooglescholar', label: 'Google Scholar' },
+    { href: siteOwner.social.github, icon: 'fa6-brands:github', label: 'GitHub' },
+    { href: siteOwner.social.linkedin, icon: 'fa6-brands:linkedin', label: 'LinkedIn' },
+    { href: siteOwner.social.medium, icon: 'simple-icons:medium', label: 'Medium' },
+    { href: siteOwner.social.googleScholar, icon: 'simple-icons:googlescholar', label: 'Google Scholar' },
   ].filter((link) => link.href)
 
   return (

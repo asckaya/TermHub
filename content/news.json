@@ -2,7 +2,7 @@
   {
     "type": "publication",
     "badge": "Publication",
-    "icon": "FaFileAlt",
+    "icon": "fa6-solid:file-lines",
     "iconColor": "blue.400",
     "title": "Paper accepted at IEEE T-ITS",
     "description": "Our paper on wrong-way cycling detection has been published in IEEE Transactions on Intelligent Transportation Systems.",
@@ -12,27 +12,27 @@
       {
         "text": "Paper",
         "url": "https://ieeexplore.ieee.org/abstract/document/11306249/",
-        "icon": "FaExternalLinkAlt"
+        "icon": "fa6-solid:arrow-up-right-from-square"
       }
     ]
   },
   {
     "type": "publication",
     "badge": "Preprint",
-    "icon": "FaFileAlt",
+    "icon": "fa6-solid:file-lines",
     "iconColor": "cyan.400",
     "title": "CEEH paper released on arXiv",
     "description": "Our work on difficulty-aware entropy regularization for efficient LLM reasoning is now available on arXiv.",
     "date": "2026-02",
     "sortDate": "2026-02-01",
     "links": [
-      { "text": "Paper", "url": "https://arxiv.org/abs/2602.22642", "icon": "FaExternalLinkAlt" }
+      { "text": "Paper", "url": "https://arxiv.org/abs/2602.22642", "icon": "fa6-solid:arrow-up-right-from-square" }
     ]
   },
   {
     "type": "project",
     "badge": "New Project",
-    "icon": "FaCode",
+    "icon": "fa6-solid:code",
     "iconColor": "green.400",
     "title": "Unified Agent Training Framework @ DiDi",
     "description": "Built shared-weight multi-agent training framework at DiDi LLM Lab. Served as both infra and algorithm lead. Achieved better results than DeepSeek V3.1 (671B) on GLM4-Flash (30B MoE) with significantly lower compute and faster inference.",

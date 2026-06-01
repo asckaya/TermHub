@@ -26,13 +26,13 @@
       "try to be a better me"
     ],
     "skills": [
-      { "name": "Python", "category": "Programming", "icon": "FaCode" },
-      { "name": "Rust", "category": "Programming", "icon": "FaCode" },
-      { "name": "Flutter", "category": "Programming", "icon": "FaCode" },
-      { "name": "Transformers", "category": "AI Research", "icon": "FaBrain" },
-      { "name": "VeRL", "category": "AI Research", "icon": "FaSync" },
-      { "name": "Agent", "category": "AI Research", "icon": "FaUser" },
-      { "name": "Linux", "category": "Infrastructure", "icon": "FaCodeBranch" }
+      { "name": "Python", "category": "Programming", "icon": "fa6-solid:code" },
+      { "name": "Rust", "category": "Programming", "icon": "fa6-solid:code" },
+      { "name": "Flutter", "category": "Programming", "icon": "fa6-solid:code" },
+      { "name": "Transformers", "category": "AI Research", "icon": "fa6-solid:brain" },
+      { "name": "VeRL", "category": "AI Research", "icon": "fa6-solid:rotate" },
+      { "name": "Agent", "category": "AI Research", "icon": "fa6-solid:user" },
+      { "name": "Linux", "category": "Infrastructure", "icon": "fa6-solid:code-fork" }
     ],
     "timezone": "Asia/Shanghai"
   },
@@ -58,19 +58,19 @@
   "heroSocialIcons": [
     {
       "platform": "github",
-      "icon": "FaGithub",
+      "icon": "fa6-brands:github",
       "label": "GitHub",
       "color": "#000"
     },
     {
       "platform": "linkedin",
-      "icon": "FaLinkedin",
+      "icon": "fa6-brands:linkedin",
       "label": "LinkedIn",
       "color": "#0077B5"
     },
     {
       "platform": "googleScholar",
-      "icon": "SiGooglescholar",
+      "icon": "simple-icons:googlescholar",
       "label": "Google Scholar",
       "color": "#4285F4"
     }

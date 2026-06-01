@@ -21,13 +21,13 @@
     "prompt": "$",
     "rotatingSubtitles": ["想做Linux极客", "和LLM玩耍", "学习新东西", "努力成为更好的自己"],
     "skills": [
-      { "name": "Python", "category": "编程语言", "icon": "FaCode" },
-      { "name": "Rust", "category": "编程语言", "icon": "FaCode" },
-      { "name": "Flutter", "category": "编程语言", "icon": "FaCode" },
-      { "name": "Transformers", "category": "人工智能", "icon": "FaBrain" },
-      { "name": "VeRL", "category": "人工智能", "icon": "FaSync" },
-      { "name": "Agent", "category": "人工智能", "icon": "FaUser" },
-      { "name": "Linux", "category": "基础设施", "icon": "FaCodeBranch" }
+      { "name": "Python", "category": "编程语言", "icon": "fa6-solid:code" },
+      { "name": "Rust", "category": "编程语言", "icon": "fa6-solid:code" },
+      { "name": "Flutter", "category": "编程语言", "icon": "fa6-solid:code" },
+      { "name": "Transformers", "category": "人工智能", "icon": "fa6-solid:brain" },
+      { "name": "VeRL", "category": "人工智能", "icon": "fa6-solid:rotate" },
+      { "name": "Agent", "category": "人工智能", "icon": "fa6-solid:user" },
+      { "name": "Linux", "category": "基础设施", "icon": "fa6-solid:code-fork" }
     ],
     "timezone": "Asia/Shanghai"
   },
@@ -53,19 +53,19 @@
   "heroSocialIcons": [
     {
       "platform": "github",
-      "icon": "FaGithub",
+      "icon": "fa6-brands:github",
       "label": "GitHub",
       "color": "#000"
     },
     {
       "platform": "linkedin",
-      "icon": "FaLinkedin",
+      "icon": "fa6-brands:linkedin",
       "label": "LinkedIn",
       "color": "#0077B5"
     },
     {
       "platform": "googleScholar",
-      "icon": "SiGooglescholar",
+      "icon": "simple-icons:googlescholar",
       "label": "Google Scholar",
       "color": "#4285F4"
     }

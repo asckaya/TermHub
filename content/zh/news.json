@@ -2,7 +2,7 @@
   {
     "type": "publication",
     "badge": "论文发表",
-    "icon": "FaFileAlt",
+    "icon": "fa6-solid:file-lines",
     "iconColor": "blue.400",
     "title": "论文发表于IEEE T-ITS",
     "description": "我们的逆行骑行检测论文已发表于IEEE智能交通系统汇刊。",
@@ -12,27 +12,27 @@
       {
         "text": "论文",
         "url": "https://ieeexplore.ieee.org/abstract/document/11306249/",
-        "icon": "FaExternalLinkAlt"
+        "icon": "fa6-solid:arrow-up-right-from-square"
       }
     ]
   },
   {
     "type": "publication",
     "badge": "预印本",
-    "icon": "FaFileAlt",
+    "icon": "fa6-solid:file-lines",
     "iconColor": "cyan.400",
     "title": "CEEH论文在arXiv发布",
     "description": "我们关于难度感知熵正则化的高效LLM推理工作已在arXiv发布。",
     "date": "2026-02",
     "sortDate": "2026-02-01",
     "links": [
-      { "text": "论文", "url": "https://arxiv.org/abs/2602.22642", "icon": "FaExternalLinkAlt" }
+      { "text": "论文", "url": "https://arxiv.org/abs/2602.22642", "icon": "fa6-solid:arrow-up-right-from-square" }
     ]
   },
   {
     "type": "project",
     "badge": "新项目",
-    "icon": "FaCode",
+    "icon": "fa6-solid:code",
     "iconColor": "green.400",
     "title": "统一Agent训练框架 @ 滴滴",
     "description": "在滴滴LLM Lab构建共享权重多智能体训练框架，同时负责infra和算法工作。在GLM4-Flash (30B MoE)上实现了比DeepSeek V3.1 (671B)更好的效果，算力需求大幅减少，推理速度更快，准确率更高。",
