@@ -17,6 +17,7 @@ import { Route as DocsRouteImport } from './routes/docs'
 import { Route as ArticlesRouteImport } from './routes/articles'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ArticlesPostIdRouteImport } from './routes/articles.$postId'
 
 const PublicationsRoute = PublicationsRouteImport.update({
   id: '/publications',
@@ -58,37 +59,45 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArticlesPostIdRoute = ArticlesPostIdRouteImport.update({
+  id: '/$postId',
+  path: '/$postId',
+  getParentRoute: () => ArticlesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/articles': typeof ArticlesRoute
+  '/articles': typeof ArticlesRouteWithChildren
   '/docs': typeof DocsRoute
   '/experience': typeof ExperienceRoute
   '/guide': typeof GuideRoute
   '/projects': typeof ProjectsRoute
   '/publications': typeof PublicationsRoute
+  '/articles/$postId': typeof ArticlesPostIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/articles': typeof ArticlesRoute
+  '/articles': typeof ArticlesRouteWithChildren
   '/docs': typeof DocsRoute
   '/experience': typeof ExperienceRoute
   '/guide': typeof GuideRoute
   '/projects': typeof ProjectsRoute
   '/publications': typeof PublicationsRoute
+  '/articles/$postId': typeof ArticlesPostIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/articles': typeof ArticlesRoute
+  '/articles': typeof ArticlesRouteWithChildren
   '/docs': typeof DocsRoute
   '/experience': typeof ExperienceRoute
   '/guide': typeof GuideRoute
   '/projects': typeof ProjectsRoute
   '/publications': typeof PublicationsRoute
+  '/articles/$postId': typeof ArticlesPostIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +110,7 @@ export interface FileRouteTypes {
     | '/guide'
     | '/projects'
     | '/publications'
+    | '/articles/$postId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,6 +121,7 @@ export interface FileRouteTypes {
     | '/guide'
     | '/projects'
     | '/publications'
+    | '/articles/$postId'
   id:
     | '__root__'
     | '/'
@@ -121,12 +132,13 @@ export interface FileRouteTypes {
     | '/guide'
     | '/projects'
     | '/publications'
+    | '/articles/$postId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  ArticlesRoute: typeof ArticlesRoute
+  ArticlesRoute: typeof ArticlesRouteWithChildren
   DocsRoute: typeof DocsRoute
   ExperienceRoute: typeof ExperienceRoute
   GuideRoute: typeof GuideRoute
@@ -192,13 +204,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/articles/$postId': {
+      id: '/articles/$postId'
+      path: '/$postId'
+      fullPath: '/articles/$postId'
+      preLoaderRoute: typeof ArticlesPostIdRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
   }
 }
+
+interface ArticlesRouteChildren {
+  ArticlesPostIdRoute: typeof ArticlesPostIdRoute
+}
+
+const ArticlesRouteChildren: ArticlesRouteChildren = {
+  ArticlesPostIdRoute: ArticlesPostIdRoute,
+}
+
+const ArticlesRouteWithChildren = ArticlesRoute._addFileChildren(
+  ArticlesRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  ArticlesRoute: ArticlesRoute,
+  ArticlesRoute: ArticlesRouteWithChildren,
   DocsRoute: DocsRoute,
   ExperienceRoute: ExperienceRoute,
   GuideRoute: GuideRoute,

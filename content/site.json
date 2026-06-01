@@ -53,7 +53,7 @@
     "projects": true,
     "experience": true,
     "about": true,
-    "articles": false
+    "articles": true
   },
   "heroSocialIcons": [
     {

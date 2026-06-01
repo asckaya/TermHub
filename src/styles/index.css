@@ -125,6 +125,8 @@
     padding: 0;
     min-width: 320px;
     min-height: 100vh;
+    font-family: var(--font-sans);
+    letter-spacing: -0.05em; /* Tighten the wide monospace letter spacing for standard reading */
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -134,6 +136,14 @@
     transition:
       background-color 0.3s ease,
       color 0.3s ease;
+  }
+
+  input,
+  button,
+  select,
+  textarea {
+    font-family: inherit;
+    letter-spacing: inherit;
   }
 
   #root {

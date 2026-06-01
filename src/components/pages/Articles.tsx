@@ -1,5 +1,6 @@
 import { Icon } from '@iconify/react'
-import React, { useEffect, useMemo, useState } from 'react'
+import { Link } from '@tanstack/react-router'
+import React, { useMemo, useState } from 'react'
 
 import type { ProjectItem } from '@/types'
 
@@ -11,22 +12,15 @@ import { useThemeConfig } from '@/config/theme'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import { useT } from '@/hooks/useT'
+import { useTerminalTime } from '@/hooks/useTerminalTime'
 import { cn } from '@/lib/utils'
+import { linkIcon } from '@/utils/asset'
 import { highlightData } from '@/utils/highlightData'
 
 /* ── Types ─────────────────────────────────────────────────────── */
 type CategoryFilter = 'all' | ProjectItem['category']
 
-/* ── Helpers ───────────────────────────────────────────────────── */
-const linkIcon = (url: string): string => {
-  if (!url) return 'lucide:external-link'
-  if (url.includes('github.com')) return 'mdi:github'
-  if (url.includes('medium.com')) return 'simple-icons:medium'
-  if (url.includes('youtu.be') || url.includes('youtube.com')) return 'simple-icons:youtube'
-  if (url.includes('zhihu.com')) return 'simple-icons:zhihu'
-  if (url.includes('csdn.net')) return 'simple-icons:csdn'
-  return 'lucide:external-link'
-}
+
 
 const fmtDate = (v?: string) => {
   if (!v) return ''
@@ -66,7 +60,7 @@ const Articles: React.FC = () => {
   const isDark = colorMode === 'dark'
   const { t } = useT()
   const { articles: articleData, siteOwner } = useLocalizedData()
-  const [currentTime, setCurrentTime] = useState(new Date())
+  const formattedTime = useTerminalTime()
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({})
 
   const [searchQuery, setSearchQuery] = useState('')
@@ -76,18 +70,6 @@ const Articles: React.FC = () => {
   const { articleCategoryColors: categoryColors, terminalPalette } = useThemeConfig()
   const tc = terminalPalette.colors(isDark)
   const hlc = { kw: tc.command, num: tc.highlight, str: tc.success }
-
-  useEffect(() => {
-    const interval = setInterval(() => setCurrentTime(new Date()), 1000)
-    return () => clearInterval(interval)
-  }, [])
-
-  const formattedTime = currentTime.toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    hour12: false,
-    minute: '2-digit',
-    second: '2-digit',
-  })
 
   const articles = useMemo(
     () => articleData.map((a, i) => ({ ...a, id: `article-${i.toString()}` })),
@@ -405,8 +387,25 @@ const Articles: React.FC = () => {
                                       )}
 
                                       {/* All links (visible on all screens when expanded) */}
-                                      {resources.length > 0 && (
+                                      {resources.length > 0 || item.slug ? (
                                         <div className="flex flex-wrap gap-2">
+                                          {item.slug && (
+                                            <MotionHover>
+                                              <Link
+                                                className="flex items-center gap-1.5 px-2.5 py-1 font-mono text-xs rounded-sm border transition-all duration-150 no-underline"
+                                                onClick={(e) => e.stopPropagation()}
+                                                params={{ postId: item.slug }}
+                                                style={{
+                                                  borderColor: tc.border,
+                                                  color: tc.highlight,
+                                                }}
+                                                to="/articles/$postId"
+                                              >
+                                                <Icon className="w-[11px] h-[11px]" icon="lucide:book-open" />
+                                                <span>Detail</span>
+                                              </Link>
+                                            </MotionHover>
+                                          )}
                                           {resources.map((r) => (
                                             <MotionHover key={r.url}>
                                               <a
@@ -426,7 +425,7 @@ const Articles: React.FC = () => {
                                             </MotionHover>
                                           ))}
                                         </div>
-                                      )}
+                                      ) : null}
                                     </div>
                                   </CollapsibleContent>
                                 </Collapsible>

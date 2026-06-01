@@ -25,8 +25,9 @@ import { useColorMode } from '@/hooks/useColorMode'
 import { useLanguage } from '@/hooks/useLanguage'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import { useT } from '@/hooks/useT'
+import { useTerminalTime } from '@/hooks/useTerminalTime'
 import { cn } from '@/lib/utils'
-import { withBase } from '@/utils/asset'
+import { linkIcon, withBase } from '@/utils/asset'
 import { highlightData } from '@/utils/highlightData'
 
 type CatThemeWithAnim = CatTheme & { anim: string }
@@ -55,14 +56,7 @@ const roleConfig: Record<
   },
 }
 
-const linkIcon = (url: string): string => {
-  if (url.includes('github.com')) return 'mdi:github'
-  if (url.includes('medium.com')) return 'simple-icons:medium'
-  if (url.includes('youtu.be') || url.includes('youtube.com')) return 'simple-icons:youtube'
-  if (url.includes('zhihu.com')) return 'simple-icons:zhihu'
-  if (url.includes('csdn.net')) return 'simple-icons:csdn'
-  return 'lucide:external-link'
-}
+
 
 const fmtDate = (v?: string) => {
   if (!v) return '—'
@@ -322,6 +316,7 @@ const Projects: React.FC = () => {
   const isDark = colorMode === 'dark'
   const { t } = useT()
   const { projects: projectData, siteOwner } = useLocalizedData()
+  const formattedTime = useTerminalTime()
 
   const [activeTab, setActiveTab] = useState<TabKey>('all')
   const [searchQuery, setSearchQuery] = useState('')
@@ -482,12 +477,7 @@ const Projects: React.FC = () => {
             bodyClassName="p-0"
             headerRight={
               <div style={{ color: tc.highlight }}>
-                {new Date().toLocaleTimeString('en-US', {
-                  hour: '2-digit',
-                  hour12: false,
-                  minute: '2-digit',
-                  second: '2-digit',
-                })}
+                {formattedTime}
               </div>
             }
             title={

@@ -14,7 +14,7 @@ import {
   Video,
   X,
 } from 'lucide-react'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import { MotionBox, MotionHover } from '@/components/animations/MotionList'
 import { TerminalEntrance } from '@/components/animations/TerminalEntrance'
@@ -27,6 +27,7 @@ import { useThemeConfig } from '@/config/theme'
 import { getPublicationStats } from '@/data'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+import { useTerminalTime } from '@/hooks/useTerminalTime'
 import { cn } from '@/lib/utils'
 import { withBase } from '@/utils/asset'
 import { highlightData } from '@/utils/highlightData'
@@ -54,7 +55,7 @@ const PublicationsTerminal: React.FC = () => {
   const [selectedVenue, setSelectedVenue] = useState<string>('all')
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({})
   const [showStats, setShowStats] = useState(false)
-  const [currentTime, setCurrentTime] = useState(new Date())
+  const formattedTime = useTerminalTime()
   const [currentCommand, setCurrentCommand] = useState('')
   const [imagePreview, setImagePreview] = useState<null | { alt: string; src: string }>(null)
   const [isImageOpen, setIsImageOpen] = useState(false)
@@ -77,12 +78,7 @@ const PublicationsTerminal: React.FC = () => {
     [publicationVenueColors, isDark],
   )
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(new Date())
-    }, 1000)
-    return () => clearInterval(interval)
-  }, [])
+
 
   const stats = useMemo(() => getPublicationStats(publications), [publications])
 
@@ -161,12 +157,7 @@ const PublicationsTerminal: React.FC = () => {
     setCurrentCommand('')
   }
 
-  const formattedTime = currentTime.toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    hour12: false,
-    minute: '2-digit',
-    second: '2-digit',
-  })
+
 
   const showImagePreview = useCallback((src?: string, alt?: string) => {
     if (!src) return

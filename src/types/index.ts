@@ -25,6 +25,7 @@ import type {
 /** Frontmatter fields + the MDX component tree rendered from the markdown body. */
 export type About = z.infer<typeof AboutFrontmatterSchema> & {
   Content?: React.ComponentType
+  slug?: string
 }
 
 export type Award = z.infer<typeof AwardSchema>
@@ -48,12 +49,14 @@ export type ProjectCategory = z.infer<typeof ProjectCategorySchema>
 
 export type ProjectItem = z.infer<typeof ProjectFrontmatterSchema> & {
   Content?: React.ComponentType
+  slug: string
 }
 
 export type ProjectLink = z.infer<typeof ProjectLinkSchema>
 
 export type Publication = z.infer<typeof PublicationFrontmatterSchema> & {
   Content?: React.ComponentType
+  slug: string
 }
 
 export type Research = z.infer<typeof ResearchSchema>

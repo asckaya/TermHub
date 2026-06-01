@@ -40,15 +40,17 @@ function collectMd<T extends Record<string, unknown>>(
   modules: Record<string, unknown>,
   schema: z.ZodType<T>,
   label: string,
-): (T & { Content?: React.ComponentType })[] {
+): (T & { Content?: React.ComponentType; slug: string })[] {
   return Object.entries(modules).map(([path, m]) => {
     const mod = m as MdxModule
     const raw = mod.frontmatter ?? {}
-    const fileLabel = `${label} (${path.split('/').pop() ?? path})`
+    const filename = path.split('/').pop() ?? path
+    const slug = filename.replace(/\.mdx$/, '')
+    const fileLabel = `${label} (${filename})`
 
     // Strict validation via Zod
     const parsed = parseContent(schema, raw, fileLabel)
-    return { ...parsed, Content: mod.default }
+    return { ...parsed, Content: mod.default, slug }
   })
 }
 
