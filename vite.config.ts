@@ -41,8 +41,6 @@ export default defineConfig({
 
           if (id.includes('framer-motion')) return 'motion'
 
-          if (id.includes('react-icons')) return 'icons'
-
           if (
             id.includes('/@mdx-js/') ||
             id.includes('/remark-') ||
