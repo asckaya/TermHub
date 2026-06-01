@@ -24,26 +24,30 @@ export const RouteConsoleTrigger: React.FC<RouteConsoleTriggerProps> = ({ childr
 
   useEffect(() => {
     if (location.pathname !== activePath) {
-      setIsTransitioning(true)
       const username = siteOwner.terminalUsername || 'user'
       const hostname = siteOwner.terminalHostname || 'projects'
-      
       const cleanPath = location.pathname === '/' ? 'home' : location.pathname.replace(/^\//, '')
-      
-      setTransitionLogs([
-        `${username}@${hostname}:~$ cd /${cleanPath}`,
-        `[   0.00] Initializing route change: ${location.pathname}...`,
-        `[   0.08] Fetching localized MDX components... [ OK ]`,
-        `[   0.15] Loading styles and system assets... [ OK ]`,
-        `[   0.22] Executing paint sequence... [ DONE ]`,
-      ])
+
+      const animFrame = requestAnimationFrame(() => {
+        setIsTransitioning(true)
+        setTransitionLogs([
+          `${username}@${hostname}:~$ cd /${cleanPath}`,
+          `[   0.00] Initializing route change: ${location.pathname}...`,
+          `[   0.08] Fetching localized MDX components... [ OK ]`,
+          `[   0.15] Loading styles and system assets... [ OK ]`,
+          `[   0.22] Executing paint sequence... [ DONE ]`,
+        ])
+      })
 
       const timer = setTimeout(() => {
         setActivePath(location.pathname)
         setIsTransitioning(false)
       }, 500) // Brief and snappy transition to keep UX smooth
 
-      return () => clearTimeout(timer)
+      return () => {
+        cancelAnimationFrame(animFrame)
+        clearTimeout(timer)
+      }
     }
   }, [location.pathname, activePath, siteOwner])
 

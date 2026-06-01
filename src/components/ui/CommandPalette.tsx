@@ -22,8 +22,8 @@ import { useColorMode } from '@/hooks/useColorMode'
 import { useLanguage } from '@/hooks/useLanguage'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import { useT } from '@/hooks/useT'
-import { themes } from '@/themes/registry'
 import { useThemeContext } from '@/themes/hooks'
+import { themes } from '@/themes/registry'
 
 export const CommandPalette: React.FC = () => {
   const [open, setOpen] = useState(false)
@@ -174,7 +174,7 @@ export const CommandPalette: React.FC = () => {
                     <Command.Item
                       className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-[var(--text-color)] aria-selected:bg-[var(--accent-color)] aria-selected:text-[var(--bg-color)] cursor-pointer transition-colors"
                       key={id}
-                      onSelect={() => runCommand(() => setTheme?.(id as ThemeKey))}
+                      onSelect={() => runCommand(() => setTheme(id as ThemeKey))}
                     >
                       <Palette
                         className="w-4 h-4"

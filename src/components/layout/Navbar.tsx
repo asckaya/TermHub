@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { Languages, Menu, Monitor, Moon, Sun, X, Terminal, BookOpen, Briefcase, Code, FileText, User, Compass } from 'lucide-react'
+import { BookOpen, Briefcase, Code, Compass, FileText, Languages, Menu, Monitor, Moon, Sun, Terminal, User, X } from 'lucide-react'
 import React, { useState } from 'react'
 import { FaGithub, FaLinkedin, FaMailBulk } from 'react-icons/fa'
 import { SiGooglescholar, SiMedium } from 'react-icons/si'
@@ -7,8 +7,8 @@ import { SiGooglescholar, SiMedium } from 'react-icons/si'
 import { MotionHover } from '@/components/animations/MotionList'
 import { ThemePicker } from '@/components/layout/ThemePicker'
 import { Button } from '@/components/ui/button'
-import { useColorMode } from '@/hooks/useColorMode'
 import { useUiStore } from '@/hooks/uiStore'
+import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import { useT } from '@/hooks/useT'
 import { getLocale, setLocale } from '@/paraglide/runtime'
@@ -17,18 +17,18 @@ const getNavIcon = (path: string) => {
   switch (path) {
     case '/':
       return Terminal
-    case '/publications':
-      return BookOpen
-    case '/experience':
-      return Briefcase
-    case '/projects':
-      return Code
-    case '/articles':
-      return FileText
-    case '/guide':
-      return Compass
     case '/about':
       return User
+    case '/articles':
+      return FileText
+    case '/experience':
+      return Briefcase
+    case '/guide':
+      return Compass
+    case '/projects':
+      return Code
+    case '/publications':
+      return BookOpen
     default:
       return Terminal
   }

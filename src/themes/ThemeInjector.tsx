@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
-import { useColorMode } from '@/hooks/useColorMode'
 import { useUiStore } from '@/hooks/uiStore'
+import { useColorMode } from '@/hooks/useColorMode'
 
 import { useThemeContext } from './hooks'
 
