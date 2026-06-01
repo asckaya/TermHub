@@ -1,8 +1,8 @@
 import { useVirtualizer } from '@tanstack/react-virtual'
+import { Icon } from '@iconify/react'
 import {
   ChevronDown,
   Crown,
-  ExternalLink,
   FolderOpen,
   RefreshCw,
   Settings,
@@ -10,8 +10,6 @@ import {
   X,
 } from 'lucide-react'
 import React, { useCallback, useMemo, useState } from 'react'
-import { FaGithub, FaYoutube } from 'react-icons/fa'
-import { SiCsdn, SiMedium, SiZhihu } from 'react-icons/si'
 
 import type { ProjectItem } from '@/types'
 
@@ -57,13 +55,13 @@ const roleConfig: Record<
   },
 }
 
-const linkIcon = (url: string): React.ElementType => {
-  if (url.includes('github.com')) return FaGithub
-  if (url.includes('medium.com')) return SiMedium
-  if (url.includes('youtu.be') || url.includes('youtube.com')) return FaYoutube
-  if (url.includes('zhihu.com')) return SiZhihu
-  if (url.includes('csdn.net')) return SiCsdn
-  return ExternalLink
+const linkIcon = (url: string): string => {
+  if (url.includes('github.com')) return 'mdi:github'
+  if (url.includes('medium.com')) return 'simple-icons:medium'
+  if (url.includes('youtu.be') || url.includes('youtube.com')) return 'simple-icons:youtube'
+  if (url.includes('zhihu.com')) return 'simple-icons:zhihu'
+  if (url.includes('csdn.net')) return 'simple-icons:csdn'
+  return 'lucide:external-link'
 }
 
 const fmtDate = (v?: string) => {
@@ -229,7 +227,7 @@ const FlowNode: React.FC<{
                     }}
                     target="_blank"
                   >
-                    {React.createElement(linkIcon(r.url), { className: 'w-[11px] h-[11px]' })}
+                    <Icon icon={linkIcon(r.url)} className="w-[11px] h-[11px]" />
                     <span>{r.label}</span>
                   </a>
                 </MotionHover>

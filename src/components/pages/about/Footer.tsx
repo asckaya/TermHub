@@ -1,6 +1,5 @@
 import React from 'react'
-import { FaGithub } from 'react-icons/fa'
-import { SiCloudflare } from 'react-icons/si'
+import { Icon } from '@iconify/react'
 
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
@@ -39,7 +38,7 @@ const Footer: React.FC = () => {
               style={{ color: tc.text }}
               target="_blank"
             >
-              <FaGithub className="h-5 w-5" />
+              <Icon icon="mdi:github" className="h-5 w-5" />
             </a>
             <a
               className="transition-all duration-200 hover:text-orange-500 hover:-translate-y-0.5 no-underline"
@@ -48,7 +47,7 @@ const Footer: React.FC = () => {
               style={{ color: tc.text }}
               target="_blank"
             >
-              <SiCloudflare className="h-[22px] w-[22px]" />
+              <Icon icon="simple-icons:cloudflare" className="h-[22px] w-[22px]" />
             </a>
           </div>
 

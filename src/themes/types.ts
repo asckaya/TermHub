@@ -1,4 +1,4 @@
-import type { IconType } from 'react-icons'
+import type { ComponentType, SVGProps } from 'react'
 
 import type { ProjectItem } from '@/types'
 
@@ -12,7 +12,7 @@ export interface CatTheme {
   cmd: string
   color: string
   glow: string
-  icon: IconType
+  icon: ComponentType<SVGProps<SVGSVGElement>>
   label: string
   stripe: string
 }
