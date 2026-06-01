@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import { Cpu, GitBranch, Layers, Wifi } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { FaGithub } from 'react-icons/fa'
@@ -5,6 +6,11 @@ import { FaGithub } from 'react-icons/fa'
 import { useThemeConfig } from '@/config/theme'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
+
+interface GitHubUser {
+  followers: number
+  public_repos: number
+}
 
 export const TerminalStatusBar: React.FC<{ compact?: boolean }> = ({ compact }) => {
   const { colorMode } = useColorMode()
@@ -14,7 +20,19 @@ export const TerminalStatusBar: React.FC<{ compact?: boolean }> = ({ compact }) 
   const { siteOwner } = useLocalizedData()
 
   const [load, setLoad] = useState('0.85')
-  const [stars, setStars] = useState<number | string>('...')
+
+  // Use TanStack Query to fetch and cache GitHub data, matching HeroSection query key for automatic deduplication
+  const { data: githubData } = useQuery<GitHubUser | null>({
+    queryFn: async () => {
+      const username = siteOwner.social.github.split('/').pop()
+      if (!username) return null
+      const res = await fetch(`https://api.github.com/users/${username}`)
+      if (!res.ok) throw new Error('GitHub fetch failed')
+      return res.json() as Promise<GitHubUser>
+    },
+    queryKey: ['github-profile', siteOwner.social.github],
+    staleTime: 1000 * 60 * 5,
+  })
 
   useEffect(() => {
     // Simulate system load variations
@@ -22,23 +40,10 @@ export const TerminalStatusBar: React.FC<{ compact?: boolean }> = ({ compact }) 
       setLoad((0.7 + Math.random() * 0.4).toFixed(2))
     }, 3000)
 
-    // Fetch GitHub stars if possible
-    if (siteOwner.social.github) {
-      const username = siteOwner.social.github.split('/').pop()
-      if (username) {
-        fetch(`https://api.github.com/users/${username}`)
-          .then((res) => res.json())
-          .then((data: { public_repos?: number }) => {
-            if (typeof data.public_repos === 'number') {
-              setStars(data.public_repos)
-            }
-          })
-          .catch(() => setStars('--'))
-      }
-    }
-
     return () => clearInterval(interval)
-  }, [siteOwner.social.github])
+  }, [])
+
+  const stars = githubData ? githubData.public_repos : '...'
 
   return (
     <div className="flex items-center justify-between w-full font-mono text-[9px] md:text-[10px] whitespace-nowrap overflow-hidden">

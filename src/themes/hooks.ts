@@ -1,10 +1,15 @@
-import { useContext } from 'react'
+import { useUiStore } from '@/hooks/uiStore'
+import { themes } from './registry'
 
-import { ThemeContext } from './ThemeContextCore'
 export { type ThemeKey, themes } from './registry'
 
 export const useThemeContext = () => {
-  const context = useContext(ThemeContext)
-  if (!context) throw new Error('useThemeContext must be used within ThemeProvider')
-  return context
+  const currentThemeKey = useUiStore((state) => state.currentThemeKey)
+  const setTheme = useUiStore((state) => state.setTheme)
+
+  return {
+    activeTheme: themes[currentThemeKey],
+    currentThemeKey,
+    setTheme,
+  }
 }

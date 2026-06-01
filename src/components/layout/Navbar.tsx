@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { Languages, Menu, Moon, Sun, X } from 'lucide-react'
+import { Languages, Menu, Monitor, Moon, Sun, X, Terminal, BookOpen, Briefcase, Code, FileText, User, Compass } from 'lucide-react'
 import React, { useState } from 'react'
 import { FaGithub, FaLinkedin, FaMailBulk } from 'react-icons/fa'
 import { SiGooglescholar, SiMedium } from 'react-icons/si'
@@ -8,12 +8,35 @@ import { MotionHover } from '@/components/animations/MotionList'
 import { ThemePicker } from '@/components/layout/ThemePicker'
 import { Button } from '@/components/ui/button'
 import { useColorMode } from '@/hooks/useColorMode'
+import { useUiStore } from '@/hooks/uiStore'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import { useT } from '@/hooks/useT'
 import { getLocale, setLocale } from '@/paraglide/runtime'
 
+const getNavIcon = (path: string) => {
+  switch (path) {
+    case '/':
+      return Terminal
+    case '/publications':
+      return BookOpen
+    case '/experience':
+      return Briefcase
+    case '/projects':
+      return Code
+    case '/articles':
+      return FileText
+    case '/guide':
+      return Compass
+    case '/about':
+      return User
+    default:
+      return Terminal
+  }
+}
+
 const Navbar: React.FC = () => {
   const { colorMode, toggleColorMode } = useColorMode()
+  const { isCrtActive, toggleCrt } = useUiStore()
   const [isOpen, setIsOpen] = useState(false)
   const { navItems, siteOwner } = useLocalizedData()
   const currentLang = getLocale()
@@ -64,12 +87,15 @@ const Navbar: React.FC = () => {
               </MotionHover>
             </div>
             <MotionHover>
-              <Link className="flex items-center" onClick={onClose} to="/">
+              <Link className="flex items-center gap-2 font-mono text-sm md:text-base font-bold no-underline" onClick={onClose} to="/">
                 <img
                   alt={siteOwner.branding.siteName}
-                  className="h-8 w-8 md:h-10 md:w-10 transition-opacity hover:opacity-80"
+                  className="h-7 w-7 transition-opacity hover:opacity-80"
                   src={`${import.meta.env.BASE_URL}logo-icon.svg`}
                 />
+                <span className="hidden sm:inline" style={{ color: 'var(--accent-color)' }}>
+                  {siteOwner.terminalUsername}@{siteOwner.branding.siteName.toLowerCase()}:~$
+                </span>
               </Link>
             </MotionHover>
           </div>
@@ -89,7 +115,12 @@ const Navbar: React.FC = () => {
                 key={item.path}
                 to={item.path}
               >
-                <MotionHover>{t(item.labelKey)}</MotionHover>
+                <MotionHover>
+                  <span className="flex items-center gap-1.5 font-mono">
+                    {React.createElement(getNavIcon(item.path), { className: 'h-4 w-4 opacity-70' })}
+                    <span>{t(item.labelKey)}</span>
+                  </span>
+                </MotionHover>
               </Link>
             ))}
           </div>
@@ -130,6 +161,18 @@ const Navbar: React.FC = () => {
               <ThemePicker />
 
               <Button
+                aria-label="Toggle CRT Mode"
+                className={`text-[var(--text-color)] transition-all duration-200 hover:bg-transparent ${isCrtActive ? 'text-[var(--accent-color)]' : 'text-[var(--text-color)] hover:text-[var(--accent-color)]'}`}
+                onClick={toggleCrt}
+                size="icon"
+                variant="ghost"
+              >
+                <MotionHover>
+                  <Monitor className="h-5 w-5" />
+                </MotionHover>
+              </Button>
+
+              <Button
                 aria-label={t('aria.toggleColorMode')}
                 className="text-[var(--text-color)] transition-all duration-200 hover:text-[var(--accent-color)] hover:bg-transparent"
                 onClick={(e) => toggleColorMode(e)}
@@ -164,7 +207,10 @@ const Navbar: React.FC = () => {
                 to={item.path}
               >
                 <div className="flex items-center justify-between">
-                  <span>{t(item.labelKey)}</span>
+                  <span className="flex items-center gap-2 font-mono text-sm">
+                    {React.createElement(getNavIcon(item.path), { className: 'h-4 w-4 opacity-70 text-[var(--accent-color)]' })}
+                    <span>{t(item.labelKey)}</span>
+                  </span>
                   <span className="text-[var(--secondary-text)] opacity-30">→</span>
                 </div>
               </Link>
@@ -197,6 +243,13 @@ const Navbar: React.FC = () => {
               <div className="flex-1 h-10 flex items-center justify-center border border-[var(--border-color)] rounded-md">
                 <ThemePicker />
               </div>
+              <Button
+                className={`flex-1 h-10 flex items-center justify-center border-[var(--border-color)] ${isCrtActive ? 'text-[var(--accent-color)] border-[var(--accent-color)]' : 'text-[var(--text-color)]'}`}
+                onClick={toggleCrt}
+                variant="outline"
+              >
+                <Monitor className="h-5 w-5" />
+              </Button>
             </div>
           </div>
         </div>

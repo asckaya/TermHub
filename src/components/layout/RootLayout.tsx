@@ -9,7 +9,6 @@ import { CommandPalette } from '@/components/ui/CommandPalette'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import { getResolvedSlots, getTemplate, SlotProvider } from '@/templates'
-import { ThemeProvider } from '@/themes/ThemeContext'
 import { ThemeInjector } from '@/themes/ThemeInjector'
 
 export function RootLayout() {
@@ -34,19 +33,17 @@ export function RootLayout() {
   const { colorMode } = useColorMode()
 
   return (
-    <ThemeProvider>
-      <LazyMotion features={domAnimation} strict>
-        {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
-        <ThemeInjector />
-        <Toaster position="top-right" theme={colorMode === 'dark' ? 'dark' : 'light'} />
-        <SlotProvider slots={slots}>
-          <TemplateLayout>
-            <Outlet />
-          </TemplateLayout>
-          <CommandPalette />
-        </SlotProvider>
-        {import.meta.env.DEV && <TanStackRouterDevtools />}
-      </LazyMotion>
-    </ThemeProvider>
+    <LazyMotion features={domAnimation} strict>
+      {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
+      <ThemeInjector />
+      <Toaster position="top-right" theme={colorMode === 'dark' ? 'dark' : 'light'} />
+      <SlotProvider slots={slots}>
+        <TemplateLayout>
+          <Outlet />
+        </TemplateLayout>
+        <CommandPalette />
+      </SlotProvider>
+      {import.meta.env.DEV && <TanStackRouterDevtools />}
+    </LazyMotion>
   )
 }

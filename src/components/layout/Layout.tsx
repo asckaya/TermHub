@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { RouteConsoleTrigger } from '@/components/animations/RouteConsoleTrigger'
 import { useColorMode } from '@/hooks/useColorMode'
 import { useSlot } from '@/templates/hooks'
 
@@ -20,7 +21,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       }
     >
       {React.createElement(NavbarSlot)}
-      <main className="block w-full px-3 md:px-4 lg:px-6">{children}</main>
+      <main className="block w-full px-3 md:px-4 lg:px-6">
+        <RouteConsoleTrigger>{children}</RouteConsoleTrigger>
+      </main>
     </div>
   )
 }

@@ -62,7 +62,7 @@ export const TerminalShell = memo<TerminalShellProps>(
     return (
       <div
         className={cn(
-          'flex flex-col rounded-md font-mono overflow-hidden w-full border transition-all duration-300 backdrop-blur-md',
+          'terminal-shell flex flex-col rounded-md font-mono overflow-hidden w-full border transition-all duration-300 backdrop-blur-md',
           className,
         )}
         style={{

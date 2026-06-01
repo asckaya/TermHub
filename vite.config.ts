@@ -95,7 +95,13 @@ export default defineConfig({
         remarkMath,
       ],
     }),
-    react(),
+    react({
+      babel: {
+        plugins: [
+          ['babel-plugin-react-compiler', {}],
+        ],
+      },
+    }),
     paraglideVitePlugin({
       outdir: './src/paraglide',
       project: './project.inlang',

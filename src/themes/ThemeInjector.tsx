@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 
 import { useColorMode } from '@/hooks/useColorMode'
+import { useUiStore } from '@/hooks/uiStore'
 
 import { useThemeContext } from './hooks'
 
@@ -21,8 +22,8 @@ import { useThemeContext } from './hooks'
  */
 export function ThemeInjector() {
   const { colorMode } = useColorMode()
-
   const { activeTheme } = useThemeContext()
+  const isCrtActive = useUiStore((state) => state.isCrtActive)
 
   useEffect(() => {
     const tokens = activeTheme.cssVars[colorMode === 'dark' ? 'dark' : 'light']
@@ -33,12 +34,14 @@ export function ThemeInjector() {
     }
   }, [colorMode, activeTheme])
 
-  // Also run once on mount with the initial colour mode captured above.
-  // The effect dependency on `colorMode` already covers this, but an explicit
-  // boot-time call ensures vars are present before the first paint even if
-  // React batches the initial effect slightly late.
-  // The effect dependency on `colorMode` and `activeTheme` already covers this
-  // so this duplicate boot-time call is no longer strictly needed in the React flow.
+  useEffect(() => {
+    const root = document.documentElement
+    if (isCrtActive) {
+      root.classList.add('crt-active')
+    } else {
+      root.classList.remove('crt-active')
+    }
+  }, [isCrtActive])
 
   return null
 }

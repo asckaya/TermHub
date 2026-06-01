@@ -23,21 +23,18 @@ import { useLanguage } from '@/hooks/useLanguage'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
 import { useT } from '@/hooks/useT'
 import { themes } from '@/themes/registry'
-import { ThemeContext } from '@/themes/ThemeContext'
+import { useThemeContext } from '@/themes/hooks'
 
 export const CommandPalette: React.FC = () => {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
   const { colorMode, toggleColorMode } = useColorMode()
   const { locale, setLocale } = useLanguage()
-  const themeCtx = React.useContext(ThemeContext)
+  const { setTheme } = useThemeContext()
   const { siteOwner } = useLocalizedData()
   const { t } = useT()
 
-  const setTheme = themeCtx?.setTheme
-
   useEffect(() => {
-    if (!themeCtx) return
     const down = (e: KeyboardEvent) => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
@@ -47,7 +44,7 @@ export const CommandPalette: React.FC = () => {
 
     document.addEventListener('keydown', down)
     return () => document.removeEventListener('keydown', down)
-  }, [themeCtx])
+  }, [])
 
   const runCommand = (command: () => void) => {
     setOpen(false)

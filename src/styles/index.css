@@ -142,8 +142,8 @@
     flex-direction: column;
   }
 
-  /* Retro CRT/Scanline Overlay */
-  body::before {
+  /* Retro CRT/Scanline Overlay (Only active when .crt-active is enabled) */
+  .crt-active body::before {
     content: '';
     position: fixed;
     top: 0;
@@ -151,14 +151,52 @@
     width: 100%;
     height: 100%;
     background:
-      linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.03) 50%),
-      linear-gradient(90deg, rgba(255, 0, 0, 0.01), rgba(0, 255, 0, 0.005), rgba(0, 0, 255, 0.01));
+      linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.07) 50%),
+      linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
     background-size:
-      100% 3px,
-      3px 100%;
+      100% 4px,
+      4px 100%;
     pointer-events: none;
     z-index: 9999;
-    opacity: 0.5;
+    opacity: 0.8;
+  }
+
+  /* Phosphor glow on text for CRT aesthetic */
+  .crt-active {
+    animation: crt-flicker 0.15s infinite;
+  }
+
+  .crt-active .font-mono,
+  .crt-active .terminal-shell,
+  .crt-active h1,
+  .crt-active h2,
+  .crt-active h3,
+  .crt-active p,
+  .crt-active span,
+  .crt-active a {
+    text-shadow: 0 0 1px currentColor, 0 0 3px rgba(var(--accent-color), 0.3);
+  }
+
+  /* Subtly distort the shell panel to mimic tube glass */
+  .crt-active .terminal-shell {
+    transform: perspective(1000px) rotateX(0.5deg) rotateY(-0.2deg) scale(0.995);
+    box-shadow: 
+      inset 0 0 40px rgba(0, 0, 0, 0.6),
+      0 12px 40px rgba(0, 0, 0, 0.5),
+      inset 0 0 2px rgba(255, 255, 255, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  @keyframes crt-flicker {
+    0% {
+      opacity: 0.992;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.995;
+    }
   }
 
   /* View Transitions API */
