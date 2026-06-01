@@ -187,10 +187,10 @@ if (site?.selectedPublicationIds?.length > 0) {
     warn('content/publications/ not found — skipping publication ID check')
   } else {
     const allIds = new Set()
-    const pubFiles = readdirSync(pubDir).filter((f) => f.endsWith('.md'))
+    const pubFiles = readdirSync(pubDir).filter((f) => f.endsWith('.md') || f.endsWith('.mdx'))
     for (const file of pubFiles) {
       const content = readFileSync(resolve(pubDir, file), 'utf-8')
-      const idMatch = content.match(/^id:\s*(.+)$/m)
+      const idMatch = content.match(/^id:\s*['"]?([^'"\n]+)['"]?\s*$/m)
       if (idMatch) allIds.add(idMatch[1].trim())
     }
 

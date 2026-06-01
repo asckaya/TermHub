@@ -17,6 +17,12 @@ const NameSchema = z.object({
   nickname: z.string().optional(),
 })
 
+const SkillSchema = z.object({
+  category: z.string().optional(),
+  level: z.number().optional(),
+  name: z.string(),
+})
+
 const SiteConfigSchema = z.object({
   avatar: z.string().optional(),
   contact: z
@@ -36,7 +42,7 @@ const SiteConfigSchema = z.object({
   terminal: z
     .object({
       rotatingSubtitles: z.array(z.string()).optional(),
-      skills: z.array(z.string()).optional(),
+      skills: z.array(z.union([z.string(), SkillSchema])).optional(),
       timezone: z.string().optional(),
       username: z.string(),
     })
