@@ -1,5 +1,5 @@
-import { useVirtualizer } from '@tanstack/react-virtual'
 import { Icon } from '@iconify/react'
+import { useVirtualizer } from '@tanstack/react-virtual'
 import {
   ChevronDown,
   Crown,
@@ -227,7 +227,7 @@ const FlowNode: React.FC<{
                     }}
                     target="_blank"
                   >
-                    <Icon icon={linkIcon(r.url)} className="w-[11px] h-[11px]" />
+                    <Icon className="w-[11px] h-[11px]" icon={linkIcon(r.url)} />
                     <span>{r.label}</span>
                   </a>
                 </MotionHover>

@@ -349,7 +349,7 @@ const Articles: React.FC = () => {
                                           }}
                                           target="_blank"
                                         >
-                                          <Icon icon={linkIcon(r.url)} className="w-2.5 h-2.5" />
+                                          <Icon className="w-2.5 h-2.5" icon={linkIcon(r.url)} />
                                           <span>{r.label}</span>
                                         </a>
                                       </MotionHover>
@@ -420,7 +420,7 @@ const Articles: React.FC = () => {
                                                 }}
                                                 target="_blank"
                                               >
-                                                <Icon icon={linkIcon(r.url)} className="w-[11px] h-[11px]" />
+                                                <Icon className="w-[11px] h-[11px]" icon={linkIcon(r.url)} />
                                                 <span>{r.label}</span>
                                               </a>
                                             </MotionHover>

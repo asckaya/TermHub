@@ -1,7 +1,7 @@
+import { Icon } from '@iconify/react'
 import { useQuery } from '@tanstack/react-query'
 import { Cpu, GitBranch, Layers, Wifi } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
-import { Icon } from '@iconify/react'
 
 import { useThemeConfig } from '@/config/theme'
 import { useColorMode } from '@/hooks/useColorMode'
@@ -59,7 +59,7 @@ export const TerminalStatusBar: React.FC<{ compact?: boolean }> = ({ compact }) 
         {/* GitHub Stats */}
         {!compact && (
           <div className="hidden sm:flex items-center gap-1.5">
-            <Icon icon="mdi:github" className="w-3 h-3" style={{ color: tc.secondary }} />
+            <Icon className="w-3 h-3" icon="mdi:github" style={{ color: tc.secondary }} />
             <span style={{ color: tc.secondary }}>repos:</span>
             <span className="font-bold" style={{ color: tc.highlight }}>
               {stars}

@@ -1,5 +1,5 @@
-import React from 'react'
 import { Icon } from '@iconify/react'
+import React from 'react'
 
 import { useColorMode } from '@/hooks/useColorMode'
 import { useLocalizedData } from '@/hooks/useLocalizedData'
@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
               style={{ color: tc.text }}
               target="_blank"
             >
-              <Icon icon="mdi:github" className="h-5 w-5" />
+              <Icon className="h-5 w-5" icon="mdi:github" />
             </a>
             <a
               className="transition-all duration-200 hover:text-orange-500 hover:-translate-y-0.5 no-underline"
@@ -47,7 +47,7 @@ const Footer: React.FC = () => {
               style={{ color: tc.text }}
               target="_blank"
             >
-              <Icon icon="simple-icons:cloudflare" className="h-[22px] w-[22px]" />
+              <Icon className="h-[22px] w-[22px]" icon="simple-icons:cloudflare" />
             </a>
           </div>
 

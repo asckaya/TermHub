@@ -46,7 +46,6 @@ const emojiIconMap: Record<string, React.ElementType | undefined> = {
 }
 
 const PublicationsTerminal: React.FC = () => {
-  'use no memo'
   const { colorMode } = useColorMode()
   const isDark = colorMode === 'dark'
   const { publications, siteOwner } = useLocalizedData()
