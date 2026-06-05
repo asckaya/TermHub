@@ -9,13 +9,31 @@ interface TerminalEntranceProps {
   path?: string
 }
 
+// Module-level variable to store the timestamp of the last page transition/mount
+let lastEntranceTime = 0
+const ANIMATION_COOLDOWN_MS = 10000 // 10 seconds
+
 export const TerminalEntrance: React.FC<TerminalEntranceProps> = ({ children, path = '~' }) => {
   const { siteOwner } = useLocalizedData()
-  const [phase, setPhase] = useState<'command' | 'content' | 'loading'>('command')
+  
+  // Determine if we should skip the typing animation based on the cooldown
+  const shouldSkip = typeof window !== 'undefined' && Date.now() - lastEntranceTime < ANIMATION_COOLDOWN_MS
+  
+  const [phase, setPhase] = useState<'command' | 'content' | 'loading'>(
+    shouldSkip ? 'content' : 'command'
+  )
   const [commandText, setCommandText] = useState('')
   const fullCommand = `cat ${path}/index.md`
 
   useEffect(() => {
+    // Update the timestamp when this page mounts/changes,
+    // so successive quick navigations continue to skip.
+    lastEntranceTime = Date.now()
+  }, [path])
+
+  useEffect(() => {
+    if (phase !== 'command') return
+
     let current = 0
     const interval = setInterval(() => {
       setCommandText(fullCommand.slice(0, current))
@@ -27,7 +45,7 @@ export const TerminalEntrance: React.FC<TerminalEntranceProps> = ({ children, pa
     }, 20)
 
     return () => clearInterval(interval)
-  }, [fullCommand])
+  }, [fullCommand, phase])
 
   useEffect(() => {
     if (phase === 'loading') {
@@ -97,7 +115,7 @@ export const TerminalEntrance: React.FC<TerminalEntranceProps> = ({ children, pa
           <motion.div
             animate={{ opacity: 1, y: 0 }}
             className="w-full h-full"
-            initial={{ opacity: 0, y: 10 }}
+            initial={shouldSkip ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
             key="content"
             transition={{ duration: 0.5, ease: 'easeOut' }}
           >

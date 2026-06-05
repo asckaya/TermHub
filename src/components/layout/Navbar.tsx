@@ -174,7 +174,7 @@ const Navbar: React.FC = () => {
               <Button
                 aria-label={t('aria.toggleColorMode')}
                 className="text-[var(--text-color)] transition-all duration-200 hover:text-[var(--accent-color)] hover:bg-transparent"
-                onClick={(e) => toggleColorMode(e)}
+                onClick={() => toggleColorMode()}
                 size="icon"
                 variant="ghost"
               >

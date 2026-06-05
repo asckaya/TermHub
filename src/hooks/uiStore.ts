@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-import type { ThemeKey } from '@/themes/registry'
+import { type ThemeKey, themes } from '@/themes/registry'
 
 interface DocumentWithTransition {
   startViewTransition?: (callback: () => Promise<void> | void) => { ready: Promise<void> }
@@ -21,7 +21,23 @@ export const useUiStore = create<UiState>()(
       isCrtActive: true, // Default to true for the retro terminal vibe
       setTheme: (key: ThemeKey) => {
         const doc = document as DocumentWithTransition
-        const applyTheme = () => set({ currentThemeKey: key })
+        
+        const applyTheme = () => {
+          set({ currentThemeKey: key })
+          
+          // Apply new theme CSS variables synchronously so the View Transition captures them
+          const isDark = document.documentElement.classList.contains('dark')
+          const theme = themes[key]
+          if (theme) {
+            const tokens = theme.cssVars[isDark ? 'dark' : 'light']
+            for (const [property, value] of Object.entries(tokens)) {
+              document.documentElement.style.setProperty(property, value)
+            }
+            const tc = theme.terminal.colors(isDark)
+            document.documentElement.style.setProperty('--prompt-color', tc.prompt)
+            document.documentElement.style.setProperty('--success-color', tc.success)
+          }
+        }
 
         if (!doc.startViewTransition) {
           applyTheme()

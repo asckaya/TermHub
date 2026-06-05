@@ -32,6 +32,11 @@ export function ThemeInjector() {
     for (const [property, value] of Object.entries(tokens) as [string, string][]) {
       root.style.setProperty(property, value)
     }
+
+    // Inject prompt & success colors from active theme's terminal configuration
+    const tc = activeTheme.terminal.colors(colorMode === 'dark')
+    root.style.setProperty('--prompt-color', tc.prompt)
+    root.style.setProperty('--success-color', tc.success)
   }, [colorMode, activeTheme])
 
   useEffect(() => {

@@ -18,6 +18,14 @@ const router = createRouter({
   scrollRestoration: true,
 })
 
+// Capture click coordinates globally for circular page transitions
+if (typeof window !== 'undefined') {
+  window.addEventListener('click', (e) => {
+    document.documentElement.style.setProperty('--click-x', `${e.clientX}px`)
+    document.documentElement.style.setProperty('--click-y', `${e.clientY}px`)
+  })
+}
+
 // Register the router instance for type-safety
 declare module '@tanstack/react-router' {
   interface Register {

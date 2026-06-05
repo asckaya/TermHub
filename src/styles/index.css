@@ -210,18 +210,49 @@
   }
 
   /* View Transitions API */
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none;
-    mix-blend-mode: normal;
-  }
-
-  ::view-transition-new(root) {
-    z-index: 999;
+  @keyframes ripple-reveal {
+    from {
+      clip-path: circle(0px at var(--click-x, 50%) var(--click-y, 50%));
+    }
+    to {
+      clip-path: circle(150vmax at var(--click-x, 50%) var(--click-y, 50%));
+    }
   }
 
   ::view-transition-old(root) {
+    animation: none;
+    mix-blend-mode: normal;
     z-index: 1;
+    will-change: transform, opacity;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+  }
+
+  ::view-transition-new(root) {
+    animation: ripple-reveal 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+    mix-blend-mode: normal;
+    z-index: 999;
+    will-change: clip-path, transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+  }
+
+  /* Accessibility fallback: Use simple opacity fade instead of clip-path if user/system prefers reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    @keyframes fade-out {
+      to { opacity: 0; }
+    }
+    @keyframes fade-in {
+      from { opacity: 0; }
+    }
+    ::view-transition-old(root) {
+      animation: fade-out 0.2s ease both !important;
+    }
+    ::view-transition-new(root) {
+      animation: fade-in 0.2s ease both !important;
+      clip-path: none !important;
+      will-change: opacity;
+    }
   }
 }
 
