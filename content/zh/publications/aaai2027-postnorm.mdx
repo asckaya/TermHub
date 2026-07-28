@@ -1,0 +1,17 @@
+---
+id: aaai2027-postnorm
+title: 'Rethinking Normalization Placement for LLMs: Post-Norm under Curriculum Depth Growing'
+authors: [Sheng Ren, Xiang Chen]
+venue: AAAI 2027 (Under Review)
+venueType: conference
+year: 2027
+status: preprint
+isFirstAuthor: true
+isCoFirst: false
+specialBadges: [CCF-A 在投, 第一作者]
+links: {}
+emoji: '⚡'
+featuredImage: /images/publications/postnorm.png
+---
+
+Pre-norm 已成为现代 Transformer 中默认的归一化位置，但不同训练机制下 Pre-norm 与 Post-norm 的相对优劣排序存在不一致。我们将这一不一致追溯到被忽视的训练课程因素：针对大模型渐进式深度增长中 Pre-norm 的特征边界漂移问题，探索归一化位置与训练课程的交互机制，验证 Post-norm 自归一化残差流在逐 block 堆叠增长场景下的前向条件化（Forward Conditioning）优势。在 Qwen3-8B 蒸馏实验中，课程式增长下 Post-norm 相比 Pre-norm 降低 0.0328 CE 损失，且维持了稳定的残差流边界尺度。（AAAI 2027 在投，CCF-A 顶级会议，第一作者）。

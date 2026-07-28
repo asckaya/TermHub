@@ -1,24 +1,31 @@
 ---
-title: 基于对抗博弈的大模型多智能体边界认知与推理优化
+title: 对抗博弈驱动的大模型多智能体推理优化
 category: nlp
-date: 2026-02
-tags: [LLM, Multi-Agent, PyTorch, 知识图谱]
-link: '#'
+date: 2025-05
+tags: [大模型 Agent, 多智能体, 强化学习, CEEH, 博弈论, PyTorch]
+link: 'https://arxiv.org/abs/2602.22642'
 isOpenSource: false
 status: ongoing
+badge: 'SIGKDD 2026 论文支撑'
 role: lead
+summary: 构建基于 Stackelberg 博弈的多智能体协同对抗框架，提出 CEEH 难度感知熵正则化算法，在 6 个推理基准上大幅压缩 Token 成本与步骤长度。
 ---
 
-构建基于Stackelberg博弈的大语言模型多智能体对抗框架，通过"提问-应答"智能体协同博弈实现知识边界动态感知与推理能力增强。支持多模态信息处理与多工具高效接入。
+**方案**：构建基于 Stackelberg 博弈的 LLM 多智能体协同对抗框架，提出 CEEH（难度感知熵正则化推理）RL 优化算法，动态评估推理难度进行选择性熵正则，防止 CoT 轨迹优化中搜索空间过快坍缩，有效压缩推理长度。
+
+**成果**：在 6 个推理基准测试中，在保持相同甚至更高准确率的同时，大幅降低了推理步骤长度和 Token 成本。
 
 ## 技术栈
 
 - PyTorch, Transformers
-- 知识图谱 (Neo4j)
-- LangChain
+- 多智能体强化学习
+- Stackelberg 博弈论
+- CEEH 算法
 
-## 亮点
+## 项目亮点
 
-- Stackelberg博弈框架实现多智能体对抗
-- 知识边界动态感知
-- 多模态信息处理支持
+- SIGKDD 2026 (CCF-A) 顶级会议论文核心支撑
+- Stackelberg 博弈多智能体协同对抗优化
+- CEEH 难度感知选择性熵正则机制
+- 保持准确率的同时显著降低推理步骤长度与 Token 成本
+支持

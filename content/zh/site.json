@@ -70,7 +70,7 @@
       "color": "#4285F4"
     }
   ],
-  "selectedPublicationIds": ["arxiv2026-compress-explore", "ieee2025-vehicle-detection"],
+  "selectedPublicationIds": ["arxiv2026-compress-explore", "aaai2027-postnorm", "ieee2025-vehicle-detection"],
   "sections": [
     "hero",
     "mentorship",

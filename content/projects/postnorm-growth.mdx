@@ -1,0 +1,30 @@
+---
+title: LLM Normalization Placement Optimization under Curriculum Depth Growing
+category: nlp
+date: 2025-10
+tags: [LLM Architecture, Transformer, Post-Norm, Pre-Norm, Curriculum Depth Growing, Knowledge Distillation]
+link: '#'
+isOpenSource: false
+status: completed
+badge: 'AAAI 2027 Paper Support'
+role: lead
+summary: Discovered the crossover phenomenon between normalization placement and curriculum depth growth, verifying Post-norm's superior forward conditioning in Qwen3-8B distillation.
+---
+
+**Solution**: Targeted feature boundary drift of Pre-norm during progressive depth expansion in LLMs. Explored the interaction between normalization placement and training curriculum, verifying the forward-conditioning advantages of Post-norm's self-normalized residual stream under block-stacking growth.
+
+**Results**: Revealed the crossover phenomenon between normalization placement and training curriculum. In Qwen3-8B distillation experiments under curriculum growth, Post-norm reduced validation cross-entropy loss by 0.0328 over Pre-norm and maintained stable residual stream boundary scales.
+
+## Tech Stack
+
+- PyTorch, Transformers
+- Deep Model Distillation
+- Residual Stream Activation Profiling
+- Block-Stacking Depth Expansion
+
+## Highlights
+
+- AAAI 2027 (CCF-A) paper core support
+- Uncovered the crossover interaction between normalization placement and curriculum growth
+- Validated Post-norm's self-normalized residual stream advantage for block-stacking expansion
+- Achieved 0.0328 CE loss reduction on Qwen3-8B depth growing distillation

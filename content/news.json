@@ -1,12 +1,51 @@
 [
   {
     "type": "publication",
+    "badge": "Accepted",
+    "icon": "fa6-solid:file-lines",
+    "iconColor": "purple.400",
+    "title": "Paper accepted at SIGKDD 2026 (CCF-A)",
+    "description": "Our paper 'Compress the Easy, Explore the Hard: Difficulty-Aware Entropy Regularization for Efficient LLM Reasoning' (CEEH) has been accepted at SIGKDD 2026 (Co-First Author).",
+    "date": "2026-02",
+    "sortDate": "2026-02-15",
+    "links": [
+      {
+        "text": "ArXiv",
+        "url": "https://arxiv.org/abs/2602.22642",
+        "icon": "fa6-solid:arrow-up-right-from-square"
+      }
+    ]
+  },
+  {
+    "type": "publication",
+    "badge": "Under Review",
+    "icon": "fa6-solid:file-lines",
+    "iconColor": "cyan.400",
+    "title": "New paper submitted to AAAI 2027",
+    "description": "Our work 'Rethinking Normalization Placement for LLMs: Post-Norm under Curriculum Depth Growing' has been submitted to AAAI 2027 (First Author).",
+    "date": "2026-02",
+    "sortDate": "2026-02-10",
+    "links": []
+  },
+  {
+    "type": "project",
+    "badge": "Internship",
+    "icon": "fa6-solid:code",
+    "iconColor": "green.400",
+    "title": "Unified Agent Training Framework @ DiDi L Lab",
+    "description": "Built multi-role weight-sharing Agent RL framework based on Verl for DiDi's AI assistant 'Xiao Di', outperforming DeepSeek-V3.1 (671B) on GLM4-Flash (30B) with 10x less compute.",
+    "date": "2025-07",
+    "sortDate": "2025-07-01",
+    "links": []
+  },
+  {
+    "type": "publication",
     "badge": "Publication",
     "icon": "fa6-solid:file-lines",
     "iconColor": "blue.400",
-    "title": "Paper accepted at IEEE T-ITS",
-    "description": "Our paper on wrong-way cycling detection has been published in IEEE Transactions on Intelligent Transportation Systems.",
-    "date": "2025",
+    "title": "Paper published in IEEE T-ITS",
+    "description": "Our paper on fast wrong-way cycling detection has been published in IEEE Transactions on Intelligent Transportation Systems.",
+    "date": "2025-01",
     "sortDate": "2025-01-01",
     "links": [
       {
@@ -15,29 +54,6 @@
         "icon": "fa6-solid:arrow-up-right-from-square"
       }
     ]
-  },
-  {
-    "type": "publication",
-    "badge": "Preprint",
-    "icon": "fa6-solid:file-lines",
-    "iconColor": "cyan.400",
-    "title": "CEEH paper released on arXiv",
-    "description": "Our work on difficulty-aware entropy regularization for efficient LLM reasoning is now available on arXiv.",
-    "date": "2026-02",
-    "sortDate": "2026-02-01",
-    "links": [
-      { "text": "Paper", "url": "https://arxiv.org/abs/2602.22642", "icon": "fa6-solid:arrow-up-right-from-square" }
-    ]
-  },
-  {
-    "type": "project",
-    "badge": "New Project",
-    "icon": "fa6-solid:code",
-    "iconColor": "green.400",
-    "title": "Unified Agent Training Framework @ DiDi",
-    "description": "Built shared-weight multi-agent training framework at DiDi LLM Lab. Served as both infra and algorithm lead. Achieved better results than DeepSeek V3.1 (671B) on GLM4-Flash (30B MoE) with significantly lower compute and faster inference.",
-    "date": "2025-10",
-    "sortDate": "2025-10-01",
-    "links": []
   }
 ]
+

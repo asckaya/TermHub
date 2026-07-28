@@ -1,31 +1,31 @@
 ---
-title: Unified Multi-Role Agent Training Framework
+title: Unified Strategy Multi-Role Agent Training Framework
 category: nlp
-date: 2026-04
-tags: [LLM, Multi-Agent, Reinforcement Learning, Verl, GLM, DiDi]
+date: 2025-07
+tags: [LLM Agent, Reinforcement Learning, Verl, GLM4-Flash, DeepSeek-V3.1, DiDi]
 link: '#'
 isOpenSource: false
-status: completed
+status: ongoing
+badge: 'DiDi L Lab Internship Project'
+role: tech-lead
+summary: Built a multi-role weight-sharing Agent RL framework based on Verl for DiDi's AI assistant "Xiao Di", outperforming DeepSeek-V3.1 (671B) using GLM4-Flash (30B) with 10x lower compute.
 ---
 
-**Background**: Built at DiDi LLM Lab to power AI assistant "小滴" - users describe travel needs in one sentence and AI matches the right ride. Existing DeepSeek-V3.1 (671B) model had issues: slow inference, high resource consumption, hallucinations, and tool misuse.
+**Background & Solution**: Targeted slowness, high computational costs, and improper tool invocations of DeepSeek-V3.1 (671B) for DiDi's AI travel assistant "Xiao Di". Designed and developed a multi-role weight-sharing Agent RL framework based on Verl, constructing an Agent-as-Tool unified optimization strategy space for trajectory-level reward backpropagation.
 
-**Solution**: Implemented shared-weight Agent RL framework with Agent-as-Tool mechanism. Served as both infra and algorithm lead. All roles share the same model parameters via different contexts, trained together with trajectory-level reward backpropagation.
-
-**Results**: Achieves better accuracy than DeepSeek V3.1 (671B) on GLM4-Flash (30B MoE) with 10x less compute, faster inference, and higher accuracy.
+**Results**: Achieved performance exceeding DeepSeek-V3.1 (671B) on complex tasks using GLM4-Flash (30B), reducing computational cost by 10x and significantly boosting inference speed.
 
 ## Tech Stack
 
-- Verl (Volcano Engine Reinforcement Learning for LLMs - ByteDance)
-- Reinforcement Learning
-- LLM Multi-Agent
-- GLM4-Flash (30B MoE)
-- Pytorch
+- Verl (Volcano Engine Reinforcement Learning for LLMs)
+- PyTorch, Transformers, Slime
+- Multi-Agent RL & Strategy Optimization
+- GLM4-Flash (30B), DeepSeek-V3.1 (671B)
 
 ## Highlights
 
-- Powers DiDi AI assistant "小滴"
-- Shared-weight multi-agent framework
-- Agent-as-Tool mechanism
-- Unified policy space optimization
-- Better accuracy with 10x less compute
+- Powers DiDi AI travel assistant "Xiao Di"
+- Shared-weight multi-agent RL framework
+- Agent-as-Tool unified strategy space optimization
+- 10x compute cost reduction with superior accuracy and inference speed
+

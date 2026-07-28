@@ -1,0 +1,30 @@
+---
+title: 课程式深度增长下的 LLM 归一化位置优化
+category: nlp
+date: 2025-10
+tags: [大模型架构, Transformer, Post-Norm, Pre-Norm, 课程式深度增长, 知识蒸馏]
+link: '#'
+isOpenSource: false
+status: completed
+badge: 'AAAI 2027 论文支撑'
+role: lead
+summary: 发现归一化位置与课程式深度增长的交叉现象，验证了 Post-norm 在逐 block 堆叠增长场景下的前向条件化优势，在 Qwen3-8B 蒸馏中降低 0.0328 CE 损失。
+---
+
+**方案**：针对大模型渐进式深度增长中 Pre-norm 的特征边界漂移问题，探索归一化位置与训练课程的交互机制，验证 Post-norm 自归一化残差流在逐 block 堆叠增长场景下的前向条件化（Forward Conditioning）优势。
+
+**成果**：揭示归一化位置与训练课程的交叉（Crossover）规律；在 Qwen3-8B 蒸馏实验中，课程式增长下 Post-norm 相比 Pre-norm 降低 0.0328 CE 损失，且维持了稳定的残差流边界尺度。
+
+## 技术栈
+
+- PyTorch, Transformers
+- 大模型知识蒸馏
+- 残差流激活尺度诊断
+- Block 逐块堆叠深度增长
+
+## 项目亮点
+
+- AAAI 2027 (CCF-A) 顶级会议论文核心支撑
+- 揭示归一化位置与训练课程的交叉（Crossover）交互规律
+- 验证 Post-norm 自归一化残差流在逐 block 增长下的前向条件化优势
+- 在 Qwen3-8B 蒸馏实验中相比 Pre-norm 降低 0.0328 CE 损失

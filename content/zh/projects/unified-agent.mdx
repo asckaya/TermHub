@@ -1,31 +1,30 @@
 ---
-title: 统一策略多角色Agent训练框架
+title: 统一策略多角色 Agent 训练框架
 category: nlp
-date: 2026-04
-tags: [LLM, Multi-Agent, 强化学习, Verl, GLM, 滴滴]
+date: 2025-07
+tags: [大模型 Agent, 强化学习, Verl, GLM4-Flash, DeepSeek-V3.1, 滴滴]
 link: '#'
 isOpenSource: false
-status: completed
+status: ongoing
+badge: '滴滴 L Lab 实习项目'
+role: tech-lead
+summary: 针对滴滴 AI 出行助手“小滴”，设计基于 Verl 的多角色共享权重 Agent 强化学习框架，在 GLM4-Flash (30B) 上超越 DeepSeek-V3.1 (671B)，算力开销降低 10 倍。
 ---
 
-**背景**: 在滴滴LLM Lab为AI出行助手"小滴"构建。用户只需一句话描述出行需求，AI就能精准拆解诉求并匹配对的车。线上DeepSeek-V3.1 (671B)模型存在推理速度慢、资源消耗大、幻觉及工具调用不当等问题。
+**背景与方案**：针对线上 DeepSeek-V3.1 (671B) 存在慢、贵及工具调用不当问题，设计并开发基于 Verl 的多角色共享权重 Agent 强化学习框架，构建 Agent-as-Tool 统一优化策略空间进行轨迹级奖励回传统一训练。
 
-**方案**: 实现基于Verl的共享权重Agent强化学习框架，构建Agent-as-Tool机制。同时负责infra和算法工作。所有角色通过不同上下文共享同一套模型参数，进行轨迹级奖励回传统一训练。
-
-**成果**: 在GLM4-Flash (30B MoE)上实现了比DeepSeek V3.1 (671B)更好的效果，算力需求减少10倍，推理速度更快，准确率更高。
+**成果**：在 GLM4-Flash (30B) 上实现了超越 DeepSeek-V3.1 (671B) 的复杂任务效果，算力开销降低 10 倍，显著提升推理速度。
 
 ## 技术栈
 
-- Verl (字节跳动火山引擎强化学习框架)
-- 强化学习
-- LLM多智能体
-- GLM4-Flash (30B MoE)
-- PyTorch
+- Verl (Volcano Engine Reinforcement Learning for LLMs)
+- PyTorch, Transformers, Slime
+- 多智能体强化学习与策略优化
+- GLM4-Flash (30B), DeepSeek-V3.1 (671B)
 
-## 亮点
+## 项目亮点
 
-- 支撑滴滴AI出行助手"小滴"
-- 共享权重多Agent框架
-- Agent-as-Tool机制
-- 统一策略空间优化
-- 更少算力达到更好效果
+- 服务于滴滴 AI 出行助手“小滴”
+- 多角色共享权重 Agent 强化学习框架
+- Agent-as-Tool 统一策略空间优化
+- 算力开销降低 10 倍，推理速度与准确率显著提升

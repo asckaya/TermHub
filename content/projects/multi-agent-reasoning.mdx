@@ -1,25 +1,31 @@
 ---
-title: LLM Multi-Agent Boundary Cognition and Reasoning Optimization via Adversarial Game
+title: Adversarial Game-Driven LLM Multi-Agent Reasoning Optimization
 category: nlp
-date: 2026-02
-tags: [LLM, Multi-Agent, PyTorch, Knowledge Graph]
-link: '#'
+date: 2025-05
+tags: [LLM Agent, Multi-Agent, Reinforcement Learning, CEEH, Stackelberg Game, PyTorch]
+link: 'https://arxiv.org/abs/2602.22642'
 isOpenSource: false
-status: completed
-badge: 'Collaborative'
+status: ongoing
+badge: 'SIGKDD 2026 Paper Support'
 role: lead
+summary: Built Stackelberg game adversarial framework and CEEH difficulty-aware entropy regularization algorithm for CoT reasoning, reducing token costs across 6 benchmarks.
 ---
 
-Built a Stackelberg game-based LLM multi-agent adversarial framework, achieving dynamic knowledge boundary awareness and reasoning enhancement through "question-answering" agent collaborative gaming. Supports multimodal information processing and efficient multi-tool integration.
+**Solution**: Constructed an LLM multi-agent collaborative adversarial framework based on Stackelberg game. Proposed the CEEH (Complexity-Aware Entropy Regularization) RL optimization algorithm to dynamically evaluate reasoning difficulty and perform selective entropy regularization, preventing search space collapse in CoT trajectory optimization.
+
+**Results**: Across 6 reasoning benchmarks, significantly reduced reasoning step lengths and token costs while maintaining or improving accuracy.
 
 ## Tech Stack
 
 - PyTorch, Transformers
-- Knowledge Graph (Neo4j)
-- LangChain
+- Multi-Agent Reinforcement Learning
+- Stackelberg Game Theory
+- CEEH Algorithm
 
 ## Highlights
 
-- Stackelberg game framework for multi-agent adversarial
-- Dynamic knowledge boundary awareness
-- Multimodal information processing support
+- SIGKDD 2026 (CCF-A) paper core support
+- Stackelberg game framework for multi-agent adversarial optimization
+- CEEH difficulty-aware selective entropy regularization
+- Preserves accuracy while compressing reasoning step lengths and token costs
+

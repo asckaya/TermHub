@@ -43,7 +43,7 @@
     "location": "Nanjing, Jiangsu, China"
   },
   "social": {
-    "github": "https://github.com/asckaya",
+    "github": "https://github.com/ashengstd",
     "linkedin": "https://www.linkedin.cn/incareer/in/%E7%AC%99-%E4%BB%BB-b64651403/",
     "medium": "",
     "googleScholar": "https://scholar.google.com/citations?user=Tg0bKZoAAAAJ"
@@ -75,7 +75,7 @@
       "color": "#4285F4"
     }
   ],
-  "selectedPublicationIds": ["arxiv2026-compress-explore", "ieee2025-vehicle-detection"],
+  "selectedPublicationIds": ["arxiv2026-compress-explore", "aaai2027-postnorm", "ieee2025-vehicle-detection"],
   "sections": [
     "hero",
     "mentorship",

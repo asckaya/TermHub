@@ -1,12 +1,51 @@
 [
   {
     "type": "publication",
+    "badge": "论文接收",
+    "icon": "fa6-solid:file-lines",
+    "iconColor": "purple.400",
+    "title": "论文获 CCF-A 顶会 SIGKDD 2026 接收",
+    "description": "我们关于 LLM 难度感知熵正则化推理论文（CEEH）被 SIGKDD 2026 接收（共同第一作者）。",
+    "date": "2026-02",
+    "sortDate": "2026-02-15",
+    "links": [
+      {
+        "text": "ArXiv",
+        "url": "https://arxiv.org/abs/2602.22642",
+        "icon": "fa6-solid:arrow-up-right-from-square"
+      }
+    ]
+  },
+  {
+    "type": "publication",
+    "badge": "在投论文",
+    "icon": "fa6-solid:file-lines",
+    "iconColor": "cyan.400",
+    "title": "新论文提交至 AAAI 2027",
+    "description": "我们关于课程式深度增长下的 Post-Norm 归一化位置优化研究已提交至 AAAI 2027（第一作者）。",
+    "date": "2026-02",
+    "sortDate": "2026-02-10",
+    "links": []
+  },
+  {
+    "type": "project",
+    "badge": "实习项目",
+    "icon": "fa6-solid:code",
+    "iconColor": "green.400",
+    "title": "统一 Agent 训练框架 @ 滴滴 L Lab",
+    "description": "在滴滴 L Lab 构建基于 Verl 的多角色共享权重 Agent 训练框架，在 GLM4-Flash (30B) 上超越 DeepSeek-V3.1 (671B)，算力开销降低 10 倍。",
+    "date": "2025-07",
+    "sortDate": "2025-07-01",
+    "links": []
+  },
+  {
+    "type": "publication",
     "badge": "论文发表",
     "icon": "fa6-solid:file-lines",
     "iconColor": "blue.400",
-    "title": "论文发表于IEEE T-ITS",
-    "description": "我们的逆行骑行检测论文已发表于IEEE智能交通系统汇刊。",
-    "date": "2025",
+    "title": "论文发表于 IEEE T-ITS",
+    "description": "我们的逆行骑行检测论文已发表于 IEEE 智能交通系统汇刊 (T-ITS)。",
+    "date": "2025-01",
     "sortDate": "2025-01-01",
     "links": [
       {
@@ -15,29 +54,6 @@
         "icon": "fa6-solid:arrow-up-right-from-square"
       }
     ]
-  },
-  {
-    "type": "publication",
-    "badge": "预印本",
-    "icon": "fa6-solid:file-lines",
-    "iconColor": "cyan.400",
-    "title": "CEEH论文在arXiv发布",
-    "description": "我们关于难度感知熵正则化的高效LLM推理工作已在arXiv发布。",
-    "date": "2026-02",
-    "sortDate": "2026-02-01",
-    "links": [
-      { "text": "论文", "url": "https://arxiv.org/abs/2602.22642", "icon": "fa6-solid:arrow-up-right-from-square" }
-    ]
-  },
-  {
-    "type": "project",
-    "badge": "新项目",
-    "icon": "fa6-solid:code",
-    "iconColor": "green.400",
-    "title": "统一Agent训练框架 @ 滴滴",
-    "description": "在滴滴LLM Lab构建共享权重多智能体训练框架，同时负责infra和算法工作。在GLM4-Flash (30B MoE)上实现了比DeepSeek V3.1 (671B)更好的效果，算力需求大幅减少，推理速度更快，准确率更高。",
-    "date": "2025-10",
-    "sortDate": "2025-10-01",
-    "links": []
   }
 ]
+

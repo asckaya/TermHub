@@ -5,20 +5,20 @@
         "course": "Computer Science & Technology",
         "institution": "Nanjing University of Aeronautics and Astronautics",
         "year": "2025-2028",
-        "detail": "Master · Advisor: Xiang Chen"
+        "detail": "M.S. · Advisor: Xiang Chen"
       },
       {
         "course": "Artificial Intelligence",
         "institution": "Nanjing University of Aeronautics and Astronautics",
         "year": "2021-2025",
-        "detail": "Bachelor · GPA 3.5/5.0"
+        "detail": "B.S. · GPA 3.5/5.0"
       }
     ]
   },
   "reviewing": [],
   "timeline": [
     {
-      "title": "LLM Algorithm Intern",
+      "title": "LLM/RL Algorithm Intern",
       "company": "DiDi L Lab",
       "companyUrl": "https://www.didiglobal.com",
       "location": "Beijing",
@@ -26,10 +26,10 @@
       "category": "industry",
       "roleType": "mle",
       "isCurrent": true,
-      "summary": "Algorithm & Agent Research",
+      "summary": "Agent & RL Algorithm / Infrastructure Optimization",
       "highlights": [
-        "Researching LLM algorithms and Agents",
-        "Focusing on infrastructure (Infra) optimization"
+        "Responsible for framework optimization of LLM Agent and reinforcement learning inference algorithms for DiDi's AI travel assistant 'Xiao Di'",
+        "Developed multi-role weight-sharing Agent RL framework based on Verl with Agent-as-Tool strategy space"
       ]
     },
     {
@@ -41,8 +41,10 @@
       "category": "academic",
       "roleType": "research",
       "isCurrent": true,
-      "summary": "Computer Science & Technology, Advisor: Xiang Chen",
-      "highlights": []
+      "summary": "Computer Science and Technology, Advisor: Xiang Chen",
+      "highlights": [
+        "Focus on LLM Architecture, Normalization Placement & Reasoning Optimization"
+      ]
     },
     {
       "title": "Undergraduate",
@@ -53,13 +55,12 @@
       "end": "2025-07",
       "category": "academic",
       "roleType": "research",
-      "summary": "Artificial Intelligence",
+      "summary": "Artificial Intelligence (GPA 3.5/5.0)",
       "highlights": [
-        "Pattern Recognition Lab: 99",
-        "Natural Language Processing: 91",
-        "AI Comprehensive Design: 93",
-        "Operating Systems: 90"
+        "Academic Excellence Scholarships (Top 20%)",
+        "2024 MCM/ICM Successful Mention"
       ]
     }
   ]
 }
+

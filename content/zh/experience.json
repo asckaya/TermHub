@@ -18,16 +18,19 @@
   "reviewing": [],
   "timeline": [
     {
-      "title": "大模型算法实习生",
-      "company": "滴滴L Lab",
+      "title": "大模型/强化学习算法实习生",
+      "company": "滴滴 L Lab",
       "companyUrl": "https://www.didiglobal.com",
       "location": "北京",
       "start": "2025-07",
       "category": "industry",
       "roleType": "mle",
       "isCurrent": true,
-      "summary": "算法与 Agent 研究",
-      "highlights": ["研究大模型算法与 Agent 系统", "涉及相关的基础设施 (Infra) 优化"]
+      "summary": "Agent 与 RL 算法及基础设施优化",
+      "highlights": [
+        "负责滴滴 AI 出行助手“小滴”大模型 Agent 与强化学习推理算法及相关基础设施的基础架构优化",
+        "基于 Verl 开发多角色共享权重 Agent 强化学习框架，构建 Agent-as-Tool 统一策略空间"
+      ]
     },
     {
       "title": "硕士研究生",
@@ -39,7 +42,7 @@
       "roleType": "research",
       "isCurrent": true,
       "summary": "计算机科学与技术，导师：陈想",
-      "highlights": []
+      "highlights": ["研究方向：大模型架构、归一化位置优化与多智能体推理优化"]
     },
     {
       "title": "本科生",
@@ -50,13 +53,12 @@
       "end": "2025-07",
       "category": "academic",
       "roleType": "research",
-      "summary": "人工智能专业",
+      "summary": "人工智能专业 (GPA 3.5/5.0)",
       "highlights": [
-        "模式识别实验: 99",
-        "自然语言处理: 91",
-        "人工智能综合课程设计: 93",
-        "操作系统: 90"
+        "大一、大三学年优秀奖学金 (前 20%)",
+        "2024 美赛 (MCM/ICM) Successful Mention"
       ]
     }
   ]
 }
+

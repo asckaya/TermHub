@@ -1,0 +1,17 @@
+---
+id: aaai2027-postnorm
+title: 'Rethinking Normalization Placement for LLMs: Post-Norm under Curriculum Depth Growing'
+authors: [Sheng Ren, Xiang Chen]
+venue: AAAI 2027 (Under Review)
+venueType: conference
+year: 2027
+status: preprint
+isFirstAuthor: true
+isCoFirst: false
+specialBadges: [CCF-A Under Review, First Author]
+links: {}
+emoji: '⚡'
+featuredImage: /images/publications/postnorm.png
+---
+
+Pre-norm has become the default normalization placement in modern Transformers, but literature reports inconsistent orderings across training regimes. We trace this to an overlooked factor: training curriculum. Standard pre-norm setup assumes end-to-end training, whereas curriculum depth growing introduces blocks incrementally. We hypothesize and verify that Post-norm's self-normalized residual stream provides stable, scale-controlled forward conditioning for newly added blocks during block-stacking depth expansion. In Qwen3-8B distillation experiments, Post-norm reduces validation cross-entropy loss by 0.0328 over Pre-norm and maintains stable residual stream boundary scales.
